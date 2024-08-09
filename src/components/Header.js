@@ -1,34 +1,35 @@
 import React, { useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import {
   faGithub,
   faLinkedin,
-  faMedium,
-  faStackOverflow,
+  faInstagram,
+  faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
-import { Box, HStack } from "@chakra-ui/react";
+import { Box, HStack, Link } from "@chakra-ui/react";
+import { icon } from "@fortawesome/fontawesome-svg-core";
 
 const socials = [
   {
-    icon: faEnvelope,
-    url: "mailto: hello@example.com",
+    icon: faGlobe,
+    url: "https://www.kidskoding.com"
+  },
+  {
+    icon: faYoutube,
+    url: "https://www.youtube.com/kidskoding"
   },
   {
     icon: faGithub,
-    url: "https://github.com",
+    url: "https://github.com/kidskoding",
   },
   {
     icon: faLinkedin,
-    url: "https://www.linkedin.com",
+    url: "https://www.linkedin.com/in/anirudh-konidala/",
   },
   {
-    icon: faMedium,
-    url: "https://medium.com",
-  },
-  {
-    icon: faStackOverflow,
-    url: "https://stackoverflow.com",
+    icon: faInstagram,
+    url: "https://www.instagram.com/anikoni2010/",
   },
 ];
 
@@ -64,11 +65,22 @@ const Header = () => {
           alignItems="center"
         >
           <nav>
-            {/* Add social media links based on the `socials` data */}
+            <HStack spacing={8}>
+              <Link href="#projects-section" onClick={handleClick("projects")}>
+                Projects
+              </Link>
+              <Link href="#contactme-section" onClick={handleClick("contactme")}>
+                Contact Me
+              </Link>
+            </HStack>
           </nav>
           <nav>
-            <HStack spacing={8}>
-              {/* Add links to Projects and Contact me section */}
+            <HStack spacing={6}>
+              {socials.map((social, index) => (
+                <Link key={index} href={social.url} isExternal>
+                  <FontAwesomeIcon icon={social.icon} size="2x" />
+                </Link>
+              ))}
             </HStack>
           </nav>
         </HStack>
@@ -76,4 +88,5 @@ const Header = () => {
     </Box>
   );
 };
+
 export default Header;
