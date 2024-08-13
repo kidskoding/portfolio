@@ -62,7 +62,7 @@ const LandingSection = () => {
         onOpen('error', response.message);
       }
     }
-  }, [response, formik.values.firstName]);
+  }, [response]);
 
   return (
     <FullScreenSection
