@@ -1,0 +1,25 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import anirudhDatabricksImg from '../assets/anirudh-databricks.jpeg';
+---
+
+<Layout title="About">
+    <Navigation currentPage="about" />
+    <main class="max-w-5xl mx-auto px-6 py-12">
+        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex items-center gap-8" data-animate>
+            <div class="shrink-0">
+                <img
+                    src={anirudhDatabricksImg.src}
+                    alt="Anirudh at Databricks"
+                    class="w-60 h-80 rounded-lg object-cover"
+                />
+            </div>
+
+            <div class="flex-1">
+                <h1 class="text-3xl font-bold text-text-primary tracking-tight">Anirudh Konidala</h1>
+                <p class="text-text-secondary mt-3"><b>I enjoy ai, data, and vibe coding!</b></p>
+            </div>
+        </div>
+    </main>
+</Layout>
