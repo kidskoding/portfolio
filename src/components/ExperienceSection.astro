@@ -1,0 +1,72 @@
+---
+import { experiences } from '../data/experience';
+import ExperienceCard from './ExperienceCard.astro';
+---
+
+<section class="relative">
+    <div class="mb-12" data-animate>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Career</p>
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text">
+            Experience
+        </h2>
+        <p class="text-text-muted mt-3 text-base max-w-md">
+            Where I've worked and what I've built.
+        </p>
+    </div>
+
+    <div class="relative">
+        <div class="absolute left-1.5 top-0 bottom-0 w-px bg-linear-to-b from-accent/50 via-timeline-line to-transparent" />
+
+        <div class="space-y-6">
+            {experiences.map((exp, index) => (
+                <ExperienceCard experience={exp} isFirst={index === 0} />
+            ))}
+        </div>
+    </div>
+</section>
+
+<script>
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    function initAnimations() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            document.querySelectorAll('[data-animate]').forEach((el) => {
+                (el as HTMLElement).style.opacity = '1';
+                (el as HTMLElement).style.transform = 'none';
+            });
+            return;
+        }
+
+        const elements = document.querySelectorAll('[data-animate]');
+
+        elements.forEach((el, index) => {
+            gsap.fromTo(
+                el,
+                { opacity: 0, y: 40, scale: 0.98 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.8,
+                    delay: index * 0.12,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 88%',
+                        once: true,
+                    },
+                }
+            );
+        });
+    }
+
+    initAnimations();
+
+    document.addEventListener('astro:after-swap', () => {
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+        initAnimations();
+    });
+</script>

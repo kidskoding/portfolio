@@ -1,11 +1,43 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Navigation from '../components/Navigation.astro';
+import anirudhProfileImg from '../assets/anirudh.jpeg';
+import illiniLogo from '../assets/illini-logo.png'
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Anirudh Konidala">
+    <Navigation currentPage="about" />
+    <main class="max-w-3xl mx-auto px-6 py-12">
+        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex items-center gap-8" data-animate>
+            <img
+                src={anirudhProfileImg.src}
+                alt="Anirudh Konidala"
+                class="w-32 h-32 rounded-full object-cover ring-2 ring-accent/20 shrink-0"
+            />
+            <div>
+                <h1 class="text-3xl font-bold text-text-primary tracking-tight">Anirudh Konidala</h1>
+                <p class="text-text-secondary mt-3">I enjoy ai, data, and vibe coding!</p>
+				<p class="text-text-secondary mt-3">computer science and education, concentrated in learning sciences and technology @ uiuc</p>
+				<p class="text-orange-100 mt-9 text-center border border-orange-100 p-2">
+					<b>building ai agents!!</b>
+				</p>
+            </div>
+        </div>
+    </main>
+	<main class="max-w-3xl mx-auto px-6 py-1">
+        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex items-center gap-8" data-animate>
+            <img
+                src={illiniLogo.src}
+                alt="UIUC Logo!"
+                class="w-32 h-32 rounded-full object-cover ring-2 ring-accent/20 shrink-0"
+            />
+            <div>
+                <h1 class="text-3xl font-bold text-text-primary tracking-tight">a proud illini!</h1>
+                <p class="text-text-secondary mt-3">I am proud to be a student at the University of Illinois at Urbana-Champaign!</p>
+				<p class="text-text-secondary mt-3">A university home to the founders of
+					YouTube (a Google company), PayPal, Oracle,
+					and Advanced Micro Devices (<b>AMD</b>)</p>
+            </div>
+        </div>
+    </main>
 </Layout>

@@ -1,0 +1,82 @@
+---
+const navLinks = [
+  { name: "About", href: "/" },
+  { name: "Experience", href: "/experience" },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50" id="main-nav" transition:persist>
+    <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a
+            href="/"
+            class="text-lg font-bold tracking-tight transition-colors duration-200 gradient-text"
+        >
+            Anirudh Konidala
+        </a>
+
+        <div class="flex items-center gap-0.5">
+            {navLinks.map((link) => (
+                <a
+                    href={link.href}
+                    data-nav-link
+                    data-href={link.href}
+                    class="nav-link relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/3"
+                >
+                    {link.name}
+                    <span class="nav-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-linear-to-r from-accent to-accent-secondary opacity-0 transition-opacity duration-200" />
+                </a>
+            ))}
+        </div>
+    </div>
+</nav>
+
+<!-- Spacer to prevent content from going under fixed nav -->
+<div class="h-16" />
+
+<script>
+    function initNav() {
+        const nav = document.getElementById('main-nav');
+        if (!nav) return;
+
+        // Update active link based on current path
+        function updateActiveLink() {
+            const path = window.location.pathname;
+            nav!.querySelectorAll('[data-nav-link]').forEach((link) => {
+                const href = link.getAttribute('data-href');
+                const isActive = href === path || (href === '/' && path === '/');
+                const indicator = link.querySelector('.nav-indicator') as HTMLElement;
+
+                if (isActive) {
+                    link.classList.remove('text-text-muted', 'hover:text-text-primary', 'hover:bg-white/3');
+                    link.classList.add('text-text-primary', 'bg-accent-subtle');
+                    if (indicator) indicator.style.opacity = '1';
+                } else {
+                    link.classList.add('text-text-muted', 'hover:text-text-primary', 'hover:bg-white/3');
+                    link.classList.remove('text-text-primary', 'bg-accent-subtle');
+                    if (indicator) indicator.style.opacity = '0';
+                }
+            });
+        }
+
+        // Scroll-based background
+        function updateScroll() {
+            if (window.scrollY > 20) {
+                nav!.style.background = 'rgba(10, 10, 15, 0.7)';
+                nav!.style.backdropFilter = 'blur(20px) saturate(1.5)';
+                nav!.style.borderBottom = '1px solid rgba(107, 140, 254, 0.08)';
+            } else {
+                nav!.style.background = 'transparent';
+                nav!.style.backdropFilter = 'none';
+                nav!.style.borderBottom = '1px solid transparent';
+            }
+        }
+
+        window.addEventListener('scroll', updateScroll, { passive: true });
+        updateScroll();
+        updateActiveLink();
+
+        document.addEventListener('astro:after-swap', updateActiveLink);
+    }
+
+    initNav();
+</script>
