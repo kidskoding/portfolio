@@ -1,8 +1,218 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Navigation from "../components/Navigation.astro";
+
+const iconMap: Record<string, { id: string; color: string }> = {
+	C: { id: "simple-icons:c", color: "#A8B9CC" },
+	"C++": { id: "simple-icons:cplusplus", color: "#00599C" },
+	Rust: { id: "simple-icons:rust", color: "#000000" },
+	Python: { id: "simple-icons:python", color: "#3776AB" },
+	Go: { id: "simple-icons:go", color: "#00ADD8" },
+	"C#": { id: "simple-icons:csharp", color: "#512BD4" },
+	Java: { id: "simple-icons:openjdk", color: "#007396" },
+	"HTML/CSS": { id: "simple-icons:html5", color: "#E34F26" },
+	"Tailwind CSS": { id: "simple-icons:tailwindcss", color: "#06B6D4" },
+	JavaScript: { id: "simple-icons:javascript", color: "#F7DF1E" },
+	Swift: { id: "simple-icons:swift", color: "#F05138" },
+	PyTorch: { id: "simple-icons:pytorch", color: "#EE4C2C" },
+	TensorFlow: { id: "simple-icons:tensorflow", color: "#FF6F00" },
+	Keras: { id: "simple-icons:keras", color: "#D00000" },
+	"Scikit-learn": { id: "simple-icons:scikitlearn", color: "#F7931E" },
+	NumPy: { id: "simple-icons:numpy", color: "#013243" },
+	Pandas: { id: "simple-icons:pandas", color: "#150458" },
+	OpenCV: { id: "simple-icons:opencv", color: "#5C3EE8" },
+	RAG: { id: "ph:brain", color: "#A1A1AA" },
+	LangChain: { id: "ph:link-simple", color: "#A1A1AA" },
+	MCP: { id: "ph:cube", color: "#A1A1AA" },
+	React: { id: "simple-icons:react", color: "#61DAFB" },
+	Next: { id: "simple-icons:nextdotjs", color: "#000000" },
+	"Node.js": { id: "simple-icons:nodedotjs", color: "#339933" },
+	Angular: { id: "simple-icons:angular", color: "#DD0031" },
+	Astro: { id: "simple-icons:astro", color: "#FF5D01" },
+	"Chart.js": { id: "simple-icons:chartdotjs", color: "#FF6384" },
+	Unity: { id: "simple-icons:unity", color: "#000000" },
+	Unreal: { id: "simple-icons:unrealengine", color: "#0E1128" },
+	Express: { id: "simple-icons:express", color: "#000000" },
+	Django: { id: "simple-icons:django", color: "#092E20" },
+	FastAPI: { id: "simple-icons:fastapi", color: "#009688" },
+	Flask: { id: "simple-icons:flask", color: "#000000" },
+	PostgreSQL: { id: "simple-icons:postgresql", color: "#4169E1" },
+	MongoDB: { id: "simple-icons:mongodb", color: "#47A248" },
+	MySQL: { id: "simple-icons:mysql", color: "#4479A1" },
+	Cassandra: { id: "simple-icons:apachecassandra", color: "#1287B1" },
+	Redis: { id: "simple-icons:redis", color: "#DC382D" },
+	"Apache Spark": { id: "simple-icons:apachespark", color: "#E25A1C" },
+	Databricks: { id: "simple-icons:databricks", color: "#FF3621" },
+	Pinecone: { id: "ph:tree", color: "#A1A1AA" },
+	Qdrant: { id: "ph:target", color: "#A1A1AA" },
+	"GNU/Linux": { id: "simple-icons:linux", color: "#FCC624" },
+	Git: { id: "simple-icons:git", color: "#F05032" },
+	GitHub: { id: "simple-icons:github", color: "#181717" },
+	Docker: { id: "simple-icons:docker", color: "#2496ED" },
+	Kubernetes: { id: "simple-icons:kubernetes", color: "#326CE5" },
+	Kafka: { id: "simple-icons:apachekafka", color: "#231F20" },
+	Selenium: { id: "simple-icons:selenium", color: "#43B02A" },
+	"Power BI": { id: "simple-icons:powerbi", color: "#F2C811" },
+	Tableau: { id: "simple-icons:tableau", color: "#E97627" },
+	Stripe: { id: "simple-icons:stripe", color: "#008CDD" },
+	"Google Cloud Platform": { id: "simple-icons:googlecloud", color: "#4285F4" },
+	"Amazon Web Services": { id: "simple-icons:amazonaws", color: "#232F3E" },
+	"Microsoft Azure": { id: "simple-icons:microsoftazure", color: "#0078D4" },
+	Agile: { id: "ph:timer", color: "#A1A1AA" },
+	Scrum: { id: "ph:users-three", color: "#A1A1AA" },
+	Kanban: { id: "ph:kanban", color: "#A1A1AA" },
+	"Test Driven Development": { id: "ph:flask", color: "#A1A1AA" },
+	"CI/CD": { id: "ph:infinity", color: "#A1A1AA" }
+};
+
+const iconUrl = (id: string, color: string) =>
+	`https://api.iconify.design/${id}.svg?color=${encodeURIComponent(color)}`;
+
+const iconFor = (name: string) =>
+	name
+		.split(/[^A-Za-z0-9]+/)
+		.filter(Boolean)
+		.map((part) => part[0])
+		.join("")
+		.slice(0, 2)
+		.toUpperCase();
+
+const skillGroups = [
+	{
+		title: "Programming Languages",
+		skills: [
+			"C",
+			"C++",
+			"Rust",
+			"Python",
+			"Go",
+			"C#",
+			"Java",
+			"HTML/CSS",
+			"Tailwind CSS",
+			"JavaScript",
+			"Swift"
+		]
+	},
+	{
+		title: "AI/ML",
+		skills: [
+			"PyTorch",
+			"TensorFlow",
+			"Keras",
+			"Scikit-learn",
+			"NumPy",
+			"Pandas",
+			"OpenCV",
+			"RAG",
+			"LangChain",
+			"MCP"
+		]
+	},
+	{
+		title: "Frameworks",
+		skills: [
+			"React",
+			"Next",
+			"Node.js",
+			"Angular",
+			"Astro",
+			"Chart.js",
+			"Unity",
+			"Unreal",
+			"Express",
+			"Django",
+			"FastAPI",
+			"Flask"
+		]
+	},
+	{
+		title: "Databases",
+		skills: [
+			"PostgreSQL",
+			"MongoDB",
+			"MySQL",
+			"Cassandra",
+			"Redis",
+			"Apache Spark",
+			"Databricks",
+			"Pinecone",
+			"Qdrant"
+		]
+	},
+	{
+		title: "Developer Tools",
+		skills: [
+			"GNU/Linux",
+			"Git",
+			"GitHub",
+			"Docker",
+			"Kubernetes",
+			"Kafka",
+			"Selenium",
+			"Power BI",
+			"Tableau",
+			"Stripe"
+		]
+	},
+	{
+		title: "Cloud Platforms",
+		skills: [
+			"Google Cloud Platform",
+			"Amazon Web Services",
+			"Microsoft Azure"
+		]
+	},
+	{
+		title: "Methodologies",
+		skills: [
+			"Agile",
+			"Scrum",
+			"Kanban",
+			"Test Driven Development",
+			"CI/CD"
+		]
+	}
+];
 ---
 
 <Layout title="Skills">
 	<Navigation currentPage="skills" />
+	<main class="max-w-6xl mx-auto px-6 py-12">
+		<h1 class="text-3xl font-bold text-text-primary tracking-tight">Skills</h1>
+		<p class="text-text-secondary mt-3 max-w-2xl">
+			A snapshot of the tools, languages, and platforms I use to build products.
+		</p>
+
+		<div class="mt-10 space-y-10">
+			{skillGroups.map((group) => (
+				<section>
+					<h2 class="text-lg font-semibold text-text-primary">{group.title}</h2>
+					<div class="mt-4 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+						{group.skills.map((skill) => {
+							const icon = iconMap[skill];
+							const containerClass = icon
+								? "rounded-md border border-border-subtle bg-bg-card p-3 flex flex-col items-center justify-center gap-2.5 aspect-square text-center"
+								: "rounded-md border border-border-subtle bg-bg-card p-3 flex flex-col items-start justify-start gap-2.5 aspect-square text-left";
+							return (
+								<div class={containerClass} data-animate>
+									{icon ? (
+										<span class="w-9 h-9 rounded-md flex items-center justify-center bg-white/8 ring-1 ring-white/12 backdrop-blur-sm">
+											<img
+												src={iconUrl(icon.id, icon.color)}
+												alt={`${skill} icon`}
+												class="w-10 h-10 drop-shadow-[0_0_2px_rgba(255,255,255,0.7)] drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]"
+												loading="lazy"
+											/>
+										</span>
+									) : null}
+									<span class="text-md font-semibold text-text-primary leading-snug">{skill}</span>
+								</div>
+							);
+						})}
+					</div>
+				</section>
+			))}
+		</div>
+	</main>
 </Layout>
