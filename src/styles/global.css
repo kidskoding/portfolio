@@ -201,9 +201,9 @@ body::before {
 /* Scroll-triggered animation base states */
 [data-animate] {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(8px);
+  transition: opacity 0.15s ease-out,
+  transform 0.15s ease-out;
 }
 
 [data-animate].is-visible {
