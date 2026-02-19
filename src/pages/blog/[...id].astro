@@ -27,9 +27,13 @@ const { Content } = await render(post);
     <header class="mb-8">
       <h1 class="text-3xl font-bold text-text-primary tracking-tight">{post.data.title}</h1>
       {post.data.description && <p class="text-text-muted mt-2">{post.data.description}</p>}
-      <time class="text-text-muted text-sm mt-2 block" datetime={post.data.pubDate.toISOString()}>
-        {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-      </time>
+      <p class="text-text-muted text-sm mt-2">
+        <span>Anirudh Konidala</span>
+        <span class="mx-2" aria-hidden="true">·</span>
+        <time datetime={post.data.pubDate.toISOString()}>
+          {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+        </time>
+      </p>
     </header>
     <div class="blog-content text-text-secondary [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-text-primary [&_h2]:mt-8 [&_h2]:mb-3 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-text-primary [&_h3]:mt-6 [&_h3]:mb-2 [&_p]:mb-4 [&_p]:leading-[1.65] [&_p]:pb-[0.02em] [&_a]:text-accent [&_a]:hover:text-accent-hover [&_a]:underline [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:mb-4 [&_li]:mb-1 [&_li]:leading-[1.65] [&_img]:rounded-lg [&_img]:my-4 [&_img]:max-w-full [&_hr]:border-t [&_hr]:border-border-subtle [&_hr]:my-6 [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-text-primary [&_blockquote]:my-4 [&_sup]:text-xs [&_sup]:align-super">
       <Content />

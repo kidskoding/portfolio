@@ -16,4 +16,24 @@ const { title, description } = Astro.props;
     <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors mb-6 inline-block">&larr; Back to blog</a>
     <slot />
   </main>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <script is:inline>
+    function loadTwitterWidgets() {
+      if (window.twttr?.widgets?.load) window.twttr.widgets.load();
+    }
+    window.addEventListener('load', function () {
+      loadTwitterWidgets();
+      // Widget script may load after DOM; run again once twttr is ready
+      var check = setInterval(function () {
+        if (window.twttr?.widgets?.load) {
+          window.twttr.widgets.load();
+          clearInterval(check);
+        }
+      }, 100);
+      setTimeout(clearInterval, 5000, check);
+    });
+    document.addEventListener('astro:after-swap', function () {
+      setTimeout(loadTwitterWidgets, 150);
+    });
+  </script>
 </Layout>
