@@ -1,0 +1,16 @@
+---
+description: After completing file changes, commit and push automatically
+alwaysApply: true
+---
+
+# Auto commit and push after changes
+
+When you have finished making file changes in response to the user's request:
+
+1. Stage the changed files: `git add` the relevant paths (or `git add -A` if the user asked for a full update).
+2. Commit with a clear message and co-author:
+   - Use a short, descriptive commit message.
+   - Append: `Co-authored-by: Cursor <cursoragent@cursor.com>`
+3. Push: run `git push origin $(git branch --show-current)` (or `git push` if upstream is set).
+
+Do this when the user's request has been fully completed and files were modified. Do not commit in the middle of a multi-step task unless the user asks. If the user says "don't commit" or "no commit", skip commit and push. Use `git_write` and `network` permissions when running git commit and git push.
