@@ -7,8 +7,14 @@ import anirudhDatabricksImg from '../assets/anirudh-databricks.jpeg';
 <Layout title="About">
     <Navigation currentPage="about" />
     <main class="max-w-3xl mx-auto px-6 py-12" id="main-content">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-4" data-animate>About</p>
-        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex flex-col sm:flex-row items-center gap-8" data-animate>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3" data-animate>About</p>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text" data-animate>About</h1>
+        <p class="text-text-muted mt-3 text-base max-w-md" data-animate>
+            Who I am, what I do, and what I'm into.
+        </p>
+
+        <div class="mt-10 rounded-xl border border-border-subtle bg-bg-card p-8" data-animate>
+            <div class="flex flex-col sm:flex-row items-center gap-8">
             <div class="shrink-0">
                 <img
                     src={anirudhDatabricksImg.src}
@@ -16,11 +22,15 @@ import anirudhDatabricksImg from '../assets/anirudh-databricks.jpeg';
                     class="w-48 h-60 sm:w-60 sm:h-80 rounded-lg object-cover"
                 />
             </div>
-            <div class="flex-1 min-w-0">
-                <h1 class="text-3xl font-bold text-text-primary tracking-tight">Anirudh Konidala</h1>
-                <p class="text-accent font-medium mt-2">Member of Technical Staff – Agentic AI @ UIUC</p>
-                <p class="text-text-secondary mt-3">I enjoy <b>AI</b>, <b>data</b>, and <b>vibe coding</b>. Building agentic AI and tools that help people learn and build.</p>
-                <p class="text-text-muted text-sm mt-2">Computer Science &amp; Education, Learning Sciences &amp; Technology · UIUC · Proud Illini.</p>
+            <div class="flex-1 min-w-0 text-center">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text mb-4">Bio</h2>
+                <p class="text-text-primary lowercase text-lg mb-4">hello my name is anirudh konidala!</p>
+                <div class="text-orange-100 text-center border border-orange-100 p-4">
+                    <p class="font-medium">UIUC '27</p>
+                    <p class="mt-2">computer aficionado</p>
+                    <p class="mt-2"><b>cursormaxxer</b> · <b>claudemaxxer</b></p>
+                </div>
+            </div>
             </div>
         </div>
 
