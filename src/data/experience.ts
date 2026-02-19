@@ -34,7 +34,7 @@ export interface Experience {
 export const experiences: Experience[] = [
     {
         id: "1",
-        title: "Software Developer - AI Agents @ UIUC",
+        title: "Member of Technical Staff - Agentic AI @ UIUC",
         company: "University of Illinois Urbana-Champaign",
         companyLogo: uiucLogoIcon.src,
         startDate: "Feb 2026",
@@ -94,6 +94,6 @@ export const experiences: Experience[] = [
 			"Produced 200+ videos and interactive lessons, simplifying complex programming concepts for beginners",
 			"Built engaging learning experiences, fostering a global community of learners",
         ],
-        skills: ["Astro", "Tailwind CSS", "Go", "MongoDB", "Node.js"],
+        skills: ["Cursor", "Claude Code", "Astro", "Tailwind CSS", "Go", "MongoDB", "Node.js"],
     },
 ];

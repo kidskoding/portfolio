@@ -2,28 +2,41 @@
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation.astro';
 import anirudhProfileImg from '../assets/anirudh.jpeg';
+import illiniLogo from '../assets/illini-logo.png';
 ---
 
 <Layout title="Anirudh Konidala">
     <Navigation currentPage="home" />
-    <main class="max-w-3xl mx-auto px-6 py-12" id="main-content">
-        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex flex-col sm:flex-row items-center gap-8" data-animate>
+    <main class="max-w-3xl mx-auto px-6 py-12">
+        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex items-center gap-8" data-animate>
             <img
                 src={anirudhProfileImg.src}
                 alt="Anirudh Konidala"
                 class="w-32 h-32 rounded-full object-cover ring-2 ring-accent/20 shrink-0"
             />
-            <div class="flex-1 text-center sm:text-left">
+            <div>
                 <h1 class="text-3xl font-bold text-text-primary tracking-tight">Anirudh Konidala</h1>
-                <p class="text-accent font-medium mt-2">Member of Technical Staff – Agentic AI @ UIUC</p>
-                <p class="text-text-secondary mt-3"><b>AI</b>, <b>data</b>, and <b>vibe coding</b>. Building agentic AI.</p>
-                <p class="text-text-muted text-sm mt-2">CS &amp; Education, Learning Sciences &amp; Technology · Proud Illini</p>
-                <p class="text-text-muted text-xs uppercase tracking-wider mt-6 mb-2">Explore</p>
-                <nav class="flex flex-wrap justify-center sm:justify-start gap-4" aria-label="Portfolio sections">
-                    <a href="/experience" class="text-sm font-medium text-accent hover:text-accent-hover transition-colors underline-offset-4 hover:underline">Experience</a>
-                    <a href="/skills" class="text-sm font-medium text-accent hover:text-accent-hover transition-colors underline-offset-4 hover:underline">Skills</a>
-                    <a href="/about" class="text-sm font-medium text-accent hover:text-accent-hover transition-colors underline-offset-4 hover:underline">About</a>
-                </nav>
+                <p class="text-text-secondary mt-3"><b>I enjoy ai, data, and vibe coding!</b></p>
+                <p class="text-text-secondary mt-3">computer science and education, concentrated in learning sciences and technology @ uiuc</p>
+                <p class="text-orange-100 mt-9 text-center border border-orange-100 p-2">
+                    <b>building ai agents!!</b>
+                </p>
+            </div>
+        </div>
+    </main>
+    <main class="max-w-3xl mx-auto px-6 py-1">
+        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex items-center gap-8" data-animate>
+            <img
+                src={illiniLogo.src}
+                alt="UIUC Logo"
+                class="w-32 h-32 rounded-full object-cover ring-2 ring-accent/20 shrink-0"
+            />
+            <div>
+                <h2 class="text-3xl font-bold text-text-primary tracking-tight">a proud illini!</h2>
+                <p class="text-text-secondary mt-3">I am proud to be a student at the University of Illinois at Urbana-Champaign!</p>
+                <p class="text-text-secondary mt-3">a university home to the founders of
+                    YouTube (a Google company), PayPal, Oracle,
+                    and Advanced Micro Devices (<b>AMD</b>)</p>
             </div>
         </div>
     </main>
