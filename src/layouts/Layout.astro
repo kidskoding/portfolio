@@ -32,21 +32,35 @@ const { title = "Portfolio" } = Astro.props;
 
         <script>
             function initAnimations() {
-                const observer = new IntersectionObserver(
-                    (entries) => {
-                        entries.forEach((entry) => {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('is-visible');
-                                observer.unobserve(entry.target);
-                            }
-                        });
-                    },
-                    { threshold: 0.1, rootMargin: '0px 0px 100px 0px' }
-                );
+                const path = window.location.pathname;
+                // Only Experience uses scroll-triggered animation; Home, About, Blog, Contact, Skills all reveal on load.
+                const isScrollPage = path === '/experience' || path === '/experience/';
 
-                document.querySelectorAll('[data-animate]').forEach((el) => {
-                    observer.observe(el);
-                });
+                if (isScrollPage) {
+                    const observer = new IntersectionObserver(
+                        (entries) => {
+                            entries.forEach((entry) => {
+                                if (entry.isIntersecting) {
+                                    entry.target.classList.add('is-visible');
+                                    observer.unobserve(entry.target);
+                                }
+                            });
+                        },
+                        { threshold: 0.1, rootMargin: '0px 0px 100px 0px' }
+                    );
+                    const main = document.getElementById('main-content');
+                    const toObserve = main ? main.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
+                    toObserve.forEach((el) => observer.observe(el));
+                } else {
+                    function reveal() {
+                        const main = document.getElementById('main-content');
+                        const targets = main ? main.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
+                        targets.forEach((el) => el.classList.add('is-visible'));
+                    }
+                    reveal();
+                    requestAnimationFrame(() => requestAnimationFrame(reveal));
+                    setTimeout(reveal, 150);
+                }
             }
 
             initAnimations();
