@@ -64,6 +64,10 @@ const iconMap: Record<string, { id: string; color: string }> = {
 	Stripe: { id: "simple-icons:stripe", color: "#008CDD" },
 	"Claude Code": { id: "simple-icons:claude", color: "#D4A574" },
 	Cursor: { id: "simple-icons:cursor", color: "#FFFFFF" },
+	Lovable: { id: "ph:heart-fill", color: "#EC4899" },
+	Bolt: { id: "simple-icons:stackblitz", color: "#1389FD" },
+	Replit: { id: "simple-icons:replit", color: "#F26207" },
+	Windsurf: { id: "ph:wind", color: "#22D3EE" },
 	"Google Cloud Platform": { id: "simple-icons:googlecloud", color: "#FBBC05" },
 	"Amazon Web Services": { id: "simple-icons:amazonaws", color: "#FF9900" },
 	"Microsoft Azure": { id: "simple-icons:microsoftazure", color: "#0078D4" },
@@ -102,6 +106,17 @@ for (const [name, { id, color }] of Object.entries(iconMap)) {
 svgCache["Pygame"] = `<img src="${pygameImage.src}" alt="Pygame logo" />`;
 
 const skillGroups = [
+	{
+		title: "Vibecoding",
+		skills: [
+			"Cursor",
+			"Claude Code",
+			"Lovable",
+			"Bolt",
+			"Replit",
+			"Windsurf"
+		]
+	},
 	{
 		title: "Programming Languages",
 		skills: [
@@ -185,9 +200,7 @@ const skillGroups = [
 			"Selenium",
 			"Power BI",
 			"Tableau",
-			"Stripe",
-			"Claude Code",
-			"Cursor"
+			"Stripe"
 		]
 	},
 	{
