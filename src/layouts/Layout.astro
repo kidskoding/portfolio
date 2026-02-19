@@ -31,10 +31,17 @@ const { title = "Portfolio" } = Astro.props;
         <slot />
 
         <script>
+            var isInitialLoad = true;
+
             function initAnimations() {
                 const path = window.location.pathname;
-                // Only Experience uses scroll-triggered animation; Home, About, Blog, Contact, Skills all reveal on load.
                 const isScrollPage = path === '/experience' || path === '/experience/';
+
+                function reveal() {
+                    const main = document.getElementById('main-content');
+                    const targets = main ? main.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
+                    targets.forEach((el) => el.classList.add('is-visible'));
+                }
 
                 if (isScrollPage) {
                     const observer = new IntersectionObserver(
@@ -52,14 +59,14 @@ const { title = "Portfolio" } = Astro.props;
                     const toObserve = main ? main.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
                     toObserve.forEach((el) => observer.observe(el));
                 } else {
-                    function reveal() {
-                        const main = document.getElementById('main-content');
-                        const targets = main ? main.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
-                        targets.forEach((el) => el.classList.add('is-visible'));
+                    if (isInitialLoad) {
+                        requestAnimationFrame(() => requestAnimationFrame(reveal));
+                        setTimeout(reveal, 150);
+                    } else {
+                        document.documentElement.classList.add('reveal-skip-transition');
+                        reveal();
                     }
-                    reveal();
-                    requestAnimationFrame(() => requestAnimationFrame(reveal));
-                    setTimeout(reveal, 150);
+                    isInitialLoad = false;
                 }
             }
 

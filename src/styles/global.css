@@ -213,6 +213,11 @@ body::before {
   transform: translateY(0);
 }
 
+/* Return visits: show immediately, no transition */
+.reveal-skip-transition [data-animate] {
+  transition: none;
+}
+
 /* CSS-only load animation (no JS required) */
 @keyframes fadeSlideIn {
   from { opacity: 0; transform: translateY(8px); }
