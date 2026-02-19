@@ -6,20 +6,41 @@ import anirudhDatabricksImg from '../assets/anirudh-databricks.jpeg';
 
 <Layout title="About">
     <Navigation currentPage="about" />
-    <main class="max-w-5xl mx-auto px-6 py-12">
-        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex items-center gap-8" data-animate>
+    <main class="max-w-3xl mx-auto px-6 py-12" id="main-content">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-4" data-animate>About</p>
+        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex flex-col sm:flex-row items-center gap-8" data-animate>
             <div class="shrink-0">
                 <img
                     src={anirudhDatabricksImg.src}
                     alt="Anirudh at Databricks"
-                    class="w-60 h-80 rounded-lg object-cover"
+                    class="w-48 h-60 sm:w-60 sm:h-80 rounded-lg object-cover"
                 />
             </div>
-
-            <div class="flex-1">
+            <div class="flex-1 min-w-0">
                 <h1 class="text-3xl font-bold text-text-primary tracking-tight">Anirudh Konidala</h1>
-                <p class="text-text-secondary mt-3"><b>I enjoy ai, data, and vibe coding!</b></p>
+                <p class="text-accent font-medium mt-2">Member of Technical Staff – Agentic AI @ UIUC</p>
+                <p class="text-text-secondary mt-3">I enjoy <b>AI</b>, <b>data</b>, and <b>vibe coding</b>. Building agentic AI and tools that help people learn and build.</p>
+                <p class="text-text-muted text-sm mt-2">Computer Science &amp; Education, Learning Sciences &amp; Technology · UIUC · Proud Illini.</p>
             </div>
         </div>
+
+        <section class="mt-10 rounded-xl border border-border-subtle bg-bg-card p-8" data-animate>
+            <h2 class="text-lg font-semibold text-text-primary">What I do</h2>
+            <p class="text-text-secondary mt-3 leading-relaxed">
+                I work on <b>agentic AI</b> at the University of Illinois—thinking about how AI agents can code, reason, and use tools (RAG, MCP, LangChain, Cursor, Claude). I’ve shipped ML and data pipelines in industry (Google Cloud, Azure, Vertex AI) and built RL agents and game environments in research (Unity, PyTorch). I also founded <b>KidsKoding</b>, an edtech platform that taught coding to 1,000+ students.
+            </p>
+        </section>
+
+        <section class="mt-10 rounded-xl border border-border-subtle bg-bg-card p-8" data-animate>
+            <h2 class="text-lg font-semibold text-text-primary">What I’m into</h2>
+            <p class="text-text-secondary mt-3 leading-relaxed">
+                <b>Vibe coding</b> with Cursor, Claude, Lovable, Bolt, Replit—moving fast and iterating with AI. Data engineering and ML (GCP, Databricks, PyTorch). Education tech and learning sciences. Clean, readable code and good DX.
+            </p>
+        </section>
+
+        <section class="mt-10 rounded-xl border border-border-subtle bg-bg-card p-8 text-center" data-animate>
+            <p class="text-accent font-semibold">Building AI agents.</p>
+            <p class="text-text-muted text-sm mt-1">Open to collaboration and interesting problems.</p>
+        </section>
     </main>
 </Layout>
