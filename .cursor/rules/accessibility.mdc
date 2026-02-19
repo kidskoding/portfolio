@@ -1,0 +1,12 @@
+---
+description: Accessibility and inclusive UI
+globs: "**/*.astro"
+alwaysApply: false
+---
+
+# Accessibility
+
+- **Images**: Every `<img>` must have a meaningful `alt` (e.g. `${experience.company} logo`). Decorative images can use `alt=""` and `role="presentation"` if appropriate.
+- **Semantic HTML**: Use heading levels in order (h1 → h2 → h3). Use `<nav>`, `<main>`, `<section>`, `<article>` where they improve structure.
+- **Optional content**: If a field is optional (e.g. `location?`), do not render the label/icon when the value is missing. Omit the whole block (icon + text) instead of showing an empty or "undefined" value.
+- **Focus**: Preserve visible focus states on interactive elements; avoid removing outlines unless replacing with a clear focus style.
