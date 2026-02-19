@@ -1,0 +1,19 @@
+---
+import Layout from './Layout.astro';
+import Navigation from '../components/Navigation.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<Layout title={title}>
+  <Navigation currentPage="blog" />
+  <main class="max-w-3xl mx-auto px-6 py-12" id="main-content">
+    <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors mb-6 inline-block">&larr; Back to blog</a>
+    <slot />
+  </main>
+</Layout>
