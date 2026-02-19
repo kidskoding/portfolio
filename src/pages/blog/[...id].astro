@@ -1,6 +1,7 @@
 ---
 import BlogLayout from '../../layouts/BlogLayout.astro';
 import { getCollection, render } from 'astro:content';
+import profileImg from '../../assets/my-profile-pic.jpg';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
@@ -27,8 +28,15 @@ const { Content } = await render(post);
     <header class="mb-8">
       <h1 class="text-3xl font-bold text-text-primary tracking-tight">{post.data.title}</h1>
       {post.data.description && <p class="text-text-muted mt-2">{post.data.description}</p>}
-      <p class="text-text-muted text-sm mt-2">
-        <span>Anirudh Konidala</span>
+      <p class="text-text-muted text-sm mt-2 flex items-center gap-2 flex-wrap">
+        <span class="flex items-center gap-2">
+          <img
+            src={profileImg.src}
+            alt=""
+            class="w-6 h-6 rounded-full object-cover shrink-0"
+          />
+          <span>Anirudh Konidala</span>
+        </span>
         <span class="mx-2" aria-hidden="true">·</span>
         <time datetime={post.data.pubDate.toISOString()}>
           {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
