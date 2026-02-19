@@ -3,14 +3,16 @@ description: After completing file changes, commit and push automatically
 alwaysApply: true
 ---
 
-# Auto commit and push after changes
+# Auto commit and push after changes (MANDATORY)
 
-When you have finished making file changes in response to the user's request:
+Whenever you (the agent) have modified, added, or deleted any file in this repository in this conversation:
 
-1. Stage the changed files: `git add` the relevant paths (or `git add -A` if the user asked for a full update).
-2. Commit with a clear message and co-author:
-   - Use a short, descriptive commit message.
-   - Append: `Co-authored-by: Cursor <cursoragent@cursor.com>`
-3. Push: run `git push origin $(git branch --show-current)` (or `git push` if upstream is set).
+1. **Before ending your response**, run these steps:
+   - `git add` the specific files you changed (or `git add -A` if many files).
+   - `git commit -m "Your short descriptive message"` with a second line in the message: `Co-authored-by: Cursor <cursoragent@cursor.com>` (use a multi-line message or `-m "msg" -m "Co-authored-by: Cursor <cursoragent@cursor.com>"`).
+   - `git push origin $(git branch --show-current)` (or `git push`).
+2. Request **git_write** and **network** permissions when running these commands.
 
-Do this when the user's request has been fully completed and files were modified. Do not commit in the middle of a multi-step task unless the user asks. If the user says "don't commit" or "no commit", skip commit and push. Use `git_write` and `network` permissions when running git commit and git push.
+**Only skip** commit and push if the user explicitly says "don't commit", "no commit", "skip commit", or "don't push". Otherwise, if you changed any file, you must commit and push before replying that you're done.
+
+*(Rule updated to enforce commit+push after every agent edit.)*
