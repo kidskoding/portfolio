@@ -6,14 +6,18 @@ const { url } = Astro.props;
 const match = url.match(/status\/(\d+)/);
 const tweetId = match ? match[1] : null;
 const tweetUrl = url.split('?')[0];
+// Widget script expects twitter.com URLs for reliable parsing
+const widgetHref = tweetUrl.replace(/^https:\/\/x\.com/, 'https://twitter.com');
 ---
 
 {tweetId ? (
-  <div class="my-6 flex justify-center [&_.twitter-tweet]:max-w-full!">
-    <blockquote class="twitter-tweet" data-dnt="true">
-      <a href={tweetUrl}>View tweet</a>
+  <div class="my-6 flex flex-col items-center gap-2 min-h-[400px]">
+    <blockquote class="twitter-tweet" data-dnt="true" data-theme="dark">
+      <a href={widgetHref}></a>
     </blockquote>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" />
+    <a href={tweetUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-accent hover:text-accent-hover underline">
+      View on X
+    </a>
   </div>
 ) : (
   <p class="my-4">
