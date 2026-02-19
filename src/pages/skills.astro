@@ -231,22 +231,22 @@ const skillGroups = [
 			<p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Toolkit</p>
 			<h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text">Skills</h1>
 			<p class="text-text-muted mt-3 text-base max-w-md">
-				The tools, languages, and platforms I use to build products.
+				the tools, languages, and platforms I use to build products
 			</p>
 		</div>
 
-		<section class="mt-30 mb-30 text-center skill-fade" style="--delay: 1">
+		<section class="mt-[3.75rem] mb-[3.75rem] text-center skill-fade" style="--delay: 1">
 			<h2 class="text-lg font-semibold text-text-primary">Daily Drivers</h2>
 			<p class="text-text-secondary mt-1 text-sm">The tools I yearn for <b>every day</b></p>
-			<div class="mt-4 grid grid-cols-4 sm:grid-cols-5 gap-4">
-				{["Python", "Claude Code", "Cursor", "Git", "Docker", "Google Cloud Platform", "GitHub", "Rust", "Go", "PostgreSQL", "MongoDB", "Databricks", "Stripe"].map((skill) => {
-					return (
+			<div class="mt-4 flex flex-wrap justify-center gap-4">
+				{["Python", "Claude Code", "Cursor", "Git", "Docker", "Google Cloud Platform", "GitHub", "Rust", "Go", "PostgreSQL", "MongoDB", "Databricks", "Stripe"].map((skill) => (
+					<div class="w-[calc((100%-3*1rem)/4)] sm:w-[calc((100%-4*1rem)/5)] min-w-0 shrink-0">
 						<SkillCard
 							name={skill}
 							svg={svgCache[skill]}
 						/>
-					);
-				})}
+					</div>
+				))}
 			</div>
 		</section>
 
