@@ -1,0 +1,12 @@
+---
+description: How content and data are structured (experience, skills, etc.)
+globs: "src/data/**/*.ts"
+alwaysApply: false
+---
+
+# Data layer
+
+- **Location**: All editable content (experience, skills, etc.) lives in `src/data/` as TypeScript modules.
+- **Shape**: Export a named interface (e.g. `Experience`) and an array (e.g. `experiences: Experience[]`). Use optional fields (`?`) for fields that may be missing (e.g. `location?`, `employmentType?`).
+- **Assets**: For images (e.g. company logos), import the asset in the data file and use `importedAsset.src` for the string URL. Add new assets under `src/assets/` and reference them in the data file.
+- **Helpers**: Pure helpers (e.g. `calculateDuration`) can live in the same file or a small util; keep them in the data layer when they're only used for that data.

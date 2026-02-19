@@ -1,0 +1,12 @@
+---
+description: Astro and Tailwind conventions for this portfolio
+globs: "**/*.astro"
+alwaysApply: false
+---
+
+# Astro + Tailwind
+
+- **Components**: Use Astro (.astro) with a TypeScript frontmatter block. Define an explicit `Props` interface and destructure with `const { ... } = Astro.props`.
+- **Styling**: Use only the project's design tokens from `src/styles/global.css` (e.g. `bg-bg-primary`, `text-accent`, `border-border-default`, `text-text-primary`, `bg-tag-bg`). Do not introduce new hex colors or arbitrary Tailwind values; use existing theme colors and opacity modifiers (e.g. `bg-bg-secondary/80`).
+- **Tailwind**: Prefer utility classes. Use `class:list={[]}` for conditional or dynamic classes. Keep transitions consistent (e.g. `duration-300`, `transition-colors`).
+- **Imports**: Import types from `../data/experience` or other data modules as needed. Use `import type` for types only.
