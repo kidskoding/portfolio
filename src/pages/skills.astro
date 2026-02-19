@@ -227,13 +227,13 @@ const skillGroups = [
 <Layout title="Skills">
 	<Navigation currentPage="skills" />
 	<main class="max-w-3xl mx-auto px-6 py-12" id="main-content">
-		<p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3" data-animate>Skills</p>
-		<h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text" data-animate>Skills</h1>
-		<p class="text-text-muted mt-3 text-base max-w-md" data-animate>
+		<p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3 animate-on-load">Skills</p>
+		<h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text animate-on-load">Skills</h1>
+		<p class="text-text-muted mt-3 text-base max-w-md animate-on-load">
 			the tools, languages, and platforms I use to build products
 		</p>
 
-		<section class="mt-10 mb-[3.75rem] text-center" data-animate>
+		<section class="mt-10 mb-[3.75rem] text-center animate-on-load">
 			<h2 class="text-lg font-semibold text-text-primary">Daily Drivers</h2>
 			<p class="text-text-secondary mt-1 text-sm">The tools I yearn for <b>every day</b></p>
 			<div class="mt-4 flex flex-wrap justify-center gap-4">
@@ -250,7 +250,7 @@ const skillGroups = [
 
 		<div class="mt-10 space-y-10">
 			{skillGroups.map((group) => (
-				<section data-animate>
+				<section class="animate-on-load">
 					<h2 class="text-lg font-semibold text-text-primary">{group.title}</h2>
 					<div class="mt-4 grid grid-cols-4 sm:grid-cols-5 gap-4">
 						{group.skills.map((skill) => {

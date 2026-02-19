@@ -204,13 +204,23 @@ body::before {
 [data-animate] {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.3s ease-out,
-  transform 0.3s ease-out;
+  transition: opacity 0.5s ease-out,
+  transform 0.5s ease-out;
 }
 
 [data-animate].is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* CSS-only load animation (no JS required) */
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.animate-on-load {
+  animation: fadeSlideIn 0.5s ease-out 0.05s both;
 }
 
 /* Respect reduced motion */
@@ -219,6 +229,10 @@ body::before {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  .animate-on-load {
+    animation: none;
   }
 
   html {
