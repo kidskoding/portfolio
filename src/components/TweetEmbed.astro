@@ -6,7 +6,6 @@ const { url } = Astro.props;
 const match = url.match(/status\/(\d+)/);
 const tweetId = match ? match[1] : null;
 const tweetUrl = url.split('?')[0];
-// Widget script expects twitter.com URLs for reliable parsing
 const widgetHref = tweetUrl.replace(/^https:\/\/x\.com/, 'https://twitter.com');
 ---
 
