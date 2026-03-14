@@ -20,7 +20,7 @@ const isGrouped = experience.roles.length > 1;
         </span>
     </div>
 
-    <div class="glow-card p-6 transition-all duration-300 hover:bg-bg-card-hover group/card">
+    <div class="glow-card p-4 sm:p-6 transition-all duration-300 hover:bg-bg-card-hover group/card">
         <!-- Company header (shared for all layouts) -->
         <div class="flex items-start gap-4">
             <div class="relative shrink-0">
@@ -39,13 +39,13 @@ const isGrouped = experience.roles.length > 1;
             <div class="flex-1 min-w-0">
                 {isGrouped ? (
                     <!-- Grouped: company name is the primary heading -->
-                    <h3 class="text-base font-semibold text-text-primary leading-snug group-hover/card:text-accent transition-colors duration-300">
+                    <h3 class="text-base font-semibold text-text-primary leading-snug break-words group-hover/card:text-accent transition-colors duration-300">
                         {experience.company}
                     </h3>
                 ) : (
                     <!-- Single role: job title is the primary heading -->
                     <>
-                        <h3 class="text-base font-semibold text-text-primary leading-snug group-hover/card:text-accent transition-colors duration-300">
+                        <h3 class="text-base font-semibold text-text-primary leading-snug break-words group-hover/card:text-accent transition-colors duration-300">
                             {experience.roles[0].title}
                         </h3>
                         <p class="text-sm text-text-secondary mt-0.5">
@@ -87,7 +87,7 @@ const isGrouped = experience.roles.length > 1;
 
         {isGrouped ? (
             <!-- Grouped: render each role as a sub-item -->
-            <div class="mt-5 pl-16 space-y-5">
+            <div class="mt-5 sm:pl-16 space-y-5">
                 {experience.roles.map((role, i) => (
                     <div>
                         {i > 0 && <div class="border-t border-border-default mb-5" />}
@@ -131,7 +131,7 @@ const isGrouped = experience.roles.length > 1;
             <!-- Single role: render description and skills directly -->
             <>
                 {experience.roles[0].description.length > 0 && (
-                    <ul class="mt-5 space-y-2.5 pl-16">
+                    <ul class="mt-5 space-y-2.5 sm:pl-16">
                         {experience.roles[0].description.map((item) => (
                             <li class="text-sm text-text-secondary leading-relaxed flex gap-3">
                                 <span class="shrink-0 mt-2">
@@ -143,7 +143,7 @@ const isGrouped = experience.roles.length > 1;
                     </ul>
                 )}
                 {experience.roles[0].skills.length > 0 && (
-                    <div class="flex flex-wrap gap-2 mt-5 pl-16">
+                    <div class="flex flex-wrap gap-2 mt-5 sm:pl-16">
                         {experience.roles[0].skills.map((skill) => (
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-tag-bg text-tag-text border border-tag-border transition-all duration-200 hover:bg-accent/15 hover:border-accent/40 hover:shadow-[0_0_12px_var(--color-accent-subtle)] cursor-default">
                                 {skill}
