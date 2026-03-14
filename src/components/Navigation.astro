@@ -38,19 +38,19 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
 ---
 
 <nav class="fixed top-0 left-0 right-0 z-50" id="main-nav" transition:persist>
-    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
 		<a href="/" class="text-lg font-bold tracking-tight transition-colors duration-200 gradient-text shrink-0">
 			Anirudh Konidala
 		</a>
 
-		<div class="flex items-center gap-12">
-			<div class="flex items-center gap-1">
+		<div class="flex items-center gap-2 sm:gap-12">
+			<div class="flex items-center gap-0 sm:gap-1">
 				{navLinks.map((link) => (
 					<a
 						href={link.href}
 						data-nav-link
 						data-href={link.href}
-						class="nav-link relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/5"
+						class="nav-link relative px-2 sm:px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/5"
 					>
 						{link.name}
 						<span class="nav-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-linear-to-r from-accent to-accent-secondary opacity-0 transition-opacity duration-200" />
@@ -58,7 +58,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
 				))}
 			</div>
 
-			<div class="flex items-center gap-3">
+			<div class="hidden sm:flex items-center gap-3">
 				{otherLinks.map((link) => (
 					<a
 						href={link.href}
