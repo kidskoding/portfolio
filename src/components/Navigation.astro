@@ -37,48 +37,107 @@ const otherLinks = [
 import devToIcon from '../assets/fi-swluxl-dev-to.png';
 ---
 
+<!-- Desktop nav -->
 <nav class="fixed top-0 left-0 right-0 z-50" id="main-nav" transition:persist>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-		<a href="/" class="text-lg font-bold tracking-tight transition-colors duration-200 gradient-text shrink-0">
-			Anirudh Konidala
-		</a>
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="text-lg font-bold tracking-tight transition-colors duration-200 gradient-text shrink-0">
+            Anirudh Konidala
+        </a>
 
-		<div class="flex items-center gap-2 sm:gap-12">
-			<div class="flex items-center gap-0 sm:gap-1">
-				{navLinks.map((link) => (
-					<a
-						href={link.href}
-						data-nav-link
-						data-href={link.href}
-						class="nav-link relative px-2 sm:px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/5"
-					>
-						{link.name}
-						<span class="nav-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-linear-to-r from-accent to-accent-secondary opacity-0 transition-opacity duration-200" />
-					</a>
-				))}
-			</div>
+        <!-- Desktop links -->
+        <div class="hidden sm:flex items-center gap-12">
+            <div class="flex items-center gap-1">
+                {navLinks.map((link) => (
+                    <a
+                        href={link.href}
+                        data-nav-link
+                        data-href={link.href}
+                        class="nav-link relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/5"
+                    >
+                        {link.name}
+                        <span class="nav-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-linear-to-r from-accent to-accent-secondary opacity-0 transition-opacity duration-200" />
+                    </a>
+                ))}
+            </div>
 
-			<div class="hidden sm:flex items-center gap-3">
-				{otherLinks.map((link) => (
-					<a
-						href={link.href}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="w-9 h-9 flex items-center justify-center rounded-full border border-white/10 text-text-muted hover:text-text-primary hover:bg-white/10 transition-all group"
-					>
-						{link.isImage ? (
-							<img src={link.imageSrc} alt={link.name} class="w-5 h-5 transition-transform group-hover:scale-110" />
-							) : (
-							<svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
-								<path d={link.path} />
-							</svg>
-						)}
-					</a>
-				))}
-			</div>
-		</div>
-	</div>
+            <div class="flex items-center gap-3">
+                {otherLinks.map((link) => (
+                    <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="w-9 h-9 flex items-center justify-center rounded-full border border-white/10 text-text-muted hover:text-text-primary hover:bg-white/10 transition-all group"
+                    >
+                        {link.isImage ? (
+                            <img src={link.imageSrc} alt={link.name} class="w-5 h-5 transition-transform group-hover:scale-110" />
+                        ) : (
+                            <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                                <path d={link.path} />
+                            </svg>
+                        )}
+                    </a>
+                ))}
+            </div>
+        </div>
+
+        <!-- Mobile hamburger -->
+        <button
+            id="mobile-menu-btn"
+            class="sm:hidden flex items-center justify-center w-9 h-9 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/10 transition-all"
+            aria-label="Open menu"
+        >
+            <svg id="hamburger-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    </div>
 </nav>
+
+<!-- Mobile sidebar overlay -->
+<div id="sidebar-overlay" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm hidden sm:hidden" transition:persist />
+
+<!-- Mobile sidebar -->
+<aside
+    id="mobile-sidebar"
+    class="fixed top-0 right-0 z-40 h-full w-64 bg-bg-primary border-l border-border-subtle flex flex-col pt-20 pb-8 px-6 translate-x-full transition-transform duration-300 ease-in-out sm:hidden"
+    transition:persist
+>
+    <nav class="flex flex-col gap-1">
+        {navLinks.map((link) => (
+            <a
+                href={link.href}
+                data-nav-link
+                data-href={link.href}
+                class="nav-link relative px-4 py-3 text-base font-medium rounded-lg text-text-muted hover:text-text-primary hover:bg-white/5 transition-all duration-200"
+            >
+                {link.name}
+                <span class="nav-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-linear-to-r from-accent to-accent-secondary opacity-0 transition-opacity duration-200" />
+            </a>
+        ))}
+    </nav>
+
+    <div class="mt-8 pt-8 border-t border-border-subtle flex items-center gap-3">
+        {otherLinks.map((link) => (
+            <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-9 h-9 flex items-center justify-center rounded-full border border-white/10 text-text-muted hover:text-text-primary hover:bg-white/10 transition-all group"
+            >
+                {link.isImage ? (
+                    <img src={link.imageSrc} alt={link.name} class="w-5 h-5 transition-transform group-hover:scale-110" />
+                ) : (
+                    <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="currentColor" viewBox="0 0 24 24">
+                        <path d={link.path} />
+                    </svg>
+                )}
+            </a>
+        ))}
+    </div>
+</aside>
 
 <div class="h-16" />
 
@@ -89,7 +148,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
 
         function updateActiveLink() {
             const path = window.location.pathname;
-            nav!.querySelectorAll('[data-nav-link]').forEach((link) => {
+            document.querySelectorAll('[data-nav-link]').forEach((link) => {
                 const href = link.getAttribute('data-href');
                 const isActive = href === path || (href === '/' && path === '/');
                 const indicator = link.querySelector('.nav-indicator') as HTMLElement;
@@ -119,11 +178,56 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
             }
         }
 
+        // Mobile sidebar toggle
+        function initSidebar() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const hamburger = document.getElementById('hamburger-icon');
+            const closeIcon = document.getElementById('close-icon');
+            if (!btn || !sidebar || !overlay || !hamburger || !closeIcon) return;
+
+            function openSidebar() {
+                sidebar!.classList.remove('translate-x-full');
+                overlay!.classList.remove('hidden');
+                hamburger!.classList.add('hidden');
+                closeIcon!.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeSidebar() {
+                sidebar!.classList.add('translate-x-full');
+                overlay!.classList.add('hidden');
+                hamburger!.classList.remove('hidden');
+                closeIcon!.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+
+            btn.addEventListener('click', () => {
+                if (sidebar!.classList.contains('translate-x-full')) {
+                    openSidebar();
+                } else {
+                    closeSidebar();
+                }
+            });
+
+            overlay.addEventListener('click', closeSidebar);
+
+            // Close sidebar on nav link click
+            sidebar.querySelectorAll('[data-nav-link]').forEach((link) => {
+                link.addEventListener('click', closeSidebar);
+            });
+        }
+
         window.addEventListener('scroll', updateScroll, { passive: true });
         updateScroll();
         updateActiveLink();
+        initSidebar();
 
-        document.addEventListener('astro:after-swap', updateActiveLink);
+        document.addEventListener('astro:after-swap', () => {
+            updateActiveLink();
+            initSidebar();
+        });
     }
 
     initNav();
