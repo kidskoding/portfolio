@@ -7,6 +7,7 @@ interface Props {
 }
 
 const { experience, isFirst = false } = Astro.props;
+const isGrouped = experience.roles.length > 1;
 ---
 
 <div class="relative pl-10 md:pl-12 group" data-animate>
@@ -20,6 +21,7 @@ const { experience, isFirst = false } = Astro.props;
     </div>
 
     <div class="glow-card p-6 transition-all duration-300 hover:bg-bg-card-hover group/card">
+        <!-- Company header (shared for all layouts) -->
         <div class="flex items-start gap-4">
             <div class="relative shrink-0">
                 <div class="w-12 h-12 rounded-xl border border-border-default bg-bg-secondary/80 p-2 flex items-center justify-center transition-all duration-300 group-hover/card:border-border-accent group-hover/card:shadow-[0_0_20px_var(--color-accent-subtle)]">
@@ -35,15 +37,28 @@ const { experience, isFirst = false } = Astro.props;
             </div>
 
             <div class="flex-1 min-w-0">
-                <h3 class="text-base font-semibold text-text-primary leading-snug group-hover/card:text-accent transition-colors duration-300">
-                    {experience.title}
-                </h3>
-
-                <p class="text-sm text-text-secondary mt-0.5">
-                    {experience.company}
-                    <span class="text-accent/40 mx-1.5">&middot;</span>
-                    <span class="text-text-muted">{experience.employmentType}</span>
-                </p>
+                {isGrouped ? (
+                    <!-- Grouped: company name is the primary heading -->
+                    <h3 class="text-base font-semibold text-text-primary leading-snug group-hover/card:text-accent transition-colors duration-300">
+                        {experience.company}
+                    </h3>
+                ) : (
+                    <!-- Single role: job title is the primary heading -->
+                    <>
+                        <h3 class="text-base font-semibold text-text-primary leading-snug group-hover/card:text-accent transition-colors duration-300">
+                            {experience.roles[0].title}
+                        </h3>
+                        <p class="text-sm text-text-secondary mt-0.5">
+                            {experience.company}
+                            {experience.roles[0].employmentType && (
+                                <>
+                                    <span class="text-accent/40 mx-1.5">&middot;</span>
+                                    <span class="text-text-muted">{experience.roles[0].employmentType}</span>
+                                </>
+                            )}
+                        </p>
+                    </>
+                )}
 
                 <div class="flex flex-wrap items-center gap-x-1.5 text-xs text-text-muted mt-1.5">
                     <span class="inline-flex items-center gap-1">
@@ -54,7 +69,7 @@ const { experience, isFirst = false } = Astro.props;
                     </span>
                     <span class="text-accent/30">&middot;</span>
                     <span>{experience.duration}</span>
-                    {experience.location && (
+                    {(experience.location || experience.locationType) && (
                         <>
                             <span class="text-accent/30">&middot;</span>
                             <span class="inline-flex items-center gap-1">
@@ -62,7 +77,7 @@ const { experience, isFirst = false } = Astro.props;
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                {experience.location}
+                                {experience.location ?? experience.locationType}
                             </span>
                         </>
                     )}
@@ -70,25 +85,73 @@ const { experience, isFirst = false } = Astro.props;
             </div>
         </div>
 
-        <ul class="mt-5 space-y-2.5 pl-16">
-            {experience.description.map((item) => (
-                <li class="text-sm text-text-secondary leading-relaxed flex gap-3">
-                    <span class="shrink-0 mt-2">
-                        <span class="block w-1 h-1 rounded-full bg-accent/50" />
-                    </span>
-                    <span class="hover:text-text-primary transition-colors duration-200">{item}</span>
-                </li>
-            ))}
-        </ul>
-
-        {experience.skills.length > 0 && (
-            <div class="flex flex-wrap gap-2 mt-5 pl-16">
-                {experience.skills.map((skill) => (
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-tag-bg text-tag-text border border-tag-border transition-all duration-200 hover:bg-accent/15 hover:border-accent/40 hover:shadow-[0_0_12px_var(--color-accent-subtle)] cursor-default">
-                        {skill}
-                    </span>
+        {isGrouped ? (
+            <!-- Grouped: render each role as a sub-item -->
+            <div class="mt-5 pl-16 space-y-5">
+                {experience.roles.map((role, i) => (
+                    <div>
+                        {i > 0 && <div class="border-t border-border-default mb-5" />}
+                        <div>
+                            <p class="text-sm font-medium text-text-primary">{role.title}</p>
+                            <div class="flex flex-wrap items-center gap-x-1.5 text-xs text-text-muted mt-1">
+                                {role.employmentType && (
+                                    <span class="text-text-muted">{role.employmentType}</span>
+                                )}
+                                {role.employmentType && <span class="text-accent/30">&middot;</span>}
+                                <span>{role.startDate} – {role.endDate}</span>
+                                <span class="text-accent/30">&middot;</span>
+                                <span>{role.duration}</span>
+                            </div>
+                        </div>
+                        {role.description.length > 0 && (
+                            <ul class="mt-3 space-y-2.5">
+                                {role.description.map((item) => (
+                                    <li class="text-sm text-text-secondary leading-relaxed flex gap-3">
+                                        <span class="shrink-0 mt-2">
+                                            <span class="block w-1 h-1 rounded-full bg-accent/50" />
+                                        </span>
+                                        <span class="hover:text-text-primary transition-colors duration-200">{item}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {role.skills.length > 0 && (
+                            <div class="flex flex-wrap gap-2 mt-3">
+                                {role.skills.map((skill) => (
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-tag-bg text-tag-text border border-tag-border transition-all duration-200 hover:bg-accent/15 hover:border-accent/40 hover:shadow-[0_0_12px_var(--color-accent-subtle)] cursor-default">
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 ))}
             </div>
+        ) : (
+            <!-- Single role: render description and skills directly -->
+            <>
+                {experience.roles[0].description.length > 0 && (
+                    <ul class="mt-5 space-y-2.5 pl-16">
+                        {experience.roles[0].description.map((item) => (
+                            <li class="text-sm text-text-secondary leading-relaxed flex gap-3">
+                                <span class="shrink-0 mt-2">
+                                    <span class="block w-1 h-1 rounded-full bg-accent/50" />
+                                </span>
+                                <span class="hover:text-text-primary transition-colors duration-200">{item}</span>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+                {experience.roles[0].skills.length > 0 && (
+                    <div class="flex flex-wrap gap-2 mt-5 pl-16">
+                        {experience.roles[0].skills.map((skill) => (
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-tag-bg text-tag-text border border-tag-border transition-all duration-200 hover:bg-accent/15 hover:border-accent/40 hover:shadow-[0_0_12px_var(--color-accent-subtle)] cursor-default">
+                                {skill}
+                            </span>
+                        ))}
+                    </div>
+                )}
+            </>
         )}
     </div>
 </div>
