@@ -75,7 +75,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
                 href={link.href}
                 data-nav-link
                 data-href={link.href}
-                class="nav-link relative px-4 py-3 text-base font-medium rounded-lg text-text-muted hover:text-text-primary hover:bg-white/5 transition-all duration-200"
+                class="nav-link relative px-4 py-3 text-base font-medium rounded-lg text-text-muted hover:text-text-primary hover:bg-white/5 transition-all duration-200 text-center"
             >
                 {link.name}
                 <span class="nav-indicator absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-linear-to-r from-accent to-accent-secondary opacity-0 transition-opacity duration-200" />
@@ -83,7 +83,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
         ))}
     </nav>
 
-    <div class="mt-8 pt-8 border-t border-border-subtle flex items-center gap-3">
+    <div class="mt-8 pt-8 border-t border-border-subtle flex items-center justify-center gap-3">
         {otherLinks.map((link) => (
             <a
                 href={link.href}
