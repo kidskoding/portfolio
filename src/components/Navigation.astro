@@ -188,10 +188,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
         updateActiveLink();
         initSidebar();
 
-        document.addEventListener('astro:after-swap', () => {
-            updateActiveLink();
-            initSidebar();
-        });
+        document.addEventListener('astro:after-swap', updateActiveLink);
     }
 
     initNav();
