@@ -3,6 +3,25 @@ import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { featuredProjects, hackathons, aiAgents, dsaProjects, otherProjects } from '../data/projects';
+import type { Project } from '../data/projects';
+
+let currentRepo: Project | null = null;
+try {
+    const eventsRes = await fetch('https://api.github.com/users/kidskoding/events/public?per_page=100');
+    const events: any[] = await eventsRes.json();
+    const pushEvent = events.find((e: any) => e.type === 'PushEvent');
+    if (pushEvent) {
+        const repoFullName: string = pushEvent.repo.name;
+        const repoRes = await fetch(`https://api.github.com/repos/${repoFullName}`);
+        const repo: any = await repoRes.json();
+        currentRepo = {
+            name: repo.name,
+            description: repo.description ?? '',
+            githubUrl: repo.html_url,
+            language: repo.language ?? undefined,
+        };
+    }
+} catch (_) {}
 ---
 
 <Layout title="Projects">
@@ -13,6 +32,16 @@ import { featuredProjects, hackathons, aiAgents, dsaProjects, otherProjects } fr
             <h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text">Projects</h1>
             <p class="text-text-muted mt-3 text-base max-w-md">things i've built</p>
         </div>
+
+        <!-- Currently Working On -->
+        {currentRepo && (
+            <div class="mt-10" data-animate>
+                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent/70 mb-4 text-center">Currently Working On</p>
+                <div class="max-w-sm mx-auto">
+                    <ProjectCard project={currentRepo} />
+                </div>
+            </div>
+        )}
 
         <!-- Tab bar -->
         <div class="flex gap-2 mt-10 border-b border-border-subtle" data-animate>

@@ -1,0 +1,3 @@
+[submodule "current-repo-card"]
+	path = current-repo-card
+	url = https://github.com/kidskoding/current-repo-card
