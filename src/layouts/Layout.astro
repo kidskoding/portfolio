@@ -31,43 +31,36 @@ const { title = "Portfolio" } = Astro.props;
         <slot />
 
         <script>
-            var isInitialLoad = true;
+            import { gsap } from 'gsap';
 
             function initAnimations() {
-                const path = window.location.pathname;
-                const isScrollPage = path === '/experience' || path === '/experience/';
-
-                function reveal() {
-                    const main = document.getElementById('main-content');
-                    const targets = main ? main.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
-                    targets.forEach((el) => el.classList.add('is-visible'));
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    document.querySelectorAll('[data-animate]').forEach((el) => {
+                        (el as HTMLElement).style.opacity = '1';
+                        (el as HTMLElement).style.transform = 'none';
+                    });
+                    return;
                 }
 
-                if (isScrollPage) {
-                    const observer = new IntersectionObserver(
-                        (entries) => {
-                            entries.forEach((entry) => {
-                                if (entry.isIntersecting) {
-                                    entry.target.classList.add('is-visible');
-                                    observer.unobserve(entry.target);
-                                }
-                            });
-                        },
-                        { threshold: 0.1, rootMargin: '0px 0px 100px 0px' }
+                const main = document.getElementById('main-content');
+                const elements = main
+                    ? main.querySelectorAll('[data-animate]')
+                    : document.querySelectorAll('[data-animate]');
+
+                elements.forEach((el, index) => {
+                    gsap.fromTo(
+                        el,
+                        { opacity: 0, y: 40, scale: 0.98 },
+                        {
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            duration: 0.8,
+                            delay: index * 0.12,
+                            ease: 'power3.out',
+                        }
                     );
-                    const main = document.getElementById('main-content');
-                    const toObserve = main ? main.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
-                    toObserve.forEach((el) => observer.observe(el));
-                } else {
-                    if (isInitialLoad) {
-                        requestAnimationFrame(() => requestAnimationFrame(reveal));
-                        setTimeout(reveal, 150);
-                    } else {
-                        document.documentElement.classList.add('reveal-skip-transition');
-                        reveal();
-                    }
-                    isInitialLoad = false;
-                }
+                });
             }
 
             initAnimations();
