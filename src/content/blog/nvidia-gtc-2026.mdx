@@ -1,0 +1,149 @@
+---
+title: "OpenClaw + NemoClaw: How GTC 2026 is already the most important week in Agentic AI"
+description: "How NVIDIA's GTC 2026 announcements, from OpenClaw to NemoClaw to Vera Rubin, are building the complete stack for the age of Agentic AI"
+pubDate: 2026-03-17
+coverImage: "/blog/gtc-2026.png"
+---
+
+> The age of Agentic AI is no longer coming: it's here. And NVIDIA just built the entire stack for it
+
+That's what **NVIDIA**'s CEO, **Jensen Huang**, said while walking into the **SAP** center during NVIDIA's 2026 GTC conference in San Jose in front of **thousands of engineers**
+
+---
+
+## GTC 2026 wasn't just a product event: it was a declaration
+
+**NVIDIA's GPU Technology Conference** (GTC) is the techbro and AI world mere equivalent of the State of the Union address. **450+** sponsors, **1,000** sessions, **2,000** speakers, and a CEO who has surprisingly been right about where AI and computing, in general, is going
+
+> NVIDIA's GTC 2026 runs all the way through **March 19th**, with more sessions and announcements still to come, but there is already so much information that I am eager to talk about how it is changing the agentic AI landscape!
+
+During this year's GTC, Huang summarizes that
+
+> **the token is the new line of compute**
+
+In this era, the new benchmark that matters is **tokens per second** and **tokens per dollar**
+
+That one statement tells you **everything**. It confirms that NVIDIA isn't just selling GPUs anymore. They are slowly building the economy  of intelligent machines. And during this year's GTC, they proved exactly how agentic AI fits into that vision at every single layer of the stack
+
+Here's how GTC 2026 reshapes the agentic AI landscape and why builders need to be paying close attention
+
+---
+
+## The Unprecedented Signal of Demand
+
+Huang opens up the conference with what seems like an exaggeration, albeit true: **over the last few years, computing demand has increased by 1 million times**. This was with all due respect towards and the plethora of AI-native companies: **OpenAI**, **Anthropic**, and hundreds and hundreds of AI startups that have altogether pulled in **$150 billion** in venture capital (VC) last year alone
+
+Obviously, AI-native companies need GPU computing, specifically from NVIDIA: the unanimous leader in the GPU market. Therefore, Huang states that GPU demand is "off the charts"
+
+NVIDIA now projects at least **$1 trillion** in revenue from 2025 to 2027, where one analyst considers NVIDIA as the **king of compute inference**
+
+This is a **signal**: one where the infrastructure layout and buildup for agentic AI is being measured in **trillions** and the companies building on top of this stack are still very early
+
+---
+
+## OpenClaw + NemoClaw: the Agentic OS the industry has been waiting for
+
+The recent success of OpenClaw drew many developers. It was so successful Huang considered it as **"the most popular open source project in the history of humanity"**. Sounds extreme, but when you have a deeper understanding of what it does, it makes sense
+
+OpenClaw made computers' operating systems **fully agentic**. It cancan execute OS tasks via LLMs. It can send emails and Slack messages, host Microsoft Teams meetings, and complete workflows autonomously
+
+Shipping an agent isn't the hardest part. **The trust boundary is**. An agent should be taking real-world actions in a production environment: calling APIs, processing payments, reading internal docs, and interacting with external services. However, AI agents need precise control over what they can do, when, and for whom
+
+> Without a real guardrail layer and security, they become autonomous systems with no seatbelts
+
+Every builder working on production agents is reinventing some version of that security layer, but NVIDIA's **NemoClaw** completely blew this aspect away
+
+**NemoClaw** is NVIDIA's enterprise stack built directly on top of OpenClaw. It is OpenClaw with a policy engine, a firewall, and audit trails baked directly into an OS's execution layer. Three pillars:
+
+- **Policy Enforcement**: You define what your agent can do and NemoClaw enforces it at runtime. Not at the prompt level, but deep in the execution layer of the operating system where it actually matters
+ 
+- **Network Guardrails**: Controlled exits/terminations for sensitive workloads. Agents can't exfiltrate data outside their scoped access. For any enterprise deployment where agents touch internal systems, this is a "safety hazard" for a production system
+ 
+- **Privacy Routing**: Proprietary data doesn't leak to third-party model providers. For companies running agents over internal knowledge bases, financial records, or customer data, this is what makes legal and compliance actually sign off
+
+Huang states that NemoClaw will be the **"policy engine of all the SaaS companies in the world"**. And every enterprise sitting on valuable data that wants to deploy agents needs exactly this
+
+### NVIDIA OpenShell Runtime
+
+NVIDIA also announced the **OpenShell runtime** during this year's GTC. It is the execution environment that sits between your agent's decision-making and the infrastructure it runs on. OpenShell is what makes NemoClaw's policies enforceable at scale, along with the composable glue layer for deploying agents consistently across teams, services, and infrastructure boundaries
+
+Previously, developers would have to 
+ 
+1. Pick a framework
+2. Build their own authentication layer
+3. Hand-roll policy enforcement
+4. Wire up their own observability
+5. Ship something possibly fragile
+
+Now, with **OpenClaw**, **NemoClaw**, and **OpenShell**, developers can
+
+1. Define their agent's tools and context
+2. Configure policy in NemoClaw
+3. Deploy via OpenShell
+4. Focus entirely on the intelligence layer
+ 
+Now enterprises can safely trust agents with this new agent tech stack, unlocking the next wave of enterprises to use AI Agents
+
+---
+
+## The Nemotron Coalition: An Open Model for Every Domain
+
+NVIDIA isn't just building a one-and-done model. They are building a **ecosystem** of open frontier models across every major domain
+
+| Model Family | Domain |
+|---|---|
+| **Nemotron** | Language & Reasoning |
+| **Cosmos** | World & Vision |
+| **Isaac GR00T** | General-Purpose Robotics |
+| **Alpaymayo** | Autonomous Driving |
+| **BioNeMo** | Biology & Chemistry |
+| **Earth-2** | Weather & Climate |
+
+They keyword is **open**. Nemotron's set of models fine-tune on your domain data, deploy via NVIDIA's NIM microservices, skip the frontier API costs for tasks where a specialized smaller model wins on both performance and price. Pair this with NemoClaw's policy layer and this forms a complete, self-contained agentic stack, containing intelligence, guardrails, execution, and deployment
+
+## NVIDIA continues to reshape inference computing
+
+**Vera Rubin** is NVIDIA's new flagship platform: **7 chips**, **5 rack-scale systems**, and **one supercomputer** built specifically for agentic AI workloads. It includes the new Vera CPU and BlueField-4 STX storage architecture. Microsoft Azure is already running Vera Rubin NVL72 systems globally!
+
+**Feynman** is what comes next: a new CPU named Rosa (that is designed to move data, tools, and tokens across agentic infrastructure), the LP40 LPU for inference, BlueField-5 networking, and NVIDIA Kyber for co-packaged optics. This spells out **every pillar of the AI factory**, including compute, memory, storage, networking, and security. Each pillar just got a generational upgrade by NVIDIA themselves
+ 
+NVIDIA also has plans for **space** with **Space-1 Vera Rubin**: AI data centers built for orbital deployment. NVIDIA took that as a opportunity to extend accelerated computing beyond the atmosphere entirely!
+
+---
+
+## The Next Deployment Surface for Agents: The Physical World
+
+Huang simply stated that
+
+> **The ChatGPT moment of self-driving cars has arrived**
+
+Major car manufacturers like **Nissan** and **Hyundai** have joined NVIDIA's DRIVE Hyperion robotaxi platform and **Uber** is deploying these vehicles commercially into its ride-hailing network. **T-Mobile** is also evolving base stations into edge AI platforms for their physical AI workloads
+
+Therefore, the next step for AI agents is the physical world: agents that **see**, **reason**, and **act** in real environments 
+
+---
+
+## NVIDIA Now Owns the Entire Agentic Stack
+ 
+NVIDIA announced so much during this year's GTC conference
+ 
+- **Intelligence layer:** Nemotron Coalition open models
+- **Agent OS:** OpenClaw
+- **Trust + Policy:** NemoClaw + OpenShell that pairs with OpenClaw
+- **Inference:** NIM microservices, and positioning themselves to be the "computing inference king"
+- **Compute:** Vera Rubin → Feynman → Space
+- **Physical:** Cosmos, Isaac GR00T, DRIVE Hyperion
+ 
+That's proves that NVIDIA has deliberately decided to own agentic AI, where every layer is covered and every boundary is addressed
+ 
+This is what reshapes agentic AI. Not one announcement, but rather the **whole**, **complete** stack at once
+
+---
+
+## Final Words
+ 
+GTC 2026 wasn't a series of announcements. It was a map Jensen Huang laid out as to how NVIDIA intends to be the foundation of the age of Agentic AI and intelligent machines
+ 
+For those of us building agents right now, **the sky is the limit**. The tools have never been this good and the platforms have never been this complete
+
+> **The only remaining question is how the rest of us are going to make the most of them**
