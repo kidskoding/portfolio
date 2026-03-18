@@ -1,0 +1,91 @@
+---
+import type { Education } from '../data/education';
+
+interface Props {
+  education: Education;
+  isFirst?: boolean;
+}
+
+const { education, isFirst = false } = Astro.props;
+---
+
+<div class="relative pl-10 md:pl-12 group" data-animate>
+    <div class="absolute left-0 top-6 flex items-center justify-center">
+        <span class:list={[
+            "relative w-3 h-3 rounded-full bg-timeline-dot ring-4 ring-bg-primary",
+            isFirst ? "timeline-dot" : "transition-shadow duration-300 group-hover:shadow-[0_0_12px_var(--color-timeline-dot-glow)]"
+        ]}>
+            <span class="absolute inset-0.5 rounded-full bg-white/30" />
+        </span>
+    </div>
+
+    <div class="glow-card p-4 sm:p-6 transition-all duration-300 hover:bg-bg-card-hover group/card">
+        <div class="flex items-start gap-4">
+            <div class="relative shrink-0">
+                <div class="w-12 h-12 rounded-xl border border-border-default bg-bg-secondary/80 p-2 flex items-center justify-center transition-all duration-300 group-hover/card:border-border-accent group-hover/card:shadow-[0_0_20px_var(--color-accent-subtle)]">
+                    <img
+                        src={education.institutionLogo}
+                        alt={`${education.institution} logo`}
+                        width="32"
+                        height="32"
+                        class="w-8 h-8 object-contain"
+                        loading="lazy"
+                    />
+                </div>
+            </div>
+
+            <div class="flex-1 min-w-0">
+                <h3 class="text-base font-semibold text-text-primary leading-snug break-words group-hover/card:text-accent transition-colors duration-300">
+                    {education.institution}
+                </h3>
+                <p class="text-sm text-text-secondary mt-0.5">{education.degree} in {education.field}</p>
+
+                <div class="flex flex-wrap items-center gap-x-1.5 text-xs text-text-muted mt-1.5">
+                    <span class="inline-flex items-center gap-1">
+                        <svg class="w-3 h-3 text-accent/40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        {education.startDate ? `${education.startDate} – ${education.endDate}` : `${education.endDate}`}
+                    </span>
+                    {education.location && (
+                        <>
+                            <span class="text-accent/30">&middot;</span>
+                            <span class="inline-flex items-center gap-1">
+                                <svg class="w-3 h-3 text-accent/40" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                {education.location}
+                            </span>
+                        </>
+                    )}
+                </div>
+            </div>
+        </div>
+
+        {education.description && education.description.length > 0 && (
+            <ul class="mt-5 space-y-2.5 sm:pl-16">
+                {education.description.map((item) => (
+                    <li class="text-sm text-text-secondary leading-relaxed flex gap-3">
+                        <span class="shrink-0 mt-2">
+                            <span class="block w-1 h-1 rounded-full bg-accent/50" />
+                        </span>
+                        <span class="hover:text-text-primary transition-colors duration-200">{item}</span>
+                    </li>
+                ))}
+            </ul>
+        )}
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll('.glow-card').forEach((card) => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = (card as HTMLElement).getBoundingClientRect();
+            const x = (e as MouseEvent).clientX - rect.left;
+            const y = (e as MouseEvent).clientY - rect.top;
+            (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
+            (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+</script>

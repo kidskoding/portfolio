@@ -1,22 +1,40 @@
 ---
 import { experiences } from '../data/experience';
+import { educations } from '../data/education';
 import ExperienceCard from './ExperienceCard.astro';
+import EducationCard from './EducationCard.astro';
 ---
 
 <section class="relative">
     <div class="mb-12" data-animate>
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Career</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Career & Education</p>
         <h2 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text">
-            Experience
+            Resume
         </h2>
         <p class="text-text-muted mt-3 text-base max-w-md">
-            where i've worked and what i've built
+            my education and work experience
         </p>
     </div>
 
+    <!-- Education timeline -->
+    <div class="mb-4" data-animate>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent/70 mb-6 pl-10 md:pl-12">Education</p>
+    </div>
+    <div class="relative mb-16">
+        <div class="absolute left-1.5 top-0 bottom-0 w-px bg-linear-to-b from-accent/50 via-timeline-line to-transparent" />
+        <div class="space-y-6">
+            {educations.map((edu, index) => (
+                <EducationCard education={edu} isFirst={index === 0} />
+            ))}
+        </div>
+    </div>
+
+    <!-- Work timeline -->
+    <div class="mb-4" data-animate>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent/70 mb-6 pl-10 md:pl-12">Experience</p>
+    </div>
     <div class="relative">
         <div class="absolute left-1.5 top-0 bottom-0 w-px bg-linear-to-b from-accent/50 via-timeline-line to-transparent" />
-
         <div class="space-y-6">
             {experiences.map((exp, index) => (
                 <ExperienceCard experience={exp} isFirst={index === 0} />
