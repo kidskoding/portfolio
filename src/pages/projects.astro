@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { featuredProjects, hackathons, aiAgents } from '../data/projects';
+import { featuredProjects, hackathons, aiAgents, dsaProjects, otherProjects } from '../data/projects';
 ---
 
 <Layout title="Projects">
@@ -33,6 +33,18 @@ import { featuredProjects, hackathons, aiAgents } from '../data/projects';
                 data-tab="ai-agents"
             >
                 100 AI Agents
+            </button>
+            <button
+                class="tab-btn px-4 py-2.5 text-sm font-medium transition-colors duration-200 border-b-2 -mb-px"
+                data-tab="dsa"
+            >
+                DSA
+            </button>
+            <button
+                class="tab-btn px-4 py-2.5 text-sm font-medium transition-colors duration-200 border-b-2 -mb-px"
+                data-tab="other"
+            >
+                Other
             </button>
         </div>
 
@@ -67,6 +79,32 @@ import { featuredProjects, hackathons, aiAgents } from '../data/projects';
             {aiAgents.length > 0 ? (
                 <div class="grid gap-4 sm:grid-cols-2">
                     {aiAgents.map((project) => (
+                        <ProjectCard project={project} />
+                    ))}
+                </div>
+            ) : (
+                <p class="text-text-muted text-sm mt-4">Coming soon.</p>
+            )}
+        </div>
+
+        <!-- DSA -->
+        <div id="tab-dsa" class="tab-panel mt-6 hidden">
+            {dsaProjects.length > 0 ? (
+                <div class="grid gap-4 sm:grid-cols-2">
+                    {dsaProjects.map((project) => (
+                        <ProjectCard project={project} />
+                    ))}
+                </div>
+            ) : (
+                <p class="text-text-muted text-sm mt-4">Coming soon.</p>
+            )}
+        </div>
+
+        <!-- Other -->
+        <div id="tab-other" class="tab-panel mt-6 hidden">
+            {otherProjects.length > 0 ? (
+                <div class="grid gap-4 sm:grid-cols-2">
+                    {otherProjects.map((project) => (
                         <ProjectCard project={project} />
                     ))}
                 </div>
