@@ -9,7 +9,7 @@ export interface Project {
 export const featuredProjects: Project[] = [
     {
         name: "portfolio",
-        description: "i wonder what this could be.....",
+        description: "my developer portfolio!",
         githubUrl: "https://github.com/kidskoding/portfolio",
         language: "Astro",
     },
