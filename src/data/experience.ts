@@ -132,14 +132,12 @@ export const experiences: Experience[] = [
         id: "4",
         company: "kidskoding.com",
         companyLogo: kidskodingLogoIcon.src,
-        locationType: "On-site",
         startDate: "Sep 2018",
         endDate: "Aug 2023",
         duration: calculateDuration("Sep 2018", "Aug 2023"),
         roles: [
             {
                 title: "Founder",
-                employmentType: "Part-time",
                 startDate: "Sep 2018",
                 endDate: "Aug 2023",
                 duration: calculateDuration("Sep 2018", "Aug 2023"),
