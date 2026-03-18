@@ -353,5 +353,6 @@ export const aiAgents: Project[] = [
         name: "f1-strategist.ai",
         description: "real-time F1 race strategy recommendations powered by a multi-agent AI swarm. built on live OpenF1 telemetry",
         githubUrl: "https://github.com/OpenAgents-Illinois/f1-strategist.ai",
+        language: "Python",
     },
 ];
