@@ -1,46 +1,38 @@
-# Astro Starter Kit: Basics
+# Anirudh Konidala — Portfolio
+
+Personal portfolio site built with Astro, Tailwind CSS v4, GSAP, and MDX.
+
+## Stack
+
+- **[Astro](https://astro.build)** — static site framework with view transitions
+- **[Tailwind CSS v4](https://tailwindcss.com)** — utility-first styling
+- **[GSAP](https://gsap.com)** — page-entry animations
+- **[MDX](https://mdxjs.com)** — blog posts
+
+## Getting Started
 
 ```sh
-npm create astro@latest -- --template basics
+npm install
+npm run dev       # localhost:4321
+npm run build     # production build → ./dist/
+npm run preview   # preview production build
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Pages
 
-## 🚀 Project Structure
+| Route | Description |
+|---|---|
+| `/` | Home |
+| `/about` | About |
+| `/experience` | Resume — work experience & education |
+| `/skills` | Skills |
+| `/blog` | Blog |
+| `/contact` | Contact |
 
-Inside of your Astro project, you'll see the following folders and files:
+## Adding Content
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+**Work experience** — edit `src/data/experience.ts`
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+**Education** — edit `src/data/education.ts`
 
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+**Blog post** — add an `.mdx` file to `src/content/blog/`
