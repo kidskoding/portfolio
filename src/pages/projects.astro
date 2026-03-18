@@ -1,0 +1,107 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { featuredProjects, hackathons, aiAgents } from '../data/projects';
+---
+
+<Layout title="Projects">
+    <Navigation currentPage="projects" />
+    <main class="max-w-3xl mx-auto px-6 py-12" id="main-content">
+        <div data-animate>
+            <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3">Work</p>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text">Projects</h1>
+            <p class="text-text-muted mt-3 text-base max-w-md">things i've built</p>
+        </div>
+
+        <!-- Tab bar -->
+        <div class="flex gap-2 mt-10 border-b border-border-subtle" data-animate>
+            <button
+                class="tab-btn px-4 py-2.5 text-sm font-medium transition-colors duration-200 border-b-2 -mb-px"
+                data-tab="featured"
+            >
+                Featured
+            </button>
+            <button
+                class="tab-btn px-4 py-2.5 text-sm font-medium transition-colors duration-200 border-b-2 -mb-px"
+                data-tab="hackathons"
+            >
+                Hackathons
+            </button>
+            <button
+                class="tab-btn px-4 py-2.5 text-sm font-medium transition-colors duration-200 border-b-2 -mb-px"
+                data-tab="ai-agents"
+            >
+                100 AI Agents
+            </button>
+        </div>
+
+        <!-- Featured -->
+        <div id="tab-featured" class="tab-panel mt-6">
+            {featuredProjects.length > 0 ? (
+                <div class="grid gap-4 sm:grid-cols-2">
+                    {featuredProjects.map((project) => (
+                        <ProjectCard project={project} />
+                    ))}
+                </div>
+            ) : (
+                <p class="text-text-muted text-sm mt-4">Coming soon.</p>
+            )}
+        </div>
+
+        <!-- Hackathons -->
+        <div id="tab-hackathons" class="tab-panel mt-6 hidden">
+            {hackathons.length > 0 ? (
+                <div class="grid gap-4 sm:grid-cols-2">
+                    {hackathons.map((project) => (
+                        <ProjectCard project={project} />
+                    ))}
+                </div>
+            ) : (
+                <p class="text-text-muted text-sm mt-4">Coming soon.</p>
+            )}
+        </div>
+
+        <!-- 100 AI Agents -->
+        <div id="tab-ai-agents" class="tab-panel mt-6 hidden">
+            {aiAgents.length > 0 ? (
+                <div class="grid gap-4 sm:grid-cols-2">
+                    {aiAgents.map((project) => (
+                        <ProjectCard project={project} />
+                    ))}
+                </div>
+            ) : (
+                <p class="text-text-muted text-sm mt-4">Coming soon.</p>
+            )}
+        </div>
+    </main>
+</Layout>
+
+<script>
+    function initTabs() {
+        const buttons = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+        const panels = document.querySelectorAll<HTMLElement>('.tab-panel');
+
+        function activate(tab: string) {
+            buttons.forEach((btn) => {
+                const isActive = btn.dataset.tab === tab;
+                btn.classList.toggle('text-accent', isActive);
+                btn.classList.toggle('border-accent', isActive);
+                btn.classList.toggle('text-text-muted', !isActive);
+                btn.classList.toggle('border-transparent', !isActive);
+            });
+            panels.forEach((panel) => {
+                panel.classList.toggle('hidden', panel.id !== `tab-${tab}`);
+            });
+        }
+
+        buttons.forEach((btn) => {
+            btn.addEventListener('click', () => activate(btn.dataset.tab!));
+        });
+
+        activate('featured');
+    }
+
+    initTabs();
+    document.addEventListener('astro:after-swap', initTabs);
+</script>
