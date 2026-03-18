@@ -28,11 +28,3 @@ npm run preview   # preview production build
 | `/skills` | Skills |
 | `/blog` | Blog |
 | `/contact` | Contact |
-
-## Adding Content
-
-**Work experience** — edit `src/data/experience.ts`
-
-**Education** — edit `src/data/education.ts`
-
-**Blog post** — add an `.mdx` file to `src/content/blog/`
