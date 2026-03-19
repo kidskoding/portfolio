@@ -47,7 +47,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
 
         <button
             id="menu-btn"
-            class="fixed top-3.5 right-6 z-[60] flex items-center justify-center w-9 h-9 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/10 transition-all"
+            class="fixed top-3.5 left-6 z-[60] flex items-center justify-center w-9 h-9 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/10 transition-all"
             aria-label="Toggle menu"
         >
             <!-- Hamburger -->
@@ -68,7 +68,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
 <!-- Sidebar (slides in below nav bar) -->
 <aside
     id="mobile-sidebar"
-    class="fixed top-16 right-0 bottom-0 z-40 w-72 bg-bg-primary border-l border-border-subtle flex flex-col py-6 px-6 translate-x-full transition-transform duration-300 ease-in-out"
+    class="fixed top-16 left-0 bottom-0 z-40 w-72 bg-bg-primary border-r border-border-subtle flex flex-col py-6 px-6 -translate-x-full transition-transform duration-300 ease-in-out"
     transition:persist
 >
     <nav class="flex flex-col gap-1">
@@ -152,7 +152,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
             if (!btn || !sidebar || !overlay || !hamburger || !closeIcon) return;
 
             function openSidebar() {
-                sidebar!.classList.remove('translate-x-full');
+                sidebar!.classList.remove('-translate-x-full');
                 overlay!.classList.remove('hidden');
                 hamburger!.classList.add('hidden');
                 closeIcon!.classList.remove('hidden');
@@ -160,7 +160,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
             }
 
             function closeSidebar() {
-                sidebar!.classList.add('translate-x-full');
+                sidebar!.classList.add('-translate-x-full');
                 overlay!.classList.add('hidden');
                 hamburger!.classList.remove('hidden');
                 closeIcon!.classList.add('hidden');
@@ -168,7 +168,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
             }
 
             btn.addEventListener('click', () => {
-                sidebar!.classList.contains('translate-x-full') ? openSidebar() : closeSidebar();
+                sidebar!.classList.contains('-translate-x-full') ? openSidebar() : closeSidebar();
             });
 
             overlay.addEventListener('click', closeSidebar);
