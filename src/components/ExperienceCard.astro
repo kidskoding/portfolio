@@ -24,13 +24,13 @@ const isGrouped = experience.roles.length > 1;
         <!-- Company header (shared for all layouts) -->
         <div class="flex items-start gap-4">
             <div class="relative shrink-0">
-                <div class="w-12 h-12 rounded-xl border border-border-default bg-bg-secondary/80 p-2 flex items-center justify-center transition-all duration-300 group-hover/card:border-border-accent group-hover/card:shadow-[0_0_20px_var(--color-accent-subtle)]">
+                <div class="w-12 h-12 rounded-xl border border-border-default bg-bg-secondary/80 overflow-hidden transition-all duration-300 group-hover/card:border-border-accent group-hover/card:shadow-[0_0_20px_var(--color-accent-subtle)]">
                     <img
                         src={experience.companyLogo}
                         alt={`${experience.company} logo`}
-                        width="32"
-                        height="32"
-                        class="w-8 h-8 object-contain"
+                        width="48"
+                        height="48"
+                        class="w-full h-full object-cover"
                         loading="lazy"
                     />
                 </div>
