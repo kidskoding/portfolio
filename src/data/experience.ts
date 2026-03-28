@@ -3,6 +3,7 @@ import uiucLogoIcon from "../assets/illini-logo.png";
 import ivrLogoIcon from "../assets/ivr-logo.jpeg";
 import kidskodingLogoIcon from "../assets/kidskoding-logo.jpeg";
 import respanLogoIcon from "../assets/respan.jpeg";
+import microsoftLogoIcon from "../assets/microsoft-logo.jpg";
 
 const calculateDuration = (startDate: string, endDate: string) => {
     const start = new Date(startDate);
@@ -40,6 +41,26 @@ export interface Experience {
 }
 
 export const experiences: Experience[] = [
+    {
+        id: "6",
+        company: "Microsoft",
+        companyLogo: microsoftLogoIcon.src,
+        startDate: "Mar 2026",
+        endDate: "Present",
+        duration: calculateDuration("Mar 2026", "Present"),
+        roles: [
+            {
+                title: "Open Source Contributor",
+                startDate: "Mar 2026",
+                endDate: "Present",
+                duration: calculateDuration("Mar 2026", "Present"),
+                description: [
+                    "RustTraining - a seamless experience site developed to teach beginner, advanced, and expert level Rust",
+                ],
+                skills: ["Rust", "Git", "GitHub", "Go"],
+            },
+        ],
+    },
     {
         id: "5",
         company: "Respan (formerly Keywords AI - YC W24)",
