@@ -2,7 +2,6 @@ import sapienceLogoIcon from "../assets/sapience-logo.jpeg";
 import uiucLogoIcon from "../assets/illini-logo.png";
 import ivrLogoIcon from "../assets/ivr-logo.jpeg";
 import kidskodingLogoIcon from "../assets/kidskoding-logo.jpeg";
-import respanLogoIcon from "../assets/respan.jpeg";
 import microsoftLogoIcon from "../assets/microsoft-logo.jpg";
 
 const calculateDuration = (startDate: string, endDate: string) => {
@@ -58,28 +57,6 @@ export const experiences: Experience[] = [
                     "RustTraining - a seamless experience site developed to teach beginner, advanced, and expert level Rust",
                 ],
                 skills: ["Rust", "Git", "GitHub", "Go"],
-            },
-        ],
-    },
-    {
-        id: "5",
-        company: "Respan (formerly Keywords AI - YC W24)",
-        companyLogo: respanLogoIcon.src,
-        location: "San Francisco Bay Area",
-        startDate: "May 2026",
-        endDate: "Aug 2026",
-        duration: calculateDuration("May 2026", "Aug 2026"),
-        roles: [
-            {
-                title: "Software Engineering Intern",
-                employmentType: "Internship",
-                startDate: "May 2026",
-                endDate: "Aug 2026",
-                duration: calculateDuration("May 2026", "Aug 2026"),
-                description: [
-                    "Incoming Software Engineering Intern Summer 2026",
-                ],
-                skills: [],
             },
         ],
     },
