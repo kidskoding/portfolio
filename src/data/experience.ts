@@ -3,6 +3,7 @@ import uiucLogoIcon from "../assets/illini-logo.png";
 import ivrLogoIcon from "../assets/ivr-logo.jpeg";
 import kidskodingLogoIcon from "../assets/kidskoding-logo.jpeg";
 import microsoftLogoIcon from "../assets/microsoft-logo.jpg";
+import abbvieLogoIcon from "../assets/abbvie-logo.jpeg";
 
 const calculateDuration = (startDate: string, endDate: string) => {
     const start = new Date(startDate);
@@ -40,6 +41,28 @@ export interface Experience {
 }
 
 export const experiences: Experience[] = [
+    {
+        id: "7",
+        company: "AbbVie",
+        companyLogo: abbvieLogoIcon.src,
+        location: "North Chicago, Illinois",
+        startDate: "May 2026",
+        endDate: "Aug 2026",
+        duration: calculateDuration("May 2026", "Aug 2026"),
+        roles: [
+            {
+                title: "Junior AI Software Engineer",
+                employmentType: "Full-time",
+                startDate: "May 2026",
+                endDate: "Aug 2026",
+                duration: calculateDuration("May 2026", "Aug 2026"),
+                description: [
+                    "Incoming Summer 2026",
+                ],
+                skills: ["Claude Code", "Python"],
+            },
+        ],
+    },
     {
         id: "6",
         company: "Microsoft",
