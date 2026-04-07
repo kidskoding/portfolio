@@ -14,6 +14,12 @@ export const featuredProjects: Project[] = [
         language: "Astro",
     },
     {
+        name: "uiuc-datathon-2026",
+        description: "third place winners for the uiuc datathon 2026 - team030: databricks aficionados; anirudh konidala, noemia mahmud, victoria nguyen",
+        githubUrl: "https://github.com/kidskoding/uiuc-datathon-2026",
+        language: "Jupyter Notebook"
+    },
+    {
         name: "dotfiles",
         description: "my very minimalistic set of dotfiles",
         githubUrl: "https://github.com/kidskoding/dotfiles",
@@ -94,6 +100,12 @@ export const hackathons: Project[] = [
         githubUrl: "https://github.com/kidskoding/hackillinois-2025",
         language: "Python",
     },
+    {
+        name: "uiuc-datathon-2026",
+        description: "third place winners for the uiuc datathon 2026 - team030: databricks aficionados; anirudh konidala, noemia mahmud, victoria nguyen",
+        githubUrl: "https://github.com/kidskoding/uiuc-datathon-2026",
+        language: "Jupyter Notebook"
+    }
 ];
 
 export const dsaProjects: Project[] = [
