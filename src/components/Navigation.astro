@@ -41,21 +41,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
 
 <nav class="fixed top-0 left-0 right-0 z-50" id="main-nav" transition:persist>
     <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div class="fixed top-3.5 left-6 z-[60] flex items-center gap-3">
-            <button
-                id="menu-btn"
-                class="flex items-center justify-center w-9 h-9 rounded-lg text-text-muted hover:text-text-primary hover:bg-white/10 transition-all"
-                aria-label="Toggle menu"
-            >
-                <!-- Hamburger -->
-                <svg id="hamburger-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-                <!-- X -->
-                <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+        <div class="absolute left-1/2 -translate-x-1/2">
             <a href="/" class="text-lg font-bold tracking-tight transition-colors duration-200 text-accent">
                 Anirudh Konidala
             </a>
@@ -63,13 +49,10 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
     </div>
 </nav>
 
-<!-- Overlay (below nav bar) -->
-<div id="sidebar-overlay" class="fixed top-16 inset-x-0 bottom-0 z-40 bg-black/60 backdrop-blur-sm hidden" transition:persist />
-
-<!-- Sidebar (slides in below nav bar) -->
+<!-- Sidebar (always visible) -->
 <aside
     id="mobile-sidebar"
-    class="fixed top-16 left-0 bottom-0 z-40 w-72 bg-bg-primary border-r border-border-subtle flex flex-col py-6 px-6 -translate-x-full transition-transform duration-300 ease-in-out"
+    class="fixed top-16 left-0 bottom-0 z-40 w-72 bg-bg-primary border-r border-border-subtle flex flex-col py-6 px-6"
     transition:persist
 >
     <nav class="flex flex-col gap-1">
@@ -144,45 +127,9 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
             }
         }
 
-        function initSidebar() {
-            const btn = document.getElementById('menu-btn');
-            const sidebar = document.getElementById('mobile-sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            const hamburger = document.getElementById('hamburger-icon');
-            const closeIcon = document.getElementById('close-icon');
-            if (!btn || !sidebar || !overlay || !hamburger || !closeIcon) return;
-
-            function openSidebar() {
-                sidebar!.classList.remove('-translate-x-full');
-                overlay!.classList.remove('hidden');
-                hamburger!.classList.add('hidden');
-                closeIcon!.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeSidebar() {
-                sidebar!.classList.add('-translate-x-full');
-                overlay!.classList.add('hidden');
-                hamburger!.classList.remove('hidden');
-                closeIcon!.classList.add('hidden');
-                document.body.style.overflow = '';
-            }
-
-            btn.addEventListener('click', () => {
-                sidebar!.classList.contains('-translate-x-full') ? openSidebar() : closeSidebar();
-            });
-
-            overlay.addEventListener('click', closeSidebar);
-
-            sidebar.querySelectorAll('[data-nav-link]').forEach((link) => {
-                link.addEventListener('click', closeSidebar);
-            });
-        }
-
         window.addEventListener('scroll', updateScroll, { passive: true });
         updateScroll();
         updateActiveLink();
-        initSidebar();
 
         document.addEventListener('astro:after-swap', updateActiveLink);
     }
