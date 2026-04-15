@@ -1,5 +1,7 @@
 ---
 import { experiences } from '../data/experience';
+
+const visibleExperiences = experiences.filter((exp) => !exp.hidden);
 import { educations } from '../data/education';
 import ExperienceCard from './ExperienceCard.astro';
 import EducationCard from './EducationCard.astro';
@@ -36,7 +38,7 @@ import EducationCard from './EducationCard.astro';
     <div class="relative">
         <div class="absolute left-1.5 top-0 bottom-0 w-px bg-linear-to-b from-accent/50 via-timeline-line to-transparent" />
         <div class="space-y-6">
-            {experiences.map((exp, index) => (
+            {visibleExperiences.map((exp, index) => (
                 <ExperienceCard experience={exp} isFirst={index === 0} />
             ))}
         </div>

@@ -34,6 +34,7 @@ export interface Experience {
     companyLogo: string;
     location?: string;
     locationType?: string;
+    hidden?: boolean;
     startDate: string;
     endDate: string;
     duration: string;
@@ -44,6 +45,7 @@ export const experiences: Experience[] = [
     {
         id: "7",
         company: "AbbVie",
+        hidden: true,
         companyLogo: abbvieLogoIcon.src,
         location: "North Chicago, Illinois",
         startDate: "May 2026",
