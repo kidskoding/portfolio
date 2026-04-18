@@ -4,6 +4,8 @@ import Navigation from "../components/Navigation.astro";
 import SkillCard from "../components/SkillCard.astro";
 
 import pygameImage from "../assets/pygame-logo.png";
+import workdayIcon from "../assets/workday.png";
+import servicenowIcon from "../assets/servicenow.png";
 import { getIconData, iconToSVG, iconToHTML } from "@iconify/utils";
 import { icons as simpleIcons } from "@iconify-json/simple-icons";
 import { icons as phIcons } from "@iconify-json/ph";
@@ -51,11 +53,9 @@ const iconMap: Record<string, { id: string; color: string }> = {
 	"Apache Spark": { id: "simple-icons:apachespark", color: "#E25A1C" },
 	Databricks: { id: "simple-icons:databricks", color: "#FF3621" },
 	Snowflake: { id: "simple-icons:snowflake", color: "#29B5E8" },
-	ServiceNow: { id: "simple-icons:now", color: "#62D84E" },
 	Salesforce: { id: "simple-icons:salesforce", color: "#00A1E0" },
 	SAP: { id: "simple-icons:sap", color: "#0FAAFF" },
 	Oracle: { id: "simple-icons:oracle", color: "#F80000" },
-	Workday: { id: "ph:buildings", color: "#A1A1AA" },
 	Okta: { id: "simple-icons:okta", color: "#007DC1" },
 	MuleSoft: { id: "simple-icons:mulesoft", color: "#00A0DF" },
 	HubSpot: { id: "simple-icons:hubspot", color: "#FF7A59" },
@@ -117,6 +117,8 @@ for (const [name, { id, color }] of Object.entries(iconMap)) {
 	if (svg) svgCache[name] = svg;
 }
 svgCache["Pygame"] = `<img src="${pygameImage.src}" alt="Pygame logo" />`;
+svgCache["Workday"] = `<img src="${workdayIcon.src}" alt="Workday logo" />`;
+svgCache["ServiceNow"] = `<img src="${servicenowIcon.src}" alt="ServiceNow logo" />`;
 
 const skillGroups = [
 	{

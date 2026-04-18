@@ -21,7 +21,7 @@ const fallbackLetters = name
 >
 	{hideIcon ? null : svg ? (
 		<span class="w-12 h-12 shrink-0 rounded-md flex items-center justify-center bg-white/8 ring-1 ring-white/12">
-			<span class="w-8 h-8 [&>svg]:w-full [&>svg]:h-full" set:html={svg} />
+			<span class="w-8 h-8 [&>svg]:h-full [&>svg]:w-full [&>img]:max-h-full [&>img]:max-w-full [&>img]:object-contain" set:html={svg} />
 		</span>
 	) : (
 		<span class="w-12 h-12 shrink-0 rounded-md flex items-center justify-center bg-white/8 ring-1 ring-white/12 text-sm font-bold text-text-secondary">
