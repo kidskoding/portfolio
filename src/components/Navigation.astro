@@ -230,7 +230,7 @@ import devToIcon from '../assets/fi-swluxl-dev-to.png';
         updateActiveLink();
         onMqChange();
 
-        document.addEventListener('astro:after-swap', () => {
+        document.addEventListener('astro:page-load', () => {
             updateActiveLink();
             onMqChange();
         });

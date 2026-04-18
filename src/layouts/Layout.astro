@@ -47,6 +47,8 @@ const { title = "Portfolio" } = Astro.props;
                     ? main.querySelectorAll('[data-animate]')
                     : document.querySelectorAll('[data-animate]');
 
+                gsap.killTweensOf(Array.from(elements));
+
                 elements.forEach((el, index) => {
                     gsap.fromTo(
                         el,
@@ -63,8 +65,9 @@ const { title = "Portfolio" } = Astro.props;
                 });
             }
 
-            initAnimations();
-            document.addEventListener('astro:after-swap', initAnimations);
+            // Run after the View Transition update callback finishes (not `astro:after-swap`),
+            // so GSAP does not mutate the DOM during `startViewTransition` — avoids InvalidStateError.
+            document.addEventListener('astro:page-load', initAnimations);
         </script>
     </body>
 </html>
