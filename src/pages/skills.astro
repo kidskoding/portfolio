@@ -51,6 +51,7 @@ const iconMap: Record<string, { id: string; color: string }> = {
 	Cassandra: { id: "simple-icons:apachecassandra", color: "#1287B1" },
 	Redis: { id: "simple-icons:redis", color: "#DC382D" },
 	"Apache Spark": { id: "simple-icons:apachespark", color: "#E25A1C" },
+	Airflow: { id: "simple-icons:apacheairflow", color: "#017CEE" },
 	Databricks: { id: "simple-icons:databricks", color: "#FF3621" },
 	Snowflake: { id: "simple-icons:snowflake", color: "#29B5E8" },
 	Salesforce: { id: "simple-icons:salesforce", color: "#00A1E0" },
@@ -137,21 +138,6 @@ const skillGroups = [
 		]
 	},
 	{
-		title: "AI/ML",
-		skills: [
-			"PyTorch",
-			"TensorFlow",
-			"Keras",
-			"Scikit-learn",
-			"NumPy",
-			"Pandas",
-			"OpenCV",
-			"RAG",
-			"LangChain",
-			"MCP"
-		]
-	},
-	{
 		title: "Full Stack",
 		skills: [
 			"React",
@@ -167,16 +153,6 @@ const skillGroups = [
 		]
 	},
 	{
-		title: "Game Development",
-		skills: [
-			"Unity",
-			"Unreal",
-			"Godot",
-			"Pygame",
-			"MonoGame"
-		]
-	},
-	{
 		title: "Databases",
 		skills: [
 			"PostgreSQL",
@@ -184,7 +160,6 @@ const skillGroups = [
 			"MySQL",
 			"Cassandra",
 			"Redis",
-			"Apache Spark",
 			"Pinecone",
 			"Qdrant"
 		]
@@ -198,6 +173,8 @@ const skillGroups = [
 			"Docker",
 			"Kubernetes",
 			"Kafka",
+			"Apache Spark",
+			"Airflow",
 			"Selenium",
 			"Power BI",
 			"Tableau",
@@ -225,6 +202,16 @@ const skillGroups = [
 		]
 	},
 	{
+		title: "Methodologies",
+		skills: [
+			"Agile",
+			"Scrum",
+			"Kanban",
+			"Test Driven Development",
+			"CI/CD"
+		]
+	},
+	{
 		title: "Vibecoding",
 		skills: [
 			"Cursor",
@@ -236,13 +223,28 @@ const skillGroups = [
 		]
 	},
 	{
-		title: "Methodologies",
+		title: "AI/ML",
 		skills: [
-			"Agile",
-			"Scrum",
-			"Kanban",
-			"Test Driven Development",
-			"CI/CD"
+			"PyTorch",
+			"TensorFlow",
+			"Keras",
+			"Scikit-learn",
+			"NumPy",
+			"Pandas",
+			"OpenCV",
+			"RAG",
+			"LangChain",
+			"MCP"
+		]
+	},
+	{
+		title: "Game Development",
+		skills: [
+			"Unity",
+			"Unreal",
+			"Godot",
+			"Pygame",
+			"MonoGame"
 		]
 	}
 ];
