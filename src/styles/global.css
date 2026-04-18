@@ -247,3 +247,24 @@ body::before {
   .orb { animation: none; }
   .timeline-dot { animation: none; }
 }
+
+/* Sidebar: off-canvas on small viewports, fixed column on lg+ */
+#mobile-sidebar {
+  transition: transform 0.3s ease;
+}
+
+@media (max-width: 1023px) {
+  #mobile-sidebar {
+    transform: translateX(-100%);
+  }
+
+  #mobile-sidebar.is-open {
+    transform: translateX(0);
+  }
+}
+
+@media (min-width: 1024px) {
+  #mobile-sidebar {
+    transform: translateX(0);
+  }
+}
