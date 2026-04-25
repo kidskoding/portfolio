@@ -1,38 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
+import GitLog from '../components/GitLog.astro';
 import anirudhProfileImg from '../assets/anirudh.jpeg';
-import illiniLogo from '../assets/illini-logo.png';
 ---
 
 <Layout title="Anirudh Konidala">
-    <Navigation />
-    <main class="max-w-3xl w-full min-w-0 mx-auto px-6 py-12 lg:mx-0 lg:ml-72 lg:mr-auto" id="main-content">
-        <div class="rounded-xl border border-border-subtle bg-bg-card p-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8" data-animate>
+    <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
+        <div class="rounded-none border border-border-subtle bg-bg-card p-6 flex flex-col sm:flex-row items-center gap-6" data-animate>
             <img
                 src={anirudhProfileImg.src}
                 alt="Anirudh Konidala"
-                class="w-32 h-32 rounded-full object-cover ring-2 ring-accent/20 shrink-0"
+                class="w-28 h-28 rounded-none object-cover ring-2 ring-accent/20 shrink-0"
             />
             <div class="text-center sm:text-left">
-                <h1 class="text-3xl font-bold text-text-primary tracking-tight">Anirudh Konidala</h1>
-                <p class="text-text-secondary mt-3"><b>I enjoy ai, data, and vibe coding!</b></p>
-                <p class="text-text-secondary mt-3">computer science and education, concentrated in learning sciences and technology @ uiuc</p>
+                <h1 class="text-2xl font-bold text-text-primary tracking-tight font-mono">Anirudh Konidala</h1>
+                <p class="text-text-secondary mt-2 font-mono text-sm">I enjoy ai, data, and vibe coding!</p>
+                <p class="text-text-secondary mt-1 font-mono text-xs">cs + education @ uiuc</p>
+                <div class="mt-3 inline-flex items-center gap-2 bg-bg-card-hover border border-border-default text-accent font-mono text-xs px-3 py-1">
+                    <span>Cmd+K / Ctrl+K to navigate</span>
+                </div>
             </div>
         </div>
-        <div class="mt-10 rounded-xl border border-border-subtle bg-bg-card p-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8" data-animate>
-            <img
-                src={illiniLogo.src}
-                alt="UIUC Logo"
-                class="w-32 h-32 rounded-full object-cover ring-2 ring-accent/20 shrink-0"
-            />
-            <div class="text-center sm:text-left">
-                <h2 class="text-3xl font-bold text-text-primary tracking-tight">a proud illini!</h2>
-                <p class="text-text-secondary mt-3">I am proud to be a student at the University of Illinois at Urbana-Champaign!</p>
-                <p class="text-text-secondary mt-3">a university home to the founders of
-                    <b>YouTube</b> (a <b>Google</b> company), <b>PayPal</b>, <b>Oracle</b>,
-                    and <b>Advanced Micro Devices</b> (<b>AMD</b>)</p>
-            </div>
+
+        <div class="mt-6 border border-border-subtle bg-bg-card p-6" data-animate>
+            <GitLog />
         </div>
     </main>
 </Layout>

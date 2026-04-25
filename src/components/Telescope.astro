@@ -1,0 +1,414 @@
+---
+interface Post {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+
+const pages = [
+  { label: 'index.ts', path: '/', desc: 'home' },
+  { label: 'experience.ts', path: '/experience', desc: 'work history + research' },
+  { label: 'skills.ts', path: '/skills', desc: 'languages, tools, platforms' },
+  { label: 'about.ts', path: '/about', desc: 'bio, interests, contact' },
+  { label: 'projects.ts', path: '/projects', desc: 'things built' },
+  { label: 'contact.ts', path: '/contact', desc: 'email, linkedin, github' },
+  { label: 'blog/index.ts', path: '/blog', desc: 'blog posts' },
+];
+
+const easterEggs = [
+  { cmd: 'sudo hire-me', response: 'elevated privileges granted - anirudhkonidala@gmail.com' },
+  { cmd: 'rm -rf /', response: 'Permission denied: this portfolio is read-only' },
+  { cmd: 'git blame', response: 'all commits by Anirudh Konidala, no exceptions' },
+];
+---
+
+<div id="telescope" class="telescope-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Command palette">
+  <div class="telescope-backdrop" id="telescope-backdrop"></div>
+  <div class="telescope-modal">
+    <div class="telescope-header">
+      <span class="telescope-icon" aria-hidden="true">T</span>
+      <input
+        id="telescope-input"
+        class="telescope-input"
+        type="text"
+        placeholder="Find files, run commands..."
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <span class="telescope-hint">esc to close</span>
+    </div>
+    <div class="telescope-body">
+      <div class="telescope-results" id="telescope-results"></div>
+      <div class="telescope-preview" id="telescope-preview">
+        <div class="preview-label">Preview</div>
+        <div id="telescope-preview-content" class="preview-content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="application/json" id="telescope-pages" set:html={JSON.stringify(pages)} />
+<script type="application/json" id="telescope-posts" set:html={JSON.stringify(posts)} />
+<script type="application/json" id="telescope-eggs" set:html={JSON.stringify(easterEggs)} />
+
+<style>
+  .telescope-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    justify-content: center;
+    padding-top: 80px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .telescope-overlay.open {
+    pointer-events: all;
+    opacity: 1;
+  }
+  .telescope-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 8, 5, 0.8);
+  }
+  .telescope-modal {
+    position: relative;
+    background: var(--color-nvim-bg1);
+    border: 1px solid var(--color-nvim-bg3);
+    width: 580px;
+    max-width: calc(100vw - 32px);
+    max-height: 420px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+    z-index: 1;
+    overflow: hidden;
+  }
+  .telescope-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--color-nvim-bg2);
+    border-bottom: 1px solid var(--color-nvim-bg3);
+    flex-shrink: 0;
+  }
+  .telescope-icon {
+    color: var(--color-nvim-aqua);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .telescope-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 13px;
+    color: var(--color-nvim-fg);
+    font-family: var(--font-mono);
+    caret-color: var(--color-nvim-yellow);
+  }
+  .telescope-input::placeholder { color: var(--color-nvim-fg3); }
+  .telescope-hint {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-nvim-fg3);
+  }
+  .telescope-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  .telescope-results {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+  }
+  .telescope-results::-webkit-scrollbar { width: 3px; }
+  .telescope-results::-webkit-scrollbar-thumb { background: var(--color-nvim-bg3); }
+  .telescope-section {
+    padding: 5px 14px 2px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-nvim-fg3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid var(--color-nvim-bg);
+  }
+  .telescope-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .telescope-item:hover,
+  .telescope-item.selected { background: var(--color-nvim-bg2); }
+  .telescope-item.selected {
+    border-left: 2px solid var(--color-nvim-yellow);
+    padding-left: 12px;
+  }
+  .item-icon {
+    font-size: 9px;
+    font-weight: 700;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .item-label { color: var(--color-nvim-fg); flex: 1; }
+  .item-sub {
+    color: var(--color-nvim-fg3);
+    font-size: 11px;
+    font-family: var(--font-mono);
+  }
+  .item-easter { color: var(--color-nvim-orange); }
+  .item-enter {
+    font-size: 10px;
+    color: var(--color-nvim-fg3);
+    font-family: var(--font-mono);
+    background: var(--color-nvim-bg);
+    padding: 1px 5px;
+  }
+  .telescope-preview {
+    width: 200px;
+    border-left: 1px solid var(--color-nvim-bg3);
+    background: var(--color-nvim-bg);
+    padding: 10px 12px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-nvim-fg3);
+    flex-shrink: 0;
+  }
+  .preview-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    color: var(--color-nvim-fg3);
+  }
+  .preview-content {
+    line-height: 1.8;
+    color: var(--color-nvim-fg2);
+    font-size: 11px;
+    white-space: pre-line;
+    word-break: break-word;
+  }
+  .egg-result {
+    padding: 12px 14px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-nvim-green);
+    border-top: 1px solid var(--color-nvim-bg3);
+  }
+  .egg-result.error { color: var(--color-nvim-red); }
+</style>
+
+<script>
+  interface PageItem { label: string; path: string; desc: string; }
+  interface PostItem { id: string; title: string; description: string; }
+  interface EggItem { cmd: string; response: string; }
+  interface PaletteItem {
+    type: 'page' | 'post' | 'egg';
+    label: string;
+    sub: string;
+    path?: string;
+    response?: string;
+  }
+
+  const pageData = JSON.parse(document.getElementById('telescope-pages')!.textContent!) as PageItem[];
+  const postData = JSON.parse(document.getElementById('telescope-posts')!.textContent!) as PostItem[];
+  const eggData = JSON.parse(document.getElementById('telescope-eggs')!.textContent!) as EggItem[];
+
+  const overlay = document.getElementById('telescope')!;
+  const backdrop = document.getElementById('telescope-backdrop')!;
+  const input = document.getElementById('telescope-input') as HTMLInputElement;
+  const results = document.getElementById('telescope-results')!;
+  const preview = document.getElementById('telescope-preview-content')!;
+
+  let selectedIndex = 0;
+  let currentItems: PaletteItem[] = [];
+
+  function escapeHtml(value: string) {
+    return value.replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    }[char] ?? char));
+  }
+
+  function openPalette() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    input.value = '';
+    input.focus();
+    render('');
+  }
+
+  function closePalette() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    input.value = '';
+  }
+
+  function render(query: string) {
+    const q = query.toLowerCase().trim();
+    const exactEgg = eggData.find((e) => e.cmd === q);
+    if (exactEgg) {
+      results.innerHTML = `<div class="egg-result${exactEgg.cmd === 'rm -rf /' ? ' error' : ''}">${escapeHtml(exactEgg.response)}</div>`;
+      preview.textContent = '';
+      currentItems = [];
+      return;
+    }
+
+    const filteredPages = q
+      ? pageData.filter((p) => p.label.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
+      : pageData;
+    const filteredPosts = q
+      ? postData.filter((p) => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q))
+      : postData;
+    const filteredEggs = q
+      ? eggData.filter((e) => e.cmd.startsWith(q))
+      : eggData;
+
+    currentItems = [
+      ...filteredPages.map((p) => ({ type: 'page' as const, label: p.label, sub: p.desc, path: p.path })),
+      ...filteredPosts.map((p) => ({ type: 'post' as const, label: p.title, sub: `blog/${p.id}`, path: `/blog/${p.id}` })),
+      ...filteredEggs.map((e) => ({ type: 'egg' as const, label: e.cmd, sub: 'easter egg', response: e.response })),
+    ];
+
+    if (selectedIndex >= currentItems.length) selectedIndex = 0;
+
+    let html = '';
+    if (filteredPages.length > 0) {
+      html += '<div class="telescope-section">Pages</div>';
+      filteredPages.forEach((p, i) => {
+        const sel = i === selectedIndex;
+        html += `<div class="telescope-item${sel ? ' selected' : ''}" data-index="${i}">
+          <span class="item-icon icon-ts">TS</span>
+          <span class="item-label">${escapeHtml(p.label)}</span>
+          <span class="item-sub">${escapeHtml(p.desc)}</span>
+          ${sel ? '<span class="item-enter">enter</span>' : ''}
+        </div>`;
+      });
+    }
+
+    const postOffset = filteredPages.length;
+    if (filteredPosts.length > 0) {
+      html += '<div class="telescope-section">Blog</div>';
+      filteredPosts.forEach((p, i) => {
+        const idx = postOffset + i;
+        const sel = idx === selectedIndex;
+        html += `<div class="telescope-item${sel ? ' selected' : ''}" data-index="${idx}">
+          <span class="item-icon icon-mdx">MDX</span>
+          <span class="item-label">${escapeHtml(p.title)}</span>
+          <span class="item-sub">blog/</span>
+          ${sel ? '<span class="item-enter">enter</span>' : ''}
+        </div>`;
+      });
+    }
+
+    const eggOffset = postOffset + filteredPosts.length;
+    if (filteredEggs.length > 0) {
+      html += '<div class="telescope-section">Commands</div>';
+      filteredEggs.forEach((e, i) => {
+        const idx = eggOffset + i;
+        const sel = idx === selectedIndex;
+        html += `<div class="telescope-item${sel ? ' selected' : ''}" data-index="${idx}">
+          <span class="item-icon">CMD</span>
+          <span class="item-label item-easter">${escapeHtml(e.cmd)}</span>
+          ${sel ? '<span class="item-enter">enter</span>' : ''}
+        </div>`;
+      });
+    }
+
+    if (!html) {
+      html = `<div class="telescope-empty">no results for "${escapeHtml(q)}"</div>`;
+    }
+
+    results.innerHTML = html;
+    updatePreview();
+    results.querySelectorAll<HTMLElement>('.telescope-item').forEach((el) => {
+      el.addEventListener('click', () => activate(Number(el.dataset.index)));
+    });
+  }
+
+  function updatePreview() {
+    const item = currentItems[selectedIndex];
+    if (!item) {
+      preview.textContent = '';
+      return;
+    }
+    if (item.type === 'egg') {
+      preview.textContent = item.response ?? '';
+      return;
+    }
+    preview.textContent = `${item.label}\n\n${item.sub}`;
+  }
+
+  function activate(index: number) {
+    const item = currentItems[index];
+    if (!item) return;
+    if (item.type === 'egg') {
+      results.innerHTML = `<div class="egg-result${item.label === 'rm -rf /' ? ' error' : ''}">${escapeHtml(item.response ?? '')}</div>`;
+      preview.textContent = '';
+      return;
+    }
+    if (item.path) {
+      closePalette();
+      window.location.href = item.path;
+    }
+  }
+
+  function moveSelection(dir: 1 | -1) {
+    if (currentItems.length === 0) return;
+    selectedIndex = (selectedIndex + dir + currentItems.length) % currentItems.length;
+    render(input.value);
+    results.querySelector<HTMLElement>('.selected')?.scrollIntoView({ block: 'nearest' });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      overlay.classList.contains('open') ? closePalette() : openPalette();
+    }
+    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      e.preventDefault();
+      closePalette();
+    }
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      moveSelection(1);
+    }
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      moveSelection(-1);
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      activate(selectedIndex);
+    }
+  });
+
+  input.addEventListener('input', () => {
+    selectedIndex = 0;
+    render(input.value);
+  });
+
+  backdrop.addEventListener('click', closePalette);
+</script>
