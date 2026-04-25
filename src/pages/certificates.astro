@@ -4,20 +4,32 @@ import CertCard from '../components/CertCard.astro';
 import IssuerLogo from '../components/IssuerLogo.astro';
 import { certificates } from '../data/certificates';
 
-const certGroups = certificates.reduce((groups, cert) => {
-  const existing = groups.find((group) => group.issuer === cert.issuer);
-  if (existing) {
-    existing.certificates.push(cert);
-    return groups;
+const groupedIssuers = new Set(['GitHub', 'Microsoft', 'Meta']);
+
+type CertificateItem =
+  | { type: 'group'; issuer: string; issuerLogo?: string; certificates: typeof certificates }
+  | { type: 'cert'; certificate: (typeof certificates)[number] };
+
+const certItems = certificates.reduce((items, cert) => {
+  if (!groupedIssuers.has(cert.issuer)) {
+    items.push({ type: 'cert', certificate: cert });
+    return items;
   }
 
-  groups.push({
+  const existing = items.find((item) => item.type === 'group' && item.issuer === cert.issuer);
+  if (existing && existing.type === 'group') {
+    existing.certificates.push(cert);
+    return items;
+  }
+
+  items.push({
+    type: 'group',
     issuer: cert.issuer,
     issuerLogo: cert.issuerLogo,
     certificates: [cert],
   });
-  return groups;
-}, [] as { issuer: string; issuerLogo?: string; certificates: typeof certificates }[]);
+  return items;
+}, [] as CertificateItem[]);
 ---
 
 <Layout title="Certifications">
@@ -28,23 +40,27 @@ const certGroups = certificates.reduce((groups, cert) => {
       <p class="text-text-muted mt-3 text-base max-w-md">licenses and certifications I've earned</p>
     </div>
 
-    <div class="mt-10 space-y-4" data-animate>
-      {certGroups.map((group) => (
-        <details class="cert-folder border border-border-subtle bg-bg-card" open>
-          <summary class="cert-folder-summary">
-            <span class="cert-folder-caret" aria-hidden="true">›</span>
-            <span class="cert-folder-logo">
-              <IssuerLogo issuer={group.issuer} logo={group.issuerLogo} />
-            </span>
-            <span class="cert-folder-name">{group.issuer}</span>
-            <span class="cert-folder-count">{group.certificates.length}</span>
-          </summary>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 pt-0">
-            {group.certificates.map((cert) => (
-              <CertCard cert={cert} />
-            ))}
-          </div>
-        </details>
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4" data-animate>
+      {certItems.map((item) => (
+        item.type === 'group' ? (
+          <details class="cert-folder border border-border-subtle bg-bg-card sm:col-span-2" open>
+            <summary class="cert-folder-summary">
+              <span class="cert-folder-caret" aria-hidden="true">›</span>
+              <span class="cert-folder-logo">
+                <IssuerLogo issuer={item.issuer} logo={item.issuerLogo} />
+              </span>
+              <span class="cert-folder-name">{item.issuer}</span>
+              <span class="cert-folder-count">{item.certificates.length}</span>
+            </summary>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 pt-0">
+              {item.certificates.map((cert) => (
+                <CertCard cert={cert} />
+              ))}
+            </div>
+          </details>
+        ) : (
+          <CertCard cert={item.certificate} />
+        )
       ))}
     </div>
   </main>
