@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Navigation from '../../components/Navigation.astro';
 import { getCollection } from 'astro:content';
 import profileImg from '../../assets/my-profile-pic.jpg';
 
@@ -10,8 +9,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 ---
 
 <Layout title="Blog">
-  <Navigation />
-  <main class="max-w-3xl w-full min-w-0 mx-auto px-6 py-12 lg:mx-0 lg:ml-72 lg:mr-auto" id="main-content">
+  <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
     <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3" data-animate>Blog</p>
     <h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text" data-animate>Blog</h1>
     <p class="text-text-muted mt-3 text-base max-w-md" data-animate>
