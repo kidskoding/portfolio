@@ -1,0 +1,56 @@
+---
+import type { Certificate } from '../data/certificates';
+
+interface Props {
+  cert: Certificate;
+}
+
+const { cert } = Astro.props;
+---
+
+<div class="glow-card p-5 flex flex-col gap-4 transition-all duration-300 hover:bg-bg-card-hover">
+  <div class="flex items-start gap-3">
+    <div class="w-10 h-10 rounded-lg border border-border-default bg-bg-secondary/80 overflow-hidden flex items-center justify-center shrink-0">
+      {cert.issuerLogo
+        ? <img src={cert.issuerLogo} alt={cert.issuer} class="w-full h-full object-contain p-1" loading="lazy" />
+        : <span class="text-sm font-bold text-text-secondary">{cert.issuer[0]}</span>
+      }
+    </div>
+    <div class="flex-1 min-w-0">
+      <h3 class="text-sm font-semibold text-text-primary leading-snug">{cert.name}</h3>
+      <p class="text-xs text-text-secondary mt-0.5">{cert.issuer}</p>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between gap-2">
+    <span class="font-mono text-xs text-text-muted">{cert.issuedDate}</span>
+    {cert.credentialId && (
+      <span class="font-mono text-xs text-text-muted truncate">ID: {cert.credentialId}</span>
+    )}
+  </div>
+
+  {cert.skills.length > 0 && (
+    <div class="flex flex-wrap gap-1.5">
+      {cert.skills.map((skill) => (
+        <span class="px-2 py-0.5 text-xs font-mono bg-bg-secondary border border-border-subtle text-text-secondary rounded-sm">
+          {skill}
+        </span>
+      ))}
+    </div>
+  )}
+
+  {cert.pdfPath && (
+    <a
+      href={cert.pdfPath}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="mt-auto inline-flex items-center gap-1.5 text-xs font-mono text-accent hover:text-text-primary transition-colors duration-200"
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+      </svg>
+      View Certificate
+    </a>
+  )}
+</div>
