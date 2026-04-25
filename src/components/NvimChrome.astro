@@ -9,19 +9,19 @@ const { currentPath: rawPath } = Astro.props;
 const currentPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '');
 
 const buffers = [
-  { path: '/', file: 'index.ts', icon: 'ts' },
-  { path: '/experience', file: 'experience.ts', icon: 'ts' },
-  { path: '/skills', file: 'skills.ts', icon: 'ts' },
-  { path: '/about', file: 'about.ts', icon: 'ts' },
-  { path: '/contact', file: 'contact.ts', icon: 'ts' },
-  { path: '/projects', file: 'projects.ts', icon: 'ts' },
-  { path: '/blog', file: 'blog/index.ts', icon: 'ts' },
+  { path: '/', file: 'index.astro', icon: 'astro' },
+  { path: '/experience', file: 'experience.astro', icon: 'astro' },
+  { path: '/skills', file: 'skills.astro', icon: 'astro' },
+  { path: '/about', file: 'about.astro', icon: 'astro' },
+  { path: '/contact', file: 'contact.astro', icon: 'astro' },
+  { path: '/projects', file: 'projects.astro', icon: 'astro' },
+  { path: '/blog', file: 'blog/index.astro', icon: 'astro' },
 ];
 const treeFiles = buffers.filter((buf) => buf.path !== '/blog');
 const blogIndex = buffers.find((buf) => buf.path === '/blog');
 
-let activeFile = 'index.ts';
-let activeIcon: 'ts' | 'mdx' = 'ts';
+let activeFile = 'index.astro';
+let activeIcon: 'astro' | 'mdx' = 'astro';
 const blogSlug = currentPath.match(/^\/blog\/(.+)$/);
 if (blogSlug) {
   activeFile = `blog/${blogSlug[1]}.mdx`;
@@ -30,7 +30,7 @@ if (blogSlug) {
   const match = buffers.find((b) => b.path === currentPath);
   if (match) {
     activeFile = match.file;
-    activeIcon = match.icon as 'ts' | 'mdx';
+    activeIcon = match.icon as 'astro' | 'mdx';
   }
 }
 
@@ -51,8 +51,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         class:list={['nvim-buffer', { active: currentPath === buf.path }]}
       >
         <span class="buf-num">{i + 1}</span>
-        <span class:list={['buf-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-ts']}>
-          {buf.icon === 'ts' ? 'TS' : 'MDX'}
+        <span class:list={['buf-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-astro']}>
+          {buf.icon === 'astro' ? 'AST' : 'MDX'}
         </span>
         <span>{buf.file.replace('blog/', '')}</span>
       </a>
@@ -85,8 +85,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
                 href={buf.path}
                 class:list={['tree-file tree-indent-2', { 'tree-active': currentPath === buf.path }]}
               >
-                <span class:list={['tree-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-ts']}>
-                  {buf.icon === 'ts' ? 'TS' : 'MDX'}
+                <span class:list={['tree-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-astro']}>
+                  {buf.icon === 'astro' ? 'AST' : 'MDX'}
                 </span>
                 <span>{buf.file}</span>
               </a>
@@ -101,8 +101,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
                   href={blogIndex.path}
                   class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === blogIndex.path }]}
                 >
-                  <span class="tree-icon icon-ts">TS</span>
-                  <span>index.ts</span>
+                  <span class="tree-icon icon-astro">AST</span>
+                  <span>index.astro</span>
                 </a>
               )}
               {posts.map((post) => (
@@ -146,7 +146,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     <div class="sl-c">~/ani-koni-portfolio/src/{activeFile}</div>
     <div class="sl-spacer"></div>
     <div class="sl-arrow sl-arrow-xb"></div>
-    <div class="sl-x"> {activeIcon === 'mdx' ? 'MDX' : 'TypeScript'}</div>
+    <div class="sl-x"> {activeIcon === 'mdx' ? 'MDX' : 'Astro'}</div>
     <div class="sl-arrow sl-arrow-ya"></div>
     <div class="sl-y">1:1</div>
   </div>
@@ -293,7 +293,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     font-weight: 700;
     flex-shrink: 0;
   }
-  .icon-ts { color: var(--color-nvim-blue); }
+  .icon-astro { color: var(--color-nvim-orange); }
   .icon-mdx { color: var(--color-nvim-purple); }
 
   .nvim-editor-wrap {
