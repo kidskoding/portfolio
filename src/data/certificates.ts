@@ -58,7 +58,7 @@ export const certificates: Certificate[] = [
     name: 'Meta Front End Development Capstone',
     issuer: 'Meta',
     issuedDate: 'Aug 2024',
-    skills: ['React', 'HTML/CSS', 'JavaScript', 'Version Control', 'Front-End Development'],
+    skills: ['Front-End Development', 'HTML', 'Cascading Style Sheets (CSS)', 'React.js', 'Git', 'JavaScript'],
   },
   {
     id: 'meta-backend',
