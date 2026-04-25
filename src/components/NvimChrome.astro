@@ -144,6 +144,7 @@ const astroIcon = `
             <div class="tree-folder tree-indent-2">&gt; <span>components</span></div>
             <div class="tree-folder tree-indent-2">&gt; <span>layouts</span></div>
           </div>
+          <div class="tree-folder tree-indent-1">&gt; <span>public</span></div>
           <div class="tree-folder tree-indent-1">&gt; <span>node_modules</span></div>
       </div>
     </nav>
@@ -165,7 +166,12 @@ const astroIcon = `
 
   <div class="nvim-statusline">
     <div class="sl-a"> NORMAL</div>
-    <div class="sl-b"> main</div>
+    <div class="sl-b">
+      <svg class="branch-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+        <path d="M5 3.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm0 2.122a2.25 2.25 0 1 0-1.5 0v.878A2.25 2.25 0 0 0 5.75 8.5h1.5v2.128a2.251 2.251 0 1 0 1.5 0V8.5h1.5a2.25 2.25 0 0 0 2.25-2.25v-.878a2.25 2.25 0 1 0-1.5 0v.878a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 5 6.25v-.878zm3.75 7.378a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm3-8.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z"/>
+      </svg>
+      main
+    </div>
     <div class="sl-c">~/portfolio/src/{activeFile}</div>
     <div class="sl-spacer"></div>
     <div class="sl-x"> utf-8</div>
@@ -430,6 +436,14 @@ const astroIcon = `
     background: var(--color-nvim-bg3);
     color: var(--color-nvim-fg);
     padding: 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .branch-icon {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
   }
   .sl-c {
     background: var(--color-nvim-bg1);
@@ -453,7 +467,7 @@ const astroIcon = `
     flex-shrink: 0;
   }
   .sl-ft-icon.icon-astro { color: var(--color-nvim-orange); }
-  .sl-ft-icon.icon-astro :global(svg) { width: 11px; height: 11px; display: block; }
+  :global(.sl-ft-icon.icon-astro svg) { width: 11px; height: 11px; display: block; }
   .sl-ft-icon.icon-mdx { color: var(--color-nvim-purple); }
   .sl-ft-icon.icon-json { color: var(--color-nvim-yellow); width: auto; }
   .sl-ft-icon.icon-mdx { width: auto; }
@@ -647,27 +661,10 @@ const astroIcon = `
     update();
   }
 
-  const ASTRO_SVG = document.querySelector<HTMLElement>('.buf-icon.icon-astro')?.innerHTML ?? '';
-
-  function updateFiletype() {
-    const filetypeEl = document.querySelector('.sl-filetype');
-    if (!filetypeEl) return;
-    const path = window.location.pathname.replace(/\/$/, '') || '/';
-    const blogSlug = path.match(/^\/blog\/(.+)$/);
-    if (blogSlug) {
-      filetypeEl.innerHTML = '<span class="sl-ft-icon icon-mdx">MDX</span><span>MDX</span>';
-    } else if (path === '/package-json') {
-      filetypeEl.innerHTML = '<span class="sl-ft-icon icon-json">JSON</span><span>JSON</span>';
-    } else {
-      filetypeEl.innerHTML = `<span class="sl-ft-icon icon-astro">${ASTRO_SVG}</span><span>Astro</span>`;
-    }
-  }
-
   initNvimTreeDrawer();
   initNvimTree();
   initStatusline();
   document.addEventListener('astro:page-load', initNvimTreeDrawer);
   document.addEventListener('astro:page-load', initNvimTree);
   document.addEventListener('astro:page-load', initStatusline);
-  document.addEventListener('astro:page-load', updateFiletype);
 </script>
