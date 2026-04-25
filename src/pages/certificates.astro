@@ -30,6 +30,9 @@ const certItems = certificates.reduce((items, cert) => {
   });
   return items;
 }, [] as CertificateItem[]);
+
+const groupedCertItems = certItems.filter((item): item is Extract<CertificateItem, { type: 'group' }> => item.type === 'group');
+const singleCertItems = certItems.filter((item): item is Extract<CertificateItem, { type: 'cert' }> => item.type === 'cert');
 ---
 
 <Layout title="Certifications">
@@ -40,28 +43,32 @@ const certItems = certificates.reduce((items, cert) => {
       <p class="text-text-muted mt-3 text-base max-w-md">licenses and certifications I've earned</p>
     </div>
 
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4" data-animate>
-      {certItems.map((item) => (
-        item.type === 'group' ? (
-          <details class="cert-folder border border-border-subtle bg-bg-card sm:col-span-2" open>
-            <summary class="cert-folder-summary">
-              <span class="cert-folder-caret" aria-hidden="true">›</span>
-              <span class="cert-folder-logo">
-                <IssuerLogo issuer={item.issuer} logo={item.issuerLogo} />
-              </span>
-              <span class="cert-folder-name">{item.issuer}</span>
-              <span class="cert-folder-count">{item.certificates.length}</span>
-            </summary>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 pt-0">
-              {item.certificates.map((cert) => (
-                <CertCard cert={cert} />
-              ))}
-            </div>
-          </details>
-        ) : (
-          <CertCard cert={item.certificate} />
-        )
+    <div class="mt-10 space-y-4" data-animate>
+      {groupedCertItems.map((item) => (
+        <details class="cert-folder border border-border-subtle bg-bg-card" open>
+          <summary class="cert-folder-summary">
+            <span class="cert-folder-caret" aria-hidden="true">›</span>
+            <span class="cert-folder-logo">
+              <IssuerLogo issuer={item.issuer} logo={item.issuerLogo} />
+            </span>
+            <span class="cert-folder-name">{item.issuer}</span>
+            <span class="cert-folder-count">{item.certificates.length}</span>
+          </summary>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 pt-0">
+            {item.certificates.map((cert) => (
+              <CertCard cert={cert} />
+            ))}
+          </div>
+        </details>
       ))}
+
+      {singleCertItems.length > 0 && (
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {singleCertItems.map((item) => (
+            <CertCard cert={item.certificate} />
+          ))}
+        </div>
+      )}
     </div>
   </main>
 </Layout>

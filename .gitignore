@@ -17,6 +17,9 @@ pnpm-debug.log*
 .env
 .env.production
 
+# local certificate PDFs (kept out of git/GitHub)
+public/certificates/
+
 # macOS-specific files
 .DS_Store
 
