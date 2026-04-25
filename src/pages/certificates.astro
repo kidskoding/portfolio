@@ -1,7 +1,23 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CertCard from '../components/CertCard.astro';
+import IssuerLogo from '../components/IssuerLogo.astro';
 import { certificates } from '../data/certificates';
+
+const certGroups = certificates.reduce((groups, cert) => {
+  const existing = groups.find((group) => group.issuer === cert.issuer);
+  if (existing) {
+    existing.certificates.push(cert);
+    return groups;
+  }
+
+  groups.push({
+    issuer: cert.issuer,
+    issuerLogo: cert.issuerLogo,
+    certificates: [cert],
+  });
+  return groups;
+}, [] as { issuer: string; issuerLogo?: string; certificates: typeof certificates }[]);
 ---
 
 <Layout title="Certifications">
@@ -12,10 +28,87 @@ import { certificates } from '../data/certificates';
       <p class="text-text-muted mt-3 text-base max-w-md">licenses and certifications I've earned</p>
     </div>
 
-    <div class="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-4" data-animate>
-      {certificates.map((cert) => (
-        <CertCard cert={cert} />
+    <div class="mt-10 space-y-4" data-animate>
+      {certGroups.map((group) => (
+        <details class="cert-folder border border-border-subtle bg-bg-card" open>
+          <summary class="cert-folder-summary">
+            <span class="cert-folder-caret" aria-hidden="true">›</span>
+            <span class="cert-folder-logo">
+              <IssuerLogo issuer={group.issuer} logo={group.issuerLogo} />
+            </span>
+            <span class="cert-folder-name">{group.issuer}</span>
+            <span class="cert-folder-count">{group.certificates.length}</span>
+          </summary>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 pt-0">
+            {group.certificates.map((cert) => (
+              <CertCard cert={cert} />
+            ))}
+          </div>
+        </details>
       ))}
     </div>
   </main>
 </Layout>
+
+<style>
+  .cert-folder {
+    overflow: hidden;
+  }
+
+  .cert-folder-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    font-family: var(--font-mono);
+    list-style: none;
+  }
+
+  .cert-folder-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .cert-folder-summary:hover {
+    background: var(--color-bg-card-hover);
+  }
+
+  .cert-folder-summary:focus-visible {
+    outline: 1px solid var(--color-accent);
+    outline-offset: -2px;
+  }
+
+  .cert-folder-caret {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    transition: transform 0.18s ease;
+  }
+
+  .cert-folder[open] .cert-folder-caret {
+    transform: rotate(90deg);
+  }
+
+  .cert-folder-logo {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .cert-folder-name {
+    font-size: 0.875rem;
+    font-weight: 700;
+    flex: 1;
+  }
+
+  .cert-folder-count {
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border-default);
+    background: var(--color-bg-secondary);
+    padding: 0.0625rem 0.45rem;
+    font-size: 0.75rem;
+  }
+</style>

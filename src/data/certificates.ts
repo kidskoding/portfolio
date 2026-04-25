@@ -12,6 +12,8 @@ export interface Certificate {
   skills: string[];
 }
 
+// To add a clickable PDF, place it in public/certificates/ and set
+// pdfPath: '/certificates/<filename>.pdf' on the matching certificate.
 export const certificates: Certificate[] = [
   {
     id: 'github-actions',
