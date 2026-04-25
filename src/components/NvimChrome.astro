@@ -17,6 +17,8 @@ const buffers = [
   { path: '/projects', file: 'projects.ts', icon: 'ts' },
   { path: '/blog', file: 'blog/index.ts', icon: 'ts' },
 ];
+const treeFiles = buffers.filter((buf) => buf.path !== '/blog');
+const blogIndex = buffers.find((buf) => buf.path === '/blog');
 
 let activeFile = 'index.ts';
 let activeIcon: 'ts' | 'mdx' = 'ts';
@@ -70,7 +72,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
       <div class="nvimtree-body">
         <div class="tree-folder">v <span>ani-koni-portfolio</span></div>
         <div class="tree-folder tree-indent-1">v <span>src</span></div>
-        {buffers.map((buf) => (
+        {treeFiles.map((buf) => (
           <a
             href={buf.path}
             class:list={['tree-file tree-indent-2', { 'tree-active': currentPath === buf.path }]}
@@ -82,6 +84,15 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
           </a>
         ))}
         <div class="tree-folder tree-indent-2">v <span>blog</span></div>
+        {blogIndex && (
+          <a
+            href={blogIndex.path}
+            class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === blogIndex.path }]}
+          >
+            <span class="tree-icon icon-ts">TS</span>
+            <span>index.ts</span>
+          </a>
+        )}
         {posts.map((post) => (
           <a
             href={`/blog/${post.id}`}
