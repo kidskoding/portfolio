@@ -10,27 +10,29 @@ const currentPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '');
 
 const buffers = [
   { path: '/', file: 'index.astro', icon: 'astro' },
-  { path: '/experience', file: 'experience.astro', icon: 'astro' },
-  { path: '/skills', file: 'skills.astro', icon: 'astro' },
   { path: '/about', file: 'about.astro', icon: 'astro' },
-  { path: '/contact', file: 'contact.astro', icon: 'astro' },
+  { path: '/experience', file: 'experience.astro', icon: 'astro' },
   { path: '/projects', file: 'projects.astro', icon: 'astro' },
-  { path: '/blog', file: 'blog/index.astro', icon: 'astro' },
+  { path: '/skills', file: 'skills.astro', icon: 'astro' },
+  { path: '/blog', file: 'blog.astro', icon: 'astro' },
+  { path: '/contact', file: 'contact.astro', icon: 'astro' },
 ];
-const treeFiles = buffers.filter((buf) => buf.path !== '/blog');
-const blogIndex = buffers.find((buf) => buf.path === '/blog');
+const treeFiles = buffers;
 
 let activeFile = 'index.astro';
-let activeIcon: 'astro' | 'mdx' = 'astro';
+let activeIcon: 'astro' | 'mdx' | 'json' = 'astro';
 const blogSlug = currentPath.match(/^\/blog\/(.+)$/);
 if (blogSlug) {
   activeFile = `blog/${blogSlug[1]}.mdx`;
   activeIcon = 'mdx';
+} else if (currentPath === '/package-json') {
+  activeFile = 'package.json';
+  activeIcon = 'json';
 } else {
   const match = buffers.find((b) => b.path === currentPath);
   if (match) {
     activeFile = match.file;
-    activeIcon = match.icon as 'astro' | 'mdx';
+    activeIcon = match.icon as 'astro' | 'mdx' | 'json';
   }
 }
 
@@ -59,7 +61,7 @@ const astroIcon = `
       <span aria-hidden="true">☰</span>
       <span>NvimTree</span>
     </button>
-    <span>nvim - ani-koni-portfolio/src/{activeFile}</span>
+    <span>nvim - portfolio/src/{activeFile}</span>
   </div>
 
   <div class="nvim-bufferline">
@@ -82,6 +84,13 @@ const astroIcon = `
         <span>{blogSlug[1]}.mdx</span>
       </a>
     )}
+    {currentPath === '/package-json' && (
+      <a href='/package-json' class="nvim-buffer active">
+        <span class="buf-num">{buffers.length + 1}</span>
+        <span class="buf-icon icon-json">JSON</span>
+        <span>package.json</span>
+      </a>
+    )}
   </div>
 
   <div class="nvim-main">
@@ -89,16 +98,22 @@ const astroIcon = `
     <nav class="nvimtree" id="nvimtree" aria-label="File explorer">
       <div class="nvimtree-header"> NvimTree</div>
       <div class="nvimtree-body">
-        <button class="tree-folder" type="button" data-tree-toggle="repo" aria-expanded="true">
+        <div class="tree-folder">
           <span class="tree-caret" aria-hidden="true">v</span>
-          <span>ani-koni-portfolio</span>
-        </button>
-        <div data-tree-group="repo">
-          <button class="tree-folder tree-indent-1" type="button" data-tree-toggle="src" aria-expanded="true">
-            <span class="tree-caret" aria-hidden="true">v</span>
-            <span>src</span>
-          </button>
-          <div data-tree-group="src">
+          <span>portfolio</span>
+        </div>
+        <a
+          href='/package-json'
+          class:list={['tree-file tree-indent-1', { 'tree-active': currentPath === '/package-json' }]}
+        >
+          <span class="tree-icon icon-json">JSON</span>
+          <span>package.json</span>
+        </a>
+        <div class="tree-folder tree-indent-1">
+          <span class="tree-caret" aria-hidden="true">v</span>
+          <span>src</span>
+        </div>
+        <div>
             {treeFiles.map((buf) => (
               <a
                 href={buf.path}
@@ -110,49 +125,34 @@ const astroIcon = `
                 <span>{buf.file}</span>
               </a>
             ))}
-            <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="blog" aria-expanded="true">
+            <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="blog-posts" aria-expanded="true">
               <span class="tree-caret" aria-hidden="true">v</span>
-              <span>blog</span>
+              <span>blog-posts</span>
             </button>
-            <div data-tree-group="blog">
-              {blogIndex && (
+            <div data-tree-group="blog-posts">
+              {posts.map((post) => (
                 <a
-                  href={blogIndex.path}
-                  class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === blogIndex.path }]}
+                  href={`/blog/${post.id}`}
+                  class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/blog/${post.id}` }]}
                 >
-                  <span class="tree-icon icon-astro" set:html={astroIcon}></span>
-                  <span>index.astro</span>
+                  <span class="tree-icon icon-mdx">MDX</span>
+                  <span>{post.id}.mdx</span>
                 </a>
-              )}
-              <button class="tree-folder tree-indent-3" type="button" data-tree-toggle="posts" aria-expanded="true">
-                <span class="tree-caret" aria-hidden="true">v</span>
-                <span>posts</span>
-              </button>
-              <div data-tree-group="posts">
-                {posts.map((post) => (
-                  <a
-                    href={`/blog/${post.id}`}
-                    class:list={['tree-file tree-indent-4', { 'tree-active': currentPath === `/blog/${post.id}` }]}
-                  >
-                    <span class="tree-icon icon-mdx">MDX</span>
-                    <span>{post.id}.mdx</span>
-                  </a>
-                ))}
-              </div>
+              ))}
             </div>
             <div class="tree-folder tree-indent-2">&gt; <span>data</span></div>
             <div class="tree-folder tree-indent-2">&gt; <span>components</span></div>
             <div class="tree-folder tree-indent-2">&gt; <span>layouts</span></div>
           </div>
-        </div>
+          <div class="tree-folder tree-indent-1">&gt; <span>node_modules</span></div>
       </div>
     </nav>
 
     <div class="nvim-editor-wrap">
       <div class="nvim-winbar">
-        <span class="winbar-root">ani-koni-portfolio</span>
-        <span class="winbar-sep"> &gt; </span>
-        <span>src</span>
+        <span class="winbar-root">portfolio</span>
+        {activeIcon !== 'json' && <span class="winbar-sep"> &gt; </span>}
+        {activeIcon !== 'json' && <span>src</span>}
         <span class="winbar-sep"> &gt; </span>
         <span class="winbar-file">{activeFile}</span>
       </div>
@@ -165,15 +165,21 @@ const astroIcon = `
 
   <div class="nvim-statusline">
     <div class="sl-a"> NORMAL</div>
-    <div class="sl-arrow sl-arrow-ab"></div>
     <div class="sl-b"> main</div>
-    <div class="sl-arrow sl-arrow-bc"></div>
-    <div class="sl-c">~/ani-koni-portfolio/src/{activeFile}</div>
+    <div class="sl-c">~/portfolio/src/{activeFile}</div>
     <div class="sl-spacer"></div>
-    <div class="sl-arrow sl-arrow-xb"></div>
-    <div class="sl-x"> {activeIcon === 'mdx' ? 'MDX' : 'Astro'}</div>
-    <div class="sl-arrow sl-arrow-ya"></div>
-    <div class="sl-y">1:1</div>
+    <div class="sl-x"> utf-8</div>
+    <div class="sl-x-div"></div>
+    <div class="sl-x sl-filetype">
+      {activeIcon === 'mdx' && <span class="sl-ft-icon icon-mdx">MDX</span>}
+      {activeIcon === 'json' && <span class="sl-ft-icon icon-json">JSON</span>}
+      {activeIcon === 'astro' && <span class="sl-ft-icon icon-astro" set:html={astroIcon}></span>}
+      <span>{activeIcon === 'mdx' ? 'MDX' : activeIcon === 'json' ? 'JSON' : 'Astro'}</span>
+    </div>
+    <div class="sl-x-div"></div>
+    <div class="sl-x" id="sl-pct"> Top</div>
+    <div class="sl-x-div"></div>
+    <div class="sl-y" id="sl-pos"> 1:1</div>
   </div>
 </div>
 
@@ -383,7 +389,7 @@ const astroIcon = `
     gap: 0;
   }
   .winbar-root { color: var(--color-nvim-aqua); }
-  .winbar-sep { color: var(--color-nvim-bg3); margin: 0 2px; }
+  .winbar-sep { color: var(--color-nvim-bg3); margin: 0 6px; }
   .winbar-file { color: var(--color-nvim-yellow); }
 
   .nvim-editor {
@@ -436,6 +442,27 @@ const astroIcon = `
     white-space: nowrap;
   }
   .sl-spacer { flex: 1; background: var(--color-nvim-bg1); }
+  .sl-filetype { gap: 5px; }
+  .sl-ft-icon {
+    font-size: 9px;
+    font-weight: 700;
+    width: 13px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .sl-ft-icon.icon-astro { color: var(--color-nvim-orange); }
+  .sl-ft-icon.icon-astro :global(svg) { width: 11px; height: 11px; display: block; }
+  .sl-ft-icon.icon-mdx { color: var(--color-nvim-purple); }
+  .sl-ft-icon.icon-json { color: var(--color-nvim-yellow); width: auto; }
+  .sl-ft-icon.icon-mdx { width: auto; }
+  .icon-json { color: var(--color-nvim-yellow); }
+  .sl-x-div {
+    width: 1px;
+    background: var(--color-nvim-bg);
+    flex-shrink: 0;
+  }
   .sl-x {
     background: var(--color-nvim-bg3);
     color: var(--color-nvim-fg);
@@ -446,37 +473,6 @@ const astroIcon = `
     color: var(--color-nvim-bg);
     padding: 0 10px;
     font-weight: 700;
-  }
-
-  .sl-arrow {
-    width: 14px;
-    flex-shrink: 0;
-    position: relative;
-  }
-  .sl-arrow::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
-  .sl-arrow-ab { background: var(--color-nvim-bg3); }
-  .sl-arrow-ab::before {
-    background: var(--color-nvim-yellow);
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
-  }
-  .sl-arrow-bc { background: var(--color-nvim-bg1); }
-  .sl-arrow-bc::before {
-    background: var(--color-nvim-bg3);
-    clip-path: polygon(0 0, 100% 50%, 0 100%);
-  }
-  .sl-arrow-xb { background: var(--color-nvim-bg3); }
-  .sl-arrow-xb::before {
-    background: var(--color-nvim-bg1);
-    clip-path: polygon(100% 0, 0 50%, 100% 100%);
-  }
-  .sl-arrow-ya { background: var(--color-nvim-yellow); }
-  .sl-arrow-ya::before {
-    background: var(--color-nvim-bg3);
-    clip-path: polygon(100% 0, 0 50%, 100% 100%);
   }
 
   @media (max-width: 760px) {
@@ -555,7 +551,8 @@ const astroIcon = `
     }
 
     .sl-b,
-    .sl-x {
+    .sl-x,
+    .sl-x-div {
       display: none;
     }
   }
@@ -594,30 +591,83 @@ const astroIcon = `
     });
   }
 
+  function applyTreeState(toggle: HTMLButtonElement, expanded: boolean) {
+    const key = toggle.dataset.treeToggle;
+    if (!key) return;
+    const group = document.querySelector<HTMLElement>(`[data-tree-group="${key}"]`);
+    if (!group) return;
+    toggle.setAttribute('aria-expanded', String(expanded));
+    group.hidden = !expanded;
+    const caret = toggle.querySelector<HTMLElement>('.tree-caret');
+    if (caret) caret.textContent = expanded ? 'v' : '>';
+  }
+
   function initNvimTree() {
     document.querySelectorAll<HTMLButtonElement>('[data-tree-toggle]').forEach((toggle) => {
+      const key = toggle.dataset.treeToggle;
+      if (!key) return;
+
+      const stored = sessionStorage.getItem(`tree:${key}`);
+      const expanded = stored === null ? toggle.getAttribute('aria-expanded') !== 'false' : stored === 'true';
+      applyTreeState(toggle, expanded);
+
       if (toggle.dataset.bound === 'true') return;
       toggle.dataset.bound = 'true';
 
       toggle.addEventListener('click', () => {
-        const key = toggle.dataset.treeToggle;
-        if (!key) return;
-
-        const group = document.querySelector<HTMLElement>(`[data-tree-group="${key}"]`);
-        if (!group) return;
-
         const isExpanded = toggle.getAttribute('aria-expanded') !== 'false';
-        toggle.setAttribute('aria-expanded', String(!isExpanded));
-        group.hidden = isExpanded;
-
-        const caret = toggle.querySelector<HTMLElement>('.tree-caret');
-        if (caret) caret.textContent = isExpanded ? '>' : 'v';
+        applyTreeState(toggle, !isExpanded);
+        sessionStorage.setItem(`tree:${key}`, String(!isExpanded));
       });
     });
   }
 
+  function initStatusline() {
+    const editor = document.querySelector<HTMLElement>('.nvim-editor');
+    const pctEl = document.getElementById('sl-pct');
+    const posEl = document.getElementById('sl-pos');
+    if (!editor || !pctEl || !posEl) return;
+
+    function update() {
+      const scrollTop = editor.scrollTop;
+      const scrollHeight = editor.scrollHeight - editor.clientHeight;
+      const line = Math.max(1, Math.round(scrollTop / 20) + 1);
+      posEl.textContent = `${line}:1`;
+      if (scrollHeight <= 0 || scrollTop === 0) {
+        pctEl.textContent = ' Top';
+      } else if (scrollTop >= scrollHeight - 1) {
+        pctEl.textContent = ' Bot';
+      } else {
+        pctEl.textContent = ` ${Math.round((scrollTop / scrollHeight) * 100)}%`;
+      }
+    }
+
+    editor.removeEventListener('scroll', update);
+    editor.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  const ASTRO_SVG = document.querySelector<HTMLElement>('.buf-icon.icon-astro')?.innerHTML ?? '';
+
+  function updateFiletype() {
+    const filetypeEl = document.querySelector('.sl-filetype');
+    if (!filetypeEl) return;
+    const path = window.location.pathname.replace(/\/$/, '') || '/';
+    const blogSlug = path.match(/^\/blog\/(.+)$/);
+    if (blogSlug) {
+      filetypeEl.innerHTML = '<span class="sl-ft-icon icon-mdx">MDX</span><span>MDX</span>';
+    } else if (path === '/package-json') {
+      filetypeEl.innerHTML = '<span class="sl-ft-icon icon-json">JSON</span><span>JSON</span>';
+    } else {
+      filetypeEl.innerHTML = `<span class="sl-ft-icon icon-astro">${ASTRO_SVG}</span><span>Astro</span>`;
+    }
+  }
+
   initNvimTreeDrawer();
   initNvimTree();
+  initStatusline();
   document.addEventListener('astro:page-load', initNvimTreeDrawer);
   document.addEventListener('astro:page-load', initNvimTree);
+  document.addEventListener('astro:page-load', initStatusline);
+  document.addEventListener('astro:page-load', updateFiletype);
 </script>
