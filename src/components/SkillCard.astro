@@ -17,14 +17,14 @@ const fallbackLetters = name
 ---
 
 <div
-	class="rounded-lg border border-border-subtle bg-bg-card p-3 flex flex-col items-center justify-center gap-2 aspect-square text-center"
+	class="border border-border-subtle bg-bg-card p-3 flex flex-col items-center justify-center gap-2 aspect-square text-center"
 >
 	{hideIcon ? null : svg ? (
-		<span class="w-12 h-12 shrink-0 rounded-md flex items-center justify-center bg-white/8 ring-1 ring-white/12">
+		<span class="w-12 h-12 shrink-0 flex items-center justify-center bg-white/8 ring-1 ring-white/12">
 			<span class="w-8 h-8 [&>svg]:h-full [&>svg]:w-full [&>img]:max-h-full [&>img]:max-w-full [&>img]:object-contain" set:html={svg} />
 		</span>
 	) : (
-		<span class="w-12 h-12 shrink-0 rounded-md flex items-center justify-center bg-white/8 ring-1 ring-white/12 text-sm font-bold text-text-secondary">
+		<span class="w-12 h-12 shrink-0 flex items-center justify-center bg-white/8 ring-1 ring-white/12 text-sm font-bold text-text-secondary">
 			{fallbackLetters}
 		</span>
 	)}
