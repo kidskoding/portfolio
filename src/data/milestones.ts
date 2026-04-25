@@ -10,8 +10,8 @@ export const milestones: Milestone[] = [
   {
     hash: 'a7f3d2e',
     type: 'feat(career)',
-    msg: 'accepted T-Mobile SWE Intern offer',
-    date: 'May 2026',
+    msg: 'accepted T-Mobile SWE internship offer 🩷',
+    date: 'Apr 2026',
     tag: 'HEAD',
   },
   {
@@ -48,7 +48,7 @@ export const milestones: Milestone[] = [
     hash: '9e4d2c1',
     type: 'chore(edu)',
     msg: 'started CS + Education - learning sciences and learning technology @ UIUC',
-    date: 'Aug 2023',
+    date: 'Aug 2024',
   },
   {
     hash: '3f8a5b6',
