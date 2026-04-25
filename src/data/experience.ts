@@ -60,7 +60,7 @@ export const experiences: Experience[] = [
                 description: [
                     "incoming summer 2026 - servicenow platform team, building ai agents and enterprise workflows to support internal IT operations",
                 ],
-                skills: ["ServiceNow"],
+                skills: ["ServiceNow", "Salesforce", "Agentic AI Development"],
             },
         ],
     },
