@@ -48,6 +48,17 @@ const astroIcon = `
 
 <div class="nvim-shell">
   <div class="nvim-titlebar">
+    <button
+      class="nvim-tree-trigger"
+      type="button"
+      aria-controls="nvimtree"
+      aria-expanded="false"
+      aria-label="Open file explorer"
+      data-tree-drawer-toggle
+    >
+      <span aria-hidden="true">☰</span>
+      <span>NvimTree</span>
+    </button>
     <span>nvim - ani-koni-portfolio/src/{activeFile}</span>
   </div>
 
@@ -74,7 +85,8 @@ const astroIcon = `
   </div>
 
   <div class="nvim-main">
-    <nav class="nvimtree" aria-label="File explorer">
+    <button class="nvimtree-backdrop" type="button" aria-label="Close file explorer" data-tree-drawer-close></button>
+    <nav class="nvimtree" id="nvimtree" aria-label="File explorer">
       <div class="nvimtree-header"> NvimTree</div>
       <div class="nvimtree-body">
         <button class="tree-folder" type="button" data-tree-toggle="repo" aria-expanded="true">
@@ -176,6 +188,7 @@ const astroIcon = `
   }
 
   .nvim-titlebar {
+    position: relative;
     background: var(--color-nvim-bg-hard);
     padding: 4px 14px;
     text-align: center;
@@ -183,6 +196,32 @@ const astroIcon = `
     color: var(--color-nvim-fg3);
     border-bottom: 1px solid var(--color-nvim-bg);
     flex-shrink: 0;
+  }
+  .nvim-tree-trigger {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 1px solid var(--color-nvim-bg3);
+    background: var(--color-nvim-bg1);
+    color: var(--color-nvim-fg2);
+    padding: 1px 7px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+  .nvim-tree-trigger:hover,
+  .nvim-tree-trigger[aria-expanded='true'] {
+    color: var(--color-nvim-yellow);
+    border-color: var(--color-nvim-yellow);
+  }
+  .nvim-tree-trigger:focus-visible {
+    outline: 1px solid var(--color-nvim-yellow);
+    outline-offset: 2px;
   }
 
   .nvim-bufferline {
@@ -219,9 +258,13 @@ const astroIcon = `
   .nvim-buffer.active .buf-num { color: var(--color-nvim-fg3); }
 
   .nvim-main {
+    position: relative;
     display: flex;
     flex: 1;
     overflow: hidden;
+  }
+  .nvimtree-backdrop {
+    display: none;
   }
 
   .nvimtree {
@@ -437,21 +480,120 @@ const astroIcon = `
   }
 
   @media (max-width: 760px) {
+    .nvim-titlebar {
+      padding-left: 100px;
+      padding-right: 10px;
+      text-align: left;
+    }
+
+    .nvim-titlebar > span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .nvim-tree-trigger {
+      display: inline-flex;
+    }
+
+    .nvim-bufferline {
+      min-height: 31px;
+    }
+
+    .nvim-buffer {
+      padding-left: 10px;
+      padding-right: 10px;
+      max-width: 140px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
     .nvimtree {
-      display: none;
+      position: absolute;
+      inset: 0 auto 0 0;
+      z-index: 20;
+      width: min(82vw, 300px);
+      border-right: 2px solid var(--color-nvim-yellow);
+      box-shadow: 18px 0 40px rgba(0, 0, 0, 0.55);
+      transform: translateX(-100%);
+      transition: transform 0.18s ease;
+    }
+
+    .nvim-shell.tree-drawer-open .nvimtree {
+      transform: translateX(0);
+    }
+
+    .nvimtree-backdrop {
+      display: block;
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      border: 0;
+      background: rgba(10, 8, 5, 0.58);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+    }
+
+    .nvim-shell.tree-drawer-open .nvimtree-backdrop {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     .nvim-editor {
-      padding: 16px;
+      padding: 14px;
+    }
+
+    :global(.nvim-editor main) {
+      padding-left: 0;
+      padding-right: 0;
     }
 
     .sl-c {
+      display: none;
+    }
+
+    .sl-b,
+    .sl-x {
       display: none;
     }
   }
 </style>
 
 <script>
+  function initNvimTreeDrawer() {
+    const shell = document.querySelector<HTMLElement>('.nvim-shell');
+    const trigger = document.querySelector<HTMLButtonElement>('[data-tree-drawer-toggle]');
+    const closeButton = document.querySelector<HTMLButtonElement>('[data-tree-drawer-close]');
+    const tree = document.getElementById('nvimtree');
+    if (!shell || !trigger || !closeButton || !tree) return;
+    if (trigger.dataset.bound === 'true') return;
+    trigger.dataset.bound = 'true';
+
+    function setOpen(isOpen: boolean) {
+      shell.classList.toggle('tree-drawer-open', isOpen);
+      trigger.setAttribute('aria-expanded', String(isOpen));
+      trigger.setAttribute('aria-label', isOpen ? 'Close file explorer' : 'Open file explorer');
+    }
+
+    trigger.addEventListener('click', () => {
+      setOpen(!shell.classList.contains('tree-drawer-open'));
+    });
+
+    closeButton.addEventListener('click', () => setOpen(false));
+
+    tree.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && shell.classList.contains('tree-drawer-open')) {
+        setOpen(false);
+      }
+    });
+  }
+
   function initNvimTree() {
     document.querySelectorAll<HTMLButtonElement>('[data-tree-toggle]').forEach((toggle) => {
       if (toggle.dataset.bound === 'true') return;
@@ -474,6 +616,8 @@ const astroIcon = `
     });
   }
 
+  initNvimTreeDrawer();
   initNvimTree();
+  document.addEventListener('astro:page-load', initNvimTreeDrawer);
   document.addEventListener('astro:page-load', initNvimTree);
 </script>
