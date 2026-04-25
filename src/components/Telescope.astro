@@ -276,6 +276,38 @@ const easterEggs = [
     input.value = '';
   }
 
+  function fuzzyScore(query: string, value: string) {
+    if (!query) return 0;
+
+    const q = query.toLowerCase();
+    const text = value.toLowerCase();
+    let qIndex = 0;
+    let score = 0;
+    let streak = 0;
+
+    for (let i = 0; i < text.length && qIndex < q.length; i += 1) {
+      if (text[i] !== q[qIndex]) {
+        streak = 0;
+        continue;
+      }
+
+      score += 8 + streak * 4;
+      if (i === 0 || ['/', '-', '_', '.', ' '].includes(text[i - 1])) score += 5;
+      streak += 1;
+      qIndex += 1;
+    }
+
+    if (qIndex !== q.length) return -1;
+    if (text.includes(q)) score += 30;
+    if (text.startsWith(q)) score += 20;
+
+    return score - Math.max(0, text.length - q.length) * 0.05;
+  }
+
+  function bestFuzzyScore(query: string, values: string[]) {
+    return Math.max(...values.map((value) => fuzzyScore(query, value)));
+  }
+
   function render(query: string) {
     const q = query.toLowerCase().trim();
     const exactEgg = eggData.find((e) => e.cmd === q);
@@ -287,13 +319,25 @@ const easterEggs = [
     }
 
     const filteredPages = q
-      ? pageData.filter((p) => p.label.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q))
+      ? pageData
+        .map((p) => ({ item: p, score: bestFuzzyScore(q, [p.label, p.desc]) }))
+        .filter(({ score }) => score >= 0)
+        .sort((a, b) => b.score - a.score)
+        .map(({ item }) => item)
       : pageData;
     const filteredPosts = q
-      ? postData.filter((p) => p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q))
+      ? postData
+        .map((p) => ({ item: p, score: bestFuzzyScore(q, [p.title, p.description, p.id]) }))
+        .filter(({ score }) => score >= 0)
+        .sort((a, b) => b.score - a.score)
+        .map(({ item }) => item)
       : postData;
     const filteredEggs = q
-      ? eggData.filter((e) => e.cmd.startsWith(q))
+      ? eggData
+        .map((e) => ({ item: e, score: fuzzyScore(q, e.cmd) }))
+        .filter(({ score }) => score >= 0)
+        .sort((a, b) => b.score - a.score)
+        .map(({ item }) => item)
       : eggData;
 
     currentItems = [
