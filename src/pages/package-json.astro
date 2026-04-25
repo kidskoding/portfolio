@@ -1,0 +1,63 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const k = (s: string) => `<span class="j-key">"${s}"</span>`;
+const s = (s: string) => `<span class="j-str">"${s}"</span>`;
+const p = (s: string) => `<span class="j-punct">${s}</span>`;
+
+const content = [
+  p('{'),
+  `  ${k('name')}${p(':')}         ${s('portfolio')}${p(',')}`,
+  `  ${k('type')}${p(':')}         ${s('module')}${p(',')}`,
+  `  ${k('version')}${p(':')}      ${s('0.0.1')}${p(',')}`,
+  `  ${k('description')}${p(':')}  ${s('Personal portfolio — Astro, Tailwind CSS, GSAP, MDX')}${p(',')}`,
+  `  ${k('author')}${p(':')}       ${s('Anirudh Konidala<anirudhkonidala@gmail.com>')}${p(',')}`,
+  `  ${k('license')}${p(':')}      ${s('MIT')}${p(',')}`,
+  '',
+  `  ${k('scripts')}${p(':')} ${p('{')}`,
+  `    ${k('dev')}${p(':')}     ${s('astro dev')}${p(',')}`,
+  `    ${k('build')}${p(':')}   ${s('astro build')}${p(',')}`,
+  `    ${k('preview')}${p(':')} ${s('astro preview')}`,
+  `  ${p('},')}`,
+  '',
+  `  ${k('dependencies')}${p(':')} ${p('{')}`,
+  `    ${k('@astrojs/mdx')}${p(':')}              ${s('^5.0.3')}${p(',')}`,
+  `    ${k('@iconify-json/ph')}${p(':')}           ${s('^1.2.2')}${p(',')}`,
+  `    ${k('@iconify-json/simple-icons')}${p(':')} ${s('^1.2.70')}${p(',')}`,
+  `    ${k('@iconify/utils')}${p(':')}             ${s('^3.1.0')}${p(',')}`,
+  `    ${k('@tailwindcss/vite')}${p(':')}          ${s('^4.1.18')}${p(',')}`,
+  `    ${k('astro')}${p(':')}                      ${s('^6.1.7')}${p(',')}`,
+  `    ${k('gsap')}${p(':')}                       ${s('^3.14.2')}${p(',')}`,
+  `    ${k('tailwindcss')}${p(':')}                ${s('^4.1.18')}`,
+  `  ${p('}')}`,
+  p('}'),
+].join('\n');
+---
+
+<Layout title="package.json">
+  <div class="pkg-wrap">
+    <pre class="pkg-pre"><code set:html={content} /></pre>
+  </div>
+</Layout>
+
+<style>
+  .pkg-wrap {
+    padding: 1.5rem 2rem;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .pkg-pre {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--color-nvim-fg);
+    background: transparent;
+    white-space: pre;
+  }
+
+  :global(.j-key)   { color: var(--color-nvim-aqua); }
+  :global(.j-str)   { color: var(--color-nvim-green); }
+  :global(.j-punct) { color: var(--color-nvim-fg2); }
+</style>
