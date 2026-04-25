@@ -4,33 +4,51 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-bg-primary: #0a0a0f;
-  --color-bg-secondary: #111118;
-  --color-bg-card: #13131b;
-  --color-bg-card-hover: #1a1a25;
+  /* Gruvbox Dark */
+  --color-bg-primary: #282828;
+  --color-bg-secondary: #1d2021;
+  --color-bg-card: #32302f;
+  --color-bg-card-hover: #3c3836;
 
-  --color-border-subtle: #1e1e2e;
-  --color-border-default: #2a2a3c;
-  --color-border-accent: #3b3b54;
+  --color-border-subtle: #3c3836;
+  --color-border-default: #504945;
+  --color-border-accent: #665c54;
 
-  --color-text-primary: #f0f0f3;
-  --color-text-secondary: #a1a1aa;
-  --color-text-muted: #71717a;
+  --color-text-primary: #ebdbb2;
+  --color-text-secondary: #a89984;
+  --color-text-muted: #7c6f64;
 
-  --color-accent: #6B8CFE;
-  --color-accent-hover: #5778F0;
-  --color-accent-glow: rgba(107, 140, 254, 0.15);
-  --color-accent-subtle: rgba(107, 140, 254, 0.08);
+  --color-accent: #fabd2f;
+  --color-accent-hover: #d79921;
+  --color-accent-glow: rgba(250, 189, 47, 0.15);
+  --color-accent-subtle: rgba(250, 189, 47, 0.08);
 
-  --color-accent-secondary: #E89A52;
+  --color-accent-secondary: #fe8019;
 
-  --color-timeline-line: #2a2a3c;
-  --color-timeline-dot: #6B8CFE;
-  --color-timeline-dot-glow: rgba(107, 140, 254, 0.4);
+  --color-timeline-line: #504945;
+  --color-timeline-dot: #fabd2f;
+  --color-timeline-dot-glow: rgba(250, 189, 47, 0.4);
 
-  --color-tag-bg: rgba(107, 140, 254, 0.1);
-  --color-tag-text: #9BB3FE;
-  --color-tag-border: rgba(107, 140, 254, 0.2);
+  --color-tag-bg: rgba(69, 133, 136, 0.1);
+  --color-tag-text: #83a598;
+  --color-tag-border: rgba(69, 133, 136, 0.2);
+
+  /* Gruvbox chrome tokens */
+  --color-nvim-bg-hard: #1d2021;
+  --color-nvim-bg: #282828;
+  --color-nvim-bg1: #32302f;
+  --color-nvim-bg2: #3c3836;
+  --color-nvim-bg3: #504945;
+  --color-nvim-fg: #ebdbb2;
+  --color-nvim-fg2: #a89984;
+  --color-nvim-fg3: #7c6f64;
+  --color-nvim-yellow: #fabd2f;
+  --color-nvim-orange: #fe8019;
+  --color-nvim-aqua: #83a598;
+  --color-nvim-blue: #458588;
+  --color-nvim-green: #b8bb26;
+  --color-nvim-purple: #d3869b;
+  --color-nvim-red: #fb4934;
 }
 
 html {
@@ -78,7 +96,7 @@ body::before {
 
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(135deg, #6B8CFE 0%, #E89A52 100%);
+  background: linear-gradient(135deg, #fabd2f 0%, #fe8019 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -90,7 +108,7 @@ body::before {
 .glow-card {
   position: relative;
   background: var(--color-bg-card);
-  border-radius: 0.75rem;
+  border-radius: 0;
   overflow: hidden;
 }
 
@@ -102,8 +120,8 @@ body::before {
   padding: 1px;
   background: linear-gradient(
     135deg,
-    rgba(107, 140, 254, 0.15),
-    rgba(232, 154, 82, 0.06),
+    rgba(250, 189, 47, 0.15),
+    rgba(254, 128, 25, 0.06),
     transparent 50%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -117,8 +135,8 @@ body::before {
 .glow-card:hover::before {
   background: linear-gradient(
     135deg,
-    rgba(107, 140, 254, 0.4),
-    rgba(232, 154, 82, 0.15),
+    rgba(250, 189, 47, 0.4),
+    rgba(254, 128, 25, 0.15),
     transparent 70%
   );
 }
@@ -131,7 +149,7 @@ body::before {
   opacity: 0;
   background: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(107, 140, 254, 0.06),
+    rgba(250, 189, 47, 0.06),
     transparent 40%
   );
   pointer-events: none;
@@ -166,7 +184,7 @@ body::before {
 .orb-1 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(107, 140, 254, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(250, 189, 47, 0.08) 0%, transparent 70%);
   top: -100px;
   right: -100px;
   animation: float-orb 12s ease-in-out infinite;
@@ -175,7 +193,7 @@ body::before {
 .orb-2 {
   width: 350px;
   height: 350px;
-  background: radial-gradient(circle, rgba(232, 154, 82, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(254, 128, 25, 0.05) 0%, transparent 70%);
   bottom: 10%;
   left: -80px;
   animation: float-orb-reverse 15s ease-in-out infinite;
@@ -184,7 +202,7 @@ body::before {
 .orb-3 {
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, rgba(107, 140, 254, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(250, 189, 47, 0.04) 0%, transparent 70%);
   top: 40%;
   right: -50px;
   animation: float-orb 18s ease-in-out infinite;
@@ -192,8 +210,8 @@ body::before {
 
 /* Timeline dot pulse */
 @keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(107, 140, 254, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(107, 140, 254, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 189, 47, 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(250, 189, 47, 0); }
 }
 
 .timeline-dot {
