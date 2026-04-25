@@ -70,41 +70,56 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     <nav class="nvimtree" aria-label="File explorer">
       <div class="nvimtree-header"> NvimTree</div>
       <div class="nvimtree-body">
-        <div class="tree-folder">v <span>ani-koni-portfolio</span></div>
-        <div class="tree-folder tree-indent-1">v <span>src</span></div>
-        {treeFiles.map((buf) => (
-          <a
-            href={buf.path}
-            class:list={['tree-file tree-indent-2', { 'tree-active': currentPath === buf.path }]}
-          >
-            <span class:list={['tree-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-ts']}>
-              {buf.icon === 'ts' ? 'TS' : 'MDX'}
-            </span>
-            <span>{buf.file}</span>
-          </a>
-        ))}
-        <div class="tree-folder tree-indent-2">v <span>blog</span></div>
-        {blogIndex && (
-          <a
-            href={blogIndex.path}
-            class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === blogIndex.path }]}
-          >
-            <span class="tree-icon icon-ts">TS</span>
-            <span>index.ts</span>
-          </a>
-        )}
-        {posts.map((post) => (
-          <a
-            href={`/blog/${post.id}`}
-            class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/blog/${post.id}` }]}
-          >
-            <span class="tree-icon icon-mdx">MDX</span>
-            <span>{post.id}.mdx</span>
-          </a>
-        ))}
-        <div class="tree-folder tree-indent-2">&gt; <span>data</span></div>
-        <div class="tree-folder tree-indent-2">&gt; <span>components</span></div>
-        <div class="tree-folder tree-indent-2">&gt; <span>layouts</span></div>
+        <button class="tree-folder" type="button" data-tree-toggle="repo" aria-expanded="true">
+          <span class="tree-caret" aria-hidden="true">v</span>
+          <span>ani-koni-portfolio</span>
+        </button>
+        <div data-tree-group="repo">
+          <button class="tree-folder tree-indent-1" type="button" data-tree-toggle="src" aria-expanded="true">
+            <span class="tree-caret" aria-hidden="true">v</span>
+            <span>src</span>
+          </button>
+          <div data-tree-group="src">
+            {treeFiles.map((buf) => (
+              <a
+                href={buf.path}
+                class:list={['tree-file tree-indent-2', { 'tree-active': currentPath === buf.path }]}
+              >
+                <span class:list={['tree-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-ts']}>
+                  {buf.icon === 'ts' ? 'TS' : 'MDX'}
+                </span>
+                <span>{buf.file}</span>
+              </a>
+            ))}
+            <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="blog" aria-expanded="true">
+              <span class="tree-caret" aria-hidden="true">v</span>
+              <span>blog</span>
+            </button>
+            <div data-tree-group="blog">
+              {blogIndex && (
+                <a
+                  href={blogIndex.path}
+                  class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === blogIndex.path }]}
+                >
+                  <span class="tree-icon icon-ts">TS</span>
+                  <span>index.ts</span>
+                </a>
+              )}
+              {posts.map((post) => (
+                <a
+                  href={`/blog/${post.id}`}
+                  class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/blog/${post.id}` }]}
+                >
+                  <span class="tree-icon icon-mdx">MDX</span>
+                  <span>{post.id}.mdx</span>
+                </a>
+              ))}
+            </div>
+            <div class="tree-folder tree-indent-2">&gt; <span>data</span></div>
+            <div class="tree-folder tree-indent-2">&gt; <span>components</span></div>
+            <div class="tree-folder tree-indent-2">&gt; <span>layouts</span></div>
+          </div>
+        </div>
       </div>
     </nav>
 
@@ -219,11 +234,37 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     display: flex;
     align-items: center;
     gap: 5px;
+    width: 100%;
+    border: 0;
+    background: transparent;
     padding: 2px 10px;
     color: var(--color-nvim-aqua);
     font-size: 12px;
     line-height: 1.8;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    text-align: left;
+  }
+  .tree-folder:hover {
+    background: var(--color-nvim-bg1);
+  }
+  .tree-folder:not(button) {
     cursor: default;
+  }
+  .tree-folder:not(button):hover {
+    background: transparent;
+  }
+  .tree-folder:focus-visible {
+    outline: 1px solid var(--color-nvim-yellow);
+    outline-offset: -1px;
+  }
+  .tree-caret {
+    width: 10px;
+    flex-shrink: 0;
+    color: var(--color-nvim-fg3);
+  }
+  [data-tree-group][hidden] {
+    display: none;
   }
   .tree-file {
     display: flex;
@@ -384,3 +425,30 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
     }
   }
 </style>
+
+<script>
+  function initNvimTree() {
+    document.querySelectorAll<HTMLButtonElement>('[data-tree-toggle]').forEach((toggle) => {
+      if (toggle.dataset.bound === 'true') return;
+      toggle.dataset.bound = 'true';
+
+      toggle.addEventListener('click', () => {
+        const key = toggle.dataset.treeToggle;
+        if (!key) return;
+
+        const group = document.querySelector<HTMLElement>(`[data-tree-group="${key}"]`);
+        if (!group) return;
+
+        const isExpanded = toggle.getAttribute('aria-expanded') !== 'false';
+        toggle.setAttribute('aria-expanded', String(!isExpanded));
+        group.hidden = isExpanded;
+
+        const caret = toggle.querySelector<HTMLElement>('.tree-caret');
+        if (caret) caret.textContent = isExpanded ? '>' : 'v';
+      });
+    });
+  }
+
+  initNvimTree();
+  document.addEventListener('astro:page-load', initNvimTree);
+</script>
