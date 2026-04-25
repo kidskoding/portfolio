@@ -203,5 +203,5 @@ Work on new branch: `feat/neovim-theme`
 
 ## Out of Scope
 - Actual vim keybinding navigation (j/k to scroll, etc.)
-- Mobile-specific Neovim chrome adaptations beyond collapsible NvimTree
+- Mobile responsiveness — desktop-first implementation only; mobile adaptation is a follow-up
 - Animated mode switching (NORMAL → INSERT on focus)
