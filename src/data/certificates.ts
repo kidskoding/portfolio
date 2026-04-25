@@ -1,3 +1,6 @@
+import microsoftLogo from '../assets/microsoft-logo.jpg';
+import servicenowLogo from '../assets/servicenow.png';
+
 export interface Certificate {
   id: string;
   name: string;
@@ -8,9 +11,6 @@ export interface Certificate {
   pdfPath?: string;
   skills: string[];
 }
-
-import microsoftLogo from '../assets/microsoft-logo.jpg';
-import servicenowLogo from '../assets/servicenow.png';
 
 export const certificates: Certificate[] = [
   {
