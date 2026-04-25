@@ -15,6 +15,7 @@ import { milestones, commitTypeColor } from '../data/milestones';
         </div>
         <div class="commit-body">
           <div class="commit-msg-row">
+            <span class="commit-hash">{m.hash}</span>
             <span class="commit-type" style={`color: ${commitTypeColor[m.type] ?? 'var(--color-nvim-fg3)'}`}>
               {m.type}:
             </span>
@@ -71,6 +72,12 @@ import { milestones, commitTypeColor } from '../data/milestones';
     align-items: baseline;
     gap: 5px;
     flex-wrap: wrap;
+  }
+  .commit-hash {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-nvim-bg3);
+    flex-shrink: 0;
   }
   .commit-type {
     font-family: var(--font-mono);
