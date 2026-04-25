@@ -1,0 +1,113 @@
+---
+import { getIconData, iconToHTML, iconToSVG } from '@iconify/utils';
+import { icons as simpleIcons } from '@iconify-json/simple-icons';
+
+interface Props {
+  issuer: string;
+  logo?: string;
+  label?: string;
+}
+
+const { issuer, logo, label = `${issuer} logo` } = Astro.props;
+
+const simpleIconMap: Record<string, string> = {
+  GitHub: 'github',
+  Anthropic: 'anthropic',
+  Databricks: 'databricks',
+  Meta: 'meta',
+  Oracle: 'oracle',
+};
+
+const brandColorVarMap: Record<string, string> = {
+  GitHub: '--issuer-github',
+  Anthropic: '--issuer-anthropic',
+  Databricks: '--issuer-databricks',
+  Meta: '--issuer-meta',
+  Oracle: '--issuer-oracle',
+  Certiport: '--issuer-certiport',
+};
+
+function renderSimpleIcon(iconName: string) {
+  const data = getIconData(simpleIcons, iconName);
+  if (!data) return undefined;
+  const rendered = iconToSVG(data);
+  return iconToHTML(rendered.body, {
+    ...rendered.attributes,
+    style: 'color: currentColor; fill: currentColor',
+  });
+}
+
+function renderCertiportIcon() {
+  return `
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+      <rect x="4" y="4" width="24" height="24" rx="3" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M19.5 11.5H14a4.5 4.5 0 0 0 0 9h5.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M20 16h5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+    </svg>
+  `;
+}
+
+const iconSvg = logo
+  ? undefined
+  : issuer === 'Certiport'
+    ? renderCertiportIcon()
+    : simpleIconMap[issuer]
+      ? renderSimpleIcon(simpleIconMap[issuer])
+      : undefined;
+
+const colorVar = brandColorVarMap[issuer] ?? '--color-text-secondary';
+---
+
+<span class="issuer-logo" style={`color: var(${colorVar})`}>
+  {logo ? (
+    <img src={logo} alt={label} loading="lazy" />
+  ) : iconSvg ? (
+    <span class="issuer-logo-symbol" role="img" aria-label={label} set:html={iconSvg}></span>
+  ) : (
+    <span class="issuer-logo-fallback" aria-label={label}>{issuer[0]}</span>
+  )}
+</span>
+
+<style>
+  .issuer-logo {
+    --issuer-github: #ffffff;
+    --issuer-anthropic: #d4a574;
+    --issuer-databricks: #ff3621;
+    --issuer-meta: #0866ff;
+    --issuer-oracle: #f80000;
+    --issuer-certiport: #fabd2f;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .issuer-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0.25rem;
+  }
+
+  .issuer-logo-symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .issuer-logo-symbol :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .issuer-logo-fallback {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+</style>

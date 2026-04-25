@@ -1,5 +1,6 @@
 ---
 import type { Certificate } from '../data/certificates';
+import IssuerLogo from './IssuerLogo.astro';
 
 interface Props {
   cert: Certificate;
@@ -11,10 +12,7 @@ const { cert } = Astro.props;
 <div class="glow-card p-5 flex flex-col gap-4 transition-all duration-300 hover:bg-bg-card-hover">
   <div class="flex items-start gap-3">
     <div class="w-10 h-10 rounded-lg border border-border-default bg-bg-secondary/80 overflow-hidden flex items-center justify-center shrink-0">
-      {cert.issuerLogo
-        ? <img src={cert.issuerLogo} alt={cert.issuer} class="w-full h-full object-contain p-1" loading="lazy" />
-        : <span class="text-sm font-bold text-text-secondary">{cert.issuer[0]}</span>
-      }
+      <IssuerLogo issuer={cert.issuer} logo={cert.issuerLogo} />
     </div>
     <div class="flex-1 min-w-0">
       <h3 class="text-sm font-semibold text-text-primary leading-snug">{cert.name}</h3>
