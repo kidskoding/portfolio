@@ -112,15 +112,21 @@ const astroIcon = `
                   <span>index.astro</span>
                 </a>
               )}
-              {posts.map((post) => (
-                <a
-                  href={`/blog/${post.id}`}
-                  class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/blog/${post.id}` }]}
-                >
-                  <span class="tree-icon icon-mdx">MDX</span>
-                  <span>{post.id}.mdx</span>
-                </a>
-              ))}
+              <button class="tree-folder tree-indent-3" type="button" data-tree-toggle="posts" aria-expanded="true">
+                <span class="tree-caret" aria-hidden="true">v</span>
+                <span>posts</span>
+              </button>
+              <div data-tree-group="posts">
+                {posts.map((post) => (
+                  <a
+                    href={`/blog/${post.id}`}
+                    class:list={['tree-file tree-indent-4', { 'tree-active': currentPath === `/blog/${post.id}` }]}
+                  >
+                    <span class="tree-icon icon-mdx">MDX</span>
+                    <span>{post.id}.mdx</span>
+                  </a>
+                ))}
+              </div>
             </div>
             <div class="tree-folder tree-indent-2">&gt; <span>data</span></div>
             <div class="tree-folder tree-indent-2">&gt; <span>components</span></div>
@@ -293,6 +299,7 @@ const astroIcon = `
   .tree-indent-1 { padding-left: 20px; }
   .tree-indent-2 { padding-left: 32px; }
   .tree-indent-3 { padding-left: 44px; }
+  .tree-indent-4 { padding-left: 56px; }
 
   .buf-icon,
   .tree-icon {
