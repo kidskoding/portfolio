@@ -12,13 +12,13 @@ interface Props {
 const { posts } = Astro.props;
 
 const pages = [
-  { label: 'index.ts', path: '/', desc: 'home' },
-  { label: 'experience.ts', path: '/experience', desc: 'work history + research' },
-  { label: 'skills.ts', path: '/skills', desc: 'languages, tools, platforms' },
-  { label: 'about.ts', path: '/about', desc: 'bio, interests, contact' },
-  { label: 'projects.ts', path: '/projects', desc: 'things built' },
-  { label: 'contact.ts', path: '/contact', desc: 'email, linkedin, github' },
-  { label: 'blog/index.ts', path: '/blog', desc: 'blog posts' },
+  { label: 'index.astro', path: '/', desc: 'home' },
+  { label: 'experience.astro', path: '/experience', desc: 'work history + research' },
+  { label: 'skills.astro', path: '/skills', desc: 'languages, tools, platforms' },
+  { label: 'about.astro', path: '/about', desc: 'bio, interests, contact' },
+  { label: 'projects.astro', path: '/projects', desc: 'things built' },
+  { label: 'contact.astro', path: '/contact', desc: 'email, linkedin, github' },
+  { label: 'blog/index.astro', path: '/blog', desc: 'blog posts' },
 ];
 
 const easterEggs = [
@@ -297,7 +297,7 @@ const easterEggs = [
       filteredPages.forEach((p, i) => {
         const sel = i === selectedIndex;
         html += `<div class="telescope-item${sel ? ' selected' : ''}" data-index="${i}">
-          <span class="item-icon icon-ts">TS</span>
+          <span class="item-icon icon-astro">AST</span>
           <span class="item-label">${escapeHtml(p.label)}</span>
           <span class="item-sub">${escapeHtml(p.desc)}</span>
           ${sel ? '<span class="item-enter">enter</span>' : ''}
