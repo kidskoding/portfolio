@@ -58,7 +58,7 @@ export const experiences: Experience[] = [
                 endDate: "Aug 2026",
                 duration: calculateDuration("May 2026", "Aug 2026"),
                 description: [
-                    "incoming summer 2026 - servicenow platform team; integrating ai agents and workflows into enterprise systems (ServiceNow) to support internal IT operations",
+                    "integrating ai agents and workflows into enterprise systems (ServiceNow) to support internal IT operations",
                 ],
                 skills: ["ServiceNow", "Salesforce", "Agentic AI Development"],
             },

@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[CLAUDE.md Auto-Review: After completing this task, run the update-claude-md skill if you: added/removed/renamed any file or directory, added/changed any npm script, changed any code convention, added a new skill, or discovered anything about the project that CLAUDE.md does not yet reflect. Skip if the task was read-only or only changed content (not structure).]'"
+          }
+        ]
+      }
+    ]
+  }
+}

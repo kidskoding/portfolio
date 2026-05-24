@@ -61,3 +61,4 @@ Tailwind CSS v4. Design tokens (colors, spacing) are defined as CSS variables in
 - `/add-experience` skill — appends a new entry to `src/data/experience.ts`
 - `/add-role` skill — adds a new role to an existing company entry in `src/data/experience.ts`
 - `/blog-post` skill — scaffolds a new MDX blog post
+- `/update-claude-md` skill — audits and updates CLAUDE.md when project structure or conventions change; auto-triggered on every prompt via hook
