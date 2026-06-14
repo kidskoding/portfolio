@@ -1,3 +1,4 @@
+import databricksLogoIcon from "../assets/databricks-logo.jpeg";
 import sapienceLogoIcon from "../assets/sapience-logo.jpeg";
 import uiucLogoIcon from "../assets/illini-logo.png";
 import ivrLogoIcon from "../assets/ivr-logo.jpeg";
@@ -42,6 +43,26 @@ export interface Experience {
 }
 
 export const experiences: Experience[] = [
+    {
+        id: "9",
+        company: "Databricks",
+        companyLogo: databricksLogoIcon.src,
+        startDate: "May 2026",
+        endDate: "Present",
+        duration: calculateDuration("May 2026", "Present"),
+        roles: [
+            {
+                title: "student fellow",
+                startDate: "May 2026",
+                endDate: "Present",
+                duration: calculateDuration("May 2026", "Present"),
+                description: [
+                    "promoting databricks, data, and ai to the community around me!",
+                ],
+                skills: ["Azure Databricks", "Databricks", "Business Intelligence (BI)", "Data Engineering"],
+            },
+        ],
+    },
     {
         id: "8",
         company: "T-Mobile",
