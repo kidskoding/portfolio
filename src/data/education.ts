@@ -20,6 +20,7 @@ export const educations: Education[] = [
         institutionLogo: uiucLogoIcon.src,
         degree: "Bachelor of Science",
         field: "Computer Science and Education, concentrated in Learning Sciences and Learning Technologies",
+        startDate: "Aug 2024",
         endDate: "May 2027",
         description: [],
     },
