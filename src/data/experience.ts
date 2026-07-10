@@ -1,4 +1,5 @@
 import databricksLogoIcon from "../assets/databricks-logo.jpeg";
+import epicGamesLogoIcon from "../assets/epic-games-logo.png";
 import sapienceLogoIcon from "../assets/sapience-logo.jpeg";
 import uiucLogoIcon from "../assets/illini-logo.png";
 import ivrLogoIcon from "../assets/ivr-logo.jpeg";
@@ -86,6 +87,26 @@ export const experiences: Experience[] = [
         ],
     },
     {
+        id: "10",
+        company: "Epic Games",
+        companyLogo: epicGamesLogoIcon.src,
+        startDate: "Jun 2026",
+        endDate: "Present",
+        duration: calculateDuration("Jun 2026", "Present"),
+        roles: [
+            {
+                title: "open source software developer",
+                startDate: "Jun 2026",
+                endDate: "Present",
+                duration: calculateDuration("Jun 2026", "Present"),
+                description: [
+                    "lore - a next gen version control system for game developers",
+                ],
+                skills: ["Rust", "GitHub Actions"],
+            },
+        ],
+    },
+    {
         id: "6",
         company: "Microsoft",
         companyLogo: microsoftLogoIcon.src,
@@ -96,12 +117,12 @@ export const experiences: Experience[] = [
             {
                 title: "student ambassador",
                 startDate: "Apr 2026",
-                endDate: "Present",
-                duration: calculateDuration("Apr 2026", "Present"),
+                endDate: "Jul 2026",
+                duration: calculateDuration("Apr 2026", "Jul 2026"),
                 description: [
                     "leading and sharing knowledge about Microsoft technologies and ai on uiuc campus",
                 ],
-                skills: ["Microsoft Azure"],
+                skills: ["Microsoft Azure", "GitHub"],
             },
             {
                 title: "open source contributor",
