@@ -777,6 +777,14 @@ const astroIcon = `
     });
   }
 
+  // A hard reload / fresh document load starts with a clean bufferline (only the
+  // current tab). Soft navigations (clicking a link) run via astro:page-load and
+  // keep accumulating tabs. This top-level code runs once per real document load.
+  const navType = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+  if (navType?.type === 'reload') {
+    sessionStorage.removeItem(OPENED_KEY);
+  }
+
   initNvimTreeDrawer();
   initNvimTree();
   initStatusline();
