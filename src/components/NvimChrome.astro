@@ -70,6 +70,7 @@ const astroIcon = `
       <div
         class:list={['nvim-buffer', { active: currentPath === buf.path }]}
         data-path={buf.path}
+        hidden={currentPath !== buf.path}
       >
         <a href={buf.path} class="buf-link">
           <span class="buf-num">{i + 1}</span>
@@ -708,37 +709,37 @@ const astroIcon = `
     update();
   }
 
-  const CLOSED_KEY = 'nvim:closed-buffers';
+  const OPENED_KEY = 'nvim:opened-buffers';
 
-  function getClosed(): string[] {
+  function getOpened(): string[] {
     try {
-      return JSON.parse(sessionStorage.getItem(CLOSED_KEY) || '[]');
+      return JSON.parse(sessionStorage.getItem(OPENED_KEY) || '[]');
     } catch {
       return [];
     }
   }
 
-  function setClosed(paths: string[]) {
-    sessionStorage.setItem(CLOSED_KEY, JSON.stringify(paths));
+  function setOpened(paths: string[]) {
+    sessionStorage.setItem(OPENED_KEY, JSON.stringify(paths));
   }
 
-  function initBufferClose() {
+  function initBuffers() {
     const bufferline = document.querySelector<HTMLElement>('.nvim-bufferline');
     if (!bufferline) return;
 
-    // The current page's tab always reopens when you land on it.
+    // Visiting a page opens its buffer (like editing a file in vim).
     const current = bufferline.querySelector<HTMLElement>('.nvim-buffer.active');
     const currentPath = current?.dataset.path;
-    let closed = getClosed();
-    if (currentPath && closed.includes(currentPath)) {
-      closed = closed.filter((p) => p !== currentPath);
-      setClosed(closed);
+    let opened = getOpened();
+    if (currentPath && !opened.includes(currentPath)) {
+      opened.push(currentPath);
+      setOpened(opened);
     }
 
-    // Apply persisted closed state to this render.
+    // Show only buffers that have been opened this session; the active one always shows.
     bufferline.querySelectorAll<HTMLElement>('.nvim-buffer').forEach((tab) => {
       const path = tab.dataset.path;
-      tab.hidden = !!path && closed.includes(path);
+      tab.hidden = !(path && opened.includes(path)) && !tab.classList.contains('active');
     });
 
     if (bufferline.dataset.bound === 'true') return;
@@ -752,9 +753,7 @@ const astroIcon = `
       const path = tab?.dataset.path;
       if (!tab || !path) return;
 
-      const next = getClosed();
-      if (!next.includes(path)) next.push(path);
-      setClosed(next);
+      setOpened(getOpened().filter((p) => p !== path));
 
       const wasActive = tab.classList.contains('active');
       const all = [...bufferline.querySelectorAll<HTMLElement>('.nvim-buffer')];
@@ -762,12 +761,12 @@ const astroIcon = `
       tab.hidden = true;
 
       if (wasActive) {
-        // Jump to the nearest still-open tab: right first, then left.
+        // Jump to the nearest still-open tab: right first, then left; home if none left.
         const neighbor =
           all.slice(idx + 1).find((t) => !t.hidden) ||
           all.slice(0, idx).reverse().find((t) => !t.hidden);
         const target = neighbor?.querySelector<HTMLAnchorElement>('.buf-link');
-        if (target) window.location.href = target.href;
+        window.location.href = target ? target.href : '/';
       }
     });
   }
@@ -775,9 +774,9 @@ const astroIcon = `
   initNvimTreeDrawer();
   initNvimTree();
   initStatusline();
-  initBufferClose();
+  initBuffers();
   document.addEventListener('astro:page-load', initNvimTreeDrawer);
   document.addEventListener('astro:page-load', initNvimTree);
   document.addEventListener('astro:page-load', initStatusline);
-  document.addEventListener('astro:page-load', initBufferClose);
+  document.addEventListener('astro:page-load', initBuffers);
 </script>
