@@ -304,6 +304,7 @@ const astroIcon = `
   }
   .nvim-buffer:hover .buf-close,
   .nvim-buffer.active .buf-close { opacity: 1; }
+  .nvim-bufferline.single-buffer .buf-close { display: none; }
   .buf-close:hover {
     background: var(--color-nvim-bg3);
     color: var(--color-nvim-red, var(--color-nvim-yellow));
@@ -748,6 +749,13 @@ const astroIcon = `
       tab.hidden = !(path && opened.includes(path)) && !tab.classList.contains('active');
     });
 
+    // The last remaining tab can't be closed (hide its × via .single-buffer).
+    function updateSingle() {
+      const visible = bufferline!.querySelectorAll<HTMLElement>('.nvim-buffer:not([hidden])').length;
+      bufferline!.classList.toggle('single-buffer', visible <= 1);
+    }
+    updateSingle();
+
     if (bufferline.dataset.bound === 'true') return;
     bufferline.dataset.bound = 'true';
 
@@ -759,12 +767,17 @@ const astroIcon = `
       const path = tab?.dataset.path;
       if (!tab || !path) return;
 
+      // Never close the last remaining tab.
+      const visibleCount = bufferline.querySelectorAll<HTMLElement>('.nvim-buffer:not([hidden])').length;
+      if (visibleCount <= 1) return;
+
       setOpened(getOpened().filter((p) => p !== path));
 
       const wasActive = tab.classList.contains('active');
       const all = [...bufferline.querySelectorAll<HTMLElement>('.nvim-buffer')];
       const idx = all.indexOf(tab);
       tab.hidden = true;
+      updateSingle();
 
       if (wasActive) {
         // Jump to the nearest still-open tab: right first, then left; home if none left.
