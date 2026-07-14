@@ -736,6 +736,12 @@ const astroIcon = `
       setOpened(opened);
     }
 
+    // Order the bar by open order so a newly opened tab appends to the right.
+    opened.forEach((path) => {
+      const tab = bufferline.querySelector<HTMLElement>(`.nvim-buffer[data-path="${CSS.escape(path)}"]`);
+      if (tab) bufferline.appendChild(tab);
+    });
+
     // Show only buffers that have been opened this session; the active one always shows.
     bufferline.querySelectorAll<HTMLElement>('.nvim-buffer').forEach((tab) => {
       const path = tab.dataset.path;
