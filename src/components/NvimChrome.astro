@@ -252,6 +252,8 @@ const astroIcon = `
     border-bottom: 1px solid var(--color-nvim-bg-hard);
     flex-shrink: 0;
     overflow-x: auto;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
   }
   .nvim-bufferline::-webkit-scrollbar { display: none; }
 
@@ -749,9 +751,21 @@ const astroIcon = `
       bufferline!.classList.toggle('single-buffer', visible <= 1);
     }
     updateSingle();
+    current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 
     if (bufferline.dataset.bound === 'true') return;
     bufferline.dataset.bound = 'true';
+
+    bufferline.addEventListener(
+      'wheel',
+      (e) => {
+        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+        if (bufferline.scrollWidth <= bufferline.clientWidth) return;
+        e.preventDefault();
+        bufferline.scrollLeft += e.deltaY;
+      },
+      { passive: false }
+    );
 
     bufferline.addEventListener('click', (e) => {
       const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-buf-close]');
