@@ -46,6 +46,8 @@ const iconMap: Record<string, { id: string; color: string }> = {
 	Flask: { id: "simple-icons:flask", color: "#FFFFFF" },
 	PostgreSQL: { id: "simple-icons:postgresql", color: "#4169E1" },
 	MongoDB: { id: "simple-icons:mongodb", color: "#47A248" },
+	SQLite: { id: "simple-icons:sqlite", color: "#003B57" },
+	DuckDB: { id: "simple-icons:duckdb", color: "#FFF000" },
 	MySQL: { id: "simple-icons:mysql", color: "#4479A1" },
 	Cassandra: { id: "simple-icons:apachecassandra", color: "#1287B1" },
 	Redis: { id: "simple-icons:redis", color: "#DC382D" },
@@ -156,6 +158,8 @@ const skillGroups = [
 		title: "Databases",
 		skills: [
 			"PostgreSQL",
+			"SQLite",
+			"DuckDB",
 			"MongoDB",
 			"MySQL",
 			"Cassandra",
@@ -253,7 +257,7 @@ const skillGroups = [
 			<h2 class="text-lg font-semibold text-text-primary">Daily Drivers</h2>
 			<p class="text-text-secondary mt-1 text-sm">The tools I yearn for <b>every day</b></p>
 			<div class="mt-4 flex flex-wrap justify-center gap-4">
-				{["Python", "Claude Code", "Cursor", "Git", "Docker", "Google Cloud Platform", "GitHub", "Rust", "Go", "PostgreSQL", "MongoDB", "Databricks", "Stripe"].map((skill) => (
+				{["Databricks", "Rust", "Python", "Claude Code", "Git", "Docker", "Google Cloud Platform", "GitHub", "Go", "PostgreSQL", "SQLite", "DuckDB", "MongoDB"].map((skill) => (
 					<div class="w-[calc((100%-3*1rem)/4)] sm:w-[calc((100%-4*1rem)/5)] min-w-0 shrink-0">
 						<SkillCard
 							name={skill}
