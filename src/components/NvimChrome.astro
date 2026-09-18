@@ -9,9 +9,9 @@ const { currentPath: rawPath } = Astro.props;
 const currentPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '');
 
 const buffers = [
-  { path: '/', file: 'index.astro', icon: 'astro' },
+  { path: '/', file: 'index.astro', icon: 'astro', pinned: true },
   { path: '/about', file: 'about.astro', icon: 'astro' },
-  { path: '/experience', file: 'experience.astro', icon: 'astro' },
+  { path: '/experience', file: 'experience.astro', icon: 'astro', pinned: true },
   { path: '/projects', file: 'projects.astro', icon: 'astro' },
   { path: '/skills', file: 'skills.astro', icon: 'astro' },
   { path: '/certificates', file: 'certificates.astro', icon: 'astro' },
@@ -19,6 +19,8 @@ const buffers = [
   { path: '/contact', file: 'contact.astro', icon: 'astro' },
 ];
 const treeFiles = buffers;
+type TabIcon = 'astro' | 'mdx' | 'json';
+interface Tab { path: string; file: string; icon: TabIcon; pinned?: boolean }
 
 let activeFile = 'index.astro';
 let activeIcon: 'astro' | 'mdx' | 'json' = 'astro';
@@ -40,6 +42,18 @@ if (blogSlug) {
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+const tabs: Tab[] = [
+  ...(buffers as Tab[]),
+  { path: '/package-json', file: 'package.json', icon: 'json' },
+  ...posts.map((post): Tab => ({ path: `/blog/${post.id}`, file: `${post.id}.mdx`, icon: 'mdx' })),
+];
+
+const pinIcon = `
+  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+    <path fill="currentColor" d="M9.5 1.5 14.5 6.5l-1.4 1.4-.7-.7L9.6 10l.4 3-1.4 1.4L5.5 11.3 2 14.8l-.8-.8 3.5-3.5L1.6 7.4 3 6l3 .4 2.8-2.8-.7-.7z"/>
+  </svg>
+`;
 
 const astroIcon = `
   <svg viewBox="0 0 85 107" aria-hidden="true" focusable="false">
@@ -63,45 +77,6 @@ const astroIcon = `
       <span>NvimTree</span>
     </button>
     <span>nvim - portfolio/src/{activeFile}</span>
-  </div>
-
-  <div class="nvim-bufferline">
-    {buffers.map((buf, i) => (
-      <div
-        class:list={['nvim-buffer', { active: currentPath === buf.path }]}
-        data-path={buf.path}
-        hidden={currentPath !== buf.path}
-      >
-        <a href={buf.path} class="buf-link">
-          <span class="buf-num">{i + 1}</span>
-          <span class:list={['buf-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-astro']}>
-            {buf.icon === 'astro' ? <Fragment set:html={astroIcon} /> : 'MDX'}
-          </span>
-          <span>{buf.file.replace('blog/', '')}</span>
-        </a>
-        <button type="button" class="buf-close" data-buf-close aria-label={`Close ${buf.file}`}>×</button>
-      </div>
-    ))}
-    {blogSlug && (
-      <div class="nvim-buffer active" data-path={currentPath}>
-        <a href={currentPath} class="buf-link">
-          <span class="buf-num">{buffers.length + 1}</span>
-          <span class="buf-icon icon-mdx">MDX</span>
-          <span>{blogSlug[1]}.mdx</span>
-        </a>
-        <button type="button" class="buf-close" data-buf-close aria-label="Close buffer">×</button>
-      </div>
-    )}
-    {currentPath === '/package-json' && (
-      <div class="nvim-buffer active" data-path="/package-json">
-        <a href='/package-json' class="buf-link">
-          <span class="buf-num">{buffers.length + 1}</span>
-          <span class="buf-icon icon-json">JSON</span>
-          <span>package.json</span>
-        </a>
-        <button type="button" class="buf-close" data-buf-close aria-label="Close package.json">×</button>
-      </div>
-    )}
   </div>
 
   <div class="nvim-main">
@@ -160,6 +135,28 @@ const astroIcon = `
     </nav>
 
     <div class="nvim-editor-wrap">
+      <div class="nvim-bufferline">
+        {tabs.map((tab) => (
+          <div
+            class:list={['nvim-buffer', { active: currentPath === tab.path, pinned: tab.pinned }]}
+            data-path={tab.path}
+            data-pinned={tab.pinned ? 'true' : undefined}
+            hidden={!tab.pinned && currentPath !== tab.path}
+          >
+            <a href={tab.path} class="buf-link">
+              {tab.pinned && <span class="buf-pin" set:html={pinIcon} />}
+              <span class:list={['buf-icon', `icon-${tab.icon}`]}>
+                {tab.icon === 'astro' ? <Fragment set:html={astroIcon} /> : tab.icon.toUpperCase()}
+              </span>
+              <span>{tab.file}</span>
+            </a>
+            {!tab.pinned && (
+              <button type="button" class="buf-close" data-buf-close aria-label={`Close ${tab.file}`}>×</button>
+            )}
+          </div>
+        ))}
+      </div>
+
       <div class="nvim-winbar">
         <span class="winbar-root">portfolio</span>
         {activeIcon !== 'json' && <span class="winbar-sep"> &gt; </span>}
@@ -305,7 +302,6 @@ const astroIcon = `
   }
   .nvim-buffer:hover .buf-close,
   .nvim-buffer.active .buf-close { opacity: 1; }
-  .nvim-bufferline.single-buffer .buf-close { display: none; }
   .buf-close:hover {
     background: var(--color-nvim-bg3);
     color: var(--color-nvim-red, var(--color-nvim-yellow));
@@ -316,8 +312,17 @@ const astroIcon = `
     outline-offset: -1px;
   }
 
-  .buf-num { font-size: 9px; color: var(--color-nvim-bg3); }
-  .nvim-buffer.active .buf-num { color: var(--color-nvim-fg3); }
+  .buf-pin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    flex-shrink: 0;
+    color: var(--color-nvim-fg3);
+  }
+  .buf-pin :global(svg) { width: 13px; height: 13px; display: block; }
+  .nvim-buffer.active .buf-pin { color: var(--color-nvim-yellow); }
+  .nvim-buffer.pinned .buf-link { padding-right: 20px; }
 
   .nvim-main {
     position: relative;
@@ -561,6 +566,8 @@ const astroIcon = `
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .nvim-buffer.pinned .buf-link > span:last-child { display: none; }
+    .nvim-buffer.pinned .buf-link { padding-right: 6px; }
 
     .nvimtree {
       position: absolute;
@@ -724,33 +731,27 @@ const astroIcon = `
     const bufferline = document.querySelector<HTMLElement>('.nvim-bufferline');
     if (!bufferline) return;
 
+    const isPinned = (tab: HTMLElement) => tab.dataset.pinned === 'true';
+
     // Visiting a page opens its buffer (like editing a file in vim).
     const current = bufferline.querySelector<HTMLElement>('.nvim-buffer.active');
     const currentPath = current?.dataset.path;
     let opened = getOpened();
-    if (currentPath && !opened.includes(currentPath)) {
+    if (currentPath && current && !isPinned(current) && !opened.includes(currentPath)) {
       opened.push(currentPath);
       setOpened(opened);
     }
 
-    // Order the bar by open order so a newly opened tab appends to the right.
     opened.forEach((path) => {
       const tab = bufferline.querySelector<HTMLElement>(`.nvim-buffer[data-path="${CSS.escape(path)}"]`);
-      if (tab) bufferline.appendChild(tab);
+      if (tab && !isPinned(tab)) bufferline.appendChild(tab);
     });
 
-    // Show only buffers that have been opened this session; the active one always shows.
     bufferline.querySelectorAll<HTMLElement>('.nvim-buffer').forEach((tab) => {
       const path = tab.dataset.path;
-      tab.hidden = !(path && opened.includes(path)) && !tab.classList.contains('active');
+      tab.hidden = !isPinned(tab) && !(path && opened.includes(path)) && !tab.classList.contains('active');
     });
 
-    // The last remaining tab can't be closed (hide its × via .single-buffer).
-    function updateSingle() {
-      const visible = bufferline!.querySelectorAll<HTMLElement>('.nvim-buffer:not([hidden])').length;
-      bufferline!.classList.toggle('single-buffer', visible <= 1);
-    }
-    updateSingle();
     current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
 
     if (bufferline.dataset.bound === 'true') return;
@@ -773,11 +774,7 @@ const astroIcon = `
       e.preventDefault();
       const tab = btn.closest<HTMLElement>('.nvim-buffer');
       const path = tab?.dataset.path;
-      if (!tab || !path) return;
-
-      // Never close the last remaining tab.
-      const visibleCount = bufferline.querySelectorAll<HTMLElement>('.nvim-buffer:not([hidden])').length;
-      if (visibleCount <= 1) return;
+      if (!tab || !path || isPinned(tab)) return;
 
       setOpened(getOpened().filter((p) => p !== path));
 
@@ -785,10 +782,8 @@ const astroIcon = `
       const all = [...bufferline.querySelectorAll<HTMLElement>('.nvim-buffer')];
       const idx = all.indexOf(tab);
       tab.hidden = true;
-      updateSingle();
 
       if (wasActive) {
-        // Jump to the nearest still-open tab: right first, then left; home if none left.
         const neighbor =
           all.slice(idx + 1).find((t) => !t.hidden) ||
           all.slice(0, idx).reverse().find((t) => !t.hidden);
