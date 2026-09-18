@@ -94,4 +94,4 @@ exactly. Omit optional fields entirely rather than writing empty strings.
 
 Summarize what changed: companies/roles/education added or updated, ids assigned,
 and any logos the user still needs to drop into `src/assets/`. Remind them to run
-`npm run dev` to eyeball the result.
+`bun run dev` to eyeball the result.

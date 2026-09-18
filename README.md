@@ -12,10 +12,10 @@ Personal portfolio site built with Astro, Tailwind CSS v4, GSAP, and MDX.
 ## Getting Started
 
 ```sh
-npm install
-npm run dev       # localhost:4321
-npm run build     # production build → ./dist/
-npm run preview   # preview production build
+bun install
+bun run dev       # localhost:4321
+bun run build     # production build → ./dist/
+bun run preview   # preview production build
 ```
 
 ## Pages

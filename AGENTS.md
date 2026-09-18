@@ -26,6 +26,6 @@ Detailed rules are in **`.cursor/rules/`**:
 
 ## Commands
 
-- `npm run dev` – Local dev server.
-- `npm run build` – Production build.
-- `npm run preview` – Preview the production build.
+- `bun run dev` – Local dev server.
+- `bun run build` – Production build.
+- `bun run preview` – Preview the production build.
