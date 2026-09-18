@@ -72,8 +72,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
                             opacity: 1,
                             y: 0,
                             scale: 1,
-                            duration: 0.8,
-                            delay: index * 0.12,
+                            duration: 0.6,
+                            delay: Math.min(index * 0.06, 0.5),
                             ease: 'power3.out',
                         }
                     );

@@ -222,8 +222,6 @@ body::before {
 [data-animate] {
   opacity: 0;
   transform: translateY(8px);
-  transition: opacity 0.5s ease-out,
-  transform 0.5s ease-out;
 }
 
 [data-animate].is-visible {
