@@ -614,6 +614,8 @@ const astroIcon = `
 </style>
 
 <script>
+  import { navigate } from 'astro:transitions/client';
+
   function initNvimTreeDrawer() {
     const shell = document.querySelector<HTMLElement>('.nvim-shell');
     const trigger = document.querySelector<HTMLButtonElement>('[data-tree-drawer-toggle]');
@@ -777,7 +779,7 @@ const astroIcon = `
           all.slice(idx + 1).find((t) => !t.hidden) ||
           all.slice(0, idx).reverse().find((t) => !t.hidden);
         const target = neighbor?.querySelector<HTMLAnchorElement>('.buf-link');
-        window.location.href = target ? target.href : '/';
+        navigate(target ? target.href : '/');
       }
     });
   }
