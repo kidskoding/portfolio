@@ -5,9 +5,9 @@ Personal portfolio site for Anirudh Konidala. Built with Astro, Tailwind CSS v4,
 ## Commands
 
 ```sh
-npm run dev       # dev server at localhost:4321
-npm run build     # production build to ./dist/
-npm run preview   # preview production build
+bun run dev       # dev server at localhost:4321
+bun run build     # production build to ./dist/
+bun run preview   # preview production build
 ```
 
 ## Project Structure
