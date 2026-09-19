@@ -55,6 +55,7 @@ src/
     └── global.css
 
 flake.nix             # Nix dev shell + `nix run` apps wrapping bun scripts
+vendor/gruvbox/       # morhetz/gruvbox git subtree, reference for palette + highlight roles (not built)
 ```
 
 ## Key Conventions

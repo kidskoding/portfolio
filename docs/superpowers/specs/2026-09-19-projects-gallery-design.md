@@ -104,24 +104,28 @@ Accepts a `projects` prop shaped like `posts` (`id`, `title`, `description`). En
 
 ## Color Roles
 
-New components use the full gruvbox palette from `global.css`, not only the yellow accent. Roles, applied like a colorscheme:
+Source of truth: `vendor/gruvbox/colors/gruvbox.vim` (morhetz/gruvbox, git subtree). Roles map to vim highlight groups so the site reads like a gruvbox buffer. Palette is the `bright_*` set on `dark0` background.
 
-| Element | Token |
-|---|---|
-| Tile title, page title | `--color-nvim-fg` |
-| Description | `--color-nvim-fg2` |
-| Cursor / hover border, active tab | `--color-nvim-yellow` |
-| Stack tags | `--color-nvim-green` text on `rgba(184,187,38,0.1)` |
-| Event badge | `--color-nvim-orange` |
-| Placement badge | `--color-nvim-purple` |
-| Date, statusline mode | `--color-nvim-aqua` |
-| Links, "view on github" | `--color-nvim-blue` text, `--color-nvim-aqua` on hover |
-| Filter prompt `>` | `--color-nvim-red` |
-| Language stripe / dot | GitHub language color, see below |
+| Element | Vim group | Color |
+|---|---|---|
+| Tile title, page title, tab labels | `Title` (GruvboxGreenBold) | green `#b8bb26`, bold |
+| Description, body text | `Normal` | fg1 `#ebdbb2` / fg2 `#a89984` |
+| Cursor tile border, active tab underline | `Search` | yellow `#fabd2f` |
+| Stack tags | `Type` (GruvboxYellow) | yellow text on `rgba(250,189,47,0.1)` |
+| Event badge | `StorageClass` (GruvboxOrange) | orange `#fe8019` |
+| Placement badge | `Constant` (GruvboxPurple) | purple `#d3869b` |
+| Date, statusline mode text | `PreProc` (GruvboxAqua) | aqua `#8ec07c` |
+| Links, "view on github" | `Identifier` (GruvboxBlue) | blue `#83a598`, underline on hover |
+| Filter prompt `>` | `Keyword` (GruvboxRed) | red `#fb4934` |
+| Hints, "press ? for keys", counts | `Comment` | gray `#928374` |
+| Statusline bar | `StatusLine` | fg1 on bg2 `#504945` |
+| Language stripe / dot | none | GitHub language color, see below |
 
-Language colors are the one exception to the palette. They use GitHub's official hex per language (the existing `languageColors` map in `ProjectCard.astro`, moved into `ProjectThumb.astro`), so Rust is `#dea584`, Python `#3572A5`, and so on. Reason: those colors are what people already recognize from GitHub. Unknown language falls back to `--color-nvim-fg3`.
+Token fix in `global.css`, done as part of this work since the gallery needs them: `--color-nvim-blue` is currently `#458588` (neutral_blue) and `--color-nvim-aqua` is `#83a598` (bright_blue). Correct to blue `#83a598`, aqua `#8ec07c`, and add `--color-nvim-gray: #928374`. Nvim chrome keeps looking the same where it used aqua for blue-ish text; check the three files that use `--color-nvim-aqua` (`NvimChrome.astro`, `Telescope.astro`, `GitLog.astro`) and pick blue or aqua per the table above.
 
-Rule for the whole site, applied here first: anything with a fixed color of its own (language colors, brand logos, company logos) keeps that color. Everything else uses the gruvbox palette. A site-wide pass applying this rule to the rest of the pages is a separate follow-up spec.
+Language colors are the one exception to the palette. They use GitHub's official hex per language (the existing `languageColors` map in `ProjectCard.astro`, moved into `ProjectThumb.astro`), so Rust is `#dea584`, Python `#3572A5`, and so on. Unknown language falls back to gray.
+
+Rule for the whole site, applied here first: anything with a fixed color of its own (language colors, brand icons, company logos) keeps that color. Everything else uses the gruvbox roles. A site-wide pass applying this rule to the rest of the pages is a separate follow-up spec.
 
 ## Gallery Interaction
 
