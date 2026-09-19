@@ -126,6 +126,7 @@ const easterEggs = [
     caret-color: var(--color-nvim-yellow);
   }
   .telescope-input::placeholder { color: var(--color-nvim-fg3); }
+
   .telescope-hint {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -262,6 +263,11 @@ const easterEggs = [
 
   let selectedIndex = 0;
   let currentItems: PaletteItem[] = [];
+  // Chrome fires synthetic mouse events on the element under a still cursor
+  // after a re-render, which would undo keyboard navigation. Only follow the
+  // mouse when its coordinates actually changed.
+  let lastMouseX = -1;
+  let lastMouseY = -1;
 
   function escapeHtml(value: string) {
     return value.replace(/[&<>"']/g, (char) => ({
@@ -285,6 +291,7 @@ const easterEggs = [
     overlay.classList.remove('open');
     overlay.setAttribute('aria-hidden', 'true');
     input.value = '';
+    if (document.activeElement === input) input.blur();
   }
 
   function fuzzyScore(query: string, value: string) {
@@ -433,6 +440,20 @@ const easterEggs = [
     updatePreview();
     results.querySelectorAll<HTMLElement>('.telescope-item').forEach((el) => {
       el.addEventListener('click', () => activate(Number(el.dataset.index)));
+      el.addEventListener('mousemove', (event) => {
+        if (event.clientX === lastMouseX && event.clientY === lastMouseY) return;
+        lastMouseX = event.clientX;
+        lastMouseY = event.clientY;
+        const index = Number(el.dataset.index);
+        if (index === selectedIndex) return;
+        selectedIndex = index;
+        results.querySelectorAll<HTMLElement>('.telescope-item').forEach((item) => {
+          item.classList.toggle('selected', Number(item.dataset.index) === index);
+          item.querySelector('.item-enter')?.remove();
+        });
+        el.insertAdjacentHTML('beforeend', '<span class="item-enter">enter</span>');
+        updatePreview();
+      });
     });
   }
 
@@ -474,6 +495,7 @@ const easterEggs = [
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
       overlay.classList.contains('open') ? closePalette() : openPalette();
+      return;
     }
     if (e.key === 'Escape' && overlay.classList.contains('open')) {
       e.preventDefault();
@@ -482,15 +504,15 @@ const easterEggs = [
   });
 
   input.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowDown') {
+    const down = e.key === 'ArrowDown' || (e.ctrlKey && (e.key === 'n' || e.key === 'j'));
+    const up = e.key === 'ArrowUp' || (e.ctrlKey && (e.key === 'p' || e.key === 'k'));
+    if (down) {
       e.preventDefault();
       moveSelection(1);
-    }
-    if (e.key === 'ArrowUp') {
+    } else if (up) {
       e.preventDefault();
       moveSelection(-1);
-    }
-    if (e.key === 'Enter') {
+    } else if (e.key === 'Enter') {
       e.preventDefault();
       activate(selectedIndex);
     }
