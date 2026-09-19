@@ -19,6 +19,13 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   title: p.data.title,
   description: p.data.description ?? '',
 }));
+const projects = (await getCollection('projects', ({ data }) => !data.draft))
+  .sort((a, b) => a.id.localeCompare(b.id))
+  .map((project) => ({
+    id: project.id,
+    title: project.data.title,
+    description: project.data.description,
+  }));
 ---
 
 <!doctype html>
@@ -43,7 +50,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
             <slot />
         </NvimChrome>
 
-        <Telescope posts={posts} />
+        <Telescope posts={posts} projects={projects} />
 
         <script>
             import { gsap } from 'gsap';
