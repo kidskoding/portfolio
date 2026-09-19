@@ -243,9 +243,13 @@ const astroIcon = `
       <dt>:</dt><dd>command line &mdash; :q :e file :bn :bp :help</dd>
       <dt>?</dt><dd>this help</dd>
     </dl>
+    <div class="nvim-help-sub">cards &amp; lists</div>
+    <dl>
+      <dt>h j k l</dt><dd>move cursor between cards, enter opens</dd>
+      <dt>gg / G</dt><dd>first / last card</dd>
+    </dl>
     <div class="nvim-help-sub">projects</div>
     <dl>
-      <dt>h j k l</dt><dd>move tile cursor, enter opens</dd>
       <dt>1 2 3</dt><dd>switch tab</dd>
       <dt>/</dt><dd>filter tiles</dd>
       <dt>[[ / ]]</dt><dd>previous / next project on a project page</dd>
@@ -1147,9 +1151,68 @@ const astroIcon = `
       }
     }
 
+    // Item cursor: pages mark navigable cards with data-vim-item so hjkl step
+    // between them instead of scrolling by line. Projects keeps its own grid.
+    const items = () => [...document.querySelectorAll<HTMLElement>('[data-vim-item]')].filter((el) => !el.hidden && el.offsetParent !== null);
+    let cursor = 0;
+
+    function paint() {
+      const list = items();
+      document.querySelectorAll('.vim-cursor').forEach((el) => el.classList.remove('vim-cursor'));
+      if (!list.length) return;
+      cursor = Math.max(0, Math.min(cursor, list.length - 1));
+      list[cursor].classList.add('vim-cursor');
+    }
+    function reveal() {
+      items()[cursor]?.scrollIntoView({ block: 'nearest' });
+    }
+    function moveItem(delta: number) {
+      const list = items();
+      if (!list.length) return;
+      cursor = Math.max(0, Math.min(list.length - 1, cursor + delta));
+      paint();
+      reveal();
+    }
+    // Rows are detected from layout so a 2-column grid and a 1-column list both
+    // feel right: j/k go to the nearest card in the row below/above.
+    function moveRow(dir: 1 | -1) {
+      const list = items();
+      if (!list.length) return;
+      const cur = list[cursor].getBoundingClientRect();
+      const cx = cur.left + cur.width / 2;
+      const candidates = list
+        .map((el, i) => ({ i, r: el.getBoundingClientRect() }))
+        .filter(({ r }) => (dir === 1 ? r.top > cur.top + 1 : r.top < cur.top - 1));
+      if (!candidates.length) return;
+      const edge = dir === 1 ? Math.min(...candidates.map((c) => c.r.top)) : Math.max(...candidates.map((c) => c.r.top));
+      const row = candidates.filter((c) => Math.abs(c.r.top - edge) < 1);
+      row.sort((a, b) => Math.abs(a.r.left + a.r.width / 2 - cx) - Math.abs(b.r.left + b.r.width / 2 - cx));
+      cursor = row[0].i;
+      paint();
+      reveal();
+    }
+    function jumpItem(index: number) {
+      cursor = index;
+      paint();
+      reveal();
+    }
+    function activateItem() {
+      const el = items()[cursor];
+      if (!el) return;
+      const target = el.matches('a[href], button, summary') ? el : el.querySelector<HTMLElement>('a[href], button, summary');
+      target?.click();
+    }
+    function syncCursor(event: Event) {
+      const el = (event.target as HTMLElement).closest<HTMLElement>('[data-vim-item]');
+      const index = el ? items().indexOf(el) : -1;
+      if (index >= 0 && index !== cursor) { cursor = index; paint(); }
+    }
+
     function runSequence(seq: string): boolean {
       switch (seq) {
-        case 'gg': scrollTo(0); return true;
+        case 'gg':
+          if (items().length) jumpItem(0); else scrollTo(0);
+          return true;
         case ']b': switchBuffer(1); return true;
         case '[b': switchBuffer(-1); return true;
         case ' e': toggleTree(); return true;
@@ -1209,6 +1272,20 @@ const astroIcon = `
         if (runSequence(seq)) { event.preventDefault(); return; }
       }
 
+      const list = items();
+      if (list.length) {
+        // Enter on a focused link/button keeps its native behaviour.
+        const nativeEnter = event.key === 'Enter' && Boolean(target.closest('a, button, summary'));
+        switch (event.key) {
+          case 'j': case 'ArrowDown': event.preventDefault(); moveRow(1); return;
+          case 'k': case 'ArrowUp': event.preventDefault(); moveRow(-1); return;
+          case 'h': case 'ArrowLeft': event.preventDefault(); moveItem(-1); return;
+          case 'l': case 'ArrowRight': event.preventDefault(); moveItem(1); return;
+          case 'G': event.preventDefault(); jumpItem(list.length - 1); return;
+          case 'Enter': if (!nativeEnter) { event.preventDefault(); activateItem(); } return;
+        }
+      }
+
       switch (event.key) {
         case 'j': case 'ArrowDown': event.preventDefault(); scrollBy(LINE_STEP); break;
         case 'k': case 'ArrowUp': event.preventDefault(); scrollBy(-LINE_STEP); break;
@@ -1230,10 +1307,13 @@ const astroIcon = `
       if (target.closest('[data-vim-help]')) toggleHelp();
       else if (target.closest('[data-help-close]')) toggleHelp(false);
     });
+    document.addEventListener('mouseover', syncCursor);
+    document.addEventListener('focusin', syncCursor);
     document.addEventListener('focusin', refreshMode);
     document.addEventListener('focusout', () => window.setTimeout(refreshMode, 0));
     document.addEventListener('selectionchange', refreshMode);
-    document.addEventListener('astro:page-load', () => { setPending(''); refreshMode(); });
+    document.addEventListener('astro:page-load', () => { setPending(''); refreshMode(); cursor = 0; paint(); });
+    paint();
   }
 
   initNvimTreeDrawer();

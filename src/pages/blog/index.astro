@@ -21,6 +21,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
         <li>
           <a
             href={`/blog/${post.id}`}
+            data-vim-item
             class="block rounded-xl border border-border-subtle bg-bg-card p-6 transition-all hover:bg-bg-card-hover hover:border-border-accent group"
           >
             <h2 class="text-lg font-semibold text-text-primary group-hover:text-nvim-green transition-colors">

@@ -9,7 +9,7 @@ interface Props {
 const { cert } = Astro.props;
 ---
 
-<div class="glow-card p-5 flex flex-col gap-4 transition-all duration-300 hover:bg-bg-card-hover">
+<div class="glow-card p-5 flex flex-col gap-4 transition-all duration-300 hover:bg-bg-card-hover" data-vim-item>
   <div class="flex items-start gap-3">
     <div class="w-10 h-10 rounded-lg border border-border-default bg-bg-secondary/80 overflow-hidden flex items-center justify-center shrink-0">
       <IssuerLogo issuer={cert.issuer} logo={cert.issuerLogo} />

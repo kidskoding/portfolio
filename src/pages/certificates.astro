@@ -46,7 +46,7 @@ const singleCertItems = certItems.filter((item): item is Extract<CertificateItem
     <div class="mt-10 space-y-4" data-animate>
       {groupedCertItems.map((item) => (
         <details class="cert-folder border border-border-subtle bg-bg-card" open>
-          <summary class="cert-folder-summary">
+          <summary class="cert-folder-summary" data-vim-item>
             <span class="cert-folder-caret" aria-hidden="true">›</span>
             <span class="cert-folder-logo">
               <IssuerLogo issuer={item.issuer} logo={item.issuerLogo} />
