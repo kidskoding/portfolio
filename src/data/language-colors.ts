@@ -23,26 +23,3 @@ const FALLBACK = 'var(--color-nvim-gray)';
 export function languageColor(language?: string): string {
   return (language && languageColors[language]) || FALLBACK;
 }
-
-const iconSlugs: Record<string, string> = {
-  TypeScript: 'typescript',
-  JavaScript: 'javascript',
-  Python: 'python',
-  Go: 'go',
-  Rust: 'rust',
-  'C++': 'cplusplus',
-  'C#': 'csharp',
-  Java: 'openjdk',
-  HTML: 'html5',
-  CSS: 'css',
-  Astro: 'astro',
-  Shell: 'gnubash',
-  Ruby: 'ruby',
-  'Jupyter Notebook': 'jupyter',
-  Lua: 'lua',
-  Nix: 'nixos',
-};
-
-export function languageIconSlug(language?: string): string | undefined {
-  return language ? iconSlugs[language] : undefined;
-}

@@ -26,7 +26,6 @@ src/
 │   ├── EducationCard.astro     # Education timeline card
 │   ├── ExperienceSection.astro # Resume page section (work + education timelines)
 │   ├── ProjectCard.astro       # Gallery tile linking to /projects/<slug>
-│   ├── ProjectThumb.astro      # Generated thumbnail when a project has no cover image
 │   ├── CertCard.astro          # Certificate card, uses IssuerLogo.astro
 │   ├── TweetEmbed.astro        # Twitter/X embed for blog posts
 │   ├── Navigation.astro        # Top nav + sidebar
@@ -37,7 +36,7 @@ src/
 ├── data/
 │   ├── experience.ts   # Work experience entries
 │   ├── education.ts    # Education entries
-│   ├── language-colors.ts # GitHub language colors + simple-icons slugs (fixed colors)
+│   ├── language-colors.ts # GitHub language hex per language (fixed colors, never gruvboxed)
 │   ├── project-sort.ts # Shared gallery and case-study ordering
 │   ├── certificates.ts # Certificates; PDF paths come from PUBLIC_CERTIFICATE_PDFS env var
 │   └── milestones.ts   # Career milestones shown by GitLog.astro
