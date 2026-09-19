@@ -2,7 +2,6 @@
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import { getCollection, render } from 'astro:content';
-import ProjectThumb from '../../components/ProjectThumb.astro';
 import { languageColor } from '../../data/language-colors';
 import { byProjectOrderThenDate } from '../../data/project-sort';
 import BlogLayout from '../../layouts/BlogLayout.astro';
@@ -37,10 +36,8 @@ const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'sh
 
 <BlogLayout title={title} description={description} backHref="/projects" backLabel="Back to projects">
   <article class="overflow-hidden border border-border-subtle bg-bg-card">
-    {cover ? (
+    {cover && (
       <Image src={cover} alt="" widths={[800, 1400]} sizes="(min-width: 768px) 768px, 100vw" class="aspect-video w-full object-cover" loading="eager" />
-    ) : (
-      <ProjectThumb title={title} language={language} size="hero" />
     )}
     <div class="min-w-0 p-5 sm:p-8">
       <header class="mb-8 min-w-0">
