@@ -143,7 +143,15 @@ const groups = tabs.map((tab) => ({
       applyFilter();
     }
 
+    // Mouse users leave focus on a tab or the help button; vim motions should
+    // reclaim it so Enter opens the cursor tile instead of re-firing that button.
+    function releaseButtonFocus() {
+      const active = document.activeElement as HTMLElement | null;
+      if (active && active !== document.body && active.closest('.tab-btn, #gallery-help')) active.blur();
+    }
+
     function move(delta: number) {
+      releaseButtonFocus();
       const tiles = visibleTiles();
       if (!tiles.length) return;
       cursor = Math.max(0, Math.min(tiles.length - 1, cursor + delta));
@@ -200,9 +208,10 @@ const groups = tabs.map((tab) => ({
         case 'j': case 'ArrowDown': event.preventDefault(); move(columns()); break;
         case 'k': case 'ArrowUp': event.preventDefault(); move(-columns()); break;
         case 'Enter': event.preventDefault(); visibleTiles()[cursor]?.click(); break;
-        case 'G': event.preventDefault(); cursor = visibleTiles().length - 1; paint(); break;
+        case 'G': event.preventDefault(); releaseButtonFocus(); cursor = visibleTiles().length - 1; paint(); break;
         case 'g':
           if (pendingG) {
+            releaseButtonFocus();
             cursor = 0;
             paint();
             pendingG = false;
