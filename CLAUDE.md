@@ -79,6 +79,9 @@ Add an `.mdx` file to `src/content/projects/` or use `/add-project`. Frontmatter
 ### Colors
 Use the gruvbox palette by role: titles green, links blue, tags yellow, dates aqua, event badges orange, placement badges purple, prompts red, and hints gray. Fixed colors such as GitHub language colors, brand icons, and company logos stay unchanged. See `vendor/gruvbox/colors/gruvbox.vim` for the palette.
 
+### Keyboard layer
+`NvimChrome.astro` binds site-wide vim keys once per document: `j`/`k`/arrows scroll the editor pane, `ctrl+d`/`ctrl+u`, `gg`/`G`, `]b`/`[b` switch buffers, `space e` toggles the tree, `space ff` or `ctrl+k` opens Telescope, `space bd` closes the buffer, `:` opens a command line (`:q`, `:e <file>`, `:bn`, `:bp`, `:help`), `?` opens the help sheet. A page can claim keys with `data-vim-layer="grid"` on its `<main>` (projects gallery does). Every key has a mouse equivalent. Statusline mode reflects NORMAL / INSERT / VISUAL / COMMAND.
+
 ### Adding a page
 New routes need an entry in the `buffers` list in `src/components/NvimChrome.astro` so the tab and NvimTree entry show up, and in the `pages` list in `Telescope.astro` for the finder. Set `pinned: true` on a buffer to keep its tab always visible with no close button (currently `/` and `/experience`). Blog posts and `/package-json` become tabs automatically.
 

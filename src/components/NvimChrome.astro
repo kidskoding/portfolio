@@ -204,18 +204,53 @@ const astroIcon = `
     </div>
     <div class="sl-c">~/portfolio/src/{activeFile}</div>
     <div class="sl-spacer"></div>
-    <div class="sl-x"> utf-8</div>
+    <div class="sl-x sl-showcmd" id="sl-showcmd" aria-hidden="true"></div>
+    <button class="sl-x sl-help" type="button" data-vim-help aria-label="Show key bindings" title="keys (?)">?</button>
     <div class="sl-x-div"></div>
-    <div class="sl-x sl-filetype">
+    <div class="sl-x sl-enc"> utf-8</div>
+    <div class="sl-x-div"></div>
+    <div class:list={['sl-x sl-filetype', `ft-${activeIcon}`]}>
       {activeIcon === 'mdx' && <span class="sl-ft-icon icon-mdx">MDX</span>}
       {activeIcon === 'json' && <span class="sl-ft-icon icon-json">JSON</span>}
       {activeIcon === 'astro' && <span class="sl-ft-icon icon-astro" set:html={astroIcon}></span>}
       <span>{activeIcon === 'mdx' ? 'MDX' : activeIcon === 'json' ? 'JSON' : 'Astro'}</span>
     </div>
     <div class="sl-x-div"></div>
-    <div class="sl-x" id="sl-pct"> Top</div>
+    <div class="sl-x sl-pct" id="sl-pct"> Top</div>
     <div class="sl-x-div"></div>
     <div class="sl-y" id="sl-pos"> 1:1</div>
+  </div>
+
+  <div class="nvim-cmdline" id="nvim-cmdline" hidden>
+    <span class="cmd-prompt" id="nvim-cmdline-prompt" aria-hidden="true">:</span>
+    <input id="nvim-cmdline-input" class="cmd-input" type="text" autocomplete="off" spellcheck="false" aria-label="Command line" />
+    <span class="cmd-msg" id="nvim-cmdline-msg" hidden></span>
+  </div>
+</div>
+
+<div id="nvim-help" class="nvim-help" hidden role="dialog" aria-modal="true" aria-label="Key bindings">
+  <button class="nvim-help-backdrop" type="button" aria-label="Close key bindings" data-help-close></button>
+  <div class="nvim-help-panel">
+    <div class="nvim-help-title">:help keys</div>
+    <dl>
+      <dt>j / k, &darr; / &uarr;</dt><dd>scroll</dd>
+      <dt>ctrl+d / ctrl+u</dt><dd>half page down / up</dd>
+      <dt>gg / G</dt><dd>top / bottom</dd>
+      <dt>]b / [b</dt><dd>next / previous buffer</dd>
+      <dt>space e</dt><dd>toggle file tree</dd>
+      <dt>space ff, ctrl+k</dt><dd>telescope</dd>
+      <dt>space bd</dt><dd>close buffer</dd>
+      <dt>:</dt><dd>command line &mdash; :q :e file :bn :bp :help</dd>
+      <dt>?</dt><dd>this help</dd>
+    </dl>
+    <div class="nvim-help-sub">projects</div>
+    <dl>
+      <dt>h j k l</dt><dd>move tile cursor, enter opens</dd>
+      <dt>1 2 3</dt><dd>switch tab</dd>
+      <dt>/</dt><dd>filter tiles</dd>
+      <dt>[[ / ]]</dt><dd>previous / next project on a project page</dd>
+    </dl>
+    <div class="nvim-help-hint">everything works with the mouse too. esc closes this.</div>
   </div>
 </div>
 
@@ -498,14 +533,18 @@ const astroIcon = `
     flex-shrink: 0;
   }
   .sl-a {
-    background: var(--color-nvim-yellow);
-    color: var(--color-nvim-bg);
+    background: var(--sl-mode, var(--color-nvim-yellow));
+    color: var(--color-nvim-bg-hard);
     padding: 0 12px;
     font-weight: 700;
+    transition: background 0.12s ease;
   }
+  .nvim-statusline[data-mode='INSERT'] { --sl-mode: var(--color-nvim-blue); }
+  .nvim-statusline[data-mode='VISUAL'] { --sl-mode: var(--color-nvim-orange); }
+  .nvim-statusline[data-mode='COMMAND'] { --sl-mode: var(--color-nvim-green); }
   .sl-b {
     background: var(--color-nvim-bg3);
-    color: var(--color-nvim-fg);
+    color: var(--color-nvim-green);
     padding: 0 10px;
     display: flex;
     align-items: center;
@@ -553,11 +592,106 @@ const astroIcon = `
     color: var(--color-nvim-fg);
     padding: 0 10px;
   }
+  .sl-enc { background: var(--color-nvim-purple); color: var(--color-nvim-bg-hard); font-weight: 600; }
+  .sl-pct { background: var(--color-nvim-blue); color: var(--color-nvim-bg-hard); font-weight: 600; }
+  .sl-filetype { color: var(--color-nvim-bg-hard); font-weight: 600; }
+  .sl-filetype.ft-astro { background: var(--color-nvim-orange); }
+  .sl-filetype.ft-mdx { background: var(--color-nvim-red); }
+  .sl-filetype.ft-json { background: var(--color-nvim-yellow); }
+  .sl-filetype .sl-ft-icon,
+  .sl-filetype .sl-ft-icon.icon-astro,
+  .sl-filetype .sl-ft-icon.icon-mdx,
+  .sl-filetype .sl-ft-icon.icon-json { color: var(--color-nvim-bg-hard); }
   .sl-y {
-    background: var(--color-nvim-yellow);
-    color: var(--color-nvim-bg);
+    background: var(--color-nvim-green);
+    color: var(--color-nvim-bg-hard);
     padding: 0 10px;
     font-weight: 700;
+  }
+
+  .sl-showcmd {
+    color: var(--color-nvim-fg2);
+    padding: 0 8px;
+    min-width: 0;
+  }
+  .sl-showcmd:empty { display: none; }
+  .sl-help {
+    background: var(--color-nvim-gray);
+    border: 0;
+    padding: 0 10px;
+    color: var(--color-nvim-bg-hard);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .sl-help:hover { background: var(--color-nvim-fg2); }
+
+  .nvim-cmdline {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: 22px;
+    padding: 0 10px;
+    flex-shrink: 0;
+    background: var(--color-nvim-bg-hard);
+    font-size: 12px;
+    color: var(--color-nvim-fg);
+  }
+  .nvim-cmdline[hidden] { display: none; }
+  .cmd-prompt { color: var(--color-nvim-fg); }
+  .cmd-input {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    outline: 0;
+    padding: 0;
+    color: var(--color-nvim-fg);
+    font: inherit;
+    caret-color: var(--color-nvim-yellow);
+  }
+  .cmd-msg { color: var(--color-nvim-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .cmd-msg.error { color: var(--color-nvim-red); }
+
+  .nvim-help {
+    position: fixed;
+    inset: 0;
+    z-index: 9100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+  }
+  .nvim-help[hidden] { display: none; }
+  .nvim-help-backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background: rgba(10, 8, 5, 0.75);
+    cursor: default;
+  }
+  .nvim-help-panel {
+    position: relative;
+    width: 460px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    background: var(--color-nvim-bg1);
+    border: 1px solid var(--color-nvim-bg3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+    padding: 14px 18px;
+    font-size: 12px;
+  }
+  .nvim-help-title { color: var(--color-nvim-green); font-weight: 700; margin-bottom: 8px; }
+  .nvim-help-sub { color: var(--color-nvim-fg3); margin: 10px 0 4px; }
+  .nvim-help dl { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 3px 14px; margin: 0; }
+  .nvim-help dt { color: var(--color-nvim-yellow); }
+  .nvim-help dd { color: var(--color-nvim-fg2); margin: 0; }
+  .nvim-help-hint { color: var(--color-nvim-fg3); margin-top: 12px; }
+
+  @media (min-width: 761px) {
+    .nvim-shell.tree-hidden .nvimtree { display: none; }
   }
 
   @media (max-width: 760px) {
@@ -824,12 +958,293 @@ const astroIcon = `
     sessionStorage.removeItem(OPENED_KEY);
   }
 
+  const TREE_HIDDEN_KEY = 'nvim:tree-hidden';
+  const PENDING_TIMEOUT = 900;
+  const MESSAGE_TIMEOUT = 4000;
+  const LINE_STEP = 60;
+
+  function applyTreeHidden() {
+    const shell = document.querySelector<HTMLElement>('.nvim-shell');
+    if (shell) shell.classList.toggle('tree-hidden', sessionStorage.getItem(TREE_HIDDEN_KEY) === 'true');
+  }
+
+  // Site-wide vim layer: scroll keys, buffer switching, command line, help.
+  // Bound once per document; elements are looked up lazily because the chrome
+  // is re-rendered on every view transition.
+  function initVim() {
+    if (document.documentElement.dataset.vimBound === 'true') return;
+    document.documentElement.dataset.vimBound = 'true';
+
+    const q = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel);
+    const editor = () => q('.nvim-editor');
+    const cmdline = () => q('#nvim-cmdline');
+    const cmdInput = () => q<HTMLInputElement>('#nvim-cmdline-input');
+    const cmdPrompt = () => q('#nvim-cmdline-prompt');
+    const cmdMsg = () => q('#nvim-cmdline-msg');
+    const help = () => q('#nvim-help');
+    const telescopeOpen = () => document.getElementById('telescope')?.classList.contains('open') ?? false;
+    const cmdOpen = () => { const c = cmdline(); return !!c && !c.hidden; };
+    const isTyping = (el: Element | null) =>
+      !!el && (el.matches('input, textarea, select') || (el as HTMLElement).isContentEditable);
+
+    let pending = '';
+    let pendingTimer: number | undefined;
+    let msgTimer: number | undefined;
+
+    function setMode(mode: 'NORMAL' | 'INSERT' | 'VISUAL' | 'COMMAND') {
+      const el = q('.sl-a');
+      if (el) el.textContent = ` ${mode}`;
+      const bar = q('.nvim-statusline');
+      if (bar) bar.dataset.mode = mode;
+    }
+    function refreshMode() {
+      const input = cmdInput();
+      if (cmdOpen() && input && !input.hidden) return setMode('COMMAND');
+      if (isTyping(document.activeElement)) return setMode('INSERT');
+      const sel = window.getSelection();
+      if (sel && !sel.isCollapsed && sel.toString().trim()) return setMode('VISUAL');
+      setMode('NORMAL');
+    }
+    function setPending(keys: string) {
+      pending = keys;
+      const sc = q('#sl-showcmd');
+      if (sc) sc.textContent = keys.replace(/ /g, '\u2423');
+      window.clearTimeout(pendingTimer);
+      if (keys) pendingTimer = window.setTimeout(() => setPending(''), PENDING_TIMEOUT);
+    }
+
+    const scrollBy = (top: number) => editor()?.scrollBy({ top, behavior: 'auto' });
+    const scrollTo = (top: number) => editor()?.scrollTo({ top, behavior: 'auto' });
+
+    const visibleTabs = () => [...document.querySelectorAll<HTMLElement>('.nvim-buffer:not([hidden])')];
+    function switchBuffer(dir: 1 | -1) {
+      const tabs = visibleTabs();
+      if (tabs.length < 2) return;
+      const i = tabs.findIndex((tab) => tab.classList.contains('active'));
+      const link = tabs[(i + dir + tabs.length) % tabs.length].querySelector<HTMLAnchorElement>('.buf-link');
+      if (link) navigate(link.getAttribute('href') || '/');
+    }
+    function closeBuffer() {
+      const tab = q('.nvim-buffer.active');
+      if (!tab) return;
+      if (tab.dataset.pinned === 'true') {
+        const file = tab.querySelector('.buf-link span:last-child')?.textContent || 'buffer';
+        showMessage(`E37: ${file} is pinned, cannot close`, true);
+        return;
+      }
+      tab.querySelector<HTMLButtonElement>('[data-buf-close]')?.click();
+    }
+    function toggleTree() {
+      const drawerToggle = q<HTMLButtonElement>('[data-tree-drawer-toggle]');
+      if (drawerToggle && drawerToggle.offsetParent !== null) {
+        drawerToggle.click();
+        return;
+      }
+      const shell = q('.nvim-shell');
+      if (!shell) return;
+      const hidden = !shell.classList.contains('tree-hidden');
+      shell.classList.toggle('tree-hidden', hidden);
+      sessionStorage.setItem(TREE_HIDDEN_KEY, String(hidden));
+    }
+    function openTelescope() {
+      if (telescopeOpen()) return;
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true, cancelable: true }));
+    }
+    function toggleHelp(force?: boolean) {
+      const h = help();
+      if (!h) return;
+      h.hidden = force === undefined ? !h.hidden : !force;
+    }
+
+    function showMessage(text: string, error = false) {
+      const c = cmdline(), input = cmdInput(), m = cmdMsg(), prompt = cmdPrompt();
+      if (!c || !input || !m) return;
+      c.hidden = false;
+      input.hidden = true;
+      if (prompt) prompt.hidden = true;
+      if (document.activeElement === input) input.blur();
+      m.textContent = text;
+      m.classList.toggle('error', error);
+      m.hidden = false;
+      window.clearTimeout(msgTimer);
+      msgTimer = window.setTimeout(hideCmdline, MESSAGE_TIMEOUT);
+      refreshMode();
+    }
+    function openCmdline() {
+      const c = cmdline(), input = cmdInput(), m = cmdMsg(), prompt = cmdPrompt();
+      if (!c || !input || !m) return;
+      window.clearTimeout(msgTimer);
+      c.hidden = false;
+      m.hidden = true;
+      m.textContent = '';
+      if (prompt) prompt.hidden = false;
+      input.hidden = false;
+      input.value = '';
+      input.focus();
+      setMode('COMMAND');
+    }
+    function hideCmdline() {
+      const c = cmdline(), input = cmdInput();
+      window.clearTimeout(msgTimer);
+      if (!c) return;
+      c.hidden = true;
+      if (input && document.activeElement === input) input.blur();
+      refreshMode();
+    }
+
+    function fuzzyOpen(query: string) {
+      const needle = query.trim().toLowerCase();
+      if (!needle) {
+        showMessage('E471: Argument required', true);
+        return;
+      }
+      const scored = [...document.querySelectorAll<HTMLElement>('.nvim-buffer[data-path]')]
+        .map((tab) => {
+          const file = (tab.querySelector('.buf-link span:last-child')?.textContent || '').toLowerCase();
+          const path = (tab.dataset.path || '').toLowerCase();
+          const stem = file.replace(/\.[a-z]+$/, '');
+          let score = 0;
+          if (stem === needle) score = 5;
+          else if (file.startsWith(needle)) score = 4;
+          else if (path.startsWith(`/${needle}`)) score = 3;
+          else if (file.includes(needle) || path.includes(needle)) score = 2;
+          else {
+            let i = 0;
+            for (const ch of file) if (ch === needle[i]) i += 1;
+            if (i === needle.length) score = 1;
+          }
+          return { tab, score, length: file.length };
+        })
+        .filter((s) => s.score > 0)
+        .sort((a, b) => b.score - a.score || a.length - b.length);
+      const best = scored[0]?.tab;
+      if (!best) {
+        showMessage(`E345: Can't find file "${query.trim()}" in path`, true);
+        return;
+      }
+      hideCmdline();
+      navigate(best.dataset.path || '/');
+    }
+
+    function runCommand(raw: string) {
+      const line = raw.trim();
+      const [cmd = '', ...rest] = line.split(/\s+/);
+      const arg = rest.join(' ');
+      switch (cmd) {
+        case '': hideCmdline(); break;
+        case 'q': case 'q!': case 'wq': case 'x': case 'bd': case 'bdelete': hideCmdline(); closeBuffer(); break;
+        case 'qa': case 'qa!': case 'qall': case 'wqa': sessionStorage.removeItem(OPENED_KEY); hideCmdline(); navigate('/'); break;
+        case 'w': case 'write': showMessage("E45: 'readonly' option is set (add ! to override)", true); break;
+        case 'w!': showMessage('"portfolio" is read-only, nothing written', true); break;
+        case 'e': case 'edit': case 'find': fuzzyOpen(arg); break;
+        case 'bn': case 'bnext': hideCmdline(); switchBuffer(1); break;
+        case 'bp': case 'bprev': case 'bprevious': hideCmdline(); switchBuffer(-1); break;
+        case 'h': case 'help': hideCmdline(); toggleHelp(true); break;
+        case 'Telescope': case 'Tel': hideCmdline(); openTelescope(); break;
+        case 'NvimTreeToggle': case 'Ex': case 'Explore': hideCmdline(); toggleTree(); break;
+        case 'noh': case 'nohlsearch': hideCmdline(); break;
+        default: showMessage(`E492: Not an editor command: ${line}`, true);
+      }
+    }
+
+    function runSequence(seq: string): boolean {
+      switch (seq) {
+        case 'gg': scrollTo(0); return true;
+        case ']b': switchBuffer(1); return true;
+        case '[b': switchBuffer(-1); return true;
+        case ' e': toggleTree(); return true;
+        case ' q': case ' bd': closeBuffer(); return true;
+        case ' ?': toggleHelp(true); return true;
+        case ' f': case ' b': setPending(seq); return true;
+        case ' ff': openTelescope(); return true;
+        case ' bn': switchBuffer(1); return true;
+        case ' bp': switchBuffer(-1); return true;
+      }
+      return false;
+    }
+
+    const GRID_KEYS = ['h', 'j', 'k', 'l', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'g', 'G', '/', 'Escape', '1', '2', '3'];
+
+    document.addEventListener('keydown', (event) => {
+      const target = event.target as HTMLElement;
+      const input = cmdInput();
+
+      if (input && target === input) {
+        if (event.key === 'Enter') { event.preventDefault(); runCommand(input.value); }
+        else if (event.key === 'Escape') { event.preventDefault(); hideCmdline(); }
+        return;
+      }
+      if (cmdOpen() && input?.hidden) {
+        hideCmdline();
+        if (event.key === 'Escape') { event.preventDefault(); return; }
+      }
+      if (telescopeOpen()) return;
+      if (isTyping(target)) {
+        if (event.key === 'Escape') target.blur();
+        return;
+      }
+      const h = help();
+      if (h && !h.hidden) {
+        if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); toggleHelp(false); }
+        return;
+      }
+      if (event.altKey || event.metaKey) return;
+
+      const editorEl = editor();
+      const half = editorEl ? Math.round(editorEl.clientHeight / 2) : 300;
+      const pageStep = editorEl ? Math.round(editorEl.clientHeight * 0.9) : 500;
+
+      if (event.ctrlKey) {
+        if (event.key === 'd') { event.preventDefault(); scrollBy(half); }
+        else if (event.key === 'u') { event.preventDefault(); scrollBy(-half); }
+        return;
+      }
+
+      const layer = document.querySelector<HTMLElement>('[data-vim-layer]')?.dataset.vimLayer;
+      if (layer === 'grid' && GRID_KEYS.includes(event.key)) return;
+
+      if (pending) {
+        const seq = pending + event.key;
+        setPending('');
+        if (runSequence(seq)) { event.preventDefault(); return; }
+      }
+
+      switch (event.key) {
+        case 'j': case 'ArrowDown': event.preventDefault(); scrollBy(LINE_STEP); break;
+        case 'k': case 'ArrowUp': event.preventDefault(); scrollBy(-LINE_STEP); break;
+        case 'PageDown': event.preventDefault(); scrollBy(pageStep); break;
+        case 'PageUp': event.preventDefault(); scrollBy(-pageStep); break;
+        case 'G': event.preventDefault(); scrollTo(editorEl ? editorEl.scrollHeight : 0); break;
+        case 'g': case ']': case '[': event.preventDefault(); setPending(event.key); break;
+        case ' ':
+          if (!target.closest('a, button')) { event.preventDefault(); setPending(' '); }
+          break;
+        case ':': event.preventDefault(); openCmdline(); break;
+        case '?': event.preventDefault(); toggleHelp(); break;
+        case 'Escape': setPending(''); break;
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.closest('[data-vim-help]')) toggleHelp();
+      else if (target.closest('[data-help-close]')) toggleHelp(false);
+    });
+    document.addEventListener('focusin', refreshMode);
+    document.addEventListener('focusout', () => window.setTimeout(refreshMode, 0));
+    document.addEventListener('selectionchange', refreshMode);
+    document.addEventListener('astro:page-load', () => { setPending(''); refreshMode(); });
+  }
+
   initNvimTreeDrawer();
   initNvimTree();
   initStatusline();
   initBuffers();
+  applyTreeHidden();
+  initVim();
   document.addEventListener('astro:page-load', initNvimTreeDrawer);
   document.addEventListener('astro:page-load', initNvimTree);
   document.addEventListener('astro:page-load', initStatusline);
   document.addEventListener('astro:page-load', initBuffers);
+  document.addEventListener('astro:page-load', applyTreeHidden);
 </script>

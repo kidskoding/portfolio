@@ -17,11 +17,11 @@ const groups = tabs.map((tab) => ({
 ---
 
 <Layout title="Projects">
-  <main class="mx-auto w-full max-w-3xl px-6 py-8" id="main-content">
+  <main class="mx-auto w-full max-w-3xl px-6 py-8" id="main-content" data-vim-layer="grid">
     <div data-animate>
       <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent">Projects</p>
       <h1 class="gradient-text text-4xl font-bold tracking-tight md:text-5xl">Projects</h1>
-      <p class="mt-3 max-w-md text-base text-text-muted">things i've built. click a tile, or press ? for keys</p>
+      <p class="mt-3 max-w-md text-base text-text-muted">things i've built. click a tile.</p>
     </div>
 
     <div class="mt-10 flex gap-2 overflow-x-auto border-b border-border-subtle" role="tablist" aria-label="Project categories" data-animate>
@@ -50,25 +50,6 @@ const groups = tabs.map((tab) => ({
       <a href="https://github.com/kidskoding" target="_blank" rel="noopener noreferrer" class="text-nvim-blue hover:underline">more on github &rarr;</a>
     </p>
 
-    <div id="gallery-status" class="mt-8 flex min-w-0 flex-wrap items-center gap-x-3 gap-y-1 bg-nvim-bg3 px-3 py-1 font-mono text-xs text-text-primary" aria-live="polite">
-      <span class="shrink-0 font-bold text-nvim-aqua">-- NORMAL --</span>
-      <span class="min-w-0 break-all" id="status-file"></span>
-      <span class="shrink-0 text-nvim-gray" id="status-count"></span>
-      <button class="ml-auto shrink-0 text-nvim-gray hover:text-text-primary" id="gallery-help" type="button" aria-controls="gallery-keys" aria-expanded="false">press ? for keys</button>
-    </div>
-
-    <div id="gallery-keys" class="mt-2 border border-border-subtle bg-bg-secondary px-4 py-3 font-mono text-xs" hidden>
-      <div class="mb-2 font-bold text-nvim-green">keys</div>
-      <dl class="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-3 gap-y-1">
-        <dt class="text-nvim-yellow">h j k l</dt><dd class="text-text-secondary">move cursor</dd>
-        <dt class="text-nvim-yellow">enter</dt><dd class="text-text-secondary">open tile</dd>
-        <dt class="text-nvim-yellow">gg / G</dt><dd class="text-text-secondary">first / last</dd>
-        <dt class="text-nvim-yellow">1 2 3</dt><dd class="text-text-secondary">switch tab</dd>
-        <dt class="text-nvim-yellow">/</dt><dd class="text-text-secondary">filter</dd>
-        <dt class="text-nvim-yellow">esc</dt><dd class="text-text-secondary">clear filter</dd>
-        <dt class="text-nvim-yellow">?</dt><dd class="text-text-secondary">toggle this</dd>
-      </dl>
-    </div>
   </main>
 </Layout>
 
@@ -86,11 +67,7 @@ const groups = tabs.map((tab) => ({
 
     const main = document.getElementById('main-content');
     const filter = document.getElementById('project-filter') as HTMLInputElement | null;
-    const statusFile = document.getElementById('status-file');
-    const statusCount = document.getElementById('status-count');
-    const keysPanel = document.getElementById('gallery-keys');
-    const help = document.getElementById('gallery-help');
-    if (!main || !filter || !statusFile || !statusCount || !keysPanel || !help) return;
+    if (!main || !filter) return;
 
     const controller = new AbortController();
     galleryController = controller;
@@ -105,16 +82,9 @@ const groups = tabs.map((tab) => ({
     function paint() {
       const tiles = visibleTiles();
       main.querySelectorAll('.tile-cursor').forEach((tile) => tile.classList.remove('tile-cursor'));
-      if (!tiles.length) {
-        statusFile.textContent = '';
-        statusCount.textContent = '0/0';
-        return;
-      }
+      if (!tiles.length) return;
       cursor = Math.max(0, Math.min(cursor, tiles.length - 1));
-      const tile = tiles[cursor];
-      tile.classList.add('tile-cursor');
-      statusFile.textContent = `projects/${tile.dataset.slug}.mdx`;
-      statusCount.textContent = `${cursor + 1}/${tiles.length}`;
+      tiles[cursor].classList.add('tile-cursor');
     }
 
     function applyFilter() {
@@ -167,11 +137,6 @@ const groups = tabs.map((tab) => ({
       return nextRow < 0 ? tiles.length : nextRow;
     }
 
-    function toggleHelp() {
-      keysPanel.hidden = !keysPanel.hidden;
-      help.setAttribute('aria-expanded', String(!keysPanel.hidden));
-    }
-
     main.querySelectorAll<HTMLButtonElement>('.tab-btn').forEach((button) => button.addEventListener('click', () => activateTab(button.dataset.tab ?? 'projects'), listener));
     main.addEventListener('mouseover', (event) => {
       const tile = (event.target as HTMLElement).closest<HTMLElement>('[data-tile]');
@@ -193,7 +158,6 @@ const groups = tabs.map((tab) => ({
         visibleTiles()[cursor]?.click();
       }
     }, listener);
-    help.addEventListener('click', toggleHelp, listener);
 
     document.addEventListener('keydown', (event) => {
       const target = event.target as HTMLElement;
@@ -224,7 +188,6 @@ const groups = tabs.map((tab) => ({
         case '1': case '2': case '3': main.querySelectorAll<HTMLButtonElement>('.tab-btn')[Number(event.key) - 1]?.click(); break;
         case '/': event.preventDefault(); filter.focus(); break;
         case 'Escape': filter.value = ''; applyFilter(); break;
-        case '?': event.preventDefault(); toggleHelp(); break;
       }
     }, listener);
 
