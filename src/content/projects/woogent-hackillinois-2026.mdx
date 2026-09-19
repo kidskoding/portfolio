@@ -179,8 +179,8 @@ WP_SITEURL=http://<your-server-ip>:8080
 To **refresh product descriptions** in prod (re-import WooCommerce sample data):
 
 - **Recommended:** In GitHub go to **Actions → "Refresh production products" → Run workflow**. This runs the re-import on the server with no need to edit `.env`.
-- Or SSH to the server and run:  
-  `cd ~/woogent && docker compose run --rm -e FORCE_PRODUCT_REIMPORT=true wpcli`  
+- Or SSH to the server and run:
+  `cd ~/woogent && docker compose run --rm -e FORCE_PRODUCT_REIMPORT=true wpcli`
   (then remove `FORCE_PRODUCT_REIMPORT` from prod `.env` if you had added it there.)
 
 3. **Start all services**
