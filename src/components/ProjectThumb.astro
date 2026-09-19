@@ -1,0 +1,70 @@
+---
+import { icons as simpleIcons } from '@iconify-json/simple-icons';
+import { getIconData, iconToHTML, iconToSVG } from '@iconify/utils';
+import { languageColor, languageIconSlug } from '../data/language-colors';
+
+interface Props {
+  title: string;
+  language?: string;
+  size?: 'tile' | 'hero';
+}
+
+const { title, language, size = 'tile' } = Astro.props;
+const color = languageColor(language);
+const slug = languageIconSlug(language);
+const data = slug ? getIconData(simpleIcons, slug) : undefined;
+const iconSvg = data
+  ? (() => {
+      const rendered = iconToSVG(data);
+      return iconToHTML(rendered.body, {
+        ...rendered.attributes,
+        style: 'color: currentColor; fill: currentColor',
+      });
+    })()
+  : undefined;
+---
+
+<div
+  class:list={[
+    'project-thumb relative flex w-full items-center overflow-hidden bg-bg-secondary font-mono text-nvim-fg',
+    size === 'hero' ? 'aspect-21/9 gap-4 px-8' : 'aspect-video gap-3 px-5 pl-7',
+  ]}
+  style={`--lang-color: ${color}`}
+  aria-hidden="true"
+>
+  <span class="thumb-stripe absolute inset-y-0 left-0 w-1.5"></span>
+  {
+    iconSvg && (
+      <span
+        class:list={[
+          'thumb-icon thumb-language-color inline-flex shrink-0',
+          size === 'hero' ? 'h-12 w-12' : 'h-8 w-8',
+        ]}
+        set:html={iconSvg}
+      />
+    )
+  }
+  <span
+    class:list={[
+      'min-w-0 truncate font-semibold',
+      size === 'hero' ? 'text-xl' : 'text-sm',
+    ]}
+  >
+    {title}
+  </span>
+</div>
+
+<style>
+  .thumb-stripe {
+    background-color: var(--lang-color);
+  }
+
+  .thumb-language-color {
+    color: var(--lang-color);
+  }
+
+  .thumb-icon :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+</style>
