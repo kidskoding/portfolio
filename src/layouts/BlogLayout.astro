@@ -4,14 +4,16 @@ import Layout from './Layout.astro';
 interface Props {
   title: string;
   description?: string;
+  backHref?: string;
+  backLabel?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, backHref = '/blog', backLabel = 'Back to blog' } = Astro.props;
 ---
 
 <Layout title={title}>
   <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
-    <a href="/blog" class="text-sm text-accent hover:text-accent-hover transition-colors mb-6 inline-block">&larr; Back to blog</a>
+    <a href={backHref} class="mb-6 inline-block text-sm text-accent transition-colors hover:text-accent-hover">&larr; {backLabel}</a>
     <slot />
   </main>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>

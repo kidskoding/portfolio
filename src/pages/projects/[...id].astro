@@ -1,0 +1,126 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import ProjectThumb from '../../components/ProjectThumb.astro';
+import { languageColor } from '../../data/language-colors';
+import { byProjectOrderThenDate } from '../../data/project-sort';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  prev: CollectionEntry<'projects'> | null;
+  next: CollectionEntry<'projects'> | null;
+}
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(byProjectOrderThenDate);
+  return projects.map((project) => {
+    const siblings = projects.filter((candidate) => candidate.data.category === project.data.category);
+    const index = siblings.findIndex((candidate) => candidate.id === project.id);
+    return {
+      params: { id: project.id },
+      props: {
+        project,
+        prev: siblings[index - 1] ?? null,
+        next: siblings[index + 1] ?? null,
+      },
+    };
+  });
+}
+
+const { project, prev, next } = Astro.props;
+const { Content } = await render(project);
+const { title, description, repo, language, stack, cover, event, placement, date } = project.data;
+const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+---
+
+<BlogLayout title={title} description={description} backHref="/projects" backLabel="Back to projects">
+  <article class="overflow-hidden border border-border-subtle bg-bg-card">
+    {cover ? (
+      <Image src={cover} alt="" widths={[800, 1400]} sizes="(min-width: 768px) 768px, 100vw" class="aspect-video w-full object-cover" loading="eager" />
+    ) : (
+      <ProjectThumb title={title} language={language} size="hero" />
+    )}
+    <div class="min-w-0 p-5 sm:p-8">
+      <header class="mb-8 min-w-0">
+        <h1 class="break-words text-3xl font-bold tracking-tight text-nvim-green">{title}</h1>
+        <p class="mt-2 break-words text-text-secondary">{description}</p>
+        <div class="mt-4 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 font-mono text-sm">
+          {language && (
+            <span class="inline-flex items-center gap-1.5 text-nvim-gray">
+              <span class="inline-block h-2.5 w-2.5 rounded-full" style={`background-color: ${languageColor(language)}`} />
+              {language}
+            </span>
+          )}
+          {event && <span class="text-nvim-orange">{event}</span>}
+          {placement && <span class="text-nvim-purple">{placement}</span>}
+          <time class="text-nvim-aqua" datetime={date.toISOString()}>{dateLabel}</time>
+          <a href={repo} target="_blank" rel="noopener noreferrer" class="break-all text-nvim-blue hover:underline">view on github &rarr;</a>
+        </div>
+        {stack.length > 0 && (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {stack.map((tag) => <span class="border border-border-subtle bg-bg-secondary px-2 py-0.5 font-mono text-xs text-nvim-yellow">{tag}</span>)}
+          </div>
+        )}
+      </header>
+
+      <div class="blog-content min-w-0 break-words text-text-secondary [&_a]:break-words [&_a]:text-accent [&_a]:underline [&_a]:hover:text-accent-hover [&_blockquote]:my-4 [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-text-primary [&_code]:font-mono [&_code]:text-sm [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-text-primary [&_h3]:mb-2 [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-text-primary [&_hr]:my-6 [&_hr]:border-t [&_hr]:border-border-subtle [&_img]:my-4 [&_img]:max-w-full [&_img]:rounded-lg [&_li]:mb-1 [&_li]:leading-relaxed [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p]:leading-relaxed [&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:bg-bg-secondary [&_pre]:p-4 [&_pre]:text-sm [&_table]:my-6 [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_td]:border-b [&_td]:border-border-subtle [&_td]:px-3 [&_td]:py-2 [&_td]:text-text-secondary [&_th]:border-b [&_th]:border-border-subtle [&_th]:px-3 [&_th]:pb-2 [&_th]:text-left [&_th]:font-semibold [&_th]:text-text-primary [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6">
+        <Content />
+      </div>
+
+      <nav class="project-nav mt-10 grid min-w-0 grid-cols-1 gap-3 border-t border-border-subtle pt-6 font-mono text-sm sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]" aria-label="Project navigation">
+        {prev ? <a class="min-w-0 break-words text-nvim-blue hover:underline" href={`/projects/${prev.id}`} data-nav="prev">[[ {prev.data.title}</a> : <span />}
+        <a class="text-nvim-gray hover:underline sm:text-center" href="/projects" data-nav="up">- projects</a>
+        {next ? <a class="min-w-0 break-words text-nvim-blue hover:underline sm:text-right" href={`/projects/${next.id}`} data-nav="next">{next.data.title} ]]</a> : <span />}
+      </nav>
+    </div>
+  </article>
+</BlogLayout>
+
+<script>
+  import { navigate } from 'astro:transitions/client';
+
+  let projectKeysController: AbortController | undefined;
+
+  function initProjectKeys() {
+    projectKeysController?.abort();
+    projectKeysController = undefined;
+    const nav = document.querySelector<HTMLElement>('.project-nav');
+    if (!nav) return;
+
+    const controller = new AbortController();
+    projectKeysController = controller;
+    let pendingBracket: '[' | ']' | null = null;
+    let pendingTimer: number | undefined;
+
+    document.addEventListener('keydown', (event) => {
+      const target = event.target as HTMLElement;
+      const typing = target.matches('input, textarea') || target.isContentEditable;
+      const telescopeOpen = document.getElementById('telescope')?.classList.contains('open');
+      if (typing || telescopeOpen || event.metaKey || event.ctrlKey || event.altKey) return;
+
+      const go = (key: 'prev' | 'next' | 'up') => {
+        const link = nav.querySelector<HTMLAnchorElement>(`a[data-nav="${key}"]`);
+        if (link) navigate(link.href);
+      };
+
+      if (event.key === '-') {
+        event.preventDefault();
+        go('up');
+      } else if (event.key === '[' || event.key === ']') {
+        if (pendingBracket === event.key) {
+          window.clearTimeout(pendingTimer);
+          pendingBracket = null;
+          go(event.key === '[' ? 'prev' : 'next');
+        } else {
+          pendingBracket = event.key;
+          pendingTimer = window.setTimeout(() => { pendingBracket = null; }, 600);
+        }
+      }
+    }, { signal: controller.signal });
+  }
+
+  initProjectKeys();
+  document.addEventListener('astro:page-load', initProjectKeys);
+</script>
