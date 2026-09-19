@@ -1,80 +1,76 @@
 ---
-import type { Project } from '../data/projects';
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import ProjectThumb from './ProjectThumb.astro';
+import { languageColor } from '../data/language-colors';
 
 interface Props {
-  project: Project;
+  project: CollectionEntry<'projects'>;
 }
 
 const { project } = Astro.props;
-
-const languageColors: Record<string, string> = {
-    TypeScript: '#3178c6',
-    JavaScript: '#f1e05a',
-    Python: '#3572A5',
-    Go: '#00ADD8',
-    Rust: '#dea584',
-    'C++': '#f34b7d',
-    'C#': '#178600',
-    Java: '#b07219',
-    HTML: '#e34c26',
-    CSS: '#563d7c',
-    Astro: '#ff5a03',
-    Shell: '#89e051',
-    Ruby: '#701516',
-    'Jupyter Notebook': '#DA5B0B',
-    Lua: '#000080',
-    Nix: '#7e7eff',
-};
-
-const langColor = project.language ? (languageColors[project.language] ?? '#8b949e') : null;
+const { title, description, language, stack, cover, event, placement } = project.data;
+const shownStack = stack.slice(0, 4);
+const extra = stack.length - shownStack.length;
 ---
 
 <a
-    href={project.githubUrl}
-    target="_blank"
-    rel="noopener noreferrer"
-    class="glow-card flex flex-col p-5 transition-all duration-300 hover:bg-bg-card-hover group"
-    data-animate
+  href={`/projects/${project.id}`}
+  class="project-tile glow-card group flex min-w-0 flex-col transition-all duration-300 hover:bg-bg-card-hover"
+  data-tile
+  data-slug={project.id}
+  data-search={[title, description, ...stack].join(' ').toLowerCase()}
+  data-animate
 >
-    <div class="flex items-start justify-between gap-3">
-        <div class="flex items-center gap-2 min-w-0">
-            <svg class="w-4 h-4 text-text-muted shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.041-1.412-4.041-1.412-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-            </svg>
-            <span class="text-sm font-semibold text-accent group-hover:underline truncate">{project.name}</span>
-        </div>
-        <svg class="w-4 h-4 text-text-muted shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-        </svg>
-    </div>
-
-    {project.description && (
-        <p class="text-sm text-text-secondary mt-2 leading-relaxed line-clamp-2">{project.description}</p>
+  <div class="relative">
+    {cover ? (
+      <Image src={cover} alt="" widths={[480, 960]} sizes="(min-width: 640px) 50vw, 100vw" class="aspect-video w-full object-cover" />
+    ) : (
+      <ProjectThumb title={title} language={language} />
     )}
+    {(event || placement) && (
+      <div class="absolute right-2 top-2 flex flex-wrap justify-end gap-1.5">
+        {event && <span class="bg-bg-primary px-2 py-0.5 font-mono text-xs font-semibold text-nvim-orange">{event}</span>}
+        {placement && <span class="bg-bg-primary px-2 py-0.5 font-mono text-xs font-semibold text-nvim-purple">{placement}</span>}
+      </div>
+    )}
+  </div>
 
-    <div class="flex flex-wrap items-center gap-3 mt-auto pt-4">
-        {langColor && project.language && (
-            <span class="flex items-center gap-1.5 text-xs text-text-muted">
-                <span class="w-2.5 h-2.5 rounded-full shrink-0" style={`background-color: ${langColor}`} />
-                {project.language}
-            </span>
-        )}
-        {project.tags && project.tags.map((tag) => (
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tag-bg text-tag-text border border-tag-border">
-                {tag}
-            </span>
-        ))}
+  <div class="flex min-w-0 flex-1 flex-col gap-2 p-5">
+    <span class="truncate text-sm font-semibold text-nvim-green">{title}</span>
+    <p class="line-clamp-2 text-sm leading-relaxed text-text-secondary">{description}</p>
+    <div class="mt-auto flex flex-wrap items-center gap-2 pt-3">
+      {language && (
+        <span class="mr-1 flex items-center gap-1.5 text-xs text-nvim-gray">
+          <span class="h-2.5 w-2.5 shrink-0 rounded-full" style={`background-color: ${languageColor(language)}`} />
+          {language}
+        </span>
+      )}
+      {shownStack.map((tag) => <span class="border border-border-subtle bg-bg-secondary px-2 py-0.5 font-mono text-xs text-nvim-yellow">{tag}</span>)}
+      {extra > 0 && <span class="border border-border-subtle bg-bg-secondary px-2 py-0.5 font-mono text-xs text-nvim-yellow">+{extra}</span>}
     </div>
+  </div>
 </a>
 
+<style>
+  .project-tile { outline: 1px solid transparent; outline-offset: -1px; }
+  .project-tile[hidden] { display: none; }
+  .project-tile.tile-cursor,
+  .project-tile:focus-visible { outline-color: var(--color-nvim-yellow); }
+</style>
+
 <script>
-    document.querySelectorAll('.glow-card').forEach((card) => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = (card as HTMLElement).getBoundingClientRect();
-            const x = (e as MouseEvent).clientX - rect.left;
-            const y = (e as MouseEvent).clientY - rect.top;
-            (card as HTMLElement).style.setProperty('--mouse-x', `${x}px`);
-            (card as HTMLElement).style.setProperty('--mouse-y', `${y}px`);
-        });
+  function initGlow() {
+    document.querySelectorAll<HTMLElement>('.glow-card').forEach((card) => {
+      if (card.dataset.glowBound === 'true') return;
+      card.dataset.glowBound = 'true';
+      card.addEventListener('mousemove', (event) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', `${event.clientX - rect.left}px`);
+        card.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`);
+      });
     });
+  }
+  initGlow();
+  document.addEventListener('astro:page-load', initGlow);
 </script>
