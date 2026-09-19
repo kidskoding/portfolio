@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+/* keyboard cursor (hjkl) gets the exact same styling as mouse hover */
+@custom-variant hover (&:hover, &.vim-cursor);
 @theme {
   --font-sans: "Google Sans Code", ui-monospace, monospace;
   --font-mono: "Google Sans Code", ui-monospace, monospace;
@@ -133,7 +135,8 @@ body::before {
   transition: opacity 0.4s ease;
 }
 
-.glow-card:hover::before {
+.glow-card:hover::before,
+.glow-card.vim-cursor::before {
   background: linear-gradient(
     135deg,
     rgba(250, 189, 47, 0.4),
@@ -157,7 +160,8 @@ body::before {
   transition: opacity 0.3s ease;
 }
 
-.glow-card:hover::after {
+.glow-card:hover::after,
+.glow-card.vim-cursor::after {
   opacity: 1;
 }
 

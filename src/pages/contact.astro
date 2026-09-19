@@ -51,6 +51,7 @@ const mailPath = "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 
                 {contactLinks.map((item) => (
                     <a
                         href={item.href}
+                        data-vim-item
                         target={item.external ? "_blank" : undefined}
                         rel={item.external ? "noopener noreferrer" : undefined}
                         class="group flex min-w-0 items-center gap-4 rounded-xl border border-border-subtle bg-bg-card p-5 transition-all hover:border-accent/40 hover:bg-bg-card-hover"
