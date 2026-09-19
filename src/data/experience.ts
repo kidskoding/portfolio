@@ -1,10 +1,10 @@
+import astralLogoIcon from "../assets/astral.jpg";
+import brunswickLogoIcon from "../assets/brunswick.jpg";
 import databricksLogoIcon from "../assets/databricks-logo.jpeg";
-import epicGamesLogoIcon from "../assets/epic-games-logo.png";
 import sapienceLogoIcon from "../assets/sapience-logo.jpeg";
-import uiucLogoIcon from "../assets/illini-logo.png";
+import agenticAiUiucLogoIcon from "../assets/agentic-ai-uiuc.jpg";
 import ivrLogoIcon from "../assets/ivr-logo.jpeg";
 import kidskodingLogoIcon from "../assets/kidskoding-logo.jpeg";
-import microsoftLogoIcon from "../assets/microsoft-logo.jpg";
 import tmobileLogoIcon from "../assets/tmobile-logo.png";
 
 const calculateDuration = (startDate: string, endDate: string) => {
@@ -45,6 +45,49 @@ export interface Experience {
 
 export const experiences: Experience[] = [
     {
+        id: "11",
+        company: "Brunswick Corporation",
+        companyLogo: brunswickLogoIcon.src,
+        location: "Champaign, Illinois",
+        startDate: "Aug 2026",
+        endDate: "Present",
+        duration: calculateDuration("Aug 2026", "Present"),
+        roles: [
+            {
+                title: "software development engineering intern",
+                employmentType: "Internship",
+                startDate: "Aug 2026",
+                endDate: "Present",
+                duration: calculateDuration("Aug 2026", "Present"),
+                description: [
+                    "fall 2026 | via uiuc research park, boating intelligence design lab",
+                    "full stack development across various boating intelligence applications, enabling an ACES (autonomous, connected, electrified, and shared) strategy",
+                ],
+                skills: ["Cloudflare Workers", "Git", "GitHub", "Okta", "PostgreSQL", "EffectTS", "Rust", "Nix", "Vite Plus", "Vite"],
+            },
+        ],
+    },
+    {
+        id: "12",
+        company: "Astral",
+        companyLogo: astralLogoIcon.src,
+        startDate: "Sep 2026",
+        endDate: "Present",
+        duration: calculateDuration("Sep 2026", "Present"),
+        roles: [
+            {
+                title: "oss developer",
+                startDate: "Sep 2026",
+                endDate: "Present",
+                duration: calculateDuration("Sep 2026", "Present"),
+                description: [
+                    "improving the experience behind uv, ruff, and ty: the perfect triad for fast and efficient modern python development",
+                ],
+                skills: ["Rust", "GitHub", "Git", "Python"],
+            },
+        ],
+    },
+    {
         id: "9",
         company: "Databricks",
         companyLogo: databricksLogoIcon.src,
@@ -53,12 +96,12 @@ export const experiences: Experience[] = [
         duration: calculateDuration("May 2026", "Present"),
         roles: [
             {
-                title: "student fellow",
+                title: "student fellowship",
                 startDate: "May 2026",
                 endDate: "Present",
                 duration: calculateDuration("May 2026", "Present"),
                 description: [
-                    "promoting databricks, data, and ai to the community around me!",
+                    "creating a launchpad into driving and fostering databricks, data, and ai adoption via tech talks, workshops, and hackathons!!",
                 ],
                 skills: ["Azure Databricks", "Databricks", "Business Intelligence (BI)", "Data Engineering"],
             },
@@ -80,78 +123,36 @@ export const experiences: Experience[] = [
                 endDate: "Aug 2026",
                 duration: calculateDuration("May 2026", "Aug 2026"),
                 description: [
-                    "integrating ai agents and workflows into enterprise systems (ServiceNow) to support internal IT operations",
+                    "summer 2026 | servicenow itsm team; ai agents and ai governance within servicenow as a PaaS",
                 ],
-                skills: ["ServiceNow", "Salesforce", "Agentic AI Development"],
-            },
-        ],
-    },
-    {
-        id: "10",
-        company: "Epic Games",
-        companyLogo: epicGamesLogoIcon.src,
-        startDate: "Jun 2026",
-        endDate: "Present",
-        duration: calculateDuration("Jun 2026", "Present"),
-        roles: [
-            {
-                title: "open source software developer",
-                startDate: "Jun 2026",
-                endDate: "Present",
-                duration: calculateDuration("Jun 2026", "Present"),
-                description: [
-                    "lore - a next gen version control system for game developers",
-                ],
-                skills: ["Rust", "GitHub Actions"],
-            },
-        ],
-    },
-    {
-        id: "6",
-        company: "Microsoft",
-        companyLogo: microsoftLogoIcon.src,
-        startDate: "Mar 2026",
-        endDate: "Present",
-        duration: calculateDuration("Mar 2026", "Present"),
-        roles: [
-            {
-                title: "student ambassador",
-                startDate: "Apr 2026",
-                endDate: "Jul 2026",
-                duration: calculateDuration("Apr 2026", "Jul 2026"),
-                description: [
-                    "leading and sharing knowledge about Microsoft technologies and ai on uiuc campus",
-                ],
-                skills: ["Microsoft Azure", "GitHub"],
-            },
-            {
-                title: "open source contributor",
-                startDate: "Mar 2026",
-                endDate: "Present",
-                duration: calculateDuration("Mar 2026", "Present"),
-                description: [
-                    "contributed to open-source developer tools, including Microsoft-backed frameworks and projects focused on Rust and automation",
-                ],
-                skills: ["Rust", "Git", "GitHub", "Go"],
+                skills: ["ServiceNow", "Atlassian Suite", "Agentic AI Development", "Claude", "Claude Cowork", "Claude Code"],
             },
         ],
     },
     {
         id: "1",
         company: "Agentic AI @ UIUC",
-        companyLogo: uiucLogoIcon.src,
+        companyLogo: agenticAiUiucLogoIcon.src,
         location: "Champaign, Illinois",
         startDate: "Feb 2026",
         endDate: "Present",
         duration: calculateDuration("Feb 2026", "Present"),
         roles: [
             {
+                title: "president",
+                startDate: "Aug 2026",
+                endDate: "Present",
+                duration: calculateDuration("Aug 2026", "Present"),
+                description: [],
+                skills: [],
+            },
+            {
                 title: "member of technical staff",
                 startDate: "Feb 2026",
-                endDate: "Present",
-                duration: calculateDuration("Feb 2026", "Present"),
+                endDate: "Aug 2026",
+                duration: calculateDuration("Feb 2026", "Aug 2026"),
                 description: [
-                    "actively building a community that involves 100+ UIUC students building impactful AI agents that solve real world business problems",
+                    "actively building a community that involves 200+ UIUC students building impactful AI agents that solve real world business problems",
                 ],
                 skills: ["Claude Code", "Cursor", "Langchain", "MCP", "RAG", "Pinecone"],
             },
@@ -173,7 +174,8 @@ export const experiences: Experience[] = [
                 endDate: "Aug 2025",
                 duration: calculateDuration("Jun 2025", "Aug 2025"),
                 description: [
-                    "interned at client IAA (Insurance Auto Auctions) on the data science & data engineering team - google gemini and python extract important data from automobile registration documents → transform into structured JSON → load into Azure Blob Storage",
+                    "summer 2025 | interned at client IAA (Insurance Auto Auctions) on the data science & data engineering team",
+                    "google gemini and python extract important data from automobile registration documents → transform into structured JSON → load into Azure Blob Storage",
                 ],
                 skills: ["Google Cloud Platform", "Microsoft Azure", "Vertex AI", "Agile Project Management", "Prompt Engineering", "Python", "SQL"],
             },
