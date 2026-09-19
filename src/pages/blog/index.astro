@@ -10,7 +10,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
 <Layout title="Blog">
   <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
-    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3" data-animate>Blog</p>
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-nvim-green mb-3" data-animate>Blog</p>
     <h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text" data-animate>Blog</h1>
     <p class="text-text-muted mt-3 text-base max-w-md" data-animate>
       my blog posts covering various tech news! takes on AI, startups, and where the industry is headed.
@@ -23,7 +23,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
             href={`/blog/${post.id}`}
             class="block rounded-xl border border-border-subtle bg-bg-card p-6 transition-all hover:bg-bg-card-hover hover:border-border-accent group"
           >
-            <h2 class="text-lg font-semibold text-text-primary group-hover:text-accent transition-colors">
+            <h2 class="text-lg font-semibold text-text-primary group-hover:text-nvim-green transition-colors">
               {post.data.title}
             </h2>
             {post.data.description && (
