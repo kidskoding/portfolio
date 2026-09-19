@@ -25,8 +25,12 @@ interface Tab { path: string; file: string; icon: TabIcon; pinned?: boolean }
 let activeFile = 'index.astro';
 let activeIcon: 'astro' | 'mdx' | 'json' = 'astro';
 const blogSlug = currentPath.match(/^\/blog\/(.+)$/);
+const projectSlug = currentPath.match(/^\/projects\/(.+)$/);
 if (blogSlug) {
   activeFile = `blog/${blogSlug[1]}.mdx`;
+  activeIcon = 'mdx';
+} else if (projectSlug) {
+  activeFile = `projects/${projectSlug[1]}.mdx`;
   activeIcon = 'mdx';
 } else if (currentPath === '/package-json') {
   activeFile = 'package.json';
@@ -42,11 +46,15 @@ if (blogSlug) {
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
+  (a, b) => a.id.localeCompare(b.id)
+);
 
 const tabs: Tab[] = [
   ...(buffers as Tab[]),
   { path: '/package-json', file: 'package.json', icon: 'json' },
   ...posts.map((post): Tab => ({ path: `/blog/${post.id}`, file: `${post.id}.mdx`, icon: 'mdx' })),
+  ...projects.map((project): Tab => ({ path: `/projects/${project.id}`, file: `${project.id}.mdx`, icon: 'mdx' })),
 ];
 
 const pinIcon = `
@@ -122,6 +130,21 @@ const astroIcon = `
                 >
                   <span class="tree-icon icon-mdx">MDX</span>
                   <span>{post.id}.mdx</span>
+                </a>
+              ))}
+            </div>
+            <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="projects" aria-expanded="false">
+              <span class="tree-caret" aria-hidden="true">&gt;</span>
+              <span>projects</span>
+            </button>
+            <div data-tree-group="projects" hidden>
+              {projects.map((project) => (
+                <a
+                  href={`/projects/${project.id}`}
+                  class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/projects/${project.id}` }]}
+                >
+                  <span class="tree-icon icon-mdx">MDX</span>
+                  <span>{project.id}.mdx</span>
                 </a>
               ))}
             </div>
