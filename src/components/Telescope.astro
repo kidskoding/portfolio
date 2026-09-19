@@ -19,14 +19,14 @@ interface Props {
 const { posts, projects } = Astro.props;
 
 const pages = [
-  { label: 'index.astro', path: '/', desc: 'home' },
-  { label: 'experience.astro', path: '/experience', desc: 'work history + research' },
-  { label: 'skills.astro', path: '/skills', desc: 'languages, tools, platforms' },
-  { label: 'about.astro', path: '/about', desc: 'bio, interests, contact' },
-  { label: 'projects.astro', path: '/projects', desc: 'things built' },
-  { label: 'certificates.astro', path: '/certificates', desc: 'licenses and certifications' },
-  { label: 'contact.astro', path: '/contact', desc: 'email, linkedin, github' },
-  { label: 'blog/index.astro', path: '/blog', desc: 'blog posts' },
+  { label: 'index.astro', path: '/', desc: 'building ai agents' },
+  { label: 'experience.astro', path: '/experience', desc: 'my education and work experience' },
+  { label: 'skills.astro', path: '/skills', desc: 'the tools, languages, and platforms I use to build products' },
+  { label: 'about.astro', path: '/about', desc: "who I am, what I do, and what I'm into" },
+  { label: 'projects.astro', path: '/projects', desc: "things i've built. click a tile." },
+  { label: 'certificates.astro', path: '/certificates', desc: "licenses and certifications I've earned" },
+  { label: 'contact.astro', path: '/contact', desc: 'contact me if you want to stay in touch! collaboration, questions, or just simply saying hi :)' },
+  { label: 'blog.astro', path: '/blog', desc: 'my blog posts covering various tech news! takes on AI, startups, and where the industry is headed.' },
 ];
 
 const easterEggs = [
@@ -192,6 +192,11 @@ const easterEggs = [
     color: var(--color-nvim-fg3);
     font-size: 11px;
     font-family: var(--font-mono);
+    min-width: 0;
+    max-width: 55%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .item-easter { color: var(--color-nvim-orange); }
   .item-enter {
