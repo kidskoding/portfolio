@@ -117,22 +117,11 @@ New components use the full gruvbox palette from `global.css`, not only the yell
 | Date, statusline mode | `--color-nvim-aqua` |
 | Links, "view on github" | `--color-nvim-blue` text, `--color-nvim-aqua` on hover |
 | Filter prompt `>` | `--color-nvim-red` |
-| Language stripe / dot | language → gruvbox map below |
+| Language stripe / dot | GitHub language color, see below |
 
-Language map replaces GitHub's hex colors so tiles sit inside the palette:
+Language colors are the one exception to the palette. They use GitHub's official hex per language (the existing `languageColors` map in `ProjectCard.astro`, moved into `ProjectThumb.astro`), so Rust is `#dea584`, Python `#3572A5`, and so on. Reason: those colors are what people already recognize from GitHub. Unknown language falls back to `--color-nvim-fg3`.
 
-| Language | Token |
-|---|---|
-| Rust | orange |
-| Python | blue |
-| TypeScript, JavaScript | yellow |
-| Go | aqua |
-| Nix | purple |
-| HTML, CSS | red |
-| Jupyter Notebook | orange |
-| anything else | fg3 |
-
-A site-wide gruvbox pass for the rest of the pages is a separate follow-up spec.
+Rule for the whole site, applied here first: anything with a fixed color of its own (language colors, brand logos, company logos) keeps that color. Everything else uses the gruvbox palette. A site-wide pass applying this rule to the rest of the pages is a separate follow-up spec.
 
 ## Gallery Interaction
 
