@@ -29,3 +29,6 @@ public/certificates/
 .vercel
 .superpowers/
 result
+
+# local design docs (specs/plans stay on disk only)
+docs/
