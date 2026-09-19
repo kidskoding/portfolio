@@ -2,6 +2,7 @@
 
 /* keyboard cursor (hjkl) gets the exact same styling as mouse hover */
 @custom-variant hover (&:hover, &.vim-cursor);
+
 @theme {
   --font-sans: "Google Sans Code", ui-monospace, monospace;
   --font-mono: "Google Sans Code", ui-monospace, monospace;
@@ -288,4 +289,13 @@ body::before {
   #mobile-sidebar {
     transform: translateX(0);
   }
+}
+
+.blog-content p[align="center"] {
+  text-align: center;
+}
+
+.blog-content p[align="center"] img {
+  display: inline-block;
+  margin: 0.25rem 0;
 }
