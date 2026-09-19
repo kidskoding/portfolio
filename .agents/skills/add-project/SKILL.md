@@ -1,12 +1,12 @@
 ---
 name: add-project
-description: Use when the user says "add project", "add a project", or wants to add a new entry to the Projects section of the portfolio. Fetches GitHub repo metadata and appends to src/data/projects.ts.
-allowed-tools: Read, Edit, Bash
+description: Use when the user says "add project", "add a project", or wants a new entry in the Projects gallery. Fetches GitHub repo metadata and scaffolds src/content/projects/<slug>.mdx.
+allowed-tools: Read, Write, Bash, Glob
 ---
 
 # Add Project
 
-Add a new project to `src/data/projects.ts` in the Astro portfolio.
+Scaffold a new entry in the `projects` content collection.
 
 ## Arguments
 
@@ -14,53 +14,59 @@ $ARGUMENTS
 
 If no arguments are given, ask the user for:
 - GitHub repo URL
-- Which category: `featured`, `hackathons`, `ai-agents`, `dsa`, or `other`
+- Category: `project`, `hackathon`, or `agentic`
+- For hackathons: event name and placement, if any
 
-## Step 1: Fetch repo metadata
-
-Use the GitHub CLI to fetch metadata from the repo URL:
+## Step 1: Fetch metadata
 
 ```bash
-gh api repos/<owner>/<repo> --jq '{name: .name, description: .description, language: .language}'
+gh api repos/<owner>/<repo> --jq '{name: .name, description: .description, language: .language, pushed: .pushed_at[:10]}'
+gh api repos/<owner>/<repo>/readme --jq .content | base64 -d
 ```
 
-Extract `owner` and `repo` from the provided GitHub URL.
+The README call returns 404 when there is none. Treat a README under 120 bytes as absent.
 
-## Step 2: Read the current file
+## Step 2: Check for an existing entry
 
-Read `src/data/projects.ts` in full to understand:
-- Existing entries in each category array
-- The exact formatting style (indentation, quote style, trailing commas)
-
-## Step 3: Build the project object
-
-```ts
-{
-    name: "<repo name>",
-    description: "<repo description>",
-    githubUrl: "<full GitHub URL>",
-    language: "<primary language>",   // omit if null
-}
+```bash
+ls src/content/projects/<repo>.mdx src/content/projects/<repo>/index.mdx 2>/dev/null
 ```
 
-Rules:
-- Use the description from GitHub as-is, unless it is blank or unhelpful — in that case ask the user for a better one
-- Omit `language` entirely if the API returns null
-- Mirror the indentation and trailing-comma style of existing entries exactly
-- Add to the **top** of the target category array (most recent first)
+If one exists, stop and tell the user. Do not overwrite it.
 
-## Step 4: Insert into the correct array
+## Step 3: Write the file
 
-Append the project object to the appropriate array in `src/data/projects.ts`:
-- `featuredProjects` → for `featured`
-- `hackathons` → for `hackathons`
-- `aiAgents` → for `ai-agents`
-- `dsaProjects` → for `dsa`
-- `otherProjects` → for `other`
+Path: `src/content/projects/<repo>.mdx`
 
-## Step 5: Confirm with the user
+```yaml
+---
+title: "<repo>"
+description: "<description>"
+category: <category>
+repo: https://github.com/<owner>/<repo>
+language: "<language>"        # omit when null
+stack: []
+date: <pushed YYYY-MM-DD>
+event: "<event>"              # hackathon only
+placement: "<placement>"      # optional
+---
+```
 
-After editing the file, report:
-- Project name and category it was added to
-- Description used
-- Language detected
+Body rules, in order:
+1. When a README is present, strip its top heading and HTML comments; self-close `<br>`, `<hr>`, and `<img>`; rewrite relative paths to the raw GitHub URL; and escape braces outside fenced code blocks.
+2. Without a README, write one paragraph from the description followed by `Writeup coming. Source and progress live in the [repo](<repo url>).`
+
+## Step 4: Build
+
+```bash
+bun run build
+```
+
+Fix any MDX errors, commonly unclosed HTML tags, bare `<` in prose, or braces in inline text.
+
+## Step 5: Report
+
+- File path written
+- Category, event, and placement
+- Whether the body came from the README or is a stub
+- To add a thumbnail, move the file to `src/content/projects/<repo>/index.mdx`, place `cover.png` beside it, and set `cover: ./cover.png`

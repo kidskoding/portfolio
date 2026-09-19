@@ -25,6 +25,10 @@ bun run preview   # preview production build
 | `/` | Home |
 | `/about` | About |
 | `/experience` | Resume — work experience & education |
+| `/projects` | Projects gallery |
+| `/projects/<slug>` | Project case study |
 | `/skills` | Skills |
+| `/certificates` | Certificates |
 | `/blog` | Blog |
 | `/contact` | Contact |
+| `/package-json` | Package metadata rendered as a JSON buffer |
