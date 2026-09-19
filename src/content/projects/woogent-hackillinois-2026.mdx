@@ -1,0 +1,604 @@
+---
+title: "woogent-hackillinois-2026"
+description: "woogent (hackillinois 2026) - an API that lets AI agents shop on online stores: built and catered towards small businesses"
+category: hackathon
+repo: https://github.com/kidskoding/woogent-hackillinois-2026
+language: "Python"
+stack: []
+date: 2026-03-01
+event: "HackIllinois 2026"
+---
+
+<p align="center">
+  <img src="https://img.shields.io/badge/python-3.12+-blue?logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/FastAPI-0.110+-009688?logo=fastapi&logoColor=white" alt="FastAPI" />
+  <img src="https://img.shields.io/badge/WooCommerce-UCP%20Bridge-96588A?logo=woocommerce&logoColor=white" alt="WooCommerce UCP Bridge" />
+  <img src="https://img.shields.io/badge/Gemini-2.5%20Pro-4285F4?logo=google&logoColor=white" alt="Gemini 2.5 Pro" />
+  <img src="https://img.shields.io/badge/Gradio-UI-orange" alt="Gradio" />
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white" alt="Docker Compose" />
+  <img src="https://img.shields.io/badge/Stripe-Test%20Payments-635BFF?logo=stripe&logoColor=white" alt="Stripe Test Payments" />
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License" />
+</p>
+
+> For HackIllinois 2026, I built **Woogent**, an API that lets AI agents shop on online stores: built and catered towards small businesses using Google's **Universal Commerce Protocol (UCP)** on top of a WooCommerce MySQL database that ships with a **Gemini-powered AI shopping demo** and a **Woogent Demo Store** backed via WooCommerce
+
+At a high level:
+- **Backend API (`api/`)**: FastAPI service that exposes a UCP-compliant REST API backed by a WooCommerce database.
+- **WordPress + WooCommerce (`wordpress/`)**: Standard WordPress stack with WooCommerce and sample data, running in Docker.
+- **Gemini demo (`demo/`)**: Gradio UI that lets Gemini act as an AI shopping assistant using function calling against the UCP API.
+
+---
+
+### The Problem
+
+Retail can be split into three categories:
+
+- **Large enterprises** (e.g. **Amazon** and **Walmart**) use their own commerce platforms
+- **Medium retailers** use large marketplaces like **Shopify**, **Wix**, and **Etsy**
+- **Small retailers** rely on free and open-source platforms like WooCommerce
+
+Today, **roughly 4 million small retailers** still have no path to agentic commerce. They lack the technical expertise and capital to build or adopt AI-native shopping experiences, so they stay invisible to the growing ecosystem of AI shopping agents and voice assistants. Woogent is built for this gap: it adds a standards-based UCP-based API on top of the stack e-commerce already uses (WooCommerce) with no migration and no custom platform.
+
+---
+
+### Why Woogent?
+
+WooGent turns an existing WooCommerce store into an AI-native commerce backend, without asking merchants to migrate platforms.
+
+- **Built for a real integration gap**: WooCommerce storefronts are mature, but they are not directly consumable by LLM shopping agents. WooGent adds a standards-oriented UCP layer so AI clients can discover, browse, and transact against live merchant data.
+- **An API at its Core**: Woogent is still an API at its core. The Google Gemini Shopping Agent is a live demonstration of how an AI Agent can use my Woogent API. Other use cases include server-to-server integrations and function-calling AI clients. Because Woogent is an API at its core, it can still be tested independently via cURL and Postman!
+- **Commerce flows modeled explicitly**: Checkout sessions and orders are separate resources with clear lifecycle transitions, idempotent mutations, and predictable error behavior.
+- **Developer-ready experience**: OAuth/JWT auth, machine-readable discovery, structured error responses, and a Docker-first setup make it fast to evaluate and integrate!
+- **Future-facing but practical**: It enables AI-assisted shopping today while staying compatible with existing WooCommerce operations and data models
+
+---
+
+### Live Demo
+
+| Service | URL |
+|---------|-----|
+| **Gemini AI Shopping Demo** | http://159.65.188.106:7860 |
+| **UCP API (publicly accessible)** | http://159.65.188.106:8000 |
+| **API Docs (Swagger UI)** | http://159.65.188.106:8000/docs |
+| **UCP Manifest** | http://159.65.188.106:8000/.well-known/ucp |
+| **WooCommerce Store** | http://159.65.188.106:8080 |
+
+---
+
+### Features
+
+- **Full UCP implementation**
+  - Implements the **UCP 2026-01-11** spec (`https://ucp.dev`).
+  - Discovery via `/.well-known/ucp`.
+  - Product browsing via `/ucp/products`.
+  - Checkout session lifecycle: `incomplete → pending_payment → completed / cancelled`.
+- **WooCommerce-backed data**
+  - Reads products, prices, and orders directly from the WooCommerce MySQL schema.
+  - Uses **raw SQL** (no ORM models) to match WooCommerce’s schema.
+- **Stripe payment processing**
+  - Full PaymentIntent create-and-confirm flow using the Stripe Python SDK.
+  - Uses `pm_card_visa` in test mode so end-to-end checkout works with no real card.
+  - Transaction ID (`ch_...`) stored on the WooCommerce order record.
+  - Gracefully degrades to a no-op if `STRIPE_TEST_KEY` is not set.
+- **OAuth 2.0 + JWT auth**
+  - Authorization Code grant for account linking.
+  - RS256 JWTs with keys generated at startup and exposed via `/.well-known/jwks.json`.
+- **Gemini AI shopping experience**
+  - Gemini (default: `gemini-2.5-pro`) via `google-generativeai` with function calling tools.
+  - Gemini discovers the store via UCP, searches products, and completes checkout.
+  - All tool calls and responses are visible in the UI for demo/judging.
+- **Docker-first local environment**
+  - One `docker compose up -d` spins up MySQL, WordPress, the UCP API, and the Gemini demo.
+  - API and demo support live reload via bind mounts.
+
+---
+
+### Tech Stack
+
+- **Language**: Python 3.12+
+- **Package manager**: `uv` (via `pyproject.toml`)
+- **API**: FastAPI, SQLAlchemy (async + raw SQL), aiomysql, pydantic, pydantic-settings, python-jose, cryptography, stripe
+- **Demo**: Gradio, `google-generativeai`, python-dotenv
+- **Infra**: Docker Compose (MySQL, WordPress, API, demo)
+
+---
+
+### Repository Layout
+
+```text
+woogent/
+├── LICENSE
+├── pyproject.toml          # uv project — all dependencies
+├── docker-compose.yml      # 4 services: mysql, wordpress, api, demo
+├── .env                    # secrets (not committed)
+├── api/                    # FastAPI UCP server
+│   ├── main.py             # app entry point, router registration, docs
+│   ├── config.py           # pydantic-settings from .env
+│   ├── models/ucp.py       # all UCP Pydantic models
+│   ├── db/
+│   │   ├── connection.py   # async SQLAlchemy engine
+│   │   └── woo_queries.py  # WooCommerce SQL queries
+│   ├── services/
+│   │   ├── auth.py         # RS256 key gen, OAuth 2.0, JWT
+│   │   ├── stripe_service.py # Stripe PaymentIntent create + confirm
+│   │   ├── ucp_adapter.py  # UCP ↔ WooCommerce business logic
+│   │   └── session_store.py # in-memory checkout session store
+│   └── routes/
+│       ├── well_known.py   # /.well-known/ucp + OAuth discovery
+│       ├── checkout.py     # /ucp/checkout-sessions CRUD + complete
+│       ├── oauth.py        # /oauth2/authorize, /token, /revoke
+│       ├── orders.py       # /ucp/orders (order retrieval)
+│       ├── products.py     # /ucp/products search + details
+│       └── demo.py         # /demo/token shortcut (DEMO_MODE only)
+├── demo/
+│   └── app.py              # Gradio + Gemini function-calling chat UI
+└── wordpress/
+    ├── uploads.ini         # PHP upload limits
+    └── setup.sh            # WP-CLI: installs WooCommerce + sample data
+```
+
+---
+
+### Prerequisites
+
+- **OS**: macOS / Linux (Docker and Python 3.12+ available)
+- **Docker** and **Docker Compose** installed.
+- **Python**: 3.12+ (only needed if you want to run the API outside Docker).
+- **uv** package manager installed (`pipx install uv` or see uv docs).
+- A **Google Gemini API key**.
+
+---
+
+### Quick Start (Docker)
+
+1. **Clone the repo**
+
+```bash
+git clone https://github.com/kidskoding/woogent-hackillinois-2026.git woogent
+cd woogent
+```
+
+2. **Create `.env`**
+
+```bash
+GEMINI_API_KEY=your-gemini-key
+OAUTH_CLIENT_ID=gemini-demo-client
+OAUTH_CLIENT_SECRET=gemini-demo-secret
+SECRET_KEY=some-random-string
+STRIPE_TEST_KEY=sk_test_...       # optional — enables real Stripe test charges
+```
+
+For a **remote/production server**, also set the public-facing URLs so the UCP manifest and OAuth flows reference the correct host instead of `localhost`:
+
+```bash
+WC_DOMAIN=http://<your-server-ip>:8000
+WP_DOMAIN=http://<your-server-ip>:8080
+WP_SITEURL=http://<your-server-ip>:8080
+```
+
+To **refresh product descriptions** in prod (re-import WooCommerce sample data):
+
+- **Recommended:** In GitHub go to **Actions → "Refresh production products" → Run workflow**. This runs the re-import on the server with no need to edit `.env`.
+- Or SSH to the server and run:  
+  `cd ~/woogent && docker compose run --rm -e FORCE_PRODUCT_REIMPORT=true wpcli`  
+  (then remove `FORCE_PRODUCT_REIMPORT` from prod `.env` if you had added it there.)
+
+3. **Start all services**
+
+```bash
+docker compose up -d
+```
+
+This starts:
+- **MySQL** at `localhost:3306`
+- **WordPress** at `http://localhost:8080`
+- **Woogent API** at `http://localhost:8000`
+- **Gemini demo** at `http://localhost:7860`
+
+The `wpcli` service runs automatically on first boot and installs WooCommerce + sample products. Wait about 60 seconds for it to finish before hitting the store.
+
+4. **Verify everything is up**
+
+```bash
+curl http://localhost:8000/.well-known/ucp   # should return UCP manifest JSON
+```
+
+- **FastAPI docs**: `http://localhost:8000/docs`
+- **UCP manifest**: `http://localhost:8000/.well-known/ucp`
+- **Gemini demo UI**: `http://localhost:7860`
+- **WordPress admin**: `http://localhost:8080/wp-admin` (default: `admin` / `adminpassword`)
+
+---
+
+### 90-Second API Quickstart
+
+If you only have a minute, this verifies discovery, auth, product search, and order cancellation behavior.
+
+1. **Start stack**
+
+```bash
+docker compose up -d
+```
+
+2. **Get token** (demo shortcut)
+
+```bash
+curl -s -X POST http://localhost:8000/demo/token
+```
+
+Copy `access_token` from the response.
+
+3. **Call core endpoints**
+
+```bash
+# 1) discovery
+curl -s http://localhost:8000/.well-known/ucp
+
+# 2) product search
+curl -s "http://localhost:8000/ucp/products?query=hoodie&limit=3" \
+  -H "Authorization: Bearer <access_token>"
+
+# 3) list orders
+curl -s "http://localhost:8000/ucp/orders?limit=5" \
+  -H "Authorization: Bearer <access_token>"
+
+# 4) cancel a draft/unpaid order (example: 75)
+curl -s -X POST "http://localhost:8000/ucp/orders/75/cancel" \
+  -H "Authorization: Bearer <access_token>" \
+  -H "Idempotency-Key: cancel-order-75-001" \
+  -H "Request-Id: req-cancel-order-75-001"
+```
+
+Expected behavior:
+- `200` on valid operations.
+- `409` when cancellation is invalid for current order status.
+- `404` when resource ID does not exist.
+
+---
+
+### Development Setup (API + Demo)
+
+You can iterate on the API and demo using live reload with `uv` and Docker.
+
+#### 1. Install Python dependencies with `uv`
+
+From the project root:
+
+```bash
+uv sync
+```
+
+This creates a `.venv/` environment and installs everything defined in `pyproject.toml`.
+
+To activate manually:
+
+```bash
+source .venv/bin/activate
+```
+
+#### 2. Ensure MySQL + WordPress are running
+
+If you want to run the API outside Docker, you can still use the Docker MySQL + WordPress:
+
+```bash
+docker compose up -d mysql wordpress
+```
+
+#### 3. Run the API locally (outside Docker)
+
+```bash
+source .venv/bin/activate
+cd api
+uv run uvicorn main:app --reload
+```
+
+The API will be available at `http://localhost:8000`.
+
+#### 4. Run the Gemini demo locally
+
+In another terminal:
+
+```bash
+source .venv/bin/activate
+cd demo
+uv run python app.py
+```
+
+Then open `http://localhost:7860`.
+
+---
+
+### Core Concepts
+
+- **UCP (Universal Commerce Protocol)**
+  - Machine-friendly protocol for **discovery**, **product browsing**, **checkout sessions**, and **orders**.
+  - Spec: `https://ucp.dev`
+  - Woogent targets the **2026-01-11** version.
+
+- **Money representation**
+  - All prices use **`amount_micros`**: integer = currency × 1,000,000.
+  - Example: `$19.99` → `amount_micros: 19990000`.
+  - This avoids floating point rounding errors.
+
+- **Architecture rules**
+  - **Routes stay thin** — routing modules delegate to `services/` for business logic.
+  - **All money is `amount_micros`** — never use floats for currency values.
+  - **UCP error format** — errors always return the UCP `UCPError` model.
+  - **Async everywhere** — all DB calls use async SQLAlchemy + aiomysql.
+  - **No ORM models** — `woo_queries.py` uses raw SQL returning plain dicts.
+
+---
+
+### API Overview
+
+The main API lives under `api/` and is served by FastAPI (`main.py`).
+
+- **Root + health**
+  - `GET /`
+    - Basic service metadata: UCP version, docs URL, discovery URL.
+  - `GET /health`
+    - Checks DB connectivity and returns `\{"status": "ok" | "degraded", "database": "...", "ucp_version": ...\}`.
+
+- **Discovery**
+  - `GET /.well-known/ucp`
+    - Returns the UCP manifest describing supported capabilities and endpoints.
+
+- **Auth**
+  - `GET /.well-known/oauth-authorization-server`
+    - OAuth authorization server metadata (RFC 8414).
+  - `GET /oauth2/authorize`
+    - OAuth 2.0 Authorization Code grant entry point.
+  - `POST /oauth2/token`
+    - Exchanges authorization code for access token (RS256 JWT).
+  - `POST /oauth2/revoke`
+    - Revokes a token.
+  - `GET /.well-known/jwks.json`
+    - Returns the RSA public key(s) for JWT verification.
+
+- **Products**
+  - `GET /ucp/products`
+    - Search products (keyword, price filters, pagination).
+  - `GET /ucp/products/\{product_id\}`
+    - Detailed product view.
+
+- **Checkout Sessions**
+  - `POST /ucp/checkout-sessions`
+    - Create a new checkout session with line items.
+  - `GET /ucp/checkout-sessions/\{session_id\}`
+    - Retrieve current session state.
+  - `PUT /ucp/checkout-sessions/\{session_id\}`
+    - Update session (shipping address, shipping option, etc.).
+  - `POST /ucp/checkout-sessions/\{session_id\}/complete`
+    - Complete the session using a payment instrument.
+  - `POST /ucp/checkout-sessions/\{session_id\}/cancel`
+    - Cancel an active checkout session.
+
+- **Orders**
+  - `GET /ucp/orders/\{order_id\}`
+    - Retrieve order details mapped from the WooCommerce order tables.
+  - `POST /ucp/orders/\{order_id\}/cancel`
+    - Cancel an unpaid/draft order (`wc-checkout-draft`, `wc-pending`, `wc-failed`).
+  - `POST /ucp/orders/webhook`
+    - Receive order lifecycle webhook events (supports HMAC signature verification).
+
+- **Demo helper**
+  - `POST /demo/token`
+    - **Only in demo mode (`DEMO_MODE=true`)**.
+    - Shortcut endpoint used by the Gemini demo to obtain an access token without a browser redirect.
+
+All **state-mutating endpoints** require:
+- `Authorization: Bearer <token>`
+- `Idempotency-Key: <uuid>`
+- `Request-Id: <uuid>`
+
+---
+
+### Lifecycle and Cancellation Semantics
+
+Woogent intentionally models two resource layers:
+
+- **Checkout session (`/ucp/checkout-sessions/*`)**
+  - Represents in-flight checkout orchestration state.
+  - Use `POST /ucp/checkout-sessions/\{session_id\}/cancel` when cancelling an active checkout flow.
+
+- **Order (`/ucp/orders/*`)**
+  - Represents durable commerce records in WooCommerce (`wp_wc_orders`).
+  - Use `POST /ucp/orders/\{order_id\}/cancel` for order-management cancellation by `order_id`.
+
+Order lifecycle in practice:
+- `wc-checkout-draft` -> `wc-processing` / `wc-completed` on successful payment.
+- `wc-checkout-draft` / `wc-pending` / `wc-failed` -> `wc-cancelled` when cancelled.
+
+Design note:
+- Orders are **not deleted** on cancellation; they transition status for auditability and predictable idempotent behavior.
+
+---
+
+### Gemini Demo (Gradio UI)
+
+The Gemini demo in `demo/app.py` shows an end‑to‑end AI shopping experience:
+
+- Uses `google-generativeai` with **function calling** tools:
+  - `discover_store` → hits `/.well-known/ucp`.
+  - `search_products` → hits `/ucp/products`.
+  - `get_product` → retrieves product details.
+  - `create_checkout_session` → starts checkout.
+  - `set_shipping_address` → updates session and fetches shipping options.
+  - `select_shipping_and_complete` → selects a shipping option and completes the order.
+  - `get_session` → fetches session status.
+- Shows a **thinking + API-call log** inline:
+  - Collapsible "N API call(s)" block per turn.
+  - Tool name + arguments and a status summary for each call.
+  - Final assistant response rendered as a separate message below the thinking block.
+
+Example prompts to try:
+- “What products do you have?”
+- “Show me hoodies under $50.”
+- “I want to buy a beanie, ship to 123 Main St, Champaign IL 61820.”
+- “Discover the store’s UCP capabilities.”
+
+---
+
+### WordPress + WooCommerce
+
+The `wordpress/` directory configures the WordPress container:
+
+- **`uploads.ini`**: Configures PHP upload limits.
+- **`setup.sh`**: A WP‑CLI script that:
+  - Installs WordPress.
+  - Installs and configures WooCommerce.
+  - Loads sample products and configuration so the UCP API has data to expose.
+
+Key database tables used by the API (via `db/woo_queries.py`):
+
+- `wp_posts` — products (`post_type='product'`).
+- `wp_postmeta` — product attributes (`_price`, `_sku`, `_stock_qty`, etc.).
+- `wp_wc_orders` — order headers (HPOS, not `wp_posts`).
+- `wp_wc_order_addresses` — billing/shipping addresses.
+- `wp_wc_orders_meta` — order-level metadata.
+- `wp_woocommerce_order_items` — line items.
+- `wp_woocommerce_order_itemmeta` — line item metadata.
+- `woocommerce_sessions` — cart/session data.
+
+---
+
+### Environment Variables
+
+Expected keys in `.env`:
+
+```bash
+# ── Gemini demo ────────────────────────────────────────────────────────────
+GEMINI_API_KEY=           # required — Google AI Studio key for the demo UI
+GEMINI_MODEL=gemini-2.5-pro  # optional — defaults to gemini-2.5-pro
+
+# ── OAuth / JWT ────────────────────────────────────────────────────────────
+OAUTH_CLIENT_ID=gemini-demo-client
+OAUTH_CLIENT_SECRET=gemini-demo-secret
+SECRET_KEY=               # required — random string used as JWT signing seed
+
+# ── Stripe payments ────────────────────────────────────────────────────────
+STRIPE_TEST_KEY=sk_test_...  # optional — enables real Stripe test charges
+
+# ── Public URLs (required for non-localhost deploys) ───────────────────────
+WC_DOMAIN=http://localhost:8000   # API base URL — used in UCP manifest + OAuth metadata
+WP_DOMAIN=http://localhost:8080   # WordPress base URL
+WP_SITEURL=http://localhost:8080  # WordPress siteurl/home options (set on first boot)
+```
+
+Docker also passes DB configuration to the API service:
+
+```bash
+DB_HOST=mysql
+DB_PORT=3306
+DB_NAME=wordpress
+DB_USER=wordpress
+DB_PASSWORD=wordpress
+```
+
+These are set in `docker-compose.yml` and do not need to be changed for local dev.
+
+---
+
+### Running and Debugging
+
+- **Start all services**
+
+```bash
+docker compose up -d
+```
+
+- **Restart only the API after code changes**
+
+```bash
+docker compose restart api
+```
+
+- **Watch API logs**
+
+```bash
+docker compose logs -f api
+```
+
+- **Run tests (if/when added)**
+
+```bash
+uv run pytest
+```
+
+---
+
+### Design Decisions
+
+- **Thin routes**
+  - FastAPI router modules (`routes/*.py`) are intentionally small.
+  - Business logic lives in `services/` and DB access in `db/` for clarity and testability.
+
+- **Raw SQL over ORM**
+  - WooCommerce’s schema is complex and WordPress‑centric.
+  - Using raw SQL via SQLAlchemy’s core APIs gives full control and avoids impedance mismatch.
+
+- **amount_micros for money**
+  - Avoids floating‑point rounding issues and aligns with Google’s UCP spec.
+
+- **Demo‑friendly auth**
+  - Full OAuth 2.0 Authorization Code flow is implemented.
+  - For the hackathon demo, `/demo/token` implements a **client‑credentials‑style shortcut** so judges don’t need to click through browser redirects.
+
+---
+
+### Troubleshooting
+
+- **Common API errors**
+
+| Status | Typical cause | How to fix |
+|---|---|---|
+| `400` | Missing required mutation headers (`Idempotency-Key`, `Request-Id`) | Include both headers on state-mutating requests |
+| `401` | Missing/invalid/expired bearer token | Re-authenticate and send `Authorization: Bearer <token>` |
+| `404` | Wrong resource ID, wrong base URL/env, or endpoint not deployed in that environment | Verify `order_id/session_id`, selected environment, and `/docs` route list |
+| `409` | Invalid state transition (example: cancelling a paid order) | Read current resource status first and only apply valid transitions |
+
+- **FastAPI docs not loading**
+  - Check the API container status:
+    ```bash
+    docker compose ps api
+    docker compose logs -f api
+    ```
+  - Verify `mysql` is healthy; the API depends on it.
+
+- **Gemini demo shows “Set GEMINI_API_KEY” warning**
+  - Ensure `GEMINI_API_KEY` is set in `.env`.
+  - Rebuild/restart the `demo` container or re‑run `uv run python demo/app.py`.
+
+- **No products appear in search**
+  - Make sure the `wpcli` container finished successfully.
+  - Log into `http://localhost:8080/wp-admin` and confirm WooCommerce + sample products are installed.
+
+- **Auth errors when calling checkout endpoints**
+  - Confirm you’re including `Authorization: Bearer <token>` and the required `Idempotency-Key` and `Request-Id` headers.
+  - In the demo, the `get_token()` helper inside `demo/app.py` should handle this automatically.
+
+---
+
+### AI Disclosure
+
+In compliance with HackIllinois AI policy, here is exactly how AI was used:
+
+- **Google Gemini (`gemini-2.5-pro`)**
+  - Used as the runtime shopping agent in the demo UI.
+  - It calls our API tools (`discover_store`, `search_products`, checkout tools), but it does not generate or host the API implementation itself.
+
+- **Claude Code (Anthropic) / Cursor assistant tooling**
+  - Used as development assistance for debugging, documentation updates, deployment workflow iteration, and UI polish.
+  - Assisted with drafting/refactoring code and troubleshooting, under team direction.
+
+What I built directly:
+- The UCP API surface and endpoint design.
+- FastAPI backend, OAuth/JWT auth flow, WooCommerce database integration, checkout/order state handling, and deployment architecture.
+
+The core deliverable is a custom, stateful Web API created over the hackathon period, with AI used as an assistant and as a client of such API.
+
+---
+
+### License
+
+MIT — see [LICENSE](https://raw.githubusercontent.com/kidskoding/woogent-hackillinois-2026/HEAD/LICENSE).

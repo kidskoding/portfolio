@@ -1,0 +1,206 @@
+---
+title: "f1-strategist.ai"
+description: "real-time F1 race strategy recommendations powered by a multi-agent AI swarm. built on live OpenF1 telemetry"
+category: agentic
+repo: https://github.com/OpenAgents-Illinois/f1-strategist.ai
+language: "Python"
+stack: []
+date: 2026-04-01
+---
+
+Real-time F1 race strategy optimization using a multi-agent AI swarm.
+
+> F1 teams spend millions on strategy engineers. This project builds an AI pit wall that runs on a laptop.
+
+Stack: **FastAPI** · **OpenF1 API** · **Claude claude-sonnet-4-6** · **Python 3.12** · **uv**
+
+---
+
+## Architecture
+
+```
+OpenF1 stream
+     │
+     ▼
+┌─────────────────┐
+│  Orchestrator   │  Routes incoming events to the right subagents
+└────────┬────────┘
+         │
+    ┌────┴──────────────────┐
+    │           │           │
+    ▼           ▼           ▼
+┌────────┐ ┌─────────┐ ┌──────────────┐
+│  Tire  │ │  Gap    │ │  Safety Car  │
+│Analyst │ │Monitor  │ │   Detector   │
+└────┬───┘ └────┬────┘ └──────┬───────┘
+     │          │             │
+     └──────────┴─────────────┘
+                │
+                ▼
+        ┌───────────────┐
+        │  Synthesizer  │  Resolves conflicts, weighs signals
+        └───────┬───────┘
+                │
+                ▼
+        ┌───────────────┐
+        │ Strategy Call │  "Box now — undercut window open"
+        └───────────────┘
+```
+
+Five agents run in a coordinated async loop:
+
+| Agent | Responsibility |
+|---|---|
+| **Orchestrator** | Polls OpenF1 every ~2s, fans out events to subagents |
+| **Tire Strategist** | Tracks stint length and compound degradation, flags pit windows |
+| **Gap Monitor** | Watches intervals, calculates undercut/overcut viability |
+| **Safety Car Detector** | Parses race control messages, signals free-stop opportunities |
+| **Synthesizer** | Calls Claude with all signals, produces a single strategy call |
+
+---
+
+## Quickstart
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/your-username/f1-strategist.ai.git
+cd f1-strategist.ai
+uv sync
+```
+
+### 2. Configure environment
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and fill in your Anthropic API key:
+
+```
+ANTHROPIC_API_KEY=sk-ant-...
+```
+
+All other defaults work out of the box. `SESSION_KEY=latest` will auto-resolve to the most recent F1 race session.
+
+### 3. Start the API server
+
+```bash
+uv run uvicorn api.main:app --reload
+```
+
+The server starts at `http://localhost:8000`. Open `http://localhost:8000/docs` for the interactive API docs.
+
+### 4. Verify dependencies
+
+```bash
+uv run python -c "import fastapi, httpx, anthropic, pydantic, dotenv, uvicorn; print('all deps ok')"
+```
+
+---
+
+## Replay a past race (offline)
+
+Test the system against real historical data without hitting the live API:
+
+```bash
+uv run python scripts/replay.py --session 9158 --speed 10x
+```
+
+Session `9158` is the 2024 Qatar GP — good test case with multiple SC events and tire strategy battles.
+
+To save fresh fixtures from a specific session:
+
+```bash
+uv run python scripts/save_fixtures.py --session 9158
+```
+
+Fixtures are saved to `tests/fixtures/` as JSON files.
+
+---
+
+## Run tests
+
+```bash
+uv run pytest tests/
+```
+
+Tests use saved OpenF1 fixtures in `tests/fixtures/` and run fully offline.
+
+---
+
+## Project structure
+
+```
+f1-strategist.ai/
+├── agents/
+│   ├── orchestrator.py        ← polls OpenF1, fans out to subagents
+│   ├── tire_strategist.py
+│   ├── gap_monitor.py
+│   ├── safety_car_detector.py
+│   └── synthesizer.py         ← calls Claude, produces final call
+│
+├── core/
+│   ├── openf1_client.py       ← async HTTP client for OpenF1
+│   ├── race_state.py          ← shared state object (dataclass)
+│   └── models.py              ← pydantic models for agent signals
+│
+├── api/
+│   └── main.py                ← FastAPI app, WebSocket endpoint
+│
+├── scripts/
+│   ├── replay.py              ← replay a past race session
+│   └── save_fixtures.py       ← fetch and save OpenF1 responses
+│
+└── tests/
+    ├── fixtures/              ← saved OpenF1 responses for offline testing
+    ├── test_tire_strategist.py
+    ├── test_gap_monitor.py
+    └── test_safety_car_detector.py
+```
+
+---
+
+## Environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `ANTHROPIC_API_KEY` | *(required)* | Your Anthropic API key |
+| `OPENF1_BASE_URL` | `https://api.openf1.org/v1` | OpenF1 API base URL |
+| `TARGET_DRIVER` | `1` | Driver number to optimize strategy for |
+| `SESSION_KEY` | `latest` | OpenF1 session key (`latest` or a numeric ID) |
+| `POLL_INTERVAL_SECS` | `2` | How often to poll OpenF1 endpoints |
+| `LOG_LEVEL` | `INFO` | Python logging level |
+
+---
+
+## Data source
+
+All telemetry comes from the [OpenF1 API](https://openf1.org) — free, no auth required.
+
+Key endpoints used:
+- `GET /position` — live driver positions
+- `GET /intervals` — gaps between drivers
+- `GET /stints` — current compound and lap entered
+- `GET /race_control` — SC, VSC, flags, penalties
+- `GET /car_data` — speed, throttle, brake, gear
+
+Rate limit: be polite — the orchestrator polls at ~1 req/s per endpoint by default.
+
+---
+
+## Sample output
+
+```
+[Lap 34] BOX NOW — undercut window open, 2.1s gap to Verstappen
+[Lap 35] STAY OUT — SC window missed, tires have 8 laps left
+[Lap 41] BOX NOW — VSC deployed, free stop, switch to hards
+```
+
+---
+
+## Contributing
+
+1. Fork the repo and create a feature branch
+2. Run `uv run pytest tests/` before submitting a PR
+3. Follow the agent architecture — new signals go through `core/models.py`
