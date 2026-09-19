@@ -337,7 +337,7 @@ The main API lives under `api/` and is served by FastAPI (`main.py`).
   - `GET /`
     - Basic service metadata: UCP version, docs URL, discovery URL.
   - `GET /health`
-    - Checks DB connectivity and returns `\{"status": "ok" | "degraded", "database": "...", "ucp_version": ...\}`.
+    - Checks DB connectivity and returns `{"status": "ok" | "degraded", "database": "...", "ucp_version": ...}`.
 
 - **Discovery**
   - `GET /.well-known/ucp`
@@ -358,25 +358,25 @@ The main API lives under `api/` and is served by FastAPI (`main.py`).
 - **Products**
   - `GET /ucp/products`
     - Search products (keyword, price filters, pagination).
-  - `GET /ucp/products/\{product_id\}`
+  - `GET /ucp/products/{product_id}`
     - Detailed product view.
 
 - **Checkout Sessions**
   - `POST /ucp/checkout-sessions`
     - Create a new checkout session with line items.
-  - `GET /ucp/checkout-sessions/\{session_id\}`
+  - `GET /ucp/checkout-sessions/{session_id}`
     - Retrieve current session state.
-  - `PUT /ucp/checkout-sessions/\{session_id\}`
+  - `PUT /ucp/checkout-sessions/{session_id}`
     - Update session (shipping address, shipping option, etc.).
-  - `POST /ucp/checkout-sessions/\{session_id\}/complete`
+  - `POST /ucp/checkout-sessions/{session_id}/complete`
     - Complete the session using a payment instrument.
-  - `POST /ucp/checkout-sessions/\{session_id\}/cancel`
+  - `POST /ucp/checkout-sessions/{session_id}/cancel`
     - Cancel an active checkout session.
 
 - **Orders**
-  - `GET /ucp/orders/\{order_id\}`
+  - `GET /ucp/orders/{order_id}`
     - Retrieve order details mapped from the WooCommerce order tables.
-  - `POST /ucp/orders/\{order_id\}/cancel`
+  - `POST /ucp/orders/{order_id}/cancel`
     - Cancel an unpaid/draft order (`wc-checkout-draft`, `wc-pending`, `wc-failed`).
   - `POST /ucp/orders/webhook`
     - Receive order lifecycle webhook events (supports HMAC signature verification).
@@ -399,11 +399,11 @@ Woogent intentionally models two resource layers:
 
 - **Checkout session (`/ucp/checkout-sessions/*`)**
   - Represents in-flight checkout orchestration state.
-  - Use `POST /ucp/checkout-sessions/\{session_id\}/cancel` when cancelling an active checkout flow.
+  - Use `POST /ucp/checkout-sessions/{session_id}/cancel` when cancelling an active checkout flow.
 
 - **Order (`/ucp/orders/*`)**
   - Represents durable commerce records in WooCommerce (`wp_wc_orders`).
-  - Use `POST /ucp/orders/\{order_id\}/cancel` for order-management cancellation by `order_id`.
+  - Use `POST /ucp/orders/{order_id}/cancel` for order-management cancellation by `order_id`.
 
 Order lifecycle in practice:
 - `wc-checkout-draft` -> `wc-processing` / `wc-completed` on successful payment.
