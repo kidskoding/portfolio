@@ -1,0 +1,179 @@
+---
+title: "personal-finance-agent"
+description: "a personal finance ai agent built with ruby on rails and plaid"
+category: agentic
+repo: https://github.com/OpenAgents-Illinois/personal-finance-agent
+language: "Ruby"
+stack: []
+date: 2026-06-27
+---
+
+**Live URL**: http://159.203.118.84/
+
+A **Ruby on Rails** web app that connects to your bank accounts via the **Plaid API**, automatically analyzes your spending, and generates actionable recommendations — all running in the background without you having to interact with a chatbot.
+
+> **Note:** I do not have Plaid production access. This means that this app currently runs in Plaid sandbox mode. You cannot connect a real bank account — use Plaid's test credentials instead: username `user_good`, password `pass_good`.
+
+---
+
+## How It Works
+
+1. **Connect your bank** — Link a financial institution via Plaid Link (OAuth-like flow in the browser)
+2. **Sync transactions** — The backend exchanges tokens and pulls your transactions/balances into a local PostgreSQL database
+3. **Analyze** — Background jobs run deterministic Ruby analytics on your spending data
+4. **Recommend** — Claude API converts those analytics into human-readable recommendations and reports
+5. **Display** — Rails views show you the results on a dashboard
+
+---
+
+## Core Capabilities
+
+| Feature | What it does |
+|---|---|
+| **Spending breakdown** | Aggregates spend by category and merchant, month-over-month |
+| **Subscription detection** | Identifies recurring charges (Netflix, SaaS, memberships) and estimates monthly cost |
+| **Anomaly detection** | Flags unusual weeks, sudden category spikes, or one-off large transactions |
+| **Recommendations** | Generates prioritized action items with estimated monthly savings |
+| **Weekly/monthly reports** | Auto-generated financial summaries via Claude API |
+| **Progress tracking** | Compares current behavior against prior recommendations |
+
+---
+
+## Tech Stack
+
+- **Rails monolith** — backend, views, business logic
+- **Plaid API** — bank data (read-only)
+- **Sidekiq + Redis** — background job processing (nightly syncs, analysis, report generation)
+- **Claude API** — converts structured analytics into plain-English recommendations
+- **Tailwind + Hotwire** — server-rendered UI with progressive enhancement
+- **PostgreSQL** — primary database
+
+---
+
+## Key Design Decisions
+
+- **Analytics in Ruby, not Claude** — category aggregation, subscription detection, and anomaly detection are all deterministic Ruby code. Claude only writes summaries.
+- **Encrypted tokens** — Plaid access tokens are encrypted at rest and never logged.
+- **Autonomous** — once connected, the system runs nightly syncs and generates reports automatically without user interaction.
+
+---
+
+## Local Development
+
+### Prerequisites
+
+- Ruby 3.3.x (`rbenv` or `asdf` recommended)
+- Docker + Docker Compose
+- A [Plaid](https://dashboard.plaid.com) account (sandbox is free)
+- An [Anthropic](https://console.anthropic.com) API key
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/OpenAgents-Illinois/personal-finance-agent.git
+cd personal-finance-agent
+```
+
+### 2. Set up environment variables
+
+```bash
+cp .env.example .env
+```
+
+Fill in `.env`:
+
+```
+PLAID_CLIENT_ID=your_plaid_client_id
+PLAID_SECRET=your_plaid_secret
+PLAID_ENV=sandbox
+PLAID_APP_NAME="Personal Finance Agent"
+ANTHROPIC_API_KEY=your_anthropic_api_key
+```
+
+### 3. Start the app
+
+**Option A: Docker (recommended — no local Ruby/Postgres/Redis needed)**
+
+```bash
+docker compose up
+```
+
+This starts:
+
+| Service | What it does |
+|---|---|
+| `db` | Postgres 16 on port 5432 |
+| `redis` | Redis 7 on port 6379 |
+| `web` | Rails server on http://localhost:3000 |
+| `worker` | Sidekiq background job processor |
+| `css` | Tailwind CSS watcher |
+
+The database is created and migrated automatically on first boot.
+
+If you get gem errors after pulling new changes, rebuild the image:
+
+```bash
+docker compose down -v
+docker compose build --no-cache
+docker compose up
+```
+
+**Option B: Native Ruby**
+
+Requires Ruby 3.3.x, Postgres, and Redis installed locally.
+
+```bash
+# Start just the databases via Docker
+docker compose up -d db redis
+
+# Then run the app natively
+bundle install
+bin/rails db:prepare
+bin/dev
+```
+
+Visit `http://localhost:3000`.
+
+---
+
+## Running Tests
+
+```bash
+# All tests
+bundle exec rspec
+
+# Single file
+bundle exec rspec spec/models/user_spec.rb
+
+# With coverage
+COVERAGE=true bundle exec rspec
+```
+
+Make sure Postgres is running before running tests (`docker compose up -d db` if using Docker).
+
+---
+
+## Production Deployment
+
+The app deploys automatically to a DigitalOcean droplet via GitHub Actions on every push to `master`.
+
+### How it works
+
+1. CI runs (linting + security scans)
+2. On success, the deploy workflow SSHes into the droplet
+3. Pulls latest code with `git pull`
+4. Rebuilds and restarts with `docker compose up -d --build`
+
+### Required GitHub secrets
+
+| Secret | Description |
+|---|---|
+| `SSH_PRIVATE_KEY` | Private SSH key with access to the droplet |
+| `RAILS_MASTER_KEY` | Contents of `config/master.key` |
+| `PERSONAL_FINANCE_AGENT_DATABASE_PASSWORD` | Production Postgres password |
+
+### Required GitHub variables
+
+| Variable | Description |
+|---|---|
+| `DROPLET_IP` | IP address of the DigitalOcean droplet |

@@ -1,0 +1,125 @@
+---
+title: "anikonistack"
+description: "my declarative and reproducible stack for coding agents!"
+category: project
+repo: https://github.com/kidskoding/anikonistack
+language: "Nix"
+stack: []
+date: 2026-09-19
+---
+
+a declarative and reproducible setup for all of your coding agents!
+
+all of your skills, plugins and MCP servers are declared once; each agent gets a small adapter file that maps them onto that agent's config format. Add an agent, it gets the whole stack. Add a skill, and every agent you want gets it
+
+## How it works
+
+```
+skills.nix ─┐
+plugins.nix ├─► module.nix ─► agents/*.nix, one per agent ─► ~/.<agent>/…
+mcp.nix    ─┘        (agents arg)      claude-code.nix, codex.nix, …
+```
+
+- `skills.nix`: attrset `name -> path`. Own skills from `skills/`, upstream ones from pinned flake inputs.
+- `plugins.nix`: attrset `name -> path` in Claude Code plugin layout. Agents with a native plugin mechanism load them as plugins; others get the plugin's `skills/` flattened in.
+- `mcp.nix`: `programs.mcp.servers`. home-manager translates each server into every agent's own format.
+- `module.nix`: exposes the three as the `agents` module argument and imports `agents/`.
+- `agents/`: one adapter per agent, listed in `agents/default.nix`.
+- `flake.nix` + `flake.lock`: every upstream repo pinned to a commit. Same lock, same result, any machine.
+
+Adapters currently in the repo are the agents I use. They are examples of the pattern, not the scope.
+
+## Install
+
+Requires [nix (the package manager!)](https://nixos.org/download) with flakes enabled! Nix runs on NixOS, any Linux, macOS, and WSL; NixOS itself is not required!
+
+Since this is also a [home-manager](https://nix-community.github.io/home-manager/) module, [home-manager](https://nix-community.github.io/home-manager/) is also necessary in order to reproduce this setup!
+
+1. install [nix (the package manager!)](https://nixos.org/download)
+2. then `nix run home-manager -- init` to get a starter `flake.nix` and `home.nix`, then continue below
+
+```nix
+# flake.nix
+inputs.anikonistack.url = "github:kidskoding/anikonistack";
+
+# home.nix
+imports = [ inputs.anikonistack.homeManagerModules.default ];
+```
+
+```bash
+nix flake lock --update-input anikonistack
+home-manager switch --flake .   # or nixos-rebuild switch
+```
+
+Every agent config under `$HOME` becomes a read-only symlink into the nix store, rebuilt from the pinned inputs.
+
+## Adding an agent
+
+One file. Take the `agents` argument, feed it into whatever the agent's home-manager module accepts.
+
+```nix
+# agents/myagent.nix
+{ agents, ... }:
+{
+  programs.myagent = {
+    enable = true;
+    skills = agents.skills // agents.pluginSkills [ "caveman" "superpowers" ];
+    enableMcpIntegration = true;
+  };
+}
+```
+
+Then add `./myagent.nix` to `imports` in `agents/default.nix`.
+
+What `agents` gives you:
+
+| field | what |
+|---|---|
+| `skills` | every skill, `name -> path` |
+| `plugins` | every plugin, `name -> path` |
+| `pluginSkills [ names ]` | the `skills/` of those plugins, merged |
+| `skillDirs dir` | scan a directory for `*/SKILL.md` |
+| `statusline` | wrapped `hooks/statusline.sh` with its runtime deps |
+| `inputs` | the flake inputs, for adapters that need a pinned repo directly |
+
+## Adding content
+
+| what | where |
+|---|---|
+| a skill you wrote | dir with `SKILL.md` under `skills/` |
+| an upstream skill | flake input, one line in `skills.nix` |
+| a plugin | flake input, one line in `plugins.nix` |
+| an MCP server | one entry in `mcp.nix` |
+
+Secrets never go in the repo. Reference them as `$\{VAR\}` in `mcp.nix` and export the variable before launching.
+
+## Machine-specific config
+
+Lives in your own home-manager config, not here: trusted directories, which package provides a binary, per-machine context.
+
+```nix
+programs.claude-code.package = null;   # binary already installed another way
+```
+
+## Updating
+
+```bash
+nix flake update                             # here, commit flake.lock
+nix flake lock --update-input anikonistack   # in your home-manager repo
+```
+
+## Layout
+
+```
+anikonistack/
+├── flake.nix          pins every upstream repo
+├── module.nix         module entry
+├── skills.nix         skills
+├── plugins.nix        plugins
+├── mcp.nix            MCP servers
+├── agents/            one adapter per agent
+├── skills/            own skills
+├── hooks/             statusline.sh
+├── claude-md/         own CLAUDE.md sections
+└── setup.sh           non-nix fallback: symlinks skills/ and hooks/ into ~/.claude
+```
