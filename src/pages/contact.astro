@@ -40,7 +40,7 @@ const mailPath = "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 
 
 <Layout title="Contact">
     <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
-        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-accent mb-3" data-animate>Contact</p>
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-nvim-green mb-3" data-animate>Contact</p>
         <h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text" data-animate>Contact</h1>
         <p class="text-text-muted mt-3 text-base max-w-md" data-animate>
             contact me if you want to stay in touch! collaboration, questions, or just simply saying hi :)
@@ -53,7 +53,7 @@ const mailPath = "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 
                         href={item.href}
                         target={item.external ? "_blank" : undefined}
                         rel={item.external ? "noopener noreferrer" : undefined}
-                        class="group flex items-center gap-4 rounded-xl border border-border-subtle bg-bg-card p-5 transition-all hover:border-accent/40 hover:bg-bg-card-hover"
+                        class="group flex min-w-0 items-center gap-4 rounded-xl border border-border-subtle bg-bg-card p-5 transition-all hover:border-accent/40 hover:bg-bg-card-hover"
                     >
                         <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/5 ring-1 ring-white/10 transition-colors group-hover:ring-accent/30 {item.icon === 'mail' ? 'text-sky-400' : item.icon === 'linkedin' ? 'text-[#0A66C2]' : item.icon === 'github' ? 'text-white' : 'text-text-muted'} group-hover:text-accent">
                             {item.icon === "mail" && (
@@ -76,10 +76,10 @@ const mailPath = "M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 
                             )}
                         </span>
                         <div class="min-w-0 flex-1">
-                            <p class="font-semibold text-text-primary group-hover:text-accent transition-colors">{item.name}</p>
+                            <p class="font-semibold text-text-primary group-hover:text-nvim-green transition-colors">{item.name}</p>
                             <p class="text-sm text-text-muted truncate">{item.description}</p>
                         </div>
-                        <span class="shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-accent" aria-hidden="true">→</span>
+                        <span class="shrink-0 text-text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-nvim-blue" aria-hidden="true">→</span>
                     </a>
                 ))}
             </div>

@@ -14,13 +14,13 @@ const widgetHref = tweetUrl.replace(/^https:\/\/x\.com/, 'https://twitter.com');
     <blockquote class="twitter-tweet" data-dnt="true" data-theme="dark">
       <a href={widgetHref}></a>
     </blockquote>
-    <a href={tweetUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-accent hover:text-accent-hover underline">
+    <a href={tweetUrl} target="_blank" rel="noopener noreferrer" class="text-sm text-nvim-blue hover:text-nvim-aqua underline">
       View on X
     </a>
   </div>
 ) : (
   <p class="my-4">
-    <a href={url} target="_blank" rel="noopener noreferrer" class="text-accent underline">
+    <a href={url} target="_blank" rel="noopener noreferrer" class="text-nvim-blue underline hover:text-nvim-aqua">
       View post on X
     </a>
   </p>
