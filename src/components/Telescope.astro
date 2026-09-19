@@ -66,7 +66,7 @@ const easterEggs = [
 <script type="application/json" id="telescope-projects" set:html={JSON.stringify(projects)} />
 <script type="application/json" id="telescope-eggs" set:html={JSON.stringify(easterEggs)} />
 
-<style>
+<style is:global>
   .telescope-overlay {
     position: fixed;
     inset: 0;
@@ -178,10 +178,10 @@ const easterEggs = [
     text-align: center;
     flex-shrink: 0;
   }
-  :global(.telescope-item .icon-astro) {
+  .telescope-item .icon-astro {
     color: var(--color-nvim-orange);
   }
-  :global(.telescope-item .icon-astro svg) {
+  .telescope-item .icon-astro svg {
     width: 13px;
     height: 13px;
     display: block;
