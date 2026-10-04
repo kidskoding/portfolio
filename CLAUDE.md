@@ -94,6 +94,6 @@ Tailwind CSS v4. Design tokens (colors, spacing) are defined as CSS variables in
 - `/add-experience` skill — appends a new entry to `src/data/experience.ts`
 - `/add-project` skill — fetches GitHub repo metadata and scaffolds `src/content/projects/<slug>.mdx`
 - `/add-role` skill — adds a new role to an existing company entry in `src/data/experience.ts`
-- `/blog-post` skill — scaffolds a new MDX blog post
+- `/blog-post` skill (global, lives in `~/anikonistack/skills/blog-post/`) — technical editor for developer posts: extract → thesis candidates → narrative → visual plan → draft → edit, plus critique mode, DEV.to import, and news analysis. Portfolio specifics (frontmatter, build check, rendering limits) are in its `portfolio.md`
 - `/linkedin-sync` skill — parses pasted LinkedIn profile text and merges new/changed Experience + Education into `src/data/experience.ts` and `src/data/education.ts`
 - `/update-claude-md` skill — audits and updates CLAUDE.md when project structure or conventions change; auto-triggered on every prompt via hook
