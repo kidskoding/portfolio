@@ -70,7 +70,7 @@ Edit `src/data/experience.ts`. Each entry has a `company`, `companyLogo`, date r
 Edit `src/data/education.ts`. `startDate` is optional — if omitted, the card shows only `endDate`.
 
 ### Adding blog posts
-Add an `.mdx` file to `src/content/blog/`. Frontmatter fields: `title`, `date`, `description`, `tags`.
+Add an `.mdx` file to `src/content/blog/` or use `/blog-post`. Frontmatter fields: `title`, `pubDate`, and optional `description`, `updatedDate`, `coverImage`, `draft` (no `tags`; unknown keys are silently stripped).
 
 ### Adding projects
 Add an `.mdx` file to `src/content/projects/` or use `/add-project`. Frontmatter fields: `title`, `description`, `category` (`project` | `hackathon` | `agentic`), `repo`, `language`, `stack`, `date`, and optional `cover`, `event`, `placement`, `order`, and `draft`. Tiles sort by `order` then newest `date`. A project with a cover lives at `src/content/projects/<slug>/index.mdx` with `cover.png` beside it. Projects open as `<slug>.mdx` buffers and appear in NvimTree and Telescope automatically.
