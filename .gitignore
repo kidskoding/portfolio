@@ -32,3 +32,6 @@ result
 
 # local design docs (specs/plans stay on disk only)
 docs/
+
+# direnv
+.direnv/

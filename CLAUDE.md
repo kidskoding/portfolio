@@ -9,7 +9,7 @@ bun run dev       # dev server at localhost:4321
 bun run build     # production build to ./dist/
 bun run preview   # preview production build
 
-nix develop       # dev shell with bun (flake.nix)
+nix develop       # dev shell with bun (flake.nix); .envrc (`use flake`) loads it via direnv
 nix run           # bun install --frozen-lockfile + bun run dev; also .#build, .#preview
 ```
 
