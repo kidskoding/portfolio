@@ -3,7 +3,9 @@ import { milestones, commitTypeColor } from '../data/milestones';
 ---
 
 <section>
-  <p class="text-xs font-mono mb-4 git-log-title">$ git log --oneline --all</p>
+  <p class="text-xs font-mono mb-4 git-log-title">
+    <span class="git-log-prompt">$</span> git log --oneline --all
+  </p>
   <div class="commit-list">
     {milestones.map((m, i) => (
       <div class="commit-row">
@@ -33,6 +35,9 @@ import { milestones, commitTypeColor } from '../data/milestones';
 <style>
   .git-log-title {
     color: var(--color-nvim-fg2);
+  }
+  .git-log-prompt {
+    color: var(--color-nvim-red);
   }
   .commit-list {
     display: flex;
@@ -108,7 +113,7 @@ import { milestones, commitTypeColor } from '../data/milestones';
   .commit-date {
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--color-nvim-bg3);
+    color: var(--color-nvim-aqua);
     margin-top: 6px;
   }
   .commit-more {
