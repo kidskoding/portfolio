@@ -268,7 +268,7 @@ const pinIcon = `
       <dd>next / previous buffer</dd>
       <dt>space e</dt>
       <dd>toggle file tree</dd>
-      <dt>space ff, ctrl+k</dt>
+      <dt>space space, space ff, ctrl+k</dt>
       <dd>telescope</dd>
       <dt>space bd</dt>
       <dd>close buffer</dd>
@@ -1438,6 +1438,7 @@ const pinIcon = `
           setPending(seq);
           return true;
         case ' ff':
+        case '  ':
           openTelescope();
           return true;
         case ' bn':
