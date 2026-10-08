@@ -120,15 +120,15 @@ const groups = tabs.map((tab) => ({
     const visibleTiles = () =>
       [...(activePanel()?.querySelectorAll<HTMLElement>('[data-tile]') ?? [])].filter((tile) => !tile.hidden);
 
-    function paint() {
+    const paint = () => {
       const tiles = visibleTiles();
       main.querySelectorAll('.tile-cursor').forEach((tile) => tile.classList.remove('tile-cursor'));
       if (!tiles.length) return;
       cursor = Math.max(0, Math.min(cursor, tiles.length - 1));
       tiles[cursor].classList.add('tile-cursor');
-    }
+    };
 
-    function applyFilter() {
+    const applyFilter = () => {
       const query = filter.value.trim().toLowerCase();
       const panel = activePanel();
       if (!panel) return;
@@ -141,9 +141,9 @@ const groups = tabs.map((tab) => ({
       panel.querySelector<HTMLElement>('.no-matches')?.classList.toggle('hidden', shown > 0 || !query);
       cursor = 0;
       paint();
-    }
+    };
 
-    function activateTab(tab: string) {
+    const activateTab = (tab: string) => {
       main.querySelectorAll<HTMLButtonElement>('.tab-btn').forEach((button) => {
         const active = button.dataset.tab === tab;
         button.setAttribute('aria-selected', String(active));
@@ -154,7 +154,7 @@ const groups = tabs.map((tab) => ({
         .forEach((panel) => panel.classList.toggle('hidden', panel.id !== `tab-${tab}`));
       filter.value = '';
       applyFilter();
-    }
+    };
 
     // Mouse users leave focus on a tab or the help button; vim motions should
     // reclaim it so Enter opens the cursor tile instead of re-firing that button.

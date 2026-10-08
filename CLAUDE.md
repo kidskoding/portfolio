@@ -8,6 +8,7 @@ Personal portfolio site for Anirudh Konidala. Built with Astro, Tailwind CSS v4,
 bun run dev       # dev server at localhost:4321
 bun run build     # production build to ./dist/
 bun run preview   # preview production build
+bun run check     # astro check (type check; needs TypeScript 6.x, TS 7 lacks the API)
 bun run format    # prettier --write . (format:check in CI)
 
 nix develop       # dev shell with bun (flake.nix); .envrc (`use flake`) loads it via direnv
