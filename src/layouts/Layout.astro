@@ -34,17 +34,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="preload" href="/fonts/terminess-nerd-mono-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <ClientRouter />
   </head>
-  <body class="bg-bg-primary text-text-primary font-sans min-h-screen antialiased overflow-x-hidden">
+  <body class="bg-bg-primary text-text-primary text-base font-sans min-h-screen antialiased overflow-x-hidden">
     <div class="orb orb-1" aria-hidden="true"></div>
     <div class="orb orb-2" aria-hidden="true"></div>
     <div class="orb orb-3" aria-hidden="true"></div>

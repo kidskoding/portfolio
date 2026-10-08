@@ -1,6 +1,6 @@
 # CLAUDE.md — Portfolio
 
-Personal portfolio site for Anirudh Konidala. Built with Astro, Tailwind CSS v4, GSAP, and MDX.
+Personal portfolio site for Anirudh Konidala. Built with Astro, Tailwind CSS v4, GSAP, and MDX. Font: self-hosted Terminess Nerd Font Mono (the author's Ghostty/Neovim font).
 
 ## Commands
 
