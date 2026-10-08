@@ -15,7 +15,11 @@ const { title, description, backHref = '/blog', backLabel = 'Back to blog', imag
 
 <Layout title={title} description={description} image={image} type="article" publishedTime={publishedTime}>
   <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
-    <a href={backHref} class="mb-6 inline-block text-sm text-nvim-blue transition-colors hover:text-nvim-aqua">
+    <a
+      href={backHref}
+      class="mb-6 inline-block text-sm text-nvim-blue transition-colors hover:text-nvim-aqua"
+      data-animate
+    >
       &larr; {backLabel}
     </a>
     <slot />
