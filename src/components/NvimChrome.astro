@@ -210,27 +210,29 @@ const pinIcon = `
       <svg class="branch-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
         <path d="M5 3.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm0 2.122a2.25 2.25 0 1 0-1.5 0v.878A2.25 2.25 0 0 0 5.75 8.5h1.5v2.128a2.251 2.251 0 1 0 1.5 0V8.5h1.5a2.25 2.25 0 0 0 2.25-2.25v-.878a2.25 2.25 0 1 0-1.5 0v.878a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 5 6.25v-.878zm3.75 7.378a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm3-8.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z" />
       </svg>
-      main
+      master
     </div>
-    <div class="sl-c">~/portfolio/src/{activeFile}</div>
+    <div class="sl-c">{activeFile.split('/').pop()}</div>
     <div class="sl-spacer"></div>
     <div class="sl-x sl-showcmd" id="sl-showcmd" aria-hidden="true"></div>
     <button class="sl-x sl-help" type="button" data-vim-help aria-label="Show key bindings" title="keys (?)">
       ?
     </button>
-    <div class="sl-x-div"></div>
+    <span class="sl-x-div" aria-hidden="true">
+      |
+    </span>
     <div class="sl-x sl-enc">utf-8</div>
-    <div class="sl-x-div"></div>
+    <span class="sl-x-div" aria-hidden="true">
+      |
+    </span>
     <div class:list={['sl-x sl-filetype', `ft-${activeIcon}`]}>
       <span class:list={['sl-ft-icon', `icon-${activeIcon}`]}>{devicons[activeIcon]}</span>
       <span>{activeIcon}</span>
     </div>
-    <div class="sl-x-div"></div>
-    <div class="sl-x sl-pct" id="sl-pct">
+    <div class="sl-y" id="sl-pct">
       Top
     </div>
-    <div class="sl-x-div"></div>
-    <div class="sl-y" id="sl-pos">
+    <div class="sl-z" id="sl-pos">
       1:1
     </div>
   </div>
@@ -609,23 +611,8 @@ const pinIcon = `
     height: 22px;
     flex-shrink: 0;
     overflow: hidden;
-  }
-
-  .sl-a,
-  .sl-b,
-  .sl-c,
-  .sl-x,
-  .sl-y {
-    display: flex;
-    align-items: center;
-    flex-shrink: 0;
-  }
-  .sl-a {
-    background: var(--sl-mode, var(--color-nvim-yellow));
-    color: var(--color-nvim-bg-hard);
-    padding: 0 12px;
-    font-weight: 700;
-    transition: background 0.12s ease;
+    background: var(--color-nvim-bg2);
+    --sl-mode: var(--color-nvim-yellow-dim);
   }
   .nvim-statusline[data-mode='INSERT'] {
     --sl-mode: var(--color-nvim-blue);
@@ -636,12 +623,33 @@ const pinIcon = `
   .nvim-statusline[data-mode='COMMAND'] {
     --sl-mode: var(--color-nvim-green);
   }
-  .sl-b {
-    background: var(--color-nvim-bg3);
-    color: var(--color-nvim-green);
-    padding: 0 10px;
+
+  /* lualine gruvbox: a/z take the mode color, b/y bg3, c/x bg2 */
+  .sl-a,
+  .sl-b,
+  .sl-c,
+  .sl-x,
+  .sl-y,
+  .sl-z {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
+    padding: 0 10px;
+  }
+  .sl-a,
+  .sl-z {
+    background: var(--sl-mode);
+    color: var(--color-nvim-bg);
+    font-weight: 700;
+    transition: background 0.12s ease;
+  }
+  .sl-a {
+    padding: 0 12px;
+  }
+  .sl-b,
+  .sl-y {
+    background: var(--color-nvim-bg3);
+    color: var(--color-nvim-fg);
     gap: 5px;
   }
   .branch-icon {
@@ -650,21 +658,27 @@ const pinIcon = `
     flex-shrink: 0;
   }
   .sl-c {
-    background: var(--color-nvim-bg1);
     color: var(--color-nvim-fg2);
-    padding: 0 10px;
-    font-size: 11px;
     flex-shrink: 1;
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
   .sl-spacer {
     flex: 1;
-    background: var(--color-nvim-bg1);
+  }
+  .sl-x {
+    color: var(--color-nvim-fg2);
+  }
+  .sl-x-div {
+    display: flex;
+    align-items: center;
+    color: var(--color-nvim-fg3);
+    flex-shrink: 0;
   }
   .sl-filetype {
-    gap: 5px;
+    gap: 6px;
   }
   .sl-ft-icon {
     font-size: 16px;
@@ -683,55 +697,6 @@ const pinIcon = `
   }
   .sl-ft-icon.icon-json {
     color: var(--color-devicon-package-json);
-    width: auto;
-  }
-  .sl-ft-icon.icon-mdx {
-    width: auto;
-  }
-  .sl-x-div {
-    width: 1px;
-    background: var(--color-nvim-bg);
-    flex-shrink: 0;
-  }
-  .sl-x {
-    background: var(--color-nvim-bg3);
-    color: var(--color-nvim-fg);
-    padding: 0 10px;
-  }
-  .sl-enc {
-    background: var(--color-nvim-purple);
-    color: var(--color-nvim-bg-hard);
-    font-weight: 600;
-  }
-  .sl-pct {
-    background: var(--color-nvim-blue);
-    color: var(--color-nvim-bg-hard);
-    font-weight: 600;
-  }
-  .sl-filetype {
-    color: var(--color-nvim-bg-hard);
-    font-weight: 600;
-  }
-  .sl-filetype.ft-astro {
-    background: var(--color-nvim-orange);
-  }
-  .sl-filetype.ft-mdx {
-    background: var(--color-nvim-red);
-  }
-  .sl-filetype.ft-json {
-    background: var(--color-nvim-yellow);
-  }
-  .sl-filetype .sl-ft-icon,
-  .sl-filetype .sl-ft-icon.icon-astro,
-  .sl-filetype .sl-ft-icon.icon-mdx,
-  .sl-filetype .sl-ft-icon.icon-json {
-    color: var(--color-nvim-bg-hard);
-  }
-  .sl-y {
-    background: var(--color-nvim-green);
-    color: var(--color-nvim-bg-hard);
-    padding: 0 10px;
-    font-weight: 700;
   }
 
   .sl-showcmd {
@@ -743,17 +708,15 @@ const pinIcon = `
     display: none;
   }
   .sl-help {
-    background: var(--color-nvim-gray);
+    background: none;
     border: 0;
-    padding: 0 10px;
-    color: var(--color-nvim-bg-hard);
     font-family: inherit;
     font-size: 14px;
     font-weight: 700;
     cursor: pointer;
   }
   .sl-help:hover {
-    background: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg);
   }
 
   .nvim-cmdline {
@@ -1025,11 +988,11 @@ const pinIcon = `
       const line = Math.max(1, Math.round(scrollTop / 20) + 1);
       posEl.textContent = `${line}:1`;
       if (scrollHeight <= 0 || scrollTop === 0) {
-        pctEl.textContent = ' Top';
+        pctEl.textContent = 'Top';
       } else if (scrollTop >= scrollHeight - 1) {
-        pctEl.textContent = ' Bot';
+        pctEl.textContent = 'Bot';
       } else {
-        pctEl.textContent = ` ${Math.round((scrollTop / scrollHeight) * 100)}%`;
+        pctEl.textContent = `${Math.round((scrollTop / scrollHeight) * 100)}%`;
       }
     };
 
