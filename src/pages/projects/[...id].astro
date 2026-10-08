@@ -52,7 +52,7 @@ const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'sh
         <p class="mt-2 break-words text-text-secondary">{description}</p>
         <div class="mt-4 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 font-mono text-sm">
           {language && (
-            <span class="inline-flex items-center gap-1.5 text-nvim-gray">
+            <span class="inline-flex items-center gap-1.5 text-text-secondary">
               <span
                 class="inline-block h-2.5 w-2.5 rounded-full"
                 style={`background-color: ${languageColor(language)}`}
@@ -95,7 +95,7 @@ const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'sh
         ) : (
           <span />
         )}
-        <a class="text-nvim-gray hover:underline sm:text-center" href="/projects" data-nav="up">
+        <a class="text-text-secondary hover:underline sm:text-center" href="/projects" data-nav="up">
           - projects
         </a>
         {next ? (

@@ -22,7 +22,7 @@ const { Content } = await render(post);
     <div class="p-8">
       <header class="mb-8">
         <h1 class="text-3xl font-bold text-nvim-green tracking-tight">{post.data.title}</h1>
-        {post.data.description && <p class="text-text-muted mt-2">{post.data.description}</p>}
+        {post.data.description && <p class="text-text-secondary mt-2">{post.data.description}</p>}
         <p class="text-text-muted text-sm mt-2 flex items-center gap-2 flex-wrap">
           <span class="flex items-center gap-2">
             <img src={profileImg.src} alt="" class="w-6 h-6 rounded-full object-cover shrink-0" />
