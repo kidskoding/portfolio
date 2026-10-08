@@ -11,6 +11,8 @@ const blog = defineCollection({
     updatedDate: z.coerce.date().optional(),
     draft: z.boolean().optional().default(false),
     coverImage: z.string().optional(),
+    // Links one phrase of the post-page h1; `title` stays plain for tabs, cards, and previews
+    titleLink: z.object({ text: z.string(), href: z.string().url() }).optional(),
   }),
 });
 
