@@ -12,6 +12,7 @@ bun run format    # prettier --write . (format:check in CI)
 
 nix develop       # dev shell with bun (flake.nix); .envrc (`use flake`) loads it via direnv
 nix run           # bun install --frozen-lockfile + bun run dev; also .#build, .#preview
+nix fmt           # alejandra on the Nix files
 ```
 
 ## Project Structure
