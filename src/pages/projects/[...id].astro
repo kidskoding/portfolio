@@ -34,7 +34,13 @@ const { title, description, repo, language, stack, cover, event, placement, date
 const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 ---
 
-<BlogLayout title={title} description={description} backHref="/projects" backLabel="Back to projects">
+<BlogLayout
+  title={title}
+  description={description}
+  image={cover?.src}
+  backHref="/projects"
+  backLabel="Back to projects"
+>
   <article class="overflow-hidden border border-border-subtle bg-bg-card">
     {cover && (
       <Image

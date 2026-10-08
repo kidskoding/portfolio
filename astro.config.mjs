@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://anirudh-konidala.vercel.app',
   integrations: [mdx()],
   markdown: {
     shikiConfig: { theme: 'gruvbox-dark-hard' },
