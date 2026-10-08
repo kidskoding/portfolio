@@ -38,7 +38,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
               <span class="opacity-60" aria-hidden="true">
                 ·
               </span>
-              <time datetime={post.data.pubDate.toISOString()}>
+              <time class="text-nvim-aqua" datetime={post.data.pubDate.toISOString()}>
                 {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
               </time>
             </p>
