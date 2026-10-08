@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: codeberg-small
+    container:
+      image: node:22-bookworm
+    steps:
+      - uses: https://data.forgejo.org/actions/checkout@v4
+
+      - uses: https://github.com/oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      - run: bun install --frozen-lockfile
+      - run: bun run format:check
+      - run: bun run check
+      - run: bun run build
+
+      - name: alejandra
+        run: |
+          curl -fsSL -o /usr/local/bin/alejandra \
+            https://github.com/kamadorueda/alejandra/releases/download/4.0.0/alejandra-x86_64-unknown-linux-musl
+          chmod +x /usr/local/bin/alejandra
+          alejandra --check .
+
+  deploy:
+    needs: check
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    runs-on: codeberg-small
+    container:
+      image: node:22-bookworm
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: https://data.forgejo.org/actions/checkout@v4
+
+      - uses: https://github.com/oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+
+      - run: bunx vercel@latest pull --yes --environment=production --token="${{ secrets.VERCEL_TOKEN }}"
+      - run: bunx vercel@latest build --prod --token="${{ secrets.VERCEL_TOKEN }}"
+      - run: bunx vercel@latest deploy --prebuilt --prod --token="${{ secrets.VERCEL_TOKEN }}"
