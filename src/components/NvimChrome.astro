@@ -979,11 +979,11 @@ const astroIcon = `
     if (trigger.dataset.bound === 'true') return;
     trigger.dataset.bound = 'true';
 
-    function setOpen(isOpen: boolean) {
+    const setOpen = (isOpen: boolean) => {
       shell.classList.toggle('tree-drawer-open', isOpen);
       trigger.setAttribute('aria-expanded', String(isOpen));
       trigger.setAttribute('aria-label', isOpen ? 'Close file explorer' : 'Open file explorer');
-    }
+    };
 
     trigger.addEventListener('click', () => {
       setOpen(!shell.classList.contains('tree-drawer-open'));
@@ -1039,7 +1039,7 @@ const astroIcon = `
     const posEl = document.getElementById('sl-pos');
     if (!editor || !pctEl || !posEl) return;
 
-    function update() {
+    const update = () => {
       const scrollTop = editor.scrollTop;
       const scrollHeight = editor.scrollHeight - editor.clientHeight;
       const line = Math.max(1, Math.round(scrollTop / 20) + 1);
@@ -1051,7 +1051,7 @@ const astroIcon = `
       } else {
         pctEl.textContent = ` ${Math.round((scrollTop / scrollHeight) * 100)}%`;
       }
-    }
+    };
 
     editor.removeEventListener('scroll', update);
     editor.addEventListener('scroll', update, { passive: true });
