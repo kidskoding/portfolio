@@ -1,0 +1,12 @@
+dist/
+.astro/
+node_modules/
+vendor/
+public/
+bun.lock
+# blog posts and project write-ups are prose; keep their formatting as written
+src/content/
+*.md
+.claude/
+.agents/
+.cursor/

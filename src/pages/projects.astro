@@ -24,38 +24,78 @@ const groups = tabs.map((tab) => ({
       <p class="mt-3 max-w-md text-base text-text-muted">things i've built. click on a tile!</p>
     </div>
 
-    <div class="mt-10 flex gap-2 overflow-x-auto border-b border-border-subtle" role="tablist" aria-label="Project categories" data-animate>
+    <div
+      class="mt-10 flex gap-2 overflow-x-auto border-b border-border-subtle"
+      role="tablist"
+      aria-label="Project categories"
+      data-animate
+    >
       {groups.map((group, index) => (
-        <button class="tab-btn -mb-px whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition-colors duration-200" type="button" role="tab" data-tab={group.key} aria-controls={`tab-${group.key}`} aria-selected={index === 0 ? 'true' : 'false'} title={`Switch to tab ${index + 1}`}>
+        <button
+          class="tab-btn -mb-px whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition-colors duration-200"
+          type="button"
+          role="tab"
+          data-tab={group.key}
+          aria-controls={`tab-${group.key}`}
+          aria-selected={index === 0 ? 'true' : 'false'}
+          title={`Switch to tab ${index + 1}`}
+        >
           {group.label}
         </button>
       ))}
     </div>
 
-    <label class="mt-4 flex min-w-0 items-center gap-2 border border-border-subtle bg-bg-secondary px-3 py-2 font-mono" data-animate>
-      <span class="font-bold text-nvim-red" aria-hidden="true">&gt;</span>
-      <input class="min-w-0 flex-1 border-0 bg-transparent text-sm text-text-primary outline-none placeholder:text-nvim-gray" id="project-filter" type="search" placeholder="filter tiles..." autocomplete="off" spellcheck="false" aria-label="Filter projects" />
+    <label
+      class="mt-4 flex min-w-0 items-center gap-2 border border-border-subtle bg-bg-secondary px-3 py-2 font-mono"
+      data-animate
+    >
+      <span class="font-bold text-nvim-red" aria-hidden="true">
+        &gt;
+      </span>
+      <input
+        class="min-w-0 flex-1 border-0 bg-transparent text-sm text-text-primary outline-none placeholder:text-nvim-gray"
+        id="project-filter"
+        type="search"
+        placeholder="filter tiles..."
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Filter projects"
+      />
     </label>
 
     {groups.map((group, index) => (
       <div id={`tab-${group.key}`} class:list={['tab-panel mt-6', { hidden: index !== 0 }]} role="tabpanel">
         <div class="grid gap-4 sm:grid-cols-2">
-          {group.items.map((project) => <ProjectCard project={project} />)}
+          {group.items.map((project) => (
+            <ProjectCard project={project} />
+          ))}
         </div>
         <p class="no-matches mt-4 hidden text-sm text-text-muted">no matches</p>
       </div>
     ))}
 
     <p class="mt-10 text-sm" data-animate>
-      <a href="https://github.com/kidskoding" target="_blank" rel="noopener noreferrer" class="text-nvim-blue hover:underline">more on github &rarr;</a>
+      <a
+        href="https://github.com/kidskoding"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-nvim-blue hover:underline"
+      >
+        more on github &rarr;
+      </a>
     </p>
-
   </main>
 </Layout>
 
 <style>
-  .tab-btn[aria-selected='true'] { color: var(--color-nvim-green); border-color: var(--color-nvim-yellow); }
-  .tab-btn[aria-selected='false'] { color: var(--color-text-muted); border-color: transparent; }
+  .tab-btn[aria-selected='true'] {
+    color: var(--color-nvim-green);
+    border-color: var(--color-nvim-yellow);
+  }
+  .tab-btn[aria-selected='false'] {
+    color: var(--color-text-muted);
+    border-color: transparent;
+  }
 </style>
 
 <script>
@@ -77,7 +117,8 @@ const groups = tabs.map((tab) => ({
     let pendingGTimer: number | undefined;
 
     const activePanel = () => main.querySelector<HTMLElement>('.tab-panel:not(.hidden)');
-    const visibleTiles = () => [...(activePanel()?.querySelectorAll<HTMLElement>('[data-tile]') ?? [])].filter((tile) => !tile.hidden);
+    const visibleTiles = () =>
+      [...(activePanel()?.querySelectorAll<HTMLElement>('[data-tile]') ?? [])].filter((tile) => !tile.hidden);
 
     function paint() {
       const tiles = visibleTiles();
@@ -108,7 +149,9 @@ const groups = tabs.map((tab) => ({
         button.setAttribute('aria-selected', String(active));
         button.tabIndex = active ? 0 : -1;
       });
-      main.querySelectorAll<HTMLElement>('.tab-panel').forEach((panel) => panel.classList.toggle('hidden', panel.id !== `tab-${tab}`));
+      main
+        .querySelectorAll<HTMLElement>('.tab-panel')
+        .forEach((panel) => panel.classList.toggle('hidden', panel.id !== `tab-${tab}`));
       filter.value = '';
       applyFilter();
     }
@@ -137,59 +180,121 @@ const groups = tabs.map((tab) => ({
       return nextRow < 0 ? tiles.length : nextRow;
     }
 
-    main.querySelectorAll<HTMLButtonElement>('.tab-btn').forEach((button) => button.addEventListener('click', () => activateTab(button.dataset.tab ?? 'projects'), listener));
-    main.addEventListener('mouseover', (event) => {
-      const tile = (event.target as HTMLElement).closest<HTMLElement>('[data-tile]');
-      const index = tile ? visibleTiles().indexOf(tile) : -1;
-      if (index >= 0 && index !== cursor) { cursor = index; paint(); }
-    }, listener);
-    main.addEventListener('focusin', (event) => {
-      const tile = (event.target as HTMLElement).closest<HTMLElement>('[data-tile]');
-      const index = tile ? visibleTiles().indexOf(tile) : -1;
-      if (index >= 0) { cursor = index; paint(); }
-    }, listener);
+    main
+      .querySelectorAll<HTMLButtonElement>('.tab-btn')
+      .forEach((button) =>
+        button.addEventListener('click', () => activateTab(button.dataset.tab ?? 'projects'), listener),
+      );
+    main.addEventListener(
+      'mouseover',
+      (event) => {
+        const tile = (event.target as HTMLElement).closest<HTMLElement>('[data-tile]');
+        const index = tile ? visibleTiles().indexOf(tile) : -1;
+        if (index >= 0 && index !== cursor) {
+          cursor = index;
+          paint();
+        }
+      },
+      listener,
+    );
+    main.addEventListener(
+      'focusin',
+      (event) => {
+        const tile = (event.target as HTMLElement).closest<HTMLElement>('[data-tile]');
+        const index = tile ? visibleTiles().indexOf(tile) : -1;
+        if (index >= 0) {
+          cursor = index;
+          paint();
+        }
+      },
+      listener,
+    );
     filter.addEventListener('input', applyFilter, listener);
-    filter.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        filter.value = '';
-        applyFilter();
-        filter.blur();
-      } else if (event.key === 'Enter') {
-        visibleTiles()[cursor]?.click();
-      }
-    }, listener);
+    filter.addEventListener(
+      'keydown',
+      (event) => {
+        if (event.key === 'Escape') {
+          filter.value = '';
+          applyFilter();
+          filter.blur();
+        } else if (event.key === 'Enter') {
+          visibleTiles()[cursor]?.click();
+        }
+      },
+      listener,
+    );
 
-    document.addEventListener('keydown', (event) => {
-      const target = event.target as HTMLElement;
-      const typing = target.matches('input, textarea') || target.isContentEditable;
-      const nativeEnter = event.key === 'Enter' && Boolean(target.closest('a, button'));
-      const telescopeOpen = document.getElementById('telescope')?.classList.contains('open');
-      if (typing || nativeEnter || telescopeOpen || event.metaKey || event.ctrlKey || event.altKey) return;
+    document.addEventListener(
+      'keydown',
+      (event) => {
+        const target = event.target as HTMLElement;
+        const typing = target.matches('input, textarea') || target.isContentEditable;
+        const nativeEnter = event.key === 'Enter' && Boolean(target.closest('a, button'));
+        const telescopeOpen = document.getElementById('telescope')?.classList.contains('open');
+        if (typing || nativeEnter || telescopeOpen || event.metaKey || event.ctrlKey || event.altKey) return;
 
-      switch (event.key) {
-        case 'h': case 'ArrowLeft': event.preventDefault(); move(-1); break;
-        case 'l': case 'ArrowRight': event.preventDefault(); move(1); break;
-        case 'j': case 'ArrowDown': event.preventDefault(); move(columns()); break;
-        case 'k': case 'ArrowUp': event.preventDefault(); move(-columns()); break;
-        case 'Enter': event.preventDefault(); visibleTiles()[cursor]?.click(); break;
-        case 'G': event.preventDefault(); releaseButtonFocus(); cursor = visibleTiles().length - 1; paint(); break;
-        case 'g':
-          if (pendingG) {
+        switch (event.key) {
+          case 'h':
+          case 'ArrowLeft':
+            event.preventDefault();
+            move(-1);
+            break;
+          case 'l':
+          case 'ArrowRight':
+            event.preventDefault();
+            move(1);
+            break;
+          case 'j':
+          case 'ArrowDown':
+            event.preventDefault();
+            move(columns());
+            break;
+          case 'k':
+          case 'ArrowUp':
+            event.preventDefault();
+            move(-columns());
+            break;
+          case 'Enter':
+            event.preventDefault();
+            visibleTiles()[cursor]?.click();
+            break;
+          case 'G':
+            event.preventDefault();
             releaseButtonFocus();
-            cursor = 0;
+            cursor = visibleTiles().length - 1;
             paint();
-            pendingG = false;
-            window.clearTimeout(pendingGTimer);
-          } else {
-            pendingG = true;
-            pendingGTimer = window.setTimeout(() => { pendingG = false; }, 600);
-          }
-          break;
-        case '1': case '2': case '3': main.querySelectorAll<HTMLButtonElement>('.tab-btn')[Number(event.key) - 1]?.click(); break;
-        case '/': event.preventDefault(); filter.focus(); break;
-        case 'Escape': filter.value = ''; applyFilter(); break;
-      }
-    }, listener);
+            break;
+          case 'g':
+            if (pendingG) {
+              releaseButtonFocus();
+              cursor = 0;
+              paint();
+              pendingG = false;
+              window.clearTimeout(pendingGTimer);
+            } else {
+              pendingG = true;
+              pendingGTimer = window.setTimeout(() => {
+                pendingG = false;
+              }, 600);
+            }
+            break;
+          case '1':
+          case '2':
+          case '3':
+            main.querySelectorAll<HTMLButtonElement>('.tab-btn')[Number(event.key) - 1]?.click();
+            break;
+          case '/':
+            event.preventDefault();
+            filter.focus();
+            break;
+          case 'Escape':
+            filter.value = '';
+            applyFilter();
+            break;
+        }
+      },
+      listener,
+    );
 
     activateTab('projects');
   }

@@ -20,7 +20,12 @@ const buffers = [
 ];
 const treeFiles = buffers;
 type TabIcon = 'astro' | 'mdx' | 'json';
-interface Tab { path: string; file: string; icon: TabIcon; pinned?: boolean }
+interface Tab {
+  path: string;
+  file: string;
+  icon: TabIcon;
+  pinned?: boolean;
+}
 
 let activeFile = 'index.astro';
 let activeIcon: 'astro' | 'mdx' | 'json' = 'astro';
@@ -44,11 +49,9 @@ if (blogSlug) {
 }
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
-const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
-  (a, b) => a.id.localeCompare(b.id)
-);
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort((a, b) => a.id.localeCompare(b.id));
 
 const tabs: Tab[] = [
   ...(buffers as Tab[]),
@@ -92,68 +95,83 @@ const astroIcon = `
     <nav class="nvimtree" id="nvimtree" aria-label="File explorer">
       <div class="nvimtree-body">
         <div class="tree-folder">
-          <span class="tree-caret" aria-hidden="true">v</span>
+          <span class="tree-caret" aria-hidden="true">
+            v
+          </span>
           <span>portfolio</span>
         </div>
         <a
-          href='/package-json'
+          href="/package-json"
           class:list={['tree-file tree-indent-1', { 'tree-active': currentPath === '/package-json' }]}
         >
           <span class="tree-icon icon-json">JSON</span>
           <span>package.json</span>
         </a>
         <div class="tree-folder tree-indent-1">
-          <span class="tree-caret" aria-hidden="true">v</span>
+          <span class="tree-caret" aria-hidden="true">
+            v
+          </span>
           <span>src</span>
         </div>
         <div>
-            {treeFiles.map((buf) => (
+          {treeFiles.map((buf) => (
+            <a href={buf.path} class:list={['tree-file tree-indent-2', { 'tree-active': currentPath === buf.path }]}>
+              <span class:list={['tree-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-astro']}>
+                {buf.icon === 'astro' ? <Fragment set:html={astroIcon} /> : 'MDX'}
+              </span>
+              <span>{buf.file}</span>
+            </a>
+          ))}
+          <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="blog-posts" aria-expanded="true">
+            <span class="tree-caret" aria-hidden="true">
+              v
+            </span>
+            <span>blog-posts</span>
+          </button>
+          <div data-tree-group="blog-posts">
+            {posts.map((post) => (
               <a
-                href={buf.path}
-                class:list={['tree-file tree-indent-2', { 'tree-active': currentPath === buf.path }]}
+                href={`/blog/${post.id}`}
+                class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/blog/${post.id}` }]}
               >
-                <span class:list={['tree-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-astro']}>
-                  {buf.icon === 'astro' ? <Fragment set:html={astroIcon} /> : 'MDX'}
-                </span>
-                <span>{buf.file}</span>
+                <span class="tree-icon icon-mdx">MDX</span>
+                <span>{post.id}.mdx</span>
               </a>
             ))}
-            <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="blog-posts" aria-expanded="true">
-              <span class="tree-caret" aria-hidden="true">v</span>
-              <span>blog-posts</span>
-            </button>
-            <div data-tree-group="blog-posts">
-              {posts.map((post) => (
-                <a
-                  href={`/blog/${post.id}`}
-                  class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/blog/${post.id}` }]}
-                >
-                  <span class="tree-icon icon-mdx">MDX</span>
-                  <span>{post.id}.mdx</span>
-                </a>
-              ))}
-            </div>
-            <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="projects" aria-expanded="false">
-              <span class="tree-caret" aria-hidden="true">&gt;</span>
-              <span>projects</span>
-            </button>
-            <div data-tree-group="projects" hidden>
-              {projects.map((project) => (
-                <a
-                  href={`/projects/${project.id}`}
-                  class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/projects/${project.id}` }]}
-                >
-                  <span class="tree-icon icon-mdx">MDX</span>
-                  <span>{project.id}.mdx</span>
-                </a>
-              ))}
-            </div>
-            <div class="tree-folder tree-indent-2">&gt; <span>data</span></div>
-            <div class="tree-folder tree-indent-2">&gt; <span>components</span></div>
-            <div class="tree-folder tree-indent-2">&gt; <span>layouts</span></div>
           </div>
-          <div class="tree-folder tree-indent-1">&gt; <span>public</span></div>
-          <div class="tree-folder tree-indent-1">&gt; <span>node_modules</span></div>
+          <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="projects" aria-expanded="false">
+            <span class="tree-caret" aria-hidden="true">
+              &gt;
+            </span>
+            <span>projects</span>
+          </button>
+          <div data-tree-group="projects" hidden>
+            {projects.map((project) => (
+              <a
+                href={`/projects/${project.id}`}
+                class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/projects/${project.id}` }]}
+              >
+                <span class="tree-icon icon-mdx">MDX</span>
+                <span>{project.id}.mdx</span>
+              </a>
+            ))}
+          </div>
+          <div class="tree-folder tree-indent-2">
+            &gt; <span>data</span>
+          </div>
+          <div class="tree-folder tree-indent-2">
+            &gt; <span>components</span>
+          </div>
+          <div class="tree-folder tree-indent-2">
+            &gt; <span>layouts</span>
+          </div>
+        </div>
+        <div class="tree-folder tree-indent-1">
+          &gt; <span>public</span>
+        </div>
+        <div class="tree-folder tree-indent-1">
+          &gt; <span>node_modules</span>
+        </div>
       </div>
     </nav>
 
@@ -174,7 +192,9 @@ const astroIcon = `
               <span>{tab.file}</span>
             </a>
             {!tab.pinned && (
-              <button type="button" class="buf-close" data-buf-close aria-label={`Close ${tab.file}`}>×</button>
+              <button type="button" class="buf-close" data-buf-close aria-label={`Close ${tab.file}`}>
+                ×
+              </button>
             )}
           </div>
         ))}
@@ -195,35 +215,50 @@ const astroIcon = `
   </div>
 
   <div class="nvim-statusline">
-    <div class="sl-a"> NORMAL</div>
+    <div class="sl-a">NORMAL</div>
     <div class="sl-b">
       <svg class="branch-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <path d="M5 3.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm0 2.122a2.25 2.25 0 1 0-1.5 0v.878A2.25 2.25 0 0 0 5.75 8.5h1.5v2.128a2.251 2.251 0 1 0 1.5 0V8.5h1.5a2.25 2.25 0 0 0 2.25-2.25v-.878a2.25 2.25 0 1 0-1.5 0v.878a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 5 6.25v-.878zm3.75 7.378a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm3-8.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z"/>
+        <path d="M5 3.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm0 2.122a2.25 2.25 0 1 0-1.5 0v.878A2.25 2.25 0 0 0 5.75 8.5h1.5v2.128a2.251 2.251 0 1 0 1.5 0V8.5h1.5a2.25 2.25 0 0 0 2.25-2.25v-.878a2.25 2.25 0 1 0-1.5 0v.878a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 5 6.25v-.878zm3.75 7.378a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm3-8.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z" />
       </svg>
       main
     </div>
     <div class="sl-c">~/portfolio/src/{activeFile}</div>
     <div class="sl-spacer"></div>
     <div class="sl-x sl-showcmd" id="sl-showcmd" aria-hidden="true"></div>
-    <button class="sl-x sl-help" type="button" data-vim-help aria-label="Show key bindings" title="keys (?)">?</button>
+    <button class="sl-x sl-help" type="button" data-vim-help aria-label="Show key bindings" title="keys (?)">
+      ?
+    </button>
     <div class="sl-x-div"></div>
-    <div class="sl-x sl-enc"> utf-8</div>
+    <div class="sl-x sl-enc">utf-8</div>
     <div class="sl-x-div"></div>
     <div class:list={['sl-x sl-filetype', `ft-${activeIcon}`]}>
       {activeIcon === 'mdx' && <span class="sl-ft-icon icon-mdx">MDX</span>}
       {activeIcon === 'json' && <span class="sl-ft-icon icon-json">JSON</span>}
-      {activeIcon === 'astro' && <span class="sl-ft-icon icon-astro" set:html={astroIcon}></span>}
+      {activeIcon === 'astro' && <span class="sl-ft-icon icon-astro" set:html={astroIcon} />}
       <span>{activeIcon === 'mdx' ? 'MDX' : activeIcon === 'json' ? 'JSON' : 'Astro'}</span>
     </div>
     <div class="sl-x-div"></div>
-    <div class="sl-x sl-pct" id="sl-pct"> Top</div>
+    <div class="sl-x sl-pct" id="sl-pct">
+      Top
+    </div>
     <div class="sl-x-div"></div>
-    <div class="sl-y" id="sl-pos"> 1:1</div>
+    <div class="sl-y" id="sl-pos">
+      1:1
+    </div>
   </div>
 
   <div class="nvim-cmdline" id="nvim-cmdline" hidden>
-    <span class="cmd-prompt" id="nvim-cmdline-prompt" aria-hidden="true">:</span>
-    <input id="nvim-cmdline-input" class="cmd-input" type="text" autocomplete="off" spellcheck="false" aria-label="Command line" />
+    <span class="cmd-prompt" id="nvim-cmdline-prompt" aria-hidden="true">
+      :
+    </span>
+    <input
+      id="nvim-cmdline-input"
+      class="cmd-input"
+      type="text"
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Command line"
+    />
     <span class="cmd-msg" id="nvim-cmdline-msg" hidden></span>
   </div>
 </div>
@@ -233,26 +268,40 @@ const astroIcon = `
   <div class="nvim-help-panel">
     <div class="nvim-help-title">:help keys</div>
     <dl>
-      <dt>j / k, &darr; / &uarr;</dt><dd>scroll</dd>
-      <dt>ctrl+d / ctrl+u</dt><dd>half page down / up</dd>
-      <dt>gg / G</dt><dd>top / bottom</dd>
-      <dt>]b / [b</dt><dd>next / previous buffer</dd>
-      <dt>space e</dt><dd>toggle file tree</dd>
-      <dt>space ff, ctrl+k</dt><dd>telescope</dd>
-      <dt>space bd</dt><dd>close buffer</dd>
-      <dt>:</dt><dd>command line &mdash; :q :e file :bn :bp :help</dd>
-      <dt>?</dt><dd>this help</dd>
+      <dt>j / k, &darr; / &uarr;</dt>
+      <dd>scroll</dd>
+      <dt>ctrl+d / ctrl+u</dt>
+      <dd>half page down / up</dd>
+      <dt>gg / G</dt>
+      <dd>top / bottom</dd>
+      <dt>]b / [b</dt>
+      <dd>next / previous buffer</dd>
+      <dt>space e</dt>
+      <dd>toggle file tree</dd>
+      <dt>space ff, ctrl+k</dt>
+      <dd>telescope</dd>
+      <dt>space bd</dt>
+      <dd>close buffer</dd>
+      <dt>:</dt>
+      <dd>command line &mdash; :q :e file :bn :bp :help</dd>
+      <dt>?</dt>
+      <dd>this help</dd>
     </dl>
     <div class="nvim-help-sub">cards &amp; lists</div>
     <dl>
-      <dt>h j k l</dt><dd>move cursor between cards, enter opens</dd>
-      <dt>gg / G</dt><dd>first / last card</dd>
+      <dt>h j k l</dt>
+      <dd>move cursor between cards, enter opens</dd>
+      <dt>gg / G</dt>
+      <dd>first / last card</dd>
     </dl>
     <div class="nvim-help-sub">projects</div>
     <dl>
-      <dt>1 2 3</dt><dd>switch tab</dd>
-      <dt>/</dt><dd>filter tiles</dd>
-      <dt>[[ / ]]</dt><dd>previous / next project on a project page</dd>
+      <dt>1 2 3</dt>
+      <dd>switch tab</dd>
+      <dt>/</dt>
+      <dd>filter tiles</dd>
+      <dt>[[ / ]]</dt>
+      <dd>previous / next project on a project page</dd>
     </dl>
     <div class="nvim-help-hint">everything works with the mouse too. esc closes this.</div>
   </div>
@@ -314,7 +363,9 @@ const astroIcon = `
     scrollbar-width: none;
     scroll-behavior: smooth;
   }
-  .nvim-bufferline::-webkit-scrollbar { display: none; }
+  .nvim-bufferline::-webkit-scrollbar {
+    display: none;
+  }
 
   .nvim-buffer {
     display: flex;
@@ -326,8 +377,12 @@ const astroIcon = `
     flex-shrink: 0;
     transition: color 0.15s;
   }
-  .nvim-buffer[hidden] { display: none; }
-  .nvim-buffer:hover { color: var(--color-nvim-fg2); }
+  .nvim-buffer[hidden] {
+    display: none;
+  }
+  .nvim-buffer:hover {
+    color: var(--color-nvim-fg2);
+  }
   .nvim-buffer.active {
     background: var(--color-nvim-bg1);
     color: var(--color-nvim-fg);
@@ -342,7 +397,9 @@ const astroIcon = `
     color: inherit;
     text-decoration: none;
   }
-  .nvim-buffer.active .buf-link { padding-top: 3px; }
+  .nvim-buffer.active .buf-link {
+    padding-top: 3px;
+  }
 
   .buf-close {
     display: flex;
@@ -360,10 +417,15 @@ const astroIcon = `
     line-height: 1;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.12s, background 0.12s, color 0.12s;
+    transition:
+      opacity 0.12s,
+      background 0.12s,
+      color 0.12s;
   }
   .nvim-buffer:hover .buf-close,
-  .nvim-buffer.active .buf-close { opacity: 1; }
+  .nvim-buffer.active .buf-close {
+    opacity: 1;
+  }
   .buf-close:hover {
     background: var(--color-nvim-bg3);
     color: var(--color-nvim-red, var(--color-nvim-yellow));
@@ -382,9 +444,17 @@ const astroIcon = `
     flex-shrink: 0;
     color: var(--color-nvim-fg3);
   }
-  .buf-pin :global(svg) { width: 13px; height: 13px; display: block; }
-  .nvim-buffer.active .buf-pin { color: var(--color-nvim-yellow); }
-  .nvim-buffer.pinned .buf-link { padding-right: 20px; }
+  .buf-pin :global(svg) {
+    width: 13px;
+    height: 13px;
+    display: block;
+  }
+  .nvim-buffer.active .buf-pin {
+    color: var(--color-nvim-yellow);
+  }
+  .nvim-buffer.pinned .buf-link {
+    padding-right: 20px;
+  }
 
   .nvim-main {
     position: relative;
@@ -404,9 +474,12 @@ const astroIcon = `
     overflow-y: auto;
     font-size: 12px;
   }
-  .nvimtree::-webkit-scrollbar { width: 3px; }
-  .nvimtree::-webkit-scrollbar-thumb { background: var(--color-nvim-bg3); }
-
+  .nvimtree::-webkit-scrollbar {
+    width: 3px;
+  }
+  .nvimtree::-webkit-scrollbar-thumb {
+    background: var(--color-nvim-bg3);
+  }
 
   .tree-folder {
     display: flex;
@@ -455,16 +528,26 @@ const astroIcon = `
     text-decoration: none;
     transition: background 0.1s;
   }
-  .tree-file:hover { background: var(--color-nvim-bg1); }
+  .tree-file:hover {
+    background: var(--color-nvim-bg1);
+  }
   .tree-file.tree-active {
     background: var(--color-nvim-bg2);
     color: var(--color-nvim-fg);
   }
 
-  .tree-indent-1 { padding-left: 20px; }
-  .tree-indent-2 { padding-left: 32px; }
-  .tree-indent-3 { padding-left: 44px; }
-  .tree-indent-4 { padding-left: 56px; }
+  .tree-indent-1 {
+    padding-left: 20px;
+  }
+  .tree-indent-2 {
+    padding-left: 32px;
+  }
+  .tree-indent-3 {
+    padding-left: 44px;
+  }
+  .tree-indent-4 {
+    padding-left: 56px;
+  }
 
   .buf-icon,
   .tree-icon {
@@ -484,7 +567,9 @@ const astroIcon = `
     height: 13px;
     display: block;
   }
-  .icon-mdx { color: var(--color-nvim-purple); }
+  .icon-mdx {
+    color: var(--color-nvim-purple);
+  }
 
   .nvim-editor-wrap {
     flex: 1;
@@ -504,9 +589,16 @@ const astroIcon = `
     align-items: center;
     gap: 0;
   }
-  .winbar-root { color: var(--color-nvim-blue); }
-  .winbar-sep { color: var(--color-nvim-bg3); margin: 0 6px; }
-  .winbar-file { color: var(--color-nvim-yellow); }
+  .winbar-root {
+    color: var(--color-nvim-blue);
+  }
+  .winbar-sep {
+    color: var(--color-nvim-bg3);
+    margin: 0 6px;
+  }
+  .winbar-file {
+    color: var(--color-nvim-yellow);
+  }
 
   .nvim-editor {
     flex: 1;
@@ -515,8 +607,12 @@ const astroIcon = `
     padding: 24px 28px;
     font-family: var(--font-sans);
   }
-  .nvim-editor::-webkit-scrollbar { width: 4px; }
-  .nvim-editor::-webkit-scrollbar-thumb { background: var(--color-nvim-bg3); }
+  .nvim-editor::-webkit-scrollbar {
+    width: 4px;
+  }
+  .nvim-editor::-webkit-scrollbar-thumb {
+    background: var(--color-nvim-bg3);
+  }
 
   .nvim-statusline {
     display: flex;
@@ -543,9 +639,15 @@ const astroIcon = `
     font-weight: 700;
     transition: background 0.12s ease;
   }
-  .nvim-statusline[data-mode='INSERT'] { --sl-mode: var(--color-nvim-blue); }
-  .nvim-statusline[data-mode='VISUAL'] { --sl-mode: var(--color-nvim-orange); }
-  .nvim-statusline[data-mode='COMMAND'] { --sl-mode: var(--color-nvim-green); }
+  .nvim-statusline[data-mode='INSERT'] {
+    --sl-mode: var(--color-nvim-blue);
+  }
+  .nvim-statusline[data-mode='VISUAL'] {
+    --sl-mode: var(--color-nvim-orange);
+  }
+  .nvim-statusline[data-mode='COMMAND'] {
+    --sl-mode: var(--color-nvim-green);
+  }
   .sl-b {
     background: var(--color-nvim-bg3);
     color: var(--color-nvim-green);
@@ -569,8 +671,13 @@ const astroIcon = `
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .sl-spacer { flex: 1; background: var(--color-nvim-bg1); }
-  .sl-filetype { gap: 5px; }
+  .sl-spacer {
+    flex: 1;
+    background: var(--color-nvim-bg1);
+  }
+  .sl-filetype {
+    gap: 5px;
+  }
   .sl-ft-icon {
     font-size: 9px;
     font-weight: 700;
@@ -580,12 +687,27 @@ const astroIcon = `
     justify-content: center;
     flex-shrink: 0;
   }
-  .sl-ft-icon.icon-astro { color: var(--color-nvim-orange); }
-  :global(.sl-ft-icon.icon-astro svg) { width: 11px; height: 11px; display: block; }
-  .sl-ft-icon.icon-mdx { color: var(--color-nvim-purple); }
-  .sl-ft-icon.icon-json { color: var(--color-nvim-yellow); width: auto; }
-  .sl-ft-icon.icon-mdx { width: auto; }
-  .icon-json { color: var(--color-nvim-yellow); }
+  .sl-ft-icon.icon-astro {
+    color: var(--color-nvim-orange);
+  }
+  :global(.sl-ft-icon.icon-astro svg) {
+    width: 11px;
+    height: 11px;
+    display: block;
+  }
+  .sl-ft-icon.icon-mdx {
+    color: var(--color-nvim-purple);
+  }
+  .sl-ft-icon.icon-json {
+    color: var(--color-nvim-yellow);
+    width: auto;
+  }
+  .sl-ft-icon.icon-mdx {
+    width: auto;
+  }
+  .icon-json {
+    color: var(--color-nvim-yellow);
+  }
   .sl-x-div {
     width: 1px;
     background: var(--color-nvim-bg);
@@ -596,16 +718,35 @@ const astroIcon = `
     color: var(--color-nvim-fg);
     padding: 0 10px;
   }
-  .sl-enc { background: var(--color-nvim-purple); color: var(--color-nvim-bg-hard); font-weight: 600; }
-  .sl-pct { background: var(--color-nvim-blue); color: var(--color-nvim-bg-hard); font-weight: 600; }
-  .sl-filetype { color: var(--color-nvim-bg-hard); font-weight: 600; }
-  .sl-filetype.ft-astro { background: var(--color-nvim-orange); }
-  .sl-filetype.ft-mdx { background: var(--color-nvim-red); }
-  .sl-filetype.ft-json { background: var(--color-nvim-yellow); }
+  .sl-enc {
+    background: var(--color-nvim-purple);
+    color: var(--color-nvim-bg-hard);
+    font-weight: 600;
+  }
+  .sl-pct {
+    background: var(--color-nvim-blue);
+    color: var(--color-nvim-bg-hard);
+    font-weight: 600;
+  }
+  .sl-filetype {
+    color: var(--color-nvim-bg-hard);
+    font-weight: 600;
+  }
+  .sl-filetype.ft-astro {
+    background: var(--color-nvim-orange);
+  }
+  .sl-filetype.ft-mdx {
+    background: var(--color-nvim-red);
+  }
+  .sl-filetype.ft-json {
+    background: var(--color-nvim-yellow);
+  }
   .sl-filetype .sl-ft-icon,
   .sl-filetype .sl-ft-icon.icon-astro,
   .sl-filetype .sl-ft-icon.icon-mdx,
-  .sl-filetype .sl-ft-icon.icon-json { color: var(--color-nvim-bg-hard); }
+  .sl-filetype .sl-ft-icon.icon-json {
+    color: var(--color-nvim-bg-hard);
+  }
   .sl-y {
     background: var(--color-nvim-green);
     color: var(--color-nvim-bg-hard);
@@ -618,7 +759,9 @@ const astroIcon = `
     padding: 0 8px;
     min-width: 0;
   }
-  .sl-showcmd:empty { display: none; }
+  .sl-showcmd:empty {
+    display: none;
+  }
   .sl-help {
     background: var(--color-nvim-gray);
     border: 0;
@@ -629,7 +772,9 @@ const astroIcon = `
     font-weight: 700;
     cursor: pointer;
   }
-  .sl-help:hover { background: var(--color-nvim-fg2); }
+  .sl-help:hover {
+    background: var(--color-nvim-fg2);
+  }
 
   .nvim-cmdline {
     display: flex;
@@ -642,8 +787,12 @@ const astroIcon = `
     font-size: 12px;
     color: var(--color-nvim-fg);
   }
-  .nvim-cmdline[hidden] { display: none; }
-  .cmd-prompt { color: var(--color-nvim-fg); }
+  .nvim-cmdline[hidden] {
+    display: none;
+  }
+  .cmd-prompt {
+    color: var(--color-nvim-fg);
+  }
   .cmd-input {
     flex: 1;
     min-width: 0;
@@ -655,8 +804,15 @@ const astroIcon = `
     font: inherit;
     caret-color: var(--color-nvim-yellow);
   }
-  .cmd-msg { color: var(--color-nvim-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .cmd-msg.error { color: var(--color-nvim-red); }
+  .cmd-msg {
+    color: var(--color-nvim-fg);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cmd-msg.error {
+    color: var(--color-nvim-red);
+  }
 
   .nvim-help {
     position: fixed;
@@ -667,7 +823,9 @@ const astroIcon = `
     justify-content: center;
     font-family: var(--font-mono);
   }
-  .nvim-help[hidden] { display: none; }
+  .nvim-help[hidden] {
+    display: none;
+  }
   .nvim-help-backdrop {
     position: absolute;
     inset: 0;
@@ -687,15 +845,37 @@ const astroIcon = `
     padding: 14px 18px;
     font-size: 12px;
   }
-  .nvim-help-title { color: var(--color-nvim-green); font-weight: 700; margin-bottom: 8px; }
-  .nvim-help-sub { color: var(--color-nvim-fg3); margin: 10px 0 4px; }
-  .nvim-help dl { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 3px 14px; margin: 0; }
-  .nvim-help dt { color: var(--color-nvim-yellow); }
-  .nvim-help dd { color: var(--color-nvim-fg2); margin: 0; }
-  .nvim-help-hint { color: var(--color-nvim-fg3); margin-top: 12px; }
+  .nvim-help-title {
+    color: var(--color-nvim-green);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .nvim-help-sub {
+    color: var(--color-nvim-fg3);
+    margin: 10px 0 4px;
+  }
+  .nvim-help dl {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr);
+    gap: 3px 14px;
+    margin: 0;
+  }
+  .nvim-help dt {
+    color: var(--color-nvim-yellow);
+  }
+  .nvim-help dd {
+    color: var(--color-nvim-fg2);
+    margin: 0;
+  }
+  .nvim-help-hint {
+    color: var(--color-nvim-fg3);
+    margin-top: 12px;
+  }
 
   @media (min-width: 761px) {
-    .nvim-shell.tree-hidden .nvimtree { display: none; }
+    .nvim-shell.tree-hidden .nvimtree {
+      display: none;
+    }
   }
 
   @media (max-width: 760px) {
@@ -727,8 +907,12 @@ const astroIcon = `
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .nvim-buffer.pinned .buf-link > span:last-child { display: none; }
-    .nvim-buffer.pinned .buf-link { padding-right: 6px; }
+    .nvim-buffer.pinned .buf-link > span:last-child {
+      display: none;
+    }
+    .nvim-buffer.pinned .buf-link {
+      padding-right: 6px;
+    }
 
     .nvimtree {
       position: absolute;
@@ -926,7 +1110,7 @@ const astroIcon = `
         e.preventDefault();
         bufferline.scrollLeft += e.deltaY;
       },
-      { passive: false }
+      { passive: false },
     );
 
     bufferline.addEventListener('click', (e) => {
@@ -947,7 +1131,10 @@ const astroIcon = `
       if (wasActive) {
         const neighbor =
           all.slice(idx + 1).find((t) => !t.hidden) ||
-          all.slice(0, idx).reverse().find((t) => !t.hidden);
+          all
+            .slice(0, idx)
+            .reverse()
+            .find((t) => !t.hidden);
         const target = neighbor?.querySelector<HTMLAnchorElement>('.buf-link');
         navigate(target ? target.href : '/');
       }
@@ -987,7 +1174,10 @@ const astroIcon = `
     const cmdMsg = () => q('#nvim-cmdline-msg');
     const help = () => q('#nvim-help');
     const telescopeOpen = () => document.getElementById('telescope')?.classList.contains('open') ?? false;
-    const cmdOpen = () => { const c = cmdline(); return !!c && !c.hidden; };
+    const cmdOpen = () => {
+      const c = cmdline();
+      return !!c && !c.hidden;
+    };
     const isTyping = (el: Element | null) =>
       !!el && (el.matches('input, textarea, select') || (el as HTMLElement).isContentEditable);
 
@@ -1052,7 +1242,9 @@ const astroIcon = `
     }
     function openTelescope() {
       if (telescopeOpen()) return;
-      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true, cancelable: true }));
+      document.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true, cancelable: true }),
+      );
     }
     function toggleHelp(force?: boolean) {
       const h = help();
@@ -1061,7 +1253,10 @@ const astroIcon = `
     }
 
     function showMessage(text: string, error = false) {
-      const c = cmdline(), input = cmdInput(), m = cmdMsg(), prompt = cmdPrompt();
+      const c = cmdline(),
+        input = cmdInput(),
+        m = cmdMsg(),
+        prompt = cmdPrompt();
       if (!c || !input || !m) return;
       c.hidden = false;
       input.hidden = true;
@@ -1075,7 +1270,10 @@ const astroIcon = `
       refreshMode();
     }
     function openCmdline() {
-      const c = cmdline(), input = cmdInput(), m = cmdMsg(), prompt = cmdPrompt();
+      const c = cmdline(),
+        input = cmdInput(),
+        m = cmdMsg(),
+        prompt = cmdPrompt();
       if (!c || !input || !m) return;
       window.clearTimeout(msgTimer);
       c.hidden = false;
@@ -1088,7 +1286,8 @@ const astroIcon = `
       setMode('COMMAND');
     }
     function hideCmdline() {
-      const c = cmdline(), input = cmdInput();
+      const c = cmdline(),
+        input = cmdInput();
       window.clearTimeout(msgTimer);
       if (!c) return;
       c.hidden = true;
@@ -1135,25 +1334,80 @@ const astroIcon = `
       const [cmd = '', ...rest] = line.split(/\s+/);
       const arg = rest.join(' ');
       switch (cmd) {
-        case '': hideCmdline(); break;
-        case 'q': case 'q!': case 'wq': case 'x': case 'bd': case 'bdelete': hideCmdline(); closeBuffer(); break;
-        case 'qa': case 'qa!': case 'qall': case 'wqa': sessionStorage.removeItem(OPENED_KEY); hideCmdline(); navigate('/'); break;
-        case 'w': case 'write': showMessage("E45: 'readonly' option is set (add ! to override)", true); break;
-        case 'w!': showMessage('"portfolio" is read-only, nothing written', true); break;
-        case 'e': case 'edit': case 'find': fuzzyOpen(arg); break;
-        case 'bn': case 'bnext': hideCmdline(); switchBuffer(1); break;
-        case 'bp': case 'bprev': case 'bprevious': hideCmdline(); switchBuffer(-1); break;
-        case 'h': case 'help': hideCmdline(); toggleHelp(true); break;
-        case 'Telescope': case 'Tel': hideCmdline(); openTelescope(); break;
-        case 'NvimTreeToggle': case 'Ex': case 'Explore': hideCmdline(); toggleTree(); break;
-        case 'noh': case 'nohlsearch': hideCmdline(); break;
-        default: showMessage(`E492: Not an editor command: ${line}`, true);
+        case '':
+          hideCmdline();
+          break;
+        case 'q':
+        case 'q!':
+        case 'wq':
+        case 'x':
+        case 'bd':
+        case 'bdelete':
+          hideCmdline();
+          closeBuffer();
+          break;
+        case 'qa':
+        case 'qa!':
+        case 'qall':
+        case 'wqa':
+          sessionStorage.removeItem(OPENED_KEY);
+          hideCmdline();
+          navigate('/');
+          break;
+        case 'w':
+        case 'write':
+          showMessage("E45: 'readonly' option is set (add ! to override)", true);
+          break;
+        case 'w!':
+          showMessage('"portfolio" is read-only, nothing written', true);
+          break;
+        case 'e':
+        case 'edit':
+        case 'find':
+          fuzzyOpen(arg);
+          break;
+        case 'bn':
+        case 'bnext':
+          hideCmdline();
+          switchBuffer(1);
+          break;
+        case 'bp':
+        case 'bprev':
+        case 'bprevious':
+          hideCmdline();
+          switchBuffer(-1);
+          break;
+        case 'h':
+        case 'help':
+          hideCmdline();
+          toggleHelp(true);
+          break;
+        case 'Telescope':
+        case 'Tel':
+          hideCmdline();
+          openTelescope();
+          break;
+        case 'NvimTreeToggle':
+        case 'Ex':
+        case 'Explore':
+          hideCmdline();
+          toggleTree();
+          break;
+        case 'noh':
+        case 'nohlsearch':
+          hideCmdline();
+          break;
+        default:
+          showMessage(`E492: Not an editor command: ${line}`, true);
       }
     }
 
     // Item cursor: pages mark navigable cards with data-vim-item so hjkl step
     // between them instead of scrolling by line. Projects keeps its own grid.
-    const items = () => [...document.querySelectorAll<HTMLElement>('[data-vim-item]')].filter((el) => !el.hidden && el.offsetParent !== null);
+    const items = () =>
+      [...document.querySelectorAll<HTMLElement>('[data-vim-item]')].filter(
+        (el) => !el.hidden && el.offsetParent !== null,
+      );
     let cursor = 0;
 
     function paint() {
@@ -1184,7 +1438,8 @@ const astroIcon = `
         .map((el, i) => ({ i, r: el.getBoundingClientRect() }))
         .filter(({ r }) => (dir === 1 ? r.top > cur.top + 1 : r.top < cur.top - 1));
       if (!candidates.length) return;
-      const edge = dir === 1 ? Math.min(...candidates.map((c) => c.r.top)) : Math.max(...candidates.map((c) => c.r.top));
+      const edge =
+        dir === 1 ? Math.min(...candidates.map((c) => c.r.top)) : Math.max(...candidates.map((c) => c.r.top));
       const row = candidates.filter((c) => Math.abs(c.r.top - edge) < 1);
       row.sort((a, b) => Math.abs(a.r.left + a.r.width / 2 - cx) - Math.abs(b.r.left + b.r.width / 2 - cx));
       cursor = row[0].i;
@@ -1199,47 +1454,98 @@ const astroIcon = `
     function activateItem() {
       const el = items()[cursor];
       if (!el) return;
-      const target = el.matches('a[href], button, summary') ? el : el.querySelector<HTMLElement>('a[href], button, summary');
+      const target = el.matches('a[href], button, summary')
+        ? el
+        : el.querySelector<HTMLElement>('a[href], button, summary');
       target?.click();
     }
     function syncCursor(event: Event) {
       const el = (event.target as HTMLElement).closest<HTMLElement>('[data-vim-item]');
       const index = el ? items().indexOf(el) : -1;
-      if (index >= 0 && index !== cursor) { cursor = index; paint(); }
+      if (index >= 0 && index !== cursor) {
+        cursor = index;
+        paint();
+      }
     }
 
     function runSequence(seq: string): boolean {
       switch (seq) {
         case 'gg':
-          if (items().length) jumpItem(0); else scrollTo(0);
+          if (items().length) jumpItem(0);
+          else scrollTo(0);
           return true;
-        case ']b': switchBuffer(1); return true;
-        case '[b': switchBuffer(-1); return true;
-        case ' e': toggleTree(); return true;
-        case ' q': case ' bd': closeBuffer(); return true;
-        case ' ?': toggleHelp(true); return true;
-        case ' f': case ' b': setPending(seq); return true;
-        case ' ff': openTelescope(); return true;
-        case ' bn': switchBuffer(1); return true;
-        case ' bp': switchBuffer(-1); return true;
+        case ']b':
+          switchBuffer(1);
+          return true;
+        case '[b':
+          switchBuffer(-1);
+          return true;
+        case ' e':
+          toggleTree();
+          return true;
+        case ' q':
+        case ' bd':
+          closeBuffer();
+          return true;
+        case ' ?':
+          toggleHelp(true);
+          return true;
+        case ' f':
+        case ' b':
+          setPending(seq);
+          return true;
+        case ' ff':
+          openTelescope();
+          return true;
+        case ' bn':
+          switchBuffer(1);
+          return true;
+        case ' bp':
+          switchBuffer(-1);
+          return true;
       }
       return false;
     }
 
-    const GRID_KEYS = ['h', 'j', 'k', 'l', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter', 'g', 'G', '/', 'Escape', '1', '2', '3'];
+    const GRID_KEYS = [
+      'h',
+      'j',
+      'k',
+      'l',
+      'ArrowUp',
+      'ArrowDown',
+      'ArrowLeft',
+      'ArrowRight',
+      'Enter',
+      'g',
+      'G',
+      '/',
+      'Escape',
+      '1',
+      '2',
+      '3',
+    ];
 
     document.addEventListener('keydown', (event) => {
       const target = event.target as HTMLElement;
       const input = cmdInput();
 
       if (input && target === input) {
-        if (event.key === 'Enter') { event.preventDefault(); runCommand(input.value); }
-        else if (event.key === 'Escape') { event.preventDefault(); hideCmdline(); }
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          runCommand(input.value);
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          hideCmdline();
+        }
         return;
       }
       if (cmdOpen() && input?.hidden) {
         hideCmdline();
-        if (event.key === 'Escape') { event.preventDefault(); return; }
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          return;
+        }
       }
       if (telescopeOpen()) return;
       if (isTyping(target)) {
@@ -1248,7 +1554,10 @@ const astroIcon = `
       }
       const h = help();
       if (h && !h.hidden) {
-        if (event.key === 'Escape' || event.key === '?') { event.preventDefault(); toggleHelp(false); }
+        if (event.key === 'Escape' || event.key === '?') {
+          event.preventDefault();
+          toggleHelp(false);
+        }
         return;
       }
       if (event.altKey || event.metaKey) return;
@@ -1258,8 +1567,13 @@ const astroIcon = `
       const pageStep = editorEl ? Math.round(editorEl.clientHeight * 0.9) : 500;
 
       if (event.ctrlKey) {
-        if (event.key === 'd') { event.preventDefault(); scrollBy(half); }
-        else if (event.key === 'u') { event.preventDefault(); scrollBy(-half); }
+        if (event.key === 'd') {
+          event.preventDefault();
+          scrollBy(half);
+        } else if (event.key === 'u') {
+          event.preventDefault();
+          scrollBy(-half);
+        }
         return;
       }
 
@@ -1269,7 +1583,10 @@ const astroIcon = `
       if (pending) {
         const seq = pending + event.key;
         setPending('');
-        if (runSequence(seq)) { event.preventDefault(); return; }
+        if (runSequence(seq)) {
+          event.preventDefault();
+          return;
+        }
       }
 
       const list = items();
@@ -1277,28 +1594,85 @@ const astroIcon = `
         // Enter on a focused link/button keeps its native behaviour.
         const nativeEnter = event.key === 'Enter' && Boolean(target.closest('a, button, summary'));
         switch (event.key) {
-          case 'j': case 'ArrowDown': event.preventDefault(); moveRow(1); return;
-          case 'k': case 'ArrowUp': event.preventDefault(); moveRow(-1); return;
-          case 'h': case 'ArrowLeft': event.preventDefault(); moveItem(-1); return;
-          case 'l': case 'ArrowRight': event.preventDefault(); moveItem(1); return;
-          case 'G': event.preventDefault(); jumpItem(list.length - 1); return;
-          case 'Enter': if (!nativeEnter) { event.preventDefault(); activateItem(); } return;
+          case 'j':
+          case 'ArrowDown':
+            event.preventDefault();
+            moveRow(1);
+            return;
+          case 'k':
+          case 'ArrowUp':
+            event.preventDefault();
+            moveRow(-1);
+            return;
+          case 'h':
+          case 'ArrowLeft':
+            event.preventDefault();
+            moveItem(-1);
+            return;
+          case 'l':
+          case 'ArrowRight':
+            event.preventDefault();
+            moveItem(1);
+            return;
+          case 'G':
+            event.preventDefault();
+            jumpItem(list.length - 1);
+            return;
+          case 'Enter':
+            if (!nativeEnter) {
+              event.preventDefault();
+              activateItem();
+            }
+            return;
         }
       }
 
       switch (event.key) {
-        case 'j': case 'ArrowDown': event.preventDefault(); scrollBy(LINE_STEP); break;
-        case 'k': case 'ArrowUp': event.preventDefault(); scrollBy(-LINE_STEP); break;
-        case 'PageDown': event.preventDefault(); scrollBy(pageStep); break;
-        case 'PageUp': event.preventDefault(); scrollBy(-pageStep); break;
-        case 'G': event.preventDefault(); scrollTo(editorEl ? editorEl.scrollHeight : 0); break;
-        case 'g': case ']': case '[': event.preventDefault(); setPending(event.key); break;
-        case ' ':
-          if (!target.closest('a, button')) { event.preventDefault(); setPending(' '); }
+        case 'j':
+        case 'ArrowDown':
+          event.preventDefault();
+          scrollBy(LINE_STEP);
           break;
-        case ':': event.preventDefault(); openCmdline(); break;
-        case '?': event.preventDefault(); toggleHelp(); break;
-        case 'Escape': setPending(''); break;
+        case 'k':
+        case 'ArrowUp':
+          event.preventDefault();
+          scrollBy(-LINE_STEP);
+          break;
+        case 'PageDown':
+          event.preventDefault();
+          scrollBy(pageStep);
+          break;
+        case 'PageUp':
+          event.preventDefault();
+          scrollBy(-pageStep);
+          break;
+        case 'G':
+          event.preventDefault();
+          scrollTo(editorEl ? editorEl.scrollHeight : 0);
+          break;
+        case 'g':
+        case ']':
+        case '[':
+          event.preventDefault();
+          setPending(event.key);
+          break;
+        case ' ':
+          if (!target.closest('a, button')) {
+            event.preventDefault();
+            setPending(' ');
+          }
+          break;
+        case ':':
+          event.preventDefault();
+          openCmdline();
+          break;
+        case '?':
+          event.preventDefault();
+          toggleHelp();
+          break;
+        case 'Escape':
+          setPending('');
+          break;
       }
     });
 
@@ -1312,7 +1686,12 @@ const astroIcon = `
     document.addEventListener('focusin', refreshMode);
     document.addEventListener('focusout', () => window.setTimeout(refreshMode, 0));
     document.addEventListener('selectionchange', refreshMode);
-    document.addEventListener('astro:page-load', () => { setPending(''); refreshMode(); cursor = 0; paint(); });
+    document.addEventListener('astro:page-load', () => {
+      setPending('');
+      refreshMode();
+      cursor = 0;
+      paint();
+    });
     paint();
   }
 

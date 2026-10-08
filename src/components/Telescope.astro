@@ -25,8 +25,16 @@ const pages = [
   { label: 'about.astro', path: '/about', desc: "who I am, what I do, and what I'm into" },
   { label: 'projects.astro', path: '/projects', desc: 'things built' },
   { label: 'certificates.astro', path: '/certificates', desc: "licenses and certifications I've earned" },
-  { label: 'contact.astro', path: '/contact', desc: 'contact me if you want to stay in touch! collaboration, questions, or just simply saying hi :)' },
-  { label: 'blog.astro', path: '/blog', desc: 'my blog posts covering various tech news! takes on AI, startups, and where the industry is headed.' },
+  {
+    label: 'contact.astro',
+    path: '/contact',
+    desc: 'contact me if you want to stay in touch! collaboration, questions, or just simply saying hi :)',
+  },
+  {
+    label: 'blog.astro',
+    path: '/blog',
+    desc: 'my blog posts covering various tech news! takes on AI, startups, and where the industry is headed.',
+  },
 ];
 
 const easterEggs = [
@@ -36,11 +44,21 @@ const easterEggs = [
 ];
 ---
 
-<div id="telescope" class="telescope-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Command palette" transition:persist>
+<div
+  id="telescope"
+  class="telescope-overlay"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Command palette"
+  transition:persist
+>
   <div class="telescope-backdrop" id="telescope-backdrop"></div>
   <div class="telescope-modal">
     <div class="telescope-header">
-      <span class="telescope-icon" aria-hidden="true">T</span>
+      <span class="telescope-icon" aria-hidden="true">
+        T
+      </span>
       <input
         id="telescope-input"
         class="telescope-input"
@@ -65,7 +83,6 @@ const easterEggs = [
 <script type="application/json" id="telescope-posts" set:html={JSON.stringify(posts)} />
 <script type="application/json" id="telescope-projects" set:html={JSON.stringify(projects)} />
 <script type="application/json" id="telescope-eggs" set:html={JSON.stringify(easterEggs)} />
-
 <style is:global>
   .telescope-overlay {
     position: fixed;
@@ -125,7 +142,9 @@ const easterEggs = [
     font-family: var(--font-mono);
     caret-color: var(--color-nvim-yellow);
   }
-  .telescope-input::placeholder { color: var(--color-nvim-fg3); }
+  .telescope-input::placeholder {
+    color: var(--color-nvim-fg3);
+  }
 
   .telescope-hint {
     font-family: var(--font-mono);
@@ -142,8 +161,12 @@ const easterEggs = [
     overflow-y: auto;
     padding: 4px 0;
   }
-  .telescope-results::-webkit-scrollbar { width: 3px; }
-  .telescope-results::-webkit-scrollbar-thumb { background: var(--color-nvim-bg3); }
+  .telescope-results::-webkit-scrollbar {
+    width: 3px;
+  }
+  .telescope-results::-webkit-scrollbar-thumb {
+    background: var(--color-nvim-bg3);
+  }
   .telescope-section {
     padding: 5px 14px 2px;
     font-family: var(--font-mono);
@@ -163,7 +186,9 @@ const easterEggs = [
     transition: background 0.1s;
   }
   .telescope-item:hover,
-  .telescope-item.selected { background: var(--color-nvim-bg2); }
+  .telescope-item.selected {
+    background: var(--color-nvim-bg2);
+  }
   .telescope-item.selected {
     border-left: 2px solid var(--color-nvim-yellow);
     padding-left: 12px;
@@ -187,7 +212,10 @@ const easterEggs = [
     height: 13px;
     display: block;
   }
-  .item-label { color: var(--color-nvim-fg); flex: 1; }
+  .item-label {
+    color: var(--color-nvim-fg);
+    flex: 1;
+  }
   .item-sub {
     color: var(--color-nvim-fg3);
     font-size: 11px;
@@ -198,7 +226,9 @@ const easterEggs = [
     overflow: hidden;
     text-overflow: ellipsis;
   }
-  .item-easter { color: var(--color-nvim-orange); }
+  .item-easter {
+    color: var(--color-nvim-orange);
+  }
   .item-enter {
     font-size: 10px;
     color: var(--color-nvim-fg3);
@@ -238,14 +268,31 @@ const easterEggs = [
     color: var(--color-nvim-green);
     border-top: 1px solid var(--color-nvim-bg3);
   }
-  .egg-result.error { color: var(--color-nvim-red); }
+  .egg-result.error {
+    color: var(--color-nvim-red);
+  }
 </style>
 
 <script>
-  interface PageItem { label: string; path: string; desc: string; }
-  interface PostItem { id: string; title: string; description: string; }
-  interface ProjectItem { id: string; title: string; description: string; }
-  interface EggItem { cmd: string; response: string; }
+  interface PageItem {
+    label: string;
+    path: string;
+    desc: string;
+  }
+  interface PostItem {
+    id: string;
+    title: string;
+    description: string;
+  }
+  interface ProjectItem {
+    id: string;
+    title: string;
+    description: string;
+  }
+  interface EggItem {
+    cmd: string;
+    response: string;
+  }
   interface PaletteItem {
     type: 'page' | 'post' | 'project' | 'egg';
     label: string;
@@ -275,13 +322,17 @@ const easterEggs = [
   let lastMouseY = -1;
 
   function escapeHtml(value: string) {
-    return value.replace(/[&<>"']/g, (char) => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;',
-    }[char] ?? char));
+    return value.replace(
+      /[&<>"']/g,
+      (char) =>
+        ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;',
+        })[char] ?? char,
+    );
   }
 
   function openPalette() {
@@ -343,37 +394,50 @@ const easterEggs = [
 
     const filteredPages = q
       ? pageData
-        .map((p) => ({ item: p, score: bestFuzzyScore(q, [p.label, p.desc]) }))
-        .filter(({ score }) => score >= 0)
-        .sort((a, b) => b.score - a.score)
-        .map(({ item }) => item)
+          .map((p) => ({ item: p, score: bestFuzzyScore(q, [p.label, p.desc]) }))
+          .filter(({ score }) => score >= 0)
+          .sort((a, b) => b.score - a.score)
+          .map(({ item }) => item)
       : pageData;
     const filteredPosts = q
       ? postData
-        .map((p) => ({ item: p, score: bestFuzzyScore(q, [p.title, p.description, p.id]) }))
-        .filter(({ score }) => score >= 0)
-        .sort((a, b) => b.score - a.score)
-        .map(({ item }) => item)
+          .map((p) => ({ item: p, score: bestFuzzyScore(q, [p.title, p.description, p.id]) }))
+          .filter(({ score }) => score >= 0)
+          .sort((a, b) => b.score - a.score)
+          .map(({ item }) => item)
       : postData;
     const filteredProjects = q
       ? projectData
-        .map((project) => ({ item: project, score: bestFuzzyScore(q, [project.title, project.description, `projects/${project.id}.mdx`]) }))
-        .filter(({ score }) => score >= 0)
-        .sort((a, b) => b.score - a.score)
-        .map(({ item }) => item)
+          .map((project) => ({
+            item: project,
+            score: bestFuzzyScore(q, [project.title, project.description, `projects/${project.id}.mdx`]),
+          }))
+          .filter(({ score }) => score >= 0)
+          .sort((a, b) => b.score - a.score)
+          .map(({ item }) => item)
       : projectData;
     const filteredEggs = q
       ? eggData
-        .map((e) => ({ item: e, score: fuzzyScore(q, e.cmd) }))
-        .filter(({ score }) => score >= 0)
-        .sort((a, b) => b.score - a.score)
-        .map(({ item }) => item)
+          .map((e) => ({ item: e, score: fuzzyScore(q, e.cmd) }))
+          .filter(({ score }) => score >= 0)
+          .sort((a, b) => b.score - a.score)
+          .map(({ item }) => item)
       : eggData;
 
     currentItems = [
       ...filteredPages.map((p) => ({ type: 'page' as const, label: p.label, sub: p.desc, path: p.path })),
-      ...filteredPosts.map((p) => ({ type: 'post' as const, label: p.title, sub: `blog/${p.id}`, path: `/blog/${p.id}` })),
-      ...filteredProjects.map((project) => ({ type: 'project' as const, label: project.title, sub: `projects/${project.id}.mdx`, path: `/projects/${project.id}` })),
+      ...filteredPosts.map((p) => ({
+        type: 'post' as const,
+        label: p.title,
+        sub: `blog/${p.id}`,
+        path: `/blog/${p.id}`,
+      })),
+      ...filteredProjects.map((project) => ({
+        type: 'project' as const,
+        label: project.title,
+        sub: `projects/${project.id}.mdx`,
+        path: `/projects/${project.id}`,
+      })),
       ...filteredEggs.map((e) => ({ type: 'egg' as const, label: e.cmd, sub: 'easter egg', response: e.response })),
     ];
 

@@ -42,9 +42,17 @@ const { cert } = Astro.props;
         rel="noopener noreferrer"
         class="inline-flex items-center gap-1.5 text-xs font-mono text-nvim-blue hover:text-nvim-aqua transition-colors duration-200"
       >
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+          <polyline points="14 2 14 8 20 8" />
         </svg>
         View Certificate
       </a>
@@ -52,7 +60,9 @@ const { cert } = Astro.props;
       <details class="group border border-border-subtle bg-bg-secondary/40">
         <summary class="cursor-pointer list-none px-3 py-2 text-xs font-mono text-text-secondary hover:text-text-primary transition-colors duration-200">
           <span class="inline-flex items-center gap-1.5">
-            <span aria-hidden="true" class="text-text-muted transition-transform duration-200 group-open:rotate-90">›</span>
+            <span aria-hidden="true" class="text-text-muted transition-transform duration-200 group-open:rotate-90">
+              ›
+            </span>
             Show PDF
           </span>
         </summary>

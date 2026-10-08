@@ -8,6 +8,7 @@ Personal portfolio site for Anirudh Konidala. Built with Astro, Tailwind CSS v4,
 bun run dev       # dev server at localhost:4321
 bun run build     # production build to ./dist/
 bun run preview   # preview production build
+bun run format    # prettier --write . (format:check in CI)
 
 nix develop       # dev shell with bun (flake.nix); .envrc (`use flake`) loads it via direnv
 nix run           # bun install --frozen-lockfile + bun run dev; also .#build, .#preview
@@ -86,6 +87,9 @@ New routes need an entry in the `buffers` list in `src/components/NvimChrome.ast
 
 ### Animations
 All `[data-animate]` elements are animated on page load via GSAP in `Layout.astro` — staggered fade+slide-in (`opacity: 0 → 1`, `y: 40 → 0`, `scale: 0.98 → 1`). Do not add scroll-triggered animations; page-entry only.
+
+### Formatting and CI
+Prettier (`.prettierrc.json`, with `prettier-plugin-astro`): 2-space indent, single quotes, 120 columns. `src/content/` and Markdown files are ignored so prose stays as written. Nix files use alejandra. CI on Codeberg (`.forgejo/workflows/ci.yml`) fails on unformatted code, `astro check` errors or a broken build; run `bun run format` and `bun run check` before pushing.
 
 ### Styling
 Tailwind CSS v4. Design tokens (colors, spacing) are defined as CSS variables in `global.css`. Use semantic token names like `text-text-primary`, `bg-bg-card`, `border-border-default`, `text-accent`.

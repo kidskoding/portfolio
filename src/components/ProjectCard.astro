@@ -22,7 +22,13 @@ const extra = stack.length - shownStack.length;
   data-animate
 >
   {cover && (
-    <Image src={cover} alt="" widths={[480, 960]} sizes="(min-width: 640px) 50vw, 100vw" class="aspect-video w-full object-cover" />
+    <Image
+      src={cover}
+      alt=""
+      widths={[480, 960]}
+      sizes="(min-width: 640px) 50vw, 100vw"
+      class="aspect-video w-full object-cover"
+    />
   )}
 
   <div class="flex min-w-0 flex-1 flex-col gap-2 p-5">
@@ -43,17 +49,32 @@ const extra = stack.length - shownStack.length;
           {language}
         </span>
       )}
-      {shownStack.map((tag) => <span class="border border-border-subtle bg-bg-secondary px-2 py-0.5 font-mono text-xs text-nvim-yellow">{tag}</span>)}
-      {extra > 0 && <span class="border border-border-subtle bg-bg-secondary px-2 py-0.5 font-mono text-xs text-nvim-yellow">+{extra}</span>}
+      {shownStack.map((tag) => (
+        <span class="border border-border-subtle bg-bg-secondary px-2 py-0.5 font-mono text-xs text-nvim-yellow">
+          {tag}
+        </span>
+      ))}
+      {extra > 0 && (
+        <span class="border border-border-subtle bg-bg-secondary px-2 py-0.5 font-mono text-xs text-nvim-yellow">
+          +{extra}
+        </span>
+      )}
     </div>
   </div>
 </a>
 
 <style>
-  .project-tile { outline: 1px solid transparent; outline-offset: -1px; }
-  .project-tile[hidden] { display: none; }
+  .project-tile {
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+  }
+  .project-tile[hidden] {
+    display: none;
+  }
   .project-tile.tile-cursor,
-  .project-tile:focus-visible { outline-color: var(--color-nvim-yellow); }
+  .project-tile:focus-visible {
+    outline-color: var(--color-nvim-yellow);
+  }
 </style>
 
 <script>

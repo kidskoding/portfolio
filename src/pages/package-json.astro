@@ -1,5 +1,5 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from '../layouts/Layout.astro';
 
 const k = (s: string) => `<span class="j-key">"${s}"</span>`;
 const s = (s: string) => `<span class="j-str">"${s}"</span>`;
@@ -57,7 +57,13 @@ const content = [
     white-space: pre;
   }
 
-  :global(.j-key)   { color: var(--color-nvim-blue); }
-  :global(.j-str)   { color: var(--color-nvim-green); }
-  :global(.j-punct) { color: var(--color-nvim-fg2); }
+  :global(.j-key) {
+    color: var(--color-nvim-blue);
+  }
+  :global(.j-str) {
+    color: var(--color-nvim-green);
+  }
+  :global(.j-punct) {
+    color: var(--color-nvim-fg2);
+  }
 </style>

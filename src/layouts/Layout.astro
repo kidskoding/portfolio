@@ -9,16 +9,16 @@ interface Props {
   title?: string;
 }
 
-const { title = "Portfolio" } = Astro.props;
+const { title = 'Portfolio' } = Astro.props;
 const currentPath = Astro.url.pathname;
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-).map((p) => ({
-  id: p.id,
-  title: p.data.title,
-  description: p.data.description ?? '',
-}));
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map((p) => ({
+    id: p.id,
+    title: p.data.title,
+    description: p.data.description ?? '',
+  }));
 const projects = (await getCollection('projects', ({ data }) => !data.draft))
   .sort((a, b) => a.id.localeCompare(b.id))
   .map((project) => ({
@@ -30,67 +30,68 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
 
 <!doctype html>
 <html lang="en" style="background:#282828">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
-        <meta name="generator" content={Astro.generator} />
-        <title>{title}</title>
-        <ClientRouter />
-    </head>
-    <body class="bg-bg-primary text-text-primary font-sans min-h-screen antialiased overflow-x-hidden">
-        <div class="orb orb-1" aria-hidden="true"></div>
-        <div class="orb orb-2" aria-hidden="true"></div>
-        <div class="orb orb-3" aria-hidden="true"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body class="bg-bg-primary text-text-primary font-sans min-h-screen antialiased overflow-x-hidden">
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+    <div class="orb orb-3" aria-hidden="true"></div>
 
-        <NvimChrome currentPath={currentPath}>
-            <slot />
-        </NvimChrome>
+    <NvimChrome currentPath={currentPath}>
+      <slot />
+    </NvimChrome>
 
-        <Telescope posts={posts} projects={projects} />
+    <Telescope posts={posts} projects={projects} />
 
-        <script>
-            import { gsap } from 'gsap';
+    <script>
+      import { gsap } from 'gsap';
 
-            function initAnimations() {
-                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                    document.querySelectorAll('[data-animate]').forEach((el) => {
-                        (el as HTMLElement).style.opacity = '1';
-                        (el as HTMLElement).style.transform = 'none';
-                    });
-                    return;
-                }
+      function initAnimations() {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.querySelectorAll('[data-animate]').forEach((el) => {
+            (el as HTMLElement).style.opacity = '1';
+            (el as HTMLElement).style.transform = 'none';
+          });
+          return;
+        }
 
-                const main = document.getElementById('main-content');
-                const elements = main
-                    ? main.querySelectorAll('[data-animate]')
-                    : document.querySelectorAll('[data-animate]');
+        const main = document.getElementById('main-content');
+        const elements = main ? main.querySelectorAll('[data-animate]') : document.querySelectorAll('[data-animate]');
 
-                gsap.killTweensOf(Array.from(elements));
+        gsap.killTweensOf(Array.from(elements));
 
-                elements.forEach((el, index) => {
-                    gsap.fromTo(
-                        el,
-                        { opacity: 0, y: 40, scale: 0.98 },
-                        {
-                            opacity: 1,
-                            y: 0,
-                            scale: 1,
-                            duration: 0.6,
-                            delay: Math.min(index * 0.06, 0.5),
-                            ease: 'power3.out',
-                        }
-                    );
-                });
-            }
+        elements.forEach((el, index) => {
+          gsap.fromTo(
+            el,
+            { opacity: 0, y: 40, scale: 0.98 },
+            {
+              opacity: 1,
+              y: 0,
+              scale: 1,
+              duration: 0.6,
+              delay: Math.min(index * 0.06, 0.5),
+              ease: 'power3.out',
+            },
+          );
+        });
+      }
 
-            initAnimations();
-            // Run after the View Transition update callback finishes (not `astro:after-swap`),
-            // so GSAP does not mutate the DOM during `startViewTransition` — avoids InvalidStateError.
-            document.addEventListener('astro:page-load', initAnimations);
-        </script>
-    </body>
+      initAnimations();
+      // Run after the View Transition update callback finishes (not `astro:after-swap`),
+      // so GSAP does not mutate the DOM during `startViewTransition` — avoids InvalidStateError.
+      document.addEventListener('astro:page-load', initAnimations);
+    </script>
+  </body>
 </html>

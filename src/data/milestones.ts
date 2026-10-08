@@ -77,11 +77,11 @@ export const milestones: Milestone[] = [
 ];
 
 export const commitTypeColor: Record<string, string> = {
-  'feat(career)':     'var(--color-nvim-orange)',
+  'feat(career)': 'var(--color-nvim-orange)',
   'feat(fellowship)': 'var(--color-nvim-red)',
-  'feat(clubs)':      'var(--color-nvim-aqua)',
+  'feat(clubs)': 'var(--color-nvim-aqua)',
   'feat(ambassador)': 'var(--color-nvim-blue)',
-  'feat(oss)':        'var(--color-nvim-purple)',
-  'feat(startup)':    'var(--color-nvim-green)',
-  'chore(edu)':       'var(--color-nvim-fg3)',
+  'feat(oss)': 'var(--color-nvim-purple)',
+  'feat(startup)': 'var(--color-nvim-green)',
+  'chore(edu)': 'var(--color-nvim-fg3)',
 };

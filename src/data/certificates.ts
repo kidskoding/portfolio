@@ -25,8 +25,8 @@ const certificatePdfMap = (() => {
 
     return Object.fromEntries(
       Object.entries(parsed).filter(
-        ([id, path]) => typeof id === 'string' && typeof path === 'string' && path.trim().length > 0
-      )
+        ([id, path]) => typeof id === 'string' && typeof path === 'string' && path.trim().length > 0,
+      ),
     );
   } catch {
     return {} as Record<string, string>;
