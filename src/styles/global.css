@@ -26,6 +26,12 @@
   font-style: italic;
   font-display: swap;
 }
+/* Icons only, from the Propo variant: full-size glyphs whose advance matches their width (non-Mono overflows into the next character) */
+@font-face {
+  font-family: 'Terminess Nerd Font Icons';
+  src: url('/fonts/terminess-nerd-icons.woff2') format('woff2');
+  font-display: block;
+}
 @font-face {
   font-family: 'Terminess Nerd Font Mono';
   src: url('/fonts/terminess-nerd-mono-BoldItalic.woff2') format('woff2');
@@ -95,6 +101,10 @@
   --color-nvim-green: #b8bb26;
   --color-nvim-purple: #d3869b;
   --color-nvim-red: #fb4934;
+  /* nvim-web-devicons defaults; fixed like brand colors, not gruvboxed */
+  --color-devicon-astro: #e23f67;
+  --color-devicon-mdx: #519aba;
+  --color-devicon-package-json: #e8274b;
 }
 
 html {

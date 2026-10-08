@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { devicons } from '../data/devicons';
 
 interface Props {
   currentPath: string;
@@ -65,13 +66,6 @@ const pinIcon = `
     <path fill="currentColor" d="M9.5 1.5 14.5 6.5l-1.4 1.4-.7-.7L9.6 10l.4 3-1.4 1.4L5.5 11.3 2 14.8l-.8-.8 3.5-3.5L1.6 7.4 3 6l3 .4 2.8-2.8-.7-.7z"/>
   </svg>
 `;
-
-const astroIcon = `
-  <svg viewBox="0 0 85 107" aria-hidden="true" focusable="false">
-    <path fill="currentColor" d="M27.59 91.14c-4.83-4.42-6.25-13.7-4.23-20.43 3.49 4.25 8.33 5.6 13.35 6.36 7.74 1.18 15.34.74 22.53-2.78.82-.4 1.58-.93 2.48-1.47.67 1.96.85 3.94.61 5.96-.57 4.9-3.02 8.69-6.91 11.58-1.56 1.15-3.2 2.18-4.81 3.27-4.93 3.34-6.27 7.26-4.41 12.92.04.14.08.28.18.62-2.52-1.13-4.36-2.78-5.76-4.95-1.48-2.29-2.18-4.83-2.22-7.55-.02-1.33-.02-2.66-.2-3.97-.44-3.19-1.95-4.61-4.79-4.69-2.91-.08-5.21 1.75-5.82 5.15Z"/>
-    <path fill="currentColor" d="M0 69.67s14.33-6.97 28.71-6.97L39.55 29.23c.41-1.63 1.6-2.73 2.94-2.73 1.35 0 2.54 1.1 2.95 2.73L56.27 62.7c17.03 0 28.71 6.97 28.71 6.97S60.64 3.39 60.59 3.25C59.89 1.3 58.71 0 57.11 0H27.88c-1.6 0-2.74 1.3-3.49 3.25C24.34 3.39 0 69.67 0 69.67Z"/>
-  </svg>
-`;
 ---
 
 <div class="nvim-shell">
@@ -104,7 +98,7 @@ const astroIcon = `
           href="/package-json"
           class:list={['tree-file tree-indent-1', { 'tree-active': currentPath === '/package-json' }]}
         >
-          <span class="tree-icon icon-json">JSON</span>
+          <span class="tree-icon icon-json">{devicons.json}</span>
           <span>package.json</span>
         </a>
         <div class="tree-folder tree-indent-1">
@@ -116,9 +110,7 @@ const astroIcon = `
         <div>
           {treeFiles.map((buf) => (
             <a href={buf.path} class:list={['tree-file tree-indent-2', { 'tree-active': currentPath === buf.path }]}>
-              <span class:list={['tree-icon', buf.icon === 'mdx' ? 'icon-mdx' : 'icon-astro']}>
-                {buf.icon === 'astro' ? <Fragment set:html={astroIcon} /> : 'MDX'}
-              </span>
+              <span class:list={['tree-icon', `icon-${buf.icon}`]}>{devicons[buf.icon as TabIcon]}</span>
               <span>{buf.file}</span>
             </a>
           ))}
@@ -134,7 +126,7 @@ const astroIcon = `
                 href={`/blog/${post.id}`}
                 class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/blog/${post.id}` }]}
               >
-                <span class="tree-icon icon-mdx">MDX</span>
+                <span class="tree-icon icon-mdx">{devicons.mdx}</span>
                 <span>{post.id}.mdx</span>
               </a>
             ))}
@@ -151,7 +143,7 @@ const astroIcon = `
                 href={`/projects/${project.id}`}
                 class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/projects/${project.id}` }]}
               >
-                <span class="tree-icon icon-mdx">MDX</span>
+                <span class="tree-icon icon-mdx">{devicons.mdx}</span>
                 <span>{project.id}.mdx</span>
               </a>
             ))}
@@ -186,9 +178,7 @@ const astroIcon = `
           >
             <a href={tab.path} class="buf-link">
               {tab.pinned && <span class="buf-pin" set:html={pinIcon} />}
-              <span class:list={['buf-icon', `icon-${tab.icon}`]}>
-                {tab.icon === 'astro' ? <Fragment set:html={astroIcon} /> : tab.icon.toUpperCase()}
-              </span>
+              <span class:list={['buf-icon', `icon-${tab.icon}`]}>{devicons[tab.icon]}</span>
               <span>{tab.file}</span>
             </a>
             {!tab.pinned && (
@@ -232,10 +222,8 @@ const astroIcon = `
     <div class="sl-x sl-enc">utf-8</div>
     <div class="sl-x-div"></div>
     <div class:list={['sl-x sl-filetype', `ft-${activeIcon}`]}>
-      {activeIcon === 'mdx' && <span class="sl-ft-icon icon-mdx">MDX</span>}
-      {activeIcon === 'json' && <span class="sl-ft-icon icon-json">JSON</span>}
-      {activeIcon === 'astro' && <span class="sl-ft-icon icon-astro" set:html={astroIcon} />}
-      <span>{activeIcon === 'mdx' ? 'MDX' : activeIcon === 'json' ? 'JSON' : 'Astro'}</span>
+      <span class:list={['sl-ft-icon', `icon-${activeIcon}`]}>{devicons[activeIcon]}</span>
+      <span>{activeIcon}</span>
     </div>
     <div class="sl-x-div"></div>
     <div class="sl-x sl-pct" id="sl-pct">
@@ -551,24 +539,24 @@ const astroIcon = `
 
   .buf-icon,
   .tree-icon {
-    font-size: 9px;
-    font-weight: 700;
-    width: 18px;
+    font-family: 'Terminess Nerd Font Icons', var(--font-mono);
+    font-size: 16px;
+    font-weight: 400;
+    width: 22px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
   .icon-astro {
-    color: var(--color-nvim-orange);
-  }
-  .icon-astro :global(svg) {
-    width: 13px;
-    height: 13px;
-    display: block;
+    color: var(--color-devicon-astro);
   }
   .icon-mdx {
-    color: var(--color-nvim-purple);
+    color: var(--color-devicon-mdx);
+  }
+  /* package.json is the only JSON buffer; devicons colors it by filename */
+  .icon-json {
+    color: var(--color-devicon-package-json);
   }
 
   .nvim-editor-wrap {
@@ -679,34 +667,26 @@ const astroIcon = `
     gap: 5px;
   }
   .sl-ft-icon {
-    font-size: 9px;
-    font-weight: 700;
-    width: 13px;
+    font-size: 16px;
+    font-family: 'Terminess Nerd Font Icons', var(--font-mono);
+    font-weight: 400;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
   .sl-ft-icon.icon-astro {
-    color: var(--color-nvim-orange);
-  }
-  :global(.sl-ft-icon.icon-astro svg) {
-    width: 11px;
-    height: 11px;
-    display: block;
+    color: var(--color-devicon-astro);
   }
   .sl-ft-icon.icon-mdx {
-    color: var(--color-nvim-purple);
+    color: var(--color-devicon-mdx);
   }
   .sl-ft-icon.icon-json {
-    color: var(--color-nvim-yellow);
+    color: var(--color-devicon-package-json);
     width: auto;
   }
   .sl-ft-icon.icon-mdx {
     width: auto;
-  }
-  .icon-json {
-    color: var(--color-nvim-yellow);
   }
   .sl-x-div {
     width: 1px;
