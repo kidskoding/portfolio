@@ -61,6 +61,7 @@ src/
     └── global.css
 
 flake.nix             # Nix dev shell + `nix run` apps wrapping bun scripts
+.forgejo/workflows/ci.yml # Codeberg Forgejo Actions: format, alejandra, astro check, build; master then deploys to Vercel via the Vercel CLI
 vendor/gruvbox/       # morhetz/gruvbox git subtree, reference for palette + highlight roles (not built)
 ```
 
