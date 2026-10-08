@@ -89,8 +89,9 @@ const easterEggs = [
     inset: 0;
     z-index: 9000;
     display: flex;
+    align-items: center;
     justify-content: center;
-    padding-top: 80px;
+    padding: 16px;
     pointer-events: none;
     opacity: 0;
     transition: opacity 0.15s ease;
@@ -108,9 +109,11 @@ const easterEggs = [
     position: relative;
     background: var(--color-nvim-bg1);
     border: 1px solid var(--color-nvim-bg3);
-    width: 580px;
+    /* Telescope floats at a large share of the editor; capped so one result list doesn't look empty */
+    width: min(70vw, 820px);
     max-width: calc(100vw - 32px);
-    max-height: 420px;
+    height: min(65vh, 600px);
+    max-height: calc(100vh - 32px);
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
