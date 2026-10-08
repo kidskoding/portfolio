@@ -112,6 +112,12 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (min-width: 1536px) {
+  #main-content {
+    --container-3xl: 64rem;
+  }
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
