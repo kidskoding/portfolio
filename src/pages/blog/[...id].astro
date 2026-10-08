@@ -12,7 +12,12 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogLayout title={post.data.title} description={post.data.description}>
+<BlogLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.coverImage}
+  publishedTime={post.data.pubDate}
+>
   <article class="rounded-xl border border-border-subtle bg-bg-card overflow-hidden">
     {post.data.coverImage && (
       <div class="w-full aspect-[1000/420] bg-bg-secondary">
