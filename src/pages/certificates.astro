@@ -31,8 +31,12 @@ const certItems = certificates.reduce((items, cert) => {
   return items;
 }, [] as CertificateItem[]);
 
-const groupedCertItems = certItems.filter((item): item is Extract<CertificateItem, { type: 'group' }> => item.type === 'group');
-const singleCertItems = certItems.filter((item): item is Extract<CertificateItem, { type: 'cert' }> => item.type === 'cert');
+const groupedCertItems = certItems.filter(
+  (item): item is Extract<CertificateItem, { type: 'group' }> => item.type === 'group',
+);
+const singleCertItems = certItems.filter(
+  (item): item is Extract<CertificateItem, { type: 'cert' }> => item.type === 'cert',
+);
 ---
 
 <Layout title="Certifications">
@@ -47,7 +51,9 @@ const singleCertItems = certItems.filter((item): item is Extract<CertificateItem
       {groupedCertItems.map((item) => (
         <details class="cert-folder border border-border-subtle bg-bg-card" open>
           <summary class="cert-folder-summary" data-vim-item>
-            <span class="cert-folder-caret" aria-hidden="true">›</span>
+            <span class="cert-folder-caret" aria-hidden="true">
+              ›
+            </span>
             <span class="cert-folder-logo">
               <IssuerLogo issuer={item.issuer} logo={item.issuerLogo} />
             </span>

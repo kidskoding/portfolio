@@ -5,22 +5,27 @@ import anirudhProfileImg from '../assets/anirudh.jpeg';
 ---
 
 <Layout title="Anirudh Konidala">
-    <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
-        <div class="rounded-none border border-border-subtle bg-bg-card p-6 flex flex-col sm:flex-row items-center gap-6" data-animate>
-            <img
-                src={anirudhProfileImg.src}
-                alt="Anirudh Konidala"
-                class="w-28 h-28 rounded-none object-cover ring-2 ring-accent/20 shrink-0"
-            />
-            <div class="text-center sm:text-left">
-                <h1 class="text-2xl font-bold text-text-primary tracking-tight font-mono">Anirudh Konidala</h1>
-                <p class="text-text-secondary mt-2 font-mono text-sm">building ai agents</p>
-                <p class="text-text-secondary mt-1 font-mono text-xs">cs + education - learning sciences and learning technology @ uiuc</p>
-            </div>
-        </div>
+  <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
+    <div
+      class="rounded-none border border-border-subtle bg-bg-card p-6 flex flex-col sm:flex-row items-center gap-6"
+      data-animate
+    >
+      <img
+        src={anirudhProfileImg.src}
+        alt="Anirudh Konidala"
+        class="w-28 h-28 rounded-none object-cover ring-2 ring-accent/20 shrink-0"
+      />
+      <div class="text-center sm:text-left">
+        <h1 class="text-2xl font-bold text-text-primary tracking-tight font-mono">Anirudh Konidala</h1>
+        <p class="text-text-secondary mt-2 font-mono text-sm">building ai agents</p>
+        <p class="text-text-secondary mt-1 font-mono text-xs">
+          cs + education - learning sciences and learning technology @ uiuc
+        </p>
+      </div>
+    </div>
 
-        <div class="mt-6 border border-border-subtle bg-bg-card p-6" data-animate>
-            <GitLog />
-        </div>
-    </main>
+    <div class="mt-6 border border-border-subtle bg-bg-card p-6" data-animate>
+      <GitLog />
+    </div>
+  </main>
 </Layout>

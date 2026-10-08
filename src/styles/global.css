@@ -1,11 +1,11 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* keyboard cursor (hjkl) gets the exact same styling as mouse hover */
 @custom-variant hover (&:hover, &.vim-cursor);
 
 @theme {
-  --font-sans: "Google Sans Code", ui-monospace, monospace;
-  --font-mono: "Google Sans Code", ui-monospace, monospace;
+  --font-sans: 'Google Sans Code', ui-monospace, monospace;
+  --font-mono: 'Google Sans Code', ui-monospace, monospace;
 
   /* Gruvbox Dark */
   --color-bg-primary: #282828;
@@ -87,7 +87,7 @@ html {
 
 /* Noise/grain texture overlay */
 body::before {
-  content: "";
+  content: '';
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -117,19 +117,18 @@ body::before {
 }
 
 .glow-card::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(250, 189, 47, 0.15),
-    rgba(254, 128, 25, 0.06),
-    transparent 50%
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  background: linear-gradient(135deg, rgba(250, 189, 47, 0.15), rgba(254, 128, 25, 0.06), transparent 50%);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
@@ -138,16 +137,11 @@ body::before {
 
 .glow-card:hover::before,
 .glow-card.vim-cursor::before {
-  background: linear-gradient(
-    135deg,
-    rgba(250, 189, 47, 0.4),
-    rgba(254, 128, 25, 0.15),
-    transparent 70%
-  );
+  background: linear-gradient(135deg, rgba(250, 189, 47, 0.4), rgba(254, 128, 25, 0.15), transparent 70%);
 }
 
 .glow-card::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -168,15 +162,29 @@ body::before {
 
 /* Floating gradient orbs */
 @keyframes float-orb {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -30px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -30px) scale(1.05);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.95);
+  }
 }
 
 @keyframes float-orb-reverse {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-25px, 25px) scale(0.95); }
-  66% { transform: translate(15px, -35px) scale(1.05); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(-25px, 25px) scale(0.95);
+  }
+  66% {
+    transform: translate(15px, -35px) scale(1.05);
+  }
 }
 
 .orb {
@@ -216,8 +224,13 @@ body::before {
 
 /* Timeline dot pulse */
 @keyframes pulse-dot {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(250, 189, 47, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(250, 189, 47, 0); }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(250, 189, 47, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(250, 189, 47, 0);
+  }
 }
 
 .timeline-dot {
@@ -242,8 +255,14 @@ body::before {
 
 /* CSS-only load animation (no JS required) */
 @keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-on-load {
@@ -266,8 +285,12 @@ body::before {
     scroll-behavior: auto;
   }
 
-  .orb { animation: none; }
-  .timeline-dot { animation: none; }
+  .orb {
+    animation: none;
+  }
+  .timeline-dot {
+    animation: none;
+  }
 }
 
 /* Sidebar: off-canvas on small viewports, fixed column on lg+ */
@@ -291,11 +314,11 @@ body::before {
   }
 }
 
-.blog-content p[align="center"] {
+.blog-content p[align='center'] {
   text-align: center;
 }
 
-.blog-content p[align="center"] img {
+.blog-content p[align='center'] img {
   display: inline-block;
   margin: 0.25rem 0;
 }
