@@ -1,0 +1,304 @@
+---
+title: "One Month Into My Internship with Brunswick: Relearning What I Already Know"
+description: "Tools I thought I knew, until I used them somewhere new"
+pubDate: 2026-10-03
+draft: false
+coverImage: "/blog/learn-it-again-cover.jpg"
+titleLink:
+  text: "Brunswick"
+  href: "https://www.brunswick.com/our-company/bi-designlab"
+---
+
+---
+
+As I wrapped up my summer 2026 internship with T-Mobile, I received a last minute offer to join [**Brunswick's Boating Intelligence Design Lab**](https://www.brunswick.com/our-company/bi-designlab) as a Software Development Engineering Intern via [University of Illinois Urbana-Champaign's Research Park](https://researchpark.illinois.edu/) for fall 2026.
+
+It was really difficult to say no to an opportunity that would provide me the chance to keep building real software during the school semester, alongside my classes.
+
+I'm now one month in, and I'm loving it!
+
+The biggest thing this experience has taught me so far is that:
+
+> It's okay to learn something again, even if you've used it before.
+
+---
+
+## A familiar tool that felt new again
+
+One of the full-stack apps I worked on involved using an **ORM** (object-relational mapper): a library for writing database queries in code instead of writing raw SQL.
+
+My manager's request was simple: let's use [Drizzle ORM](https://orm.drizzle.team) for the database layer.
+
+That made sense for a TypeScript app, and I'd used Drizzle before, so I figured that part was covered. The challenge wasn't using Drizzle, but rather making Drizzle fit alongside [Effect](https://effect.website).
+
+And suddenly I wasn't sure if I actually knew Drizzle to its fullest.
+
+It wasn't because the queries got any harder, since the queries themselves were fine: `select`, `from`, `where` being the same API I'd used before. **What changed was everything around the query:**
+  - Where should the database actually live?
+  - What should the rest of the application know about Drizzle?
+  - When a query fails, what does that failure look like to the code that called it?
+  - How do I swap the database out in a test?
+  - Where does infrastructure stop and the application begin?
+
+None of those are really Drizzle questions, but I couldn't answer them without understanding Drizzle better than I already did.
+
+> That's when I realized that using a library teaches you its API. Integrating it with something unfamiliar teaches you its model.
+
+---
+
+## The checklist in my head
+
+I think a lot of developers keep a mental checklist like this:
+
+<div class="my-4 grid w-fit grid-cols-[auto_auto] gap-x-8 gap-y-1 rounded-md bg-nvim-bg-hard px-4 py-3 font-mono text-sm text-text-primary">
+  <span>Nix</span><span class="text-nvim-green">✓ learned</span>
+  <span>Drizzle</span><span class="text-nvim-green">✓ learned</span>
+  <span>TypeScript</span><span class="text-nvim-green">✓ learned</span>
+  <span>Effect</span><span class="text-nvim-red">✗ not learned</span>
+</div>
+
+Once something gets a checkmark, it stops being interesting. At the end of the day, you already know it right? So why not move on to the next thing?
+
+My first month at [Brunswick](https://www.brunswick.com/our-company/bi-designlab) has been a slow argument against such checklist. Three times, in three different parts of the stack, I picked up something I thought I already knew, **put it under a constraint I hadn't worked with before**, and found out how much of my "knowing" was really just assumptions I'd never had to look at.
+
+The pattern started small, with one line of code at a time.
+
+---
+
+## The import that was hiding everything
+
+Here is roughly how I'd have written a database call in the past:
+
+```ts
+import { db } from "./db"
+
+export async function findUser(id: string) {
+  return db.select().from(users).where(eq(users.id, id))
+}
+```
+
+<br />
+
+There's nothing wrong with this code snippet, and it does indeed work.
+
+But notice how the first line quietly assumes that there is exactly one database, that it was created when this module was imported, and that it's always available. This means that anyone reading `findUser` from the outside can't tell any of that, because the signature only says it returns a `Promise`.
+
+The type doesn't tell you how it can fail, and it doesn't tell you what it needs.
+
+Effect is different because it makes you spell those things out. Its core type is `Effect<Success, Error, Requirements>`: a thorough description of a computation that produces a value, can fail in specific ways, and needs specific things to run.
+
+So instead of `doSomething() → value`, every operation answers three questions:
+
+```text
+1. What can this return?
+2. How can this fail?
+3. What does it require?
+```
+
+<br />
+
+Here's a simplified version of the same function written that way via **Effect**:
+
+```ts
+// How can this fail?: A named error, not a bare rejected promise
+class DatabaseError extends Data.TaggedError("DatabaseError")<{ cause: unknown }> {}
+
+// What does it require?: A Database service, provided by the caller
+class Database extends Context.Tag("Database")<Database, DrizzleClient>() {}
+
+const findUser = (id: string) =>
+  Effect.gen(function* () {
+	// ask for the database instead of importing it
+    const db = yield* Database
+
+    return yield* Effect.tryPromise({
+      // same Drizzle query as the previous example!
+      try: () => db.select().from(users).where(eq(users.id, id)),
+      catch: (cause) => new DatabaseError({ cause }),
+    })
+  })
+
+// Effect.Effect<User[], DatabaseError, Database>
+//               │       │              │
+//               │       │              └─ what does it require?
+//               │       └─ how can this fail?
+//               └─ what can this return?
+```
+
+<br />
+
+The Drizzle part is identical, with the same query and the same builder. What changed is that **the database stopped being something the function grabs from a module and became something it asks for**. The failure stopped being a rejected promise somebody might remember to catch, and became a named error in the type. And because `Database` is a requirement rather than an import, a test can hand it a different implementation with `Effect.provideService` and never touch a real database.
+
+```text
+BEFORE                              AFTER
+
+findUser                            findUser
+   │                                   │  requires: Database
+   │  import { db }                    │  fails with: DatabaseError
+   ▼                                   ▼
+ Drizzle (global)                   Database service
+   │                                   │  provided by a Layer
+   ▼                                   ▼
+Database                             Drizzle → Database
+```
+
+<br />
+
+That's when Drizzle started to look different to me. Before, it was the thing I talked to the database through. Now it was an implementation detail sitting behind a service boundary, and I had to decide what that boundary promised: which errors cross it, who creates the client, who closes the connection when the program shuts down. Effect has answers for those (layers, scoped resources), but it doesn't let you skip the question.
+
+> The database query wasn't difficult. Figuring out where that query belonged was the interesting part.
+
+---
+
+## The README describes. The flake defines.
+
+I already liked **Nix** before this job. My personal machine runs **NixOS**, and this site has a `flake.nix`. I could have told you all the reasons Nix is nice: declarative configuration, pinned dependencies, isolated packages, environments as code.
+
+What I hadn't really felt was why any of that matters to anyone besides me.
+
+Using Nix on a project that other developers also have to run changed that, because **"it works on my machine" is almost never about the code**; it's about everything the code silently depends on:
+
+```text
+your app
+├── Node version
+├── package manager (and its version)
+├── CLI tools
+├── system libraries
+├── environment variables
+└── whatever happens to be on your PATH
+```
+
+<br />
+
+On most projects, that list doesn't live anywhere in particular. Part of it lives in the README, part in a setup script, part in someone's shell config, part in a Slack thread from eight months ago, and the last part is "ask the person who set it up." Each piece is an assumption about your machine that nobody wrote down in a place a computer can check.
+
+A stripped-down development shell looks something like this:
+
+```nix
+devShells.default = pkgs.mkShell {
+  packages = [
+    pkgs.nodejs
+    pkgs.pnpm
+    pkgs.git
+  ];
+};
+```
+
+<br />
+
+Next to it sits `flake.lock`, which pins the exact versions of everything that shell pulls in. Getting a working environment goes from a page of setup steps to roughly:
+
+```bash
+nix develop
+```
+
+<br />
+
+The command itself isn't really the point, though. What matters is where the environment lives now.
+
+```text
+BEFORE                               AFTER
+
+README  ──describes──►  ???          flake.nix + flake.lock
+                                              │ defines
+setup script, shell config,                   ▼
+someone's memory                     declared environment
+       │                              ┌───────┼───────┐
+       ▼                              ▼       ▼       ▼
+every machine slightly different    you    teammate   CI
+```
+
+<br />
+
+A README can describe an environment, but Nix can define one. Once the environment is in the repository, it gets the same treatment as the code: it's versioned, reviewed, and the same for everyone who checks it out.
+
+That's what made me start thinking of **reproducibility as a team feature** instead of a Linux hobbyist feature. A new developer doesn't need a guided tour of somebody's laptop. CI runs the same toolchain you ran locally, so a failure in CI means something. And coming back to a project after a few months doesn't start with an hour of archaeology to figure out which Node version it wanted. In short, fewer things have to exist only in someone's head.
+
+That said, I don't think every team needs Nix: Docker solves a lot of the same problems from a different direction, language package managers already pin a lot, and CI systems have their own ways of describing environments. Nix sits fine alongside all of them. The more useful takeaway is the question it made me ask:
+
+> Which parts of your development environment currently depend on undocumented machine state?
+
+---
+
+## A runtime that won't let you assume
+
+Most of my work right now is on Cloudflare Workers, and this is where the pattern got bigger than any one codebase.
+
+I knew what serverless meant: functions, no servers to manage, and paying per request. In my head, it already had a checkmark. What I didn't have was the mental model the runtime is built around, and it's different from the one I'd absorbed from years of traditional backends:
+
+```text
+TRADITIONAL                          WORKERS
+
+server starts                        request arrives
+     ↓                                    ↓
+app starts, opens connections        your code runs
+     ↓                                    ↓
+process stays alive                  response goes out
+     ↓
+requests arrive, share memory
+```
+
+<br />
+
+On the left, a lot comes for free without anyone deciding it should. The process lives a long time, so you can keep a connection pool in a global, cache things in memory, set something up at boot and assume it's still there. Those are assumptions too, just ones baked into the shape of the server.
+
+Workers run in lightweight isolates that Cloudflare can start and stop whenever it wants. A global variable might still be there on the next request, or it might not, and Cloudflare's own docs tell you not to rely on it. So the question you're pushed toward changes from "what server is running this?" to "what does this request need?"
+
+And the runtime makes you answer that explicitly. A Worker's entry point looks like this:
+
+```ts
+export default {
+  async fetch(request: Request, env: Env): Promise<Response> {
+    // env holds this Worker's bindings: databases, storage,
+    // other services, secrets. They're declared in config,
+    // not discovered from whatever machine this runs on.
+    return handle(request, env)
+  },
+}
+```
+
+<br />
+
+That `env` parameter is what made it click for me. **The dependencies are handed to your code, declared ahead of time, instead of reached for.** It's the same move Effect makes with its `Requirements` type, just one level down: one works inside the type system and the other is the runtime itself, but both refuse to let a dependency stay implicit.
+
+That's the part I've come to appreciate most. The constraint isn't just a restriction you work around, but something that changes how you structure things. If you can't assume a long-lived process, you end up thinking about request boundaries, about where state actually lives, about small units of computation with clear inputs. The runtime makes some bad assumptions harder to make.
+
+I can also see why this model fits a company like Brunswick. It's a large company with a lot of brands, products, and digital experiences, and it talks publicly about connected boats as part of where it's heading. That means a lot of software that sits between things: between apps and services, between one system's data and another's format. A piece of integration logic like that doesn't always deserve a full traditional service built around it. When the runtime makes small, well-bounded units cheap to deploy and easy to reason about, those boundaries become easier to justify. That's my read from a month in, at least, not a claim about how everything there is built.
+
+---
+
+## Same question, three levels up
+
+Looking back, the three tools weren't really three separate topics, but the same question asked at three levels of the stack:
+
+```text
+APPLICATION     Effect     What does this code need? How can it fail?
+     ↓
+ENVIRONMENT     Nix        What does this project need from my machine?
+     ↓
+RUNTIME         Workers    What does this request need? Where does state live?
+                    ↓
+         Make the assumptions explicit.
+```
+
+<br />
+
+Each one took something that's usually implicit, a module-level import, a machine's installed tools, a long-running process, and made it something you have to declare. That's the engineering lesson, and I think it's a good one, because a lot of what makes systems hard to work on is assumptions nobody wrote down.
+
+But there's a second lesson underneath it, and it's the one I keep coming back to. **Every time a tool forced a system's assumptions into the open, it exposed some of mine too.** I assumed I knew Drizzle, I assumed I knew why Nix mattered, and I assumed "serverless" was a complete description of Workers. None of those were exactly wrong, but they were incomplete in ways I couldn't see until something familiar ended up somewhere unfamiliar.
+
+That's what people mean, I think, when they say learning happens at the seams: not inside one tool, but where two things that each make sense on their own have to fit together.
+
+---
+
+I used to think learning mostly meant encountering something new, like a new language, a new framework, or a new tool.
+
+This month reminded me there's another kind that's just as useful, and easier to miss because it doesn't feel like learning at first.
+
+Take something familiar.
+
+Put it somewhere unfamiliar.
+
+Find the assumptions you didn't know you were making.
+
+Learn it again.
