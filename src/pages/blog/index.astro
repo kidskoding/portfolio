@@ -26,22 +26,29 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
           <a
             href={`/blog/${post.id}`}
             data-vim-item
-            class="block rounded-xl border border-border-subtle bg-bg-card p-6 transition-all hover:bg-bg-card-hover hover:border-border-accent group"
+            class="flex items-center gap-4 sm:gap-5 rounded-xl border border-border-subtle bg-bg-card p-5 transition-all hover:bg-bg-card-hover hover:border-border-accent group"
           >
-            <h2 class="text-lg font-semibold text-text-primary group-hover:text-nvim-green transition-colors">
-              {post.data.title}
-            </h2>
-            {post.data.description && <p class="text-text-secondary text-sm mt-1">{post.data.description}</p>}
-            <p class="text-text-muted text-xs mt-2 flex items-center gap-2 flex-wrap">
-              <img src={profileImg.src} alt="" class="w-5 h-5 rounded-full object-cover shrink-0" />
-              <span>Anirudh Konidala</span>
-              <span class="opacity-60" aria-hidden="true">
-                ·
-              </span>
-              <time class="text-nvim-aqua" datetime={post.data.pubDate.toISOString()}>
-                {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-              </time>
-            </p>
+            {post.data.coverImage && (
+              <div class="shrink-0 w-24 sm:w-40 aspect-[16/10] overflow-hidden rounded-lg bg-bg-secondary">
+                <img src={post.data.coverImage} alt="" class="w-full h-full object-cover" loading="lazy" />
+              </div>
+            )}
+            <div class="min-w-0">
+              <h2 class="text-lg font-semibold text-text-primary group-hover:text-nvim-green transition-colors">
+                {post.data.title}
+              </h2>
+              {post.data.description && <p class="text-text-secondary text-sm mt-1">{post.data.description}</p>}
+              <p class="text-text-muted text-xs mt-2 flex items-center gap-2 flex-wrap">
+                <img src={profileImg.src} alt="" class="w-5 h-5 rounded-full object-cover shrink-0" />
+                <span>Anirudh Konidala</span>
+                <span class="opacity-60" aria-hidden="true">
+                  ·
+                </span>
+                <time class="text-nvim-aqua" datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </time>
+              </p>
+            </div>
           </a>
         </li>
       ))}
