@@ -3,9 +3,51 @@
 /* keyboard cursor (hjkl) gets the exact same styling as mouse hover */
 @custom-variant hover (&:hover, &.vim-cursor);
 
+/* Terminess Nerd Font Mono, the author's terminal font (OFL, public/fonts/terminess-nerd-LICENSE.txt), subset to the
+   characters the site uses plus the nvim-web-devicons glyphs in src/data/devicons.ts */
+@font-face {
+  font-family: 'Terminess Nerd Font Mono';
+  src: url('/fonts/terminess-nerd-mono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Terminess Nerd Font Mono';
+  src: url('/fonts/terminess-nerd-mono-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Terminess Nerd Font Mono';
+  src: url('/fonts/terminess-nerd-mono-Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Terminess Nerd Font Mono';
+  src: url('/fonts/terminess-nerd-mono-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: 'Google Sans Code', ui-monospace, monospace;
-  --font-mono: 'Google Sans Code', ui-monospace, monospace;
+  --font-sans: 'Terminess Nerd Font Mono', ui-monospace, monospace;
+  --font-mono: 'Terminess Nerd Font Mono', ui-monospace, monospace;
+
+  /* Terminus is a pixel font: crisp only at 12/14/16/18/20/22/24/28/32px, so every step snaps to one */
+  --text-xs: 14px;
+  --text-sm: 16px;
+  --text-base: 18px;
+  --text-lg: 20px;
+  --text-xl: 22px;
+  --text-2xl: 24px;
+  --text-3xl: 28px;
+  --text-4xl: 32px;
+  --text-5xl: 48px;
 
   /* Gruvbox Dark */
   --color-bg-primary: #282828;
