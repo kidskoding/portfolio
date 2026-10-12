@@ -1,0 +1,111 @@
+---
+type Cell = { ch: string; blue: boolean };
+const cells = (row: string, blueCount: number): Cell[] => [...row].map((ch, i) => ({ ch, blue: i < blueCount }));
+const logo = [cells('│ ╲ ││', 1), cells('││╲╲││', 2), cells('││ ╲ │', 2)];
+
+const groups = [
+  [
+    { cmd: 'e README.md', desc: 'for the tl;dr' },
+    { cmd: 'e about.astro', desc: 'to meet me' },
+    { cmd: 'e experience.astro', desc: 'for my resume' },
+    { cmd: 'Telescope', desc: 'to find anything' },
+    { cmd: 'help', desc: 'for keys' },
+  ],
+  [{ cmd: 'e package.json', desc: 'to see my deps' }],
+];
+const all = groups.flat();
+const cmdWidth = Math.max(...all.map(({ cmd }) => `:${cmd}<Enter>`.length)) + 3;
+const descWidth = Math.max(...all.map(({ desc }) => desc.length));
+const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
+---
+
+<section
+  class="intro flex min-h-[70vh] flex-col items-center justify-center py-8 text-xs sm:text-base"
+  aria-label="Intro"
+>
+  <div class="mx-auto w-fit max-w-full text-center text-nvim-fg" data-animate>
+    <div aria-hidden="true">
+      {logo.map((row) => (
+        <div class="logo-row">
+          {row.map(({ ch, blue }) => (
+            <span class:list={['cell', blue ? 'text-nvim-blue1' : 'text-nvim-green']}>
+              {ch !== ' ' && (
+                <svg viewBox="0 0 1 2" preserveAspectRatio="none">
+                  {ch === '│' ? <line x1="0.5" y1="0" x2="0.5" y2="2" /> : <line x1="0" y1="0" x2="1" y2="2" />}
+                </svg>
+              )}
+            </span>
+          ))}
+        </div>
+      ))}
+      <div class="blank"></div>
+    </div>
+    <h1 class="line font-normal text-nvim-green">ANIRUDH KONIDALA</h1>
+    <div class="sep" aria-hidden="true"></div>
+    <p class="line">building ai agents</p>
+    <p class="line">cs + education - learning sciences and learning technology @ uiuc</p>
+    {groups.map((rows) => (
+      <>
+        <div class="sep" aria-hidden="true" />
+        {rows.map(({ cmd, desc }) => (
+          <button type="button" class="line intro-row" data-nvim-cmd={cmd}>
+            {'type  '}
+            <span class="text-nvim-dark3">:</span>
+            <span class="text-nvim-magenta">{cmd}</span>
+            <span class="text-nvim-dark3">&lt;Enter&gt;</span>
+            {pad(cmd) + desc.padEnd(descWidth)}
+          </button>
+        ))}
+      </>
+    ))}
+  </div>
+</section>
+
+<style>
+  .intro {
+    line-height: 2ch;
+  }
+  .line {
+    display: block;
+    white-space: pre-wrap;
+  }
+  .blank {
+    height: 2ch;
+  }
+  .logo-row {
+    display: flex;
+    justify-content: center;
+  }
+  .cell {
+    display: inline-block;
+    width: 1ch;
+    height: 2ch;
+  }
+  .cell svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+  .cell line {
+    stroke: currentColor;
+    stroke-width: 1.5px;
+    vector-effect: non-scaling-stroke;
+  }
+  .sep {
+    height: 2ch;
+    background: linear-gradient(var(--color-nvim-dark3), var(--color-nvim-dark3)) center / 100% 1px no-repeat;
+  }
+  .intro-row {
+    width: 100%;
+    font: inherit;
+    cursor: pointer;
+  }
+  .intro-row:hover {
+    background: var(--color-nvim-bg-highlight);
+  }
+  .intro-row:focus-visible {
+    outline: 1px solid var(--color-nvim-blue);
+    outline-offset: -1px;
+  }
+</style>

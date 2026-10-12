@@ -10,7 +10,7 @@ const { currentPath: rawPath } = Astro.props;
 const currentPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '');
 
 const buffers = [
-  { path: '/', file: 'index.astro', icon: 'astro', pinned: true },
+  { path: '/', file: 'index.astro', icon: 'astro' },
   { path: '/about', file: 'about.astro', icon: 'astro' },
   { path: '/experience', file: 'experience.astro', icon: 'astro', pinned: true },
   { path: '/projects', file: 'projects.astro', icon: 'astro' },
@@ -20,7 +20,7 @@ const buffers = [
   { path: '/contact', file: 'contact.astro', icon: 'astro' },
 ];
 const treeFiles = buffers;
-type TabIcon = 'astro' | 'mdx' | 'json';
+type TabIcon = 'astro' | 'mdx' | 'md' | 'json';
 interface Tab {
   path: string;
   file: string;
@@ -29,7 +29,7 @@ interface Tab {
 }
 
 let activeFile = 'index.astro';
-let activeIcon: 'astro' | 'mdx' | 'json' = 'astro';
+let activeIcon: TabIcon = 'astro';
 const blogSlug = currentPath.match(/^\/blog\/(.+)$/);
 const projectSlug = currentPath.match(/^\/projects\/(.+)$/);
 if (blogSlug) {
@@ -41,11 +41,14 @@ if (blogSlug) {
 } else if (currentPath === '/package-json') {
   activeFile = 'package.json';
   activeIcon = 'json';
+} else if (currentPath === '/readme') {
+  activeFile = 'README.md';
+  activeIcon = 'md';
 } else {
   const match = buffers.find((b) => b.path === currentPath);
   if (match) {
     activeFile = match.file;
-    activeIcon = match.icon as 'astro' | 'mdx' | 'json';
+    activeIcon = match.icon as TabIcon;
   }
 }
 
@@ -55,6 +58,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort((a, b) => a.id.localeCompare(b.id));
 
 const tabs: Tab[] = [
+  { path: '/readme', file: 'README.md', icon: 'md', pinned: true },
   ...(buffers as Tab[]),
   { path: '/package-json', file: 'package.json', icon: 'json' },
   ...posts.map((post): Tab => ({ path: `/blog/${post.id}`, file: `${post.id}.mdx`, icon: 'mdx' })),
@@ -100,6 +104,10 @@ const pinIcon = `
         >
           <span class="tree-icon icon-json">{devicons.json}</span>
           <span>package.json</span>
+        </a>
+        <a href="/readme" class:list={['tree-file tree-indent-1', { 'tree-active': currentPath === '/readme' }]}>
+          <span class="tree-icon icon-md">{devicons.md}</span>
+          <span>README.md</span>
         </a>
         <div class="tree-folder tree-indent-1">
           <span class="tree-caret" aria-hidden="true">
@@ -556,6 +564,9 @@ const pinIcon = `
   .icon-mdx {
     color: var(--color-devicon-mdx);
   }
+  .icon-md {
+    color: var(--color-devicon-md);
+  }
   /* package.json is the only JSON buffer; devicons colors it by filename */
   .icon-json {
     color: var(--color-devicon-package-json);
@@ -695,6 +706,9 @@ const pinIcon = `
   }
   .sl-ft-icon.icon-mdx {
     color: var(--color-devicon-mdx);
+  }
+  .sl-ft-icon.icon-md {
+    color: var(--color-devicon-md);
   }
   .sl-ft-icon.icon-json {
     color: var(--color-devicon-package-json);
@@ -1623,7 +1637,9 @@ const pinIcon = `
 
     document.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
-      if (target.closest('[data-vim-help]')) toggleHelp();
+      const command = target.closest<HTMLElement>('[data-nvim-cmd]')?.dataset.nvimCmd;
+      if (command) runCommand(command);
+      else if (target.closest('[data-vim-help]')) toggleHelp();
       else if (target.closest('[data-help-close]')) toggleHelp(false);
     });
     document.addEventListener('mouseover', syncCursor);

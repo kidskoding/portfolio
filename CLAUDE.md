@@ -24,6 +24,7 @@ src/
 ├── components/
 │   ├── NvimChrome.astro        # Neovim-style shell: bufferline tabs, NvimTree sidebar, winbar
 │   ├── Telescope.astro         # Fuzzy-finder overlay for pages, blog posts, and projects
+│   ├── NvimIntro.astro         # Home hero styled as Neovim's :intro splash; rows run commands via data-nvim-cmd
 │   ├── GitLog.astro            # Career milestones rendered as `git log` (data/milestones.ts)
 │   ├── ExperienceCard.astro    # Work experience timeline card
 │   ├── EducationCard.astro     # Education timeline card
@@ -48,7 +49,8 @@ src/
 │   ├── Layout.astro  # Root HTML shell, global GSAP animation
 │   └── BlogLayout.astro
 ├── pages/
-│   ├── index.astro
+│   ├── index.astro    # Home: only the NvimIntro splash (unpinned, the 'fresh launch' screen)
+│   ├── readme.astro   # README.md buffer (/readme): photo card + GitLog, pinned
 │   ├── about.astro
 │   ├── experience.astro   # Resume page (routed at /experience)
 │   ├── projects.astro     # Gallery tabs, filter, and vim keys
@@ -85,10 +87,10 @@ Add an `.mdx` file to `src/content/projects/` or use `/add-project`. Frontmatter
 TokyoNight Moon palette by role, like a colorscheme (`vendor/tokyonight/lua/tokyonight/colors/moon.lua` and `groups/`): page h1 keeps the blue-magenta `gradient-text`; section titles, card titles and eyebrow labels blue (`Title`); dates orange (`Number`); links teal (`@markup.link`), cyan on hover; tags yellow; event badges cyan; placement badges purple; prompts magenta (Telescope prompt prefix); blog post `##` yellow and `###` green (markdown heading rainbow), bold text plain fg; inline code blue on terminal_black (`@markup.raw.markdown_inline`); code blocks use `src/styles/shiki-tokyonight-moon.json`, converted from `vendor/tokyonight/extras/sublime/tokyonight_moon.tmTheme`, on bg_dark (`astro.config.mjs`); separators, icons and hints comment/dark5; cursor and timeline dot blue; active tab indicator git.change; lualine, Telescope, NvimTree and the help sheet follow their tokyonight groups. `--color-nvim-*` tokens in `global.css` use tokyonight palette key names (`bg-dark`, `bg-highlight`, `fg-gutter`, `comment`, `fg-dark`, `teal`, `magenta`, ...). Use `text-nvim-*` utilities, never raw hex. Fixed colors (GitHub language colors, brand icons, company logos, file-type icons use their nvim-web-devicons default via `--color-devicon-*` tokens in `global.css`) stay unchanged.
 
 ### Keyboard layer
-`NvimChrome.astro` binds site-wide vim keys once per document: `j`/`k`/arrows scroll the editor pane, `ctrl+d`/`ctrl+u`, `gg`/`G`, `]b`/`[b` switch buffers, `space e` toggles the tree, `space space`, `space ff` or `ctrl+k` opens Telescope (centered, about 70% x 65% of the window, capped at 820x600), `space bd` closes the buffer, `:` opens a command line (`:q`, `:e <file>`, `:bn`, `:bp`, `:help`), `?` opens the help sheet. A page can claim keys with `data-vim-layer="grid"` on its `<main>` (projects gallery does). Cards marked `data-vim-item` turn `h`/`j`/`k`/`l` into a card cursor (`Enter` opens, `gg`/`G` jump); the cursor carries the `.vim-cursor` class, which the `hover` variant in `global.css` treats like a real hover. Every key has a mouse equivalent. Statusline mode reflects NORMAL / INSERT / VISUAL / COMMAND.
+`NvimChrome.astro` binds site-wide vim keys once per document: `j`/`k`/arrows scroll the editor pane, `ctrl+d`/`ctrl+u`, `gg`/`G`, `]b`/`[b` switch buffers, `space e` toggles the tree, `space space`, `space ff` or `ctrl+k` opens Telescope (centered, about 70% x 65% of the window, capped at 820x600), `space bd` closes the buffer, `:` opens a command line (`:q`, `:e <file>`, `:bn`, `:bp`, `:help`), `?` opens the help sheet. A page can claim keys with `data-vim-layer="grid"` on its `<main>` (projects gallery does). Cards marked `data-vim-item` turn `h`/`j`/`k`/`l` into a card cursor (`Enter` opens, `gg`/`G` jump); the cursor carries the `.vim-cursor` class, which the `hover` variant in `global.css` treats like a real hover. Any element with `data-nvim-cmd="<command>"` runs that command on click, the same as typing it after `:` (the home intro rows use this). Every key has a mouse equivalent. Statusline mode reflects NORMAL / INSERT / VISUAL / COMMAND.
 
 ### Adding a page
-New routes need an entry in the `buffers` list in `src/components/NvimChrome.astro` so the tab and NvimTree entry show up, and in the `pages` list in `Telescope.astro` for the finder. Set `pinned: true` on a buffer to keep its tab always visible with no close button (currently `/` and `/experience`). Blog posts and `/package-json` become tabs automatically.
+New routes need an entry in the `buffers` list in `src/components/NvimChrome.astro` so the tab and NvimTree entry show up, and in the `pages` list in `Telescope.astro` for the finder. Set `pinned: true` on a buffer to keep its tab always visible with no close button (currently `/readme` and `/experience`). Blog posts, `/package-json` and `/readme` become tabs automatically; the last two sit at the tree root beside `src/`, like real repo files.
 
 ### Animations
 All `[data-animate]` elements are animated on page load via GSAP in `Layout.astro` — staggered fade+slide-in (`opacity: 0 → 1`, `y: 40 → 0`, `scale: 0.98 → 1`). Every page uses it, including blog posts and project case studies (back link + article), so loading feels the same everywhere; mark new page content with `data-animate` and don't add other load animations. Do not add scroll-triggered animations; page-entry only.
