@@ -555,10 +555,14 @@ const tabs: Tab[] = [
   :global(html[data-intro='on']) .noname-text {
     display: inline;
   }
+  :global(html[data-intro='on']) .nvim-buffer[data-path='/'] .buf-close,
   :global(html[data-intro='on']) .file-label,
   :global(html[data-intro='on']) .nvim-winbar,
   :global(html[data-intro='on']) .sl-file-info {
     display: none;
+  }
+  :global(html[data-intro='on']) .nvim-buffer[data-path='/'] .buf-link {
+    padding-right: 14px;
   }
   :global(html[data-intro='on']) .noname-label {
     display: inline-flex;
@@ -1082,7 +1086,7 @@ const tabs: Tab[] = [
       e.preventDefault();
       const tab = btn.closest<HTMLElement>('.nvim-buffer');
       const path = tab?.dataset.path;
-      if (!tab || !path) return;
+      if (!tab || !path || (path === '/' && document.documentElement.dataset.intro === 'on')) return;
 
       setOpened(getOpened().filter((p) => p !== path));
 
@@ -1185,7 +1189,8 @@ const tabs: Tab[] = [
     }
     function closeBuffer() {
       const tab = q('.nvim-buffer.active');
-      if (!tab) return;
+      // The [No Name] intro buffer is what nvim falls back to, so there is nothing to close
+      if (!tab || document.documentElement.dataset.intro === 'on') return;
       tab.querySelector<HTMLButtonElement>('[data-buf-close]')?.click();
     }
     function toggleTree() {
