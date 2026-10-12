@@ -210,9 +210,9 @@ const tabs: Tab[] = [
   <div class="nvim-statusline">
     <div class="sl-a">NORMAL</div>
     <div class="sl-b">
-      <svg class="branch-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <path d="M5 3.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm0 2.122a2.25 2.25 0 1 0-1.5 0v.878A2.25 2.25 0 0 0 5.75 8.5h1.5v2.128a2.251 2.251 0 1 0 1.5 0V8.5h1.5a2.25 2.25 0 0 0 2.25-2.25v-.878a2.25 2.25 0 1 0-1.5 0v.878a.75.75 0 0 1-.75.75h-4.5A.75.75 0 0 1 5 6.25v-.878zm3.75 7.378a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0zm3-8.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z" />
-      </svg>
+      <span class="branch-icon" aria-hidden="true">
+        {'\ue0a0'}
+      </span>
       master
     </div>
     <div class="sl-c">
@@ -669,8 +669,9 @@ const tabs: Tab[] = [
     transition: color 0.12s ease;
   }
   .branch-icon {
-    width: 13px;
-    height: 13px;
+    font-family: 'Terminess Nerd Font Icons', var(--font-mono);
+    font-size: 16px;
+    font-weight: 400;
     flex-shrink: 0;
   }
   .sl-c {
