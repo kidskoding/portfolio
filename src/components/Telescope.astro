@@ -19,7 +19,6 @@ interface Props {
 const { posts, projects } = Astro.props;
 
 const pages = [
-  { label: 'README.md', path: '/readme', desc: 'the tl;dr: who I am and my git log', icon: 'md' },
   { label: 'index.astro', path: '/', desc: 'building ai agents' },
   { label: 'experience.astro', path: '/experience', desc: 'my education and work experience' },
   { label: 'skills.astro', path: '/skills', desc: 'the tools, languages, and platforms I use to build products' },
@@ -214,12 +213,8 @@ const easterEggs = [
   .telescope-item .icon-mdx {
     color: var(--color-devicon-mdx);
   }
-  .telescope-item .icon-md {
-    color: var(--color-devicon-md);
-  }
   .telescope-item .icon-astro,
-  .telescope-item .icon-mdx,
-  .telescope-item .icon-md {
+  .telescope-item .icon-mdx {
     font-size: 16px;
     font-family: 'Terminess Nerd Font Icons', var(--font-mono);
     font-weight: 400;
@@ -292,7 +287,6 @@ const easterEggs = [
     label: string;
     path: string;
     desc: string;
-    icon?: 'md';
   }
   interface PostItem {
     id: string;
@@ -463,7 +457,7 @@ const easterEggs = [
       filteredPages.forEach((p, i) => {
         const sel = i === selectedIndex;
         html += `<div class="telescope-item${sel ? ' selected' : ''}" data-index="${i}">
-          <span class="item-icon icon-${p.icon ?? 'astro'}">${devicons[p.icon ?? 'astro']}</span>
+          <span class="item-icon icon-astro">${devicons.astro}</span>
           <span class="item-label">${escapeHtml(p.label)}</span>
           <span class="item-sub">${escapeHtml(p.desc)}</span>
           ${sel ? '<span class="item-enter">enter</span>' : ''}

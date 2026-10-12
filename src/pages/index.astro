@@ -1,10 +1,88 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import GitLog from '../components/GitLog.astro';
 import NvimIntro from '../components/NvimIntro.astro';
+import anirudhProfileImg from '../assets/anirudh.jpeg';
 ---
 
-<Layout title="Anirudh Konidala">
+<Layout title="Anirudh Konidala" description="Anirudh Konidala, software engineer building AI agents.">
   <main class="max-w-3xl w-full mx-auto px-6 py-8" id="main-content">
+    <script is:inline data-astro-rerun>
+      try {
+        const store = sessionStorage;
+        const fresh = document.readyState === 'loading';
+        const nav = performance.getEntriesByType('navigation')[0];
+        if (fresh && nav?.type === 'reload') store.removeItem('nvim:launched');
+        const relaunch = store.getItem('nvim:relaunch');
+        store.removeItem('nvim:relaunch');
+        if (relaunch || (fresh && !store.getItem('nvim:launched'))) document.documentElement.dataset.intro = 'on';
+      } catch {}
+    </script>
     <NvimIntro />
+
+    <div data-intro-content>
+      <div
+        class="rounded-none border border-border-subtle bg-bg-card p-6 flex flex-col sm:flex-row items-center gap-6"
+        data-animate
+      >
+        <img
+          src={anirudhProfileImg.src}
+          alt="Anirudh Konidala"
+          class="w-28 h-28 rounded-none object-cover ring-2 ring-accent/20 shrink-0"
+        />
+        <div class="text-center sm:text-left">
+          <h1 class="text-2xl font-bold text-text-primary tracking-tight font-mono">Anirudh Konidala</h1>
+          <p class="text-text-secondary mt-2 font-mono text-sm">building ai agents</p>
+          <p class="text-text-secondary mt-1 font-mono text-xs">
+            cs + education - learning sciences and learning technology @ uiuc
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-6 border border-border-subtle bg-bg-card p-6" data-animate>
+        <GitLog />
+      </div>
+    </div>
   </main>
 </Layout>
+
+<style is:global>
+  html[data-intro='on'] [data-intro-content],
+  html:not([data-intro='on']) .intro {
+    display: none;
+  }
+</style>
+
+<script>
+  const LAUNCHED_KEY = 'nvim:launched';
+  const KEEP_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'Tab', 'Enter', ':', '?', ' ']);
+
+  // nvim clears its intro on the first key; scrolling or clicking an empty buffer does nothing
+  function initIntro() {
+    const main = document.getElementById('main-content');
+    if (!main || document.documentElement.dataset.intro !== 'on' || main.dataset.introBound === 'true') return;
+    main.dataset.introBound = 'true';
+    const controller = new AbortController();
+    const { signal } = controller;
+    const dismiss = () => {
+      controller.abort();
+      delete document.documentElement.dataset.intro;
+      try {
+        sessionStorage.setItem(LAUNCHED_KEY, 'true');
+      } catch {}
+    };
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.ctrlKey || e.metaKey || e.altKey || KEEP_KEYS.has(e.key)) return;
+        if ((e.target as Element | null)?.closest?.('input, textarea')) return;
+        dismiss();
+      },
+      { signal },
+    );
+    document.addEventListener('astro:before-swap', () => controller.abort(), { signal, once: true });
+  }
+
+  initIntro();
+  document.addEventListener('astro:page-load', initIntro);
+</script>

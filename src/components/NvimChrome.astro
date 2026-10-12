@@ -12,7 +12,7 @@ const currentPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '');
 const buffers = [
   { path: '/', file: 'index.astro', icon: 'astro' },
   { path: '/about', file: 'about.astro', icon: 'astro' },
-  { path: '/experience', file: 'experience.astro', icon: 'astro', pinned: true },
+  { path: '/experience', file: 'experience.astro', icon: 'astro' },
   { path: '/projects', file: 'projects.astro', icon: 'astro' },
   { path: '/skills', file: 'skills.astro', icon: 'astro' },
   { path: '/certificates', file: 'certificates.astro', icon: 'astro' },
@@ -20,12 +20,11 @@ const buffers = [
   { path: '/contact', file: 'contact.astro', icon: 'astro' },
 ];
 const treeFiles = buffers;
-type TabIcon = 'astro' | 'mdx' | 'md' | 'json';
+type TabIcon = 'astro' | 'mdx' | 'json';
 interface Tab {
   path: string;
   file: string;
   icon: TabIcon;
-  pinned?: boolean;
 }
 
 let activeFile = 'index.astro';
@@ -41,9 +40,6 @@ if (blogSlug) {
 } else if (currentPath === '/package-json') {
   activeFile = 'package.json';
   activeIcon = 'json';
-} else if (currentPath === '/readme') {
-  activeFile = 'README.md';
-  activeIcon = 'md';
 } else {
   const match = buffers.find((b) => b.path === currentPath);
   if (match) {
@@ -58,18 +54,11 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort((a, b) => a.id.localeCompare(b.id));
 
 const tabs: Tab[] = [
-  { path: '/readme', file: 'README.md', icon: 'md', pinned: true },
   ...(buffers as Tab[]),
   { path: '/package-json', file: 'package.json', icon: 'json' },
   ...posts.map((post): Tab => ({ path: `/blog/${post.id}`, file: `${post.id}.mdx`, icon: 'mdx' })),
   ...projects.map((project): Tab => ({ path: `/projects/${project.id}`, file: `${project.id}.mdx`, icon: 'mdx' })),
 ];
-
-const pinIcon = `
-  <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-    <path fill="currentColor" d="M9.5 1.5 14.5 6.5l-1.4 1.4-.7-.7L9.6 10l.4 3-1.4 1.4L5.5 11.3 2 14.8l-.8-.8 3.5-3.5L1.6 7.4 3 6l3 .4 2.8-2.8-.7-.7z"/>
-  </svg>
-`;
 ---
 
 <div class="nvim-shell">
@@ -85,7 +74,10 @@ const pinIcon = `
       <span aria-hidden="true">☰</span>
       <span>NvimTree</span>
     </button>
-    <span>nvim - portfolio/src/{activeFile}</span>
+    <span>
+      nvim - <span class:list={{ 'file-label': currentPath === '/' }}>portfolio/src/{activeFile}</span>
+      {currentPath === '/' && <span class="noname-text">[No Name]</span>}
+    </span>
   </div>
 
   <div class="nvim-main">
@@ -104,10 +96,6 @@ const pinIcon = `
         >
           <span class="tree-icon icon-json">{devicons.json}</span>
           <span>package.json</span>
-        </a>
-        <a href="/readme" class:list={['tree-file tree-indent-1', { 'tree-active': currentPath === '/readme' }]}>
-          <span class="tree-icon icon-md">{devicons.md}</span>
-          <span>README.md</span>
         </a>
         <div class="tree-folder tree-indent-1">
           <span class="tree-caret" aria-hidden="true">
@@ -179,21 +167,28 @@ const pinIcon = `
       <div class="nvim-bufferline">
         {tabs.map((tab) => (
           <div
-            class:list={['nvim-buffer', { active: currentPath === tab.path, pinned: tab.pinned }]}
+            class:list={['nvim-buffer', { active: currentPath === tab.path }]}
             data-path={tab.path}
-            data-pinned={tab.pinned ? 'true' : undefined}
-            hidden={!tab.pinned && currentPath !== tab.path}
+            hidden={currentPath !== tab.path}
           >
             <a href={tab.path} class="buf-link">
-              {tab.pinned && <span class="buf-pin" set:html={pinIcon} />}
-              <span class:list={['buf-icon', `icon-${tab.icon}`]}>{devicons[tab.icon]}</span>
-              <span>{tab.file}</span>
+              <span class:list={['buf-icon', `icon-${tab.icon}`, { 'file-label': tab.path === '/' }]}>
+                {devicons[tab.icon]}
+              </span>
+              {tab.path === '/' && (
+                <span class="noname-label">
+                  <svg class="noname-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                    <path d="M3.5 1.5h6l3 3v10h-9z" stroke="currentColor" />
+                    <path d="M9.5 1.5v3h3M5.5 8h5M5.5 10.5h5M5.5 13h3" stroke="currentColor" />
+                  </svg>
+                  [No Name]
+                </span>
+              )}
+              <span class:list={{ 'file-label': tab.path === '/' }}>{tab.file}</span>
             </a>
-            {!tab.pinned && (
-              <button type="button" class="buf-close" data-buf-close aria-label={`Close ${tab.file}`}>
-                ×
-              </button>
-            )}
+            <button type="button" class="buf-close" data-buf-close aria-label={`Close ${tab.file}`}>
+              ×
+            </button>
           </div>
         ))}
       </div>
@@ -220,24 +215,27 @@ const pinIcon = `
       </svg>
       master
     </div>
-    <div class="sl-c">{activeFile.split('/').pop()}</div>
+    <div class="sl-c">
+      <span class:list={{ 'file-label': currentPath === '/' }}>{activeFile.split('/').pop()}</span>
+      {currentPath === '/' && <span class="noname-label">[No Name]</span>}
+    </div>
     <div class="sl-spacer"></div>
     <div class="sl-x sl-showcmd" id="sl-showcmd" aria-hidden="true"></div>
     <button class="sl-x sl-help" type="button" data-vim-help aria-label="Show key bindings" title="keys (?)">
       ?
     </button>
-    <span class="sl-x-div" aria-hidden="true">
+    <span class="sl-x-div sl-file-info" aria-hidden="true">
       |
     </span>
-    <div class="sl-x sl-enc">utf-8</div>
-    <span class="sl-x-div" aria-hidden="true">
+    <div class="sl-x sl-enc sl-file-info">utf-8</div>
+    <span class="sl-x-div sl-file-info" aria-hidden="true">
       |
     </span>
-    <div class:list={['sl-x sl-filetype', `ft-${activeIcon}`]}>
+    <div class:list={['sl-x sl-filetype sl-file-info', `ft-${activeIcon}`]}>
       <span class:list={['sl-ft-icon', `icon-${activeIcon}`]}>{devicons[activeIcon]}</span>
       <span>{activeIcon}</span>
     </div>
-    <div class="sl-y" id="sl-pct">
+    <div class="sl-y sl-file-info" id="sl-pct">
       Top
     </div>
     <div class="sl-z" id="sl-pos">
@@ -434,26 +432,6 @@ const pinIcon = `
     outline-offset: -1px;
   }
 
-  .buf-pin {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 18px;
-    flex-shrink: 0;
-    color: var(--color-nvim-comment);
-  }
-  .buf-pin :global(svg) {
-    width: 13px;
-    height: 13px;
-    display: block;
-  }
-  .nvim-buffer.active .buf-pin {
-    color: var(--color-nvim-git-change);
-  }
-  .nvim-buffer.pinned .buf-link {
-    padding-right: 20px;
-  }
-
   .nvim-main {
     position: relative;
     display: flex;
@@ -564,12 +542,38 @@ const pinIcon = `
   .icon-mdx {
     color: var(--color-devicon-mdx);
   }
-  .icon-md {
-    color: var(--color-devicon-md);
-  }
   /* package.json is the only JSON buffer; devicons colors it by filename */
   .icon-json {
     color: var(--color-devicon-package-json);
+  }
+
+  /* While the home intro shows, index.astro is a fresh [No Name] buffer, like nvim right after launch */
+  .noname-label,
+  .noname-text {
+    display: none;
+  }
+  :global(html[data-intro='on']) .noname-text {
+    display: inline;
+  }
+  :global(html[data-intro='on']) .file-label,
+  :global(html[data-intro='on']) .nvim-winbar,
+  :global(html[data-intro='on']) .sl-file-info {
+    display: none;
+  }
+  :global(html[data-intro='on']) .noname-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  :global(html[data-intro='on']) .tree-file.tree-active:not(:hover) {
+    background: transparent;
+    color: var(--color-nvim-fg-dark);
+  }
+  .noname-icon {
+    width: 22px;
+    height: 14px;
+    flex-shrink: 0;
+    color: var(--color-devicon-default);
   }
 
   .nvim-editor-wrap {
@@ -706,9 +710,6 @@ const pinIcon = `
   }
   .sl-ft-icon.icon-mdx {
     color: var(--color-devicon-mdx);
-  }
-  .sl-ft-icon.icon-md {
-    color: var(--color-devicon-md);
   }
   .sl-ft-icon.icon-json {
     color: var(--color-devicon-package-json);
@@ -865,12 +866,6 @@ const pinIcon = `
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .nvim-buffer.pinned .buf-link > span:last-child {
-      display: none;
-    }
-    .nvim-buffer.pinned .buf-link {
-      padding-right: 6px;
-    }
 
     .nvimtree {
       position: absolute;
@@ -1017,6 +1012,8 @@ const pinIcon = `
   }
 
   const OPENED_KEY = 'nvim:opened-buffers';
+  const LAUNCHED_KEY = 'nvim:launched';
+  const RELAUNCH_KEY = 'nvim:relaunch';
 
   function getOpened(): string[] {
     try {
@@ -1030,29 +1027,32 @@ const pinIcon = `
     sessionStorage.setItem(OPENED_KEY, JSON.stringify(paths));
   }
 
+  // Any page load marks the session launched; the intro returns only on a fresh load, :qa or closing the last buffer
+  function markLaunched() {
+    sessionStorage.setItem(LAUNCHED_KEY, 'true');
+  }
+
   function initBuffers() {
     const bufferline = document.querySelector<HTMLElement>('.nvim-bufferline');
     if (!bufferline) return;
-
-    const isPinned = (tab: HTMLElement) => tab.dataset.pinned === 'true';
 
     // Visiting a page opens its buffer (like editing a file in vim).
     const current = bufferline.querySelector<HTMLElement>('.nvim-buffer.active');
     const currentPath = current?.dataset.path;
     let opened = getOpened();
-    if (currentPath && current && !isPinned(current) && !opened.includes(currentPath)) {
+    if (currentPath && current && !opened.includes(currentPath)) {
       opened.push(currentPath);
       setOpened(opened);
     }
 
     opened.forEach((path) => {
       const tab = bufferline.querySelector<HTMLElement>(`.nvim-buffer[data-path="${CSS.escape(path)}"]`);
-      if (tab && !isPinned(tab)) bufferline.appendChild(tab);
+      if (tab) bufferline.appendChild(tab);
     });
 
     bufferline.querySelectorAll<HTMLElement>('.nvim-buffer').forEach((tab) => {
       const path = tab.dataset.path;
-      tab.hidden = !isPinned(tab) && !(path && opened.includes(path)) && !tab.classList.contains('active');
+      tab.hidden = !(path && opened.includes(path)) && !tab.classList.contains('active');
     });
 
     current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
@@ -1077,7 +1077,7 @@ const pinIcon = `
       e.preventDefault();
       const tab = btn.closest<HTMLElement>('.nvim-buffer');
       const path = tab?.dataset.path;
-      if (!tab || !path || isPinned(tab)) return;
+      if (!tab || !path) return;
 
       setOpened(getOpened().filter((p) => p !== path));
 
@@ -1094,6 +1094,8 @@ const pinIcon = `
             .reverse()
             .find((t) => !t.hidden);
         const target = neighbor?.querySelector<HTMLAnchorElement>('.buf-link');
+        // Closing the last buffer relaunches: back to / with the intro
+        if (!target) sessionStorage.setItem(RELAUNCH_KEY, 'true');
         navigate(target ? target.href : '/');
       }
     });
@@ -1179,11 +1181,6 @@ const pinIcon = `
     function closeBuffer() {
       const tab = q('.nvim-buffer.active');
       if (!tab) return;
-      if (tab.dataset.pinned === 'true') {
-        const file = tab.querySelector('.buf-link span:last-child')?.textContent || 'buffer';
-        showMessage(`E37: ${file} is pinned, cannot close`, true);
-        return;
-      }
       tab.querySelector<HTMLButtonElement>('[data-buf-close]')?.click();
     }
     function toggleTree() {
@@ -1309,6 +1306,7 @@ const pinIcon = `
         case 'qall':
         case 'wqa':
           sessionStorage.removeItem(OPENED_KEY);
+          sessionStorage.setItem(RELAUNCH_KEY, 'true');
           hideCmdline();
           navigate('/');
           break;
@@ -1662,6 +1660,8 @@ const pinIcon = `
   initBuffers();
   applyTreeHidden();
   initVim();
+  markLaunched();
+  document.addEventListener('astro:page-load', markLaunched);
   document.addEventListener('astro:page-load', initNvimTreeDrawer);
   document.addEventListener('astro:page-load', initNvimTree);
   document.addEventListener('astro:page-load', initStatusline);

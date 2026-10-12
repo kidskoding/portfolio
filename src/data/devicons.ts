@@ -3,7 +3,6 @@
 export const devicons = {
   astro: '',
   mdx: '',
-  md: '',
   // package.json is the only JSON buffer; devicons matches it by filename (npm logo), not extension
   json: '',
 } as const;
