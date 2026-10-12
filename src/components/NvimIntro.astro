@@ -1,11 +1,16 @@
 ---
+import { version } from '../../package.json';
+
+const repo = 'https://codeberg.org/kidskoding/portfolio';
+const linkedin = 'https://www.linkedin.com/in/anirudh-konidala';
+
 type Cell = { ch: string; blue: boolean };
 const cells = (row: string, blueCount: number): Cell[] => [...row].map((ch, i) => ({ ch, blue: i < blueCount }));
 const logo = [cells('│ ╲ ││', 1), cells('││╲╲││', 2), cells('││ ╲ │', 2)];
 
 const groups = [
   [
-    { cmd: 'e README.md', desc: 'for the tl;dr' },
+    { cmd: 'e index.astro', desc: 'for the tl;dr' },
     { cmd: 'e about.astro', desc: 'to meet me' },
     { cmd: 'e experience.astro', desc: 'for my resume' },
     { cmd: 'Telescope', desc: 'to find anything' },
@@ -40,24 +45,40 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
       ))}
       <div class="blank"></div>
     </div>
-    <h1 class="line font-normal text-nvim-green">ANIRUDH KONIDALA</h1>
+    <p class="line text-nvim-green">PORTFOLIO v{version}</p>
     <div class="sep" aria-hidden="true"></div>
-    <p class="line">building ai agents</p>
-    <p class="line">cs + education - learning sciences and learning technology @ uiuc</p>
+    <p class="line">
+      This is the portfolio of{' '}
+      <a class="text-nvim-teal hover:text-nvim-cyan" href={linkedin} target="_blank" rel="noopener noreferrer">
+        Anirudh Konidala
+      </a>
+    </p>
+    <p class="line">
+      open source and freely distributable on{' '}
+      <a class="text-nvim-teal hover:text-nvim-cyan" href={repo} target="_blank" rel="noopener noreferrer">
+        Codeberg
+      </a>
+    </p>
     {groups.map((rows) => (
       <>
         <div class="sep" aria-hidden="true" />
-        {rows.map(({ cmd, desc }) => (
-          <button type="button" class="line intro-row" data-nvim-cmd={cmd}>
-            {'type  '}
-            <span class="text-nvim-dark3">:</span>
-            <span class="text-nvim-magenta">{cmd}</span>
-            <span class="text-nvim-dark3">&lt;Enter&gt;</span>
-            {pad(cmd) + desc.padEnd(descWidth)}
-          </button>
-        ))}
+        <div class="mx-auto w-fit text-left">
+          {rows.map(({ cmd, desc }) => (
+            <button type="button" class="line intro-row" data-nvim-cmd={cmd}>
+              {'type  '}
+              <span class="text-nvim-dark3">:</span>
+              <span class="cmd text-nvim-magenta">{cmd}</span>
+              <span class="text-nvim-dark3">&lt;Enter&gt;</span>
+              <span class="hidden sm:inline">{pad(cmd) + desc.padEnd(descWidth)}</span>
+            </button>
+          ))}
+        </div>
       </>
     ))}
+    <div class="sep" aria-hidden="true"></div>
+    <p class="line">not a vim user? no problem</p>
+    <p class="line hint-wide">click any file in the tree on the left</p>
+    <p class="line hint-narrow">tap ☰ NvimTree at the top for the files</p>
   </div>
 </section>
 
@@ -68,6 +89,17 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
   .line {
     display: block;
     white-space: pre-wrap;
+  }
+  .hint-narrow {
+    display: none;
+  }
+  @media (max-width: 760px) {
+    .hint-wide {
+      display: none;
+    }
+    .hint-narrow {
+      display: block;
+    }
   }
   .blank {
     height: 2ch;
@@ -100,6 +132,12 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     width: 100%;
     font: inherit;
     cursor: pointer;
+  }
+  @media (hover: none) {
+    .cmd {
+      text-decoration: underline dotted;
+      text-underline-offset: 3px;
+    }
   }
   .intro-row:hover {
     background: var(--color-nvim-bg-highlight);

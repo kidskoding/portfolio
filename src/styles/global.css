@@ -114,7 +114,7 @@
   /* nvim-web-devicons defaults; fixed like brand colors, not themed */
   --color-devicon-astro: #e23f67;
   --color-devicon-mdx: #519aba;
-  --color-devicon-md: #dddddd;
+  --color-devicon-default: #6d8086;
   --color-devicon-package-json: #e8274b;
 }
 
