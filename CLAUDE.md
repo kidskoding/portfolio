@@ -39,7 +39,7 @@ src/
 ├── data/
 │   ├── experience.ts   # Work experience entries
 │   ├── education.ts    # Education entries
-│   ├── language-colors.ts # GitHub language hex per language (fixed colors, never gruvboxed)
+│   ├── language-colors.ts # GitHub language hex per language (fixed colors, never themed)
 │   ├── devicons.ts     # nvim-web-devicons glyphs for file icons (tree, tabs, statusline, Telescope)
 │   ├── project-sort.ts # Shared gallery and case-study ordering
 │   ├── certificates.ts # Certificates; PDF paths come from PUBLIC_CERTIFICATE_PDFS env var
@@ -59,11 +59,12 @@ src/
 │   ├── package-json.astro # Renders package.json as a JSON buffer (/package-json)
 │   └── blog/
 └── styles/
-    └── global.css
+    ├── global.css
+    └── shiki-tokyonight-moon.json # Shiki code theme, converted from the vendored tokyonight tmTheme
 
 flake.nix             # Nix dev shell + `nix run` apps wrapping bun scripts
 .forgejo/workflows/ci.yml # Codeberg Forgejo Actions: format, alejandra, astro check, build; master then deploys to Vercel via the Vercel CLI
-vendor/gruvbox/       # morhetz/gruvbox git subtree, reference for palette + highlight roles (not built)
+vendor/tokyonight/    # folke/tokyonight.nvim git subtree (squashed), reference for palette + highlight roles (not built)
 ```
 
 ## Key Conventions
@@ -81,7 +82,7 @@ Add an `.mdx` file to `src/content/blog/` or use `/blog-post`. Frontmatter field
 Add an `.mdx` file to `src/content/projects/` or use `/add-project`. Frontmatter fields: `title`, `description`, `category` (`project` | `hackathon` | `agentic`), `repo`, `language`, `stack`, `date`, and optional `cover`, `event`, `placement`, `order`, and `draft`. Tiles sort by `order` then newest `date`. A project with a cover lives at `src/content/projects/<slug>/index.mdx` with `cover.png` beside it. Projects open as `<slug>.mdx` buffers and appear in NvimTree and Telescope automatically.
 
 ### Colors
-Gruvbox palette by role, like a colorscheme (`vendor/gruvbox/colors/gruvbox.vim`): page h1 keeps the yellow-orange `gradient-text`; section titles, card titles and eyebrow labels green; dates aqua; links blue, aqua on hover; tags yellow; blog post `##`/`###` headings yellow and bold text green; inline code in blog posts orange on bg-hard (not aqua: aqua is link hover and dates); code blocks use Shiki's `gruvbox-dark-hard` theme (`astro.config.mjs`); event badges orange; placement badges purple; prompts red; separators, icons and hints gray/fg3; cursor, active tab and timeline dot yellow. Use `text-nvim-*` utilities, never raw hex. Fixed colors (GitHub language colors, brand icons, company logos, file-type icons use their nvim-web-devicons default via `--color-devicon-*` tokens in `global.css`) stay unchanged.
+TokyoNight Moon palette by role, like a colorscheme (`vendor/tokyonight/lua/tokyonight/colors/moon.lua` and `groups/`): page h1 keeps the blue-magenta `gradient-text`; section titles, card titles and eyebrow labels blue (`Title`); dates orange (`Number`); links teal (`@markup.link`), cyan on hover; tags yellow; event badges cyan; placement badges purple; prompts magenta (Telescope prompt prefix); blog post `##` yellow and `###` green (markdown heading rainbow), bold text plain fg; inline code blue on terminal_black (`@markup.raw.markdown_inline`); code blocks use `src/styles/shiki-tokyonight-moon.json`, converted from `vendor/tokyonight/extras/sublime/tokyonight_moon.tmTheme`, on bg_dark (`astro.config.mjs`); separators, icons and hints comment/dark5; cursor and timeline dot blue; active tab indicator git.change; lualine, Telescope, NvimTree and the help sheet follow their tokyonight groups. `--color-nvim-*` tokens in `global.css` use tokyonight palette key names (`bg-dark`, `bg-highlight`, `fg-gutter`, `comment`, `fg-dark`, `teal`, `magenta`, ...). Use `text-nvim-*` utilities, never raw hex. Fixed colors (GitHub language colors, brand icons, company logos, file-type icons use their nvim-web-devicons default via `--color-devicon-*` tokens in `global.css`) stay unchanged.
 
 ### Keyboard layer
 `NvimChrome.astro` binds site-wide vim keys once per document: `j`/`k`/arrows scroll the editor pane, `ctrl+d`/`ctrl+u`, `gg`/`G`, `]b`/`[b` switch buffers, `space e` toggles the tree, `space space`, `space ff` or `ctrl+k` opens Telescope (centered, about 70% x 65% of the window, capped at 820x600), `space bd` closes the buffer, `:` opens a command line (`:q`, `:e <file>`, `:bn`, `:bp`, `:help`), `?` opens the help sheet. A page can claim keys with `data-vim-layer="grid"` on its `<main>` (projects gallery does). Cards marked `data-vim-item` turn `h`/`j`/`k`/`l` into a card cursor (`Enter` opens, `gg`/`G` jump); the cursor carries the `.vim-cursor` class, which the `hover` variant in `global.css` treats like a real hover. Every key has a mouse equivalent. Statusline mode reflects NORMAL / INSERT / VISUAL / COMMAND.

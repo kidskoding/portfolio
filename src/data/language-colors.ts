@@ -1,4 +1,4 @@
-// GitHub's linguist colors. Fixed colors stay fixed; do not map these to gruvbox.
+// GitHub's linguist colors. Fixed colors stay fixed; do not map these to the theme palette.
 export const languageColors: Record<string, string> = {
   TypeScript: '#3178c6',
   JavaScript: '#f1e05a',
@@ -18,7 +18,7 @@ export const languageColors: Record<string, string> = {
   Nix: '#7e7eff',
 };
 
-const FALLBACK = 'var(--color-nvim-gray)';
+const FALLBACK = 'var(--color-nvim-dark5)';
 
 export function languageColor(language?: string): string {
   return (language && languageColors[language]) || FALLBACK;
