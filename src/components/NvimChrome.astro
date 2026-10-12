@@ -303,18 +303,18 @@ const pinIcon = `
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-    background: var(--color-nvim-bg-hard);
+    background: var(--color-nvim-bg-dark);
     font-family: var(--font-mono);
   }
 
   .nvim-titlebar {
     position: relative;
-    background: var(--color-nvim-bg-hard);
+    background: var(--color-nvim-bg-dark);
     padding: 4px 14px;
     text-align: center;
     font-size: 14px;
-    color: var(--color-nvim-fg2);
-    border-bottom: 1px solid var(--color-nvim-bg);
+    color: var(--color-nvim-fg-dark);
+    border-bottom: 1px solid var(--color-nvim-black);
     flex-shrink: 0;
   }
   .nvim-tree-trigger {
@@ -325,9 +325,9 @@ const pinIcon = `
     left: 8px;
     top: 50%;
     transform: translateY(-50%);
-    border: 1px solid var(--color-nvim-bg3);
-    background: var(--color-nvim-bg1);
-    color: var(--color-nvim-fg2);
+    border: 1px solid var(--color-nvim-fg-gutter);
+    background: var(--color-nvim-bg-highlight);
+    color: var(--color-nvim-fg-dark);
     padding: 1px 7px;
     font-family: var(--font-mono);
     font-size: 14px;
@@ -336,18 +336,18 @@ const pinIcon = `
   }
   .nvim-tree-trigger:hover,
   .nvim-tree-trigger[aria-expanded='true'] {
-    color: var(--color-nvim-yellow);
-    border-color: var(--color-nvim-yellow);
+    color: var(--color-nvim-blue);
+    border-color: var(--color-nvim-blue);
   }
   .nvim-tree-trigger:focus-visible {
-    outline: 1px solid var(--color-nvim-yellow);
+    outline: 1px solid var(--color-nvim-blue);
     outline-offset: 2px;
   }
 
   .nvim-bufferline {
     display: flex;
-    background: var(--color-nvim-bg);
-    border-bottom: 1px solid var(--color-nvim-bg-hard);
+    background: var(--color-nvim-bg-dark);
+    border-bottom: 1px solid var(--color-nvim-black);
     flex-shrink: 0;
     overflow-x: auto;
     scrollbar-width: none;
@@ -361,8 +361,8 @@ const pinIcon = `
     display: flex;
     align-items: center;
     font-size: 14px;
-    color: var(--color-nvim-fg2);
-    border-right: 1px solid var(--color-nvim-bg-hard);
+    color: var(--color-nvim-comment);
+    border-right: 1px solid var(--color-nvim-black);
     white-space: nowrap;
     flex-shrink: 0;
     transition: color 0.15s;
@@ -371,12 +371,12 @@ const pinIcon = `
     display: none;
   }
   .nvim-buffer:hover {
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
   }
   .nvim-buffer.active {
-    background: var(--color-nvim-bg1);
+    background: var(--color-nvim-bg);
     color: var(--color-nvim-fg);
-    border-top: 2px solid var(--color-nvim-yellow);
+    border-top: 2px solid var(--color-nvim-git-change);
   }
 
   .buf-link {
@@ -401,7 +401,7 @@ const pinIcon = `
     border: 0;
     border-radius: 3px;
     background: transparent;
-    color: var(--color-nvim-fg3);
+    color: var(--color-nvim-comment);
     font-family: var(--font-mono);
     font-size: 14px;
     line-height: 1;
@@ -417,12 +417,12 @@ const pinIcon = `
     opacity: 1;
   }
   .buf-close:hover {
-    background: var(--color-nvim-bg3);
-    color: var(--color-nvim-red, var(--color-nvim-yellow));
+    background: var(--color-nvim-fg-gutter);
+    color: var(--color-nvim-red);
   }
   .buf-close:focus-visible {
     opacity: 1;
-    outline: 1px solid var(--color-nvim-yellow);
+    outline: 1px solid var(--color-nvim-blue);
     outline-offset: -1px;
   }
 
@@ -432,7 +432,7 @@ const pinIcon = `
     justify-content: center;
     width: 18px;
     flex-shrink: 0;
-    color: var(--color-nvim-fg3);
+    color: var(--color-nvim-comment);
   }
   .buf-pin :global(svg) {
     width: 13px;
@@ -440,7 +440,7 @@ const pinIcon = `
     display: block;
   }
   .nvim-buffer.active .buf-pin {
-    color: var(--color-nvim-yellow);
+    color: var(--color-nvim-git-change);
   }
   .nvim-buffer.pinned .buf-link {
     padding-right: 20px;
@@ -458,8 +458,8 @@ const pinIcon = `
 
   .nvimtree {
     width: 320px;
-    background: var(--color-nvim-bg);
-    border-right: 2px solid var(--color-nvim-bg-hard);
+    background: var(--color-nvim-bg-dark);
+    border-right: 2px solid var(--color-nvim-black);
     flex-shrink: 0;
     overflow-y: auto;
     font-size: 14px;
@@ -468,7 +468,7 @@ const pinIcon = `
     width: 3px;
   }
   .nvimtree::-webkit-scrollbar-thumb {
-    background: var(--color-nvim-bg3);
+    background: var(--color-nvim-fg-gutter);
   }
 
   .tree-folder {
@@ -487,7 +487,7 @@ const pinIcon = `
     text-align: left;
   }
   .tree-folder:hover {
-    background: var(--color-nvim-bg1);
+    background: var(--color-nvim-bg-highlight);
   }
   .tree-folder:not(button) {
     cursor: default;
@@ -496,13 +496,13 @@ const pinIcon = `
     background: transparent;
   }
   .tree-folder:focus-visible {
-    outline: 1px solid var(--color-nvim-yellow);
+    outline: 1px solid var(--color-nvim-blue);
     outline-offset: -1px;
   }
   .tree-caret {
     width: 10px;
     flex-shrink: 0;
-    color: var(--color-nvim-fg3);
+    color: var(--color-nvim-comment);
   }
   [data-tree-group][hidden] {
     display: none;
@@ -512,17 +512,17 @@ const pinIcon = `
     align-items: center;
     gap: 6px;
     padding: 2px 10px;
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
     font-size: 14px;
     line-height: 1.8;
     text-decoration: none;
     transition: background 0.1s;
   }
   .tree-file:hover {
-    background: var(--color-nvim-bg1);
+    background: var(--color-nvim-bg-highlight);
   }
   .tree-file.tree-active {
-    background: var(--color-nvim-bg2);
+    background: var(--color-nvim-fg-gutter);
     color: var(--color-nvim-fg);
   }
 
@@ -569,11 +569,11 @@ const pinIcon = `
   }
 
   .nvim-winbar {
-    background: var(--color-nvim-bg1);
+    background: var(--color-nvim-bg-dark);
     padding: 3px 14px;
     font-size: 14px;
-    color: var(--color-nvim-fg2);
-    border-bottom: 1px solid var(--color-nvim-bg-hard);
+    color: var(--color-nvim-fg-dark);
+    border-bottom: 1px solid var(--color-nvim-black);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -583,11 +583,11 @@ const pinIcon = `
     color: var(--color-nvim-blue);
   }
   .winbar-sep {
-    color: var(--color-nvim-fg3);
+    color: var(--color-nvim-comment);
     margin: 0 6px;
   }
   .winbar-file {
-    color: var(--color-nvim-yellow);
+    color: var(--color-nvim-fg);
   }
 
   .nvim-editor {
@@ -601,7 +601,7 @@ const pinIcon = `
     width: 4px;
   }
   .nvim-editor::-webkit-scrollbar-thumb {
-    background: var(--color-nvim-bg3);
+    background: var(--color-nvim-fg-gutter);
   }
 
   .nvim-statusline {
@@ -611,20 +611,20 @@ const pinIcon = `
     height: 22px;
     flex-shrink: 0;
     overflow: hidden;
-    background: var(--color-nvim-bg2);
-    --sl-mode: var(--color-nvim-yellow-dim);
-  }
-  .nvim-statusline[data-mode='INSERT'] {
+    background: var(--color-nvim-bg-dark);
     --sl-mode: var(--color-nvim-blue);
   }
-  .nvim-statusline[data-mode='VISUAL'] {
-    --sl-mode: var(--color-nvim-orange);
-  }
-  .nvim-statusline[data-mode='COMMAND'] {
+  .nvim-statusline[data-mode='INSERT'] {
     --sl-mode: var(--color-nvim-green);
   }
+  .nvim-statusline[data-mode='VISUAL'] {
+    --sl-mode: var(--color-nvim-magenta);
+  }
+  .nvim-statusline[data-mode='COMMAND'] {
+    --sl-mode: var(--color-nvim-yellow);
+  }
 
-  /* lualine gruvbox: a/z take the mode color, b/y bg3, c/x bg2 */
+  /* lualine tokyonight: a/z take the mode color, b/y fg_gutter with mode-colored text, c/x bg_dark */
   .sl-a,
   .sl-b,
   .sl-c,
@@ -639,7 +639,7 @@ const pinIcon = `
   .sl-a,
   .sl-z {
     background: var(--sl-mode);
-    color: var(--color-nvim-bg);
+    color: var(--color-nvim-black);
     font-weight: 700;
     transition: background 0.12s ease;
   }
@@ -648,9 +648,10 @@ const pinIcon = `
   }
   .sl-b,
   .sl-y {
-    background: var(--color-nvim-bg3);
-    color: var(--color-nvim-fg);
+    background: var(--color-nvim-fg-gutter);
+    color: var(--sl-mode);
     gap: 5px;
+    transition: color 0.12s ease;
   }
   .branch-icon {
     width: 13px;
@@ -658,7 +659,7 @@ const pinIcon = `
     flex-shrink: 0;
   }
   .sl-c {
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
     flex-shrink: 1;
     min-width: 0;
     overflow: hidden;
@@ -669,12 +670,12 @@ const pinIcon = `
     flex: 1;
   }
   .sl-x {
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
   }
   .sl-x-div {
     display: flex;
     align-items: center;
-    color: var(--color-nvim-fg3);
+    color: var(--color-nvim-comment);
     flex-shrink: 0;
   }
   .sl-filetype {
@@ -700,7 +701,7 @@ const pinIcon = `
   }
 
   .sl-showcmd {
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
     padding: 0 8px;
     min-width: 0;
   }
@@ -726,7 +727,7 @@ const pinIcon = `
     height: 22px;
     padding: 0 10px;
     flex-shrink: 0;
-    background: var(--color-nvim-bg-hard);
+    background: var(--color-nvim-bg);
     font-size: 14px;
     color: var(--color-nvim-fg);
   }
@@ -745,7 +746,7 @@ const pinIcon = `
     padding: 0;
     color: var(--color-nvim-fg);
     font: inherit;
-    caret-color: var(--color-nvim-yellow);
+    caret-color: var(--color-nvim-fg);
   }
   .cmd-msg {
     color: var(--color-nvim-fg);
@@ -773,7 +774,7 @@ const pinIcon = `
     position: absolute;
     inset: 0;
     border: 0;
-    background: rgba(10, 8, 5, 0.75);
+    background: rgba(25, 27, 41, 0.75);
     cursor: default;
   }
   .nvim-help-panel {
@@ -782,19 +783,19 @@ const pinIcon = `
     max-width: calc(100vw - 32px);
     max-height: calc(100vh - 32px);
     overflow-y: auto;
-    background: var(--color-nvim-bg1);
-    border: 1px solid var(--color-nvim-bg3);
+    background: var(--color-nvim-bg-dark);
+    border: 1px solid var(--color-nvim-border-highlight);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
     padding: 14px 18px;
     font-size: 14px;
   }
   .nvim-help-title {
-    color: var(--color-nvim-green);
+    color: var(--color-nvim-blue);
     font-weight: 700;
     margin-bottom: 8px;
   }
   .nvim-help-sub {
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-blue);
     margin: 10px 0 4px;
   }
   .nvim-help dl {
@@ -804,14 +805,14 @@ const pinIcon = `
     margin: 0;
   }
   .nvim-help dt {
-    color: var(--color-nvim-yellow);
+    color: var(--color-nvim-cyan);
   }
   .nvim-help dd {
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-magenta);
     margin: 0;
   }
   .nvim-help-hint {
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-comment);
     margin-top: 12px;
   }
 
@@ -862,7 +863,7 @@ const pinIcon = `
       inset: 0 auto 0 0;
       z-index: 20;
       width: min(82vw, 300px);
-      border-right: 2px solid var(--color-nvim-yellow);
+      border-right: 2px solid var(--color-nvim-border-highlight);
       box-shadow: 18px 0 40px rgba(0, 0, 0, 0.55);
       transform: translateX(-100%);
       transition: transform 0.18s ease;
@@ -878,7 +879,7 @@ const pinIcon = `
       inset: 0;
       z-index: 10;
       border: 0;
-      background: rgba(10, 8, 5, 0.58);
+      background: rgba(25, 27, 41, 0.58);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.18s ease;

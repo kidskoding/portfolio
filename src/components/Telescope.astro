@@ -103,12 +103,12 @@ const easterEggs = [
   .telescope-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(10, 8, 5, 0.8);
+    background: rgba(25, 27, 41, 0.8);
   }
   .telescope-modal {
     position: relative;
-    background: var(--color-nvim-bg1);
-    border: 1px solid var(--color-nvim-bg3);
+    background: var(--color-nvim-bg-dark);
+    border: 1px solid var(--color-nvim-border-highlight);
     /* Telescope floats at a large share of the editor; capped so one result list doesn't look empty */
     width: min(70vw, 820px);
     max-width: calc(100vw - 32px);
@@ -125,12 +125,12 @@ const easterEggs = [
     align-items: center;
     gap: 8px;
     padding: 10px 14px;
-    background: var(--color-nvim-bg2);
-    border-bottom: 1px solid var(--color-nvim-bg3);
+    background: var(--color-nvim-bg-dark);
+    border-bottom: 1px solid var(--color-nvim-orange);
     flex-shrink: 0;
   }
   .telescope-icon {
-    color: var(--color-nvim-blue);
+    color: var(--color-nvim-magenta);
     font-family: var(--font-mono);
     font-size: 16px;
     font-weight: 700;
@@ -143,16 +143,16 @@ const easterEggs = [
     font-size: 14px;
     color: var(--color-nvim-fg);
     font-family: var(--font-mono);
-    caret-color: var(--color-nvim-yellow);
+    caret-color: var(--color-nvim-fg);
   }
   .telescope-input::placeholder {
-    color: var(--color-nvim-gray);
+    color: var(--color-nvim-comment);
   }
 
   .telescope-hint {
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-comment);
   }
   .telescope-body {
     display: flex;
@@ -168,16 +168,16 @@ const easterEggs = [
     width: 3px;
   }
   .telescope-results::-webkit-scrollbar-thumb {
-    background: var(--color-nvim-bg3);
+    background: var(--color-nvim-fg-gutter);
   }
   .telescope-section {
     padding: 5px 14px 2px;
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-blue);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    border-bottom: 1px solid var(--color-nvim-bg);
+    border-bottom: 1px solid var(--color-nvim-black);
   }
   .telescope-item {
     display: flex;
@@ -190,10 +190,10 @@ const easterEggs = [
   }
   .telescope-item:hover,
   .telescope-item.selected {
-    background: var(--color-nvim-bg2);
+    background: var(--color-nvim-bg-visual);
   }
   .telescope-item.selected {
-    border-left: 2px solid var(--color-nvim-yellow);
+    border-left: 2px solid var(--color-nvim-blue);
     padding-left: 12px;
   }
   .item-icon {
@@ -224,7 +224,7 @@ const easterEggs = [
     flex: 1;
   }
   .item-sub {
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
     font-size: 14px;
     font-family: var(--font-mono);
     min-width: 0;
@@ -238,20 +238,20 @@ const easterEggs = [
   }
   .item-enter {
     font-size: 14px;
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
     font-family: var(--font-mono);
-    background: var(--color-nvim-bg);
+    background: var(--color-nvim-bg-highlight);
     padding: 1px 5px;
   }
   .telescope-preview {
     width: 200px;
-    border-left: 1px solid var(--color-nvim-bg3);
-    background: var(--color-nvim-bg);
+    border-left: 1px solid var(--color-nvim-border-highlight);
+    background: var(--color-nvim-bg-dark);
     padding: 10px 12px;
     overflow: hidden;
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
     flex-shrink: 0;
   }
   .preview-label {
@@ -259,11 +259,11 @@ const easterEggs = [
     text-transform: uppercase;
     letter-spacing: 0.1em;
     margin-bottom: 8px;
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-blue);
   }
   .preview-content {
     line-height: 1.8;
-    color: var(--color-nvim-fg2);
+    color: var(--color-nvim-fg-dark);
     font-size: 14px;
     white-space: pre-line;
     word-break: break-word;
@@ -273,7 +273,7 @@ const easterEggs = [
     font-family: var(--font-mono);
     font-size: 14px;
     color: var(--color-nvim-green);
-    border-top: 1px solid var(--color-nvim-bg3);
+    border-top: 1px solid var(--color-nvim-fg-gutter);
   }
   .egg-result.error {
     color: var(--color-nvim-red);

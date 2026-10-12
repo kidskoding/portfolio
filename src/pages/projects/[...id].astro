@@ -54,7 +54,7 @@ const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'sh
     )}
     <div class="min-w-0 p-5 sm:p-8">
       <header class="mb-8 min-w-0">
-        <h1 class="break-words text-3xl font-bold tracking-tight text-nvim-green">{title}</h1>
+        <h1 class="break-words text-3xl font-bold tracking-tight text-nvim-blue">{title}</h1>
         <p class="mt-2 break-words text-text-secondary">{description}</p>
         <div class="mt-4 flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 font-mono text-sm">
           {language && (
@@ -66,12 +66,12 @@ const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'sh
               {language}
             </span>
           )}
-          {event && <span class="text-nvim-orange">{event}</span>}
+          {event && <span class="text-nvim-cyan">{event}</span>}
           {placement && <span class="text-nvim-purple">{placement}</span>}
-          <time class="text-nvim-aqua" datetime={date.toISOString()}>
+          <time class="text-nvim-orange" datetime={date.toISOString()}>
             {dateLabel}
           </time>
-          <a href={repo} target="_blank" rel="noopener noreferrer" class="break-all text-nvim-blue hover:underline">
+          <a href={repo} target="_blank" rel="noopener noreferrer" class="break-all text-nvim-teal hover:underline">
             view on github &rarr;
           </a>
         </div>
@@ -86,7 +86,7 @@ const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'sh
         )}
       </header>
 
-      <div class="blog-content min-w-0 break-words text-text-secondary [&_a]:break-words [&_a]:text-nvim-blue [&_a]:underline [&_a]:hover:text-nvim-aqua [&_blockquote]:my-4 [&_blockquote]:border-l-2 [&_blockquote]:border-nvim-gray [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-text-primary [&_code]:font-mono [&_code]:text-sm [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-nvim-green [&_h3]:mb-2 [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-nvim-yellow [&_hr]:my-6 [&_hr]:border-t [&_hr]:border-border-subtle [&_img]:my-4 [&_img]:max-w-full [&_img]:rounded-lg [&_li]:mb-1 [&_li]:leading-relaxed [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p]:leading-relaxed [&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:bg-bg-secondary [&_pre]:p-4 [&_pre]:text-sm [&_table]:my-6 [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_td]:border-b [&_td]:border-border-subtle [&_td]:px-3 [&_td]:py-2 [&_td]:text-text-secondary [&_th]:border-b [&_th]:border-border-subtle [&_th]:px-3 [&_th]:pb-2 [&_th]:text-left [&_th]:font-semibold [&_th]:text-text-primary [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6">
+      <div class="blog-content min-w-0 break-words text-text-secondary [&_a]:break-words [&_a]:text-nvim-teal [&_a]:underline [&_a]:hover:text-nvim-cyan [&_blockquote]:my-4 [&_blockquote]:border-l-2 [&_blockquote]:border-nvim-comment [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-text-primary [&_code]:font-mono [&_code]:text-sm [&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-nvim-yellow [&_h3]:mb-2 [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-nvim-blue [&_hr]:my-6 [&_hr]:border-t [&_hr]:border-border-subtle [&_img]:my-4 [&_img]:max-w-full [&_img]:rounded-lg [&_li]:mb-1 [&_li]:leading-relaxed [&_ol]:mb-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_p]:mb-4 [&_p]:leading-relaxed [&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:bg-bg-secondary [&_pre]:p-4 [&_pre]:text-sm [&_table]:my-6 [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_td]:border-b [&_td]:border-border-subtle [&_td]:px-3 [&_td]:py-2 [&_td]:text-text-secondary [&_th]:border-b [&_th]:border-border-subtle [&_th]:px-3 [&_th]:pb-2 [&_th]:text-left [&_th]:font-semibold [&_th]:text-text-primary [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6">
         <Content />
       </div>
 
@@ -95,7 +95,7 @@ const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'sh
         aria-label="Project navigation"
       >
         {prev ? (
-          <a class="min-w-0 break-words text-nvim-blue hover:underline" href={`/projects/${prev.id}`} data-nav="prev">
+          <a class="min-w-0 break-words text-nvim-teal hover:underline" href={`/projects/${prev.id}`} data-nav="prev">
             [[ {prev.data.title}
           </a>
         ) : (
@@ -106,7 +106,7 @@ const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'sh
         </a>
         {next ? (
           <a
-            class="min-w-0 break-words text-nvim-blue hover:underline sm:text-right"
+            class="min-w-0 break-words text-nvim-teal hover:underline sm:text-right"
             href={`/projects/${next.id}`}
             data-nav="next"
           >
