@@ -62,11 +62,12 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
         <div class="sep" aria-hidden="true" />
         <div class="mx-auto w-fit text-left">
           {rows.map(({ cmd, desc }) => (
-            <button type="button" class="line intro-row" data-nvim-cmd={cmd}>
-              {'type  '}
+            <button type="button" class:list={['line intro-row', { 'keys-only': cmd === 'help' }]} data-nvim-cmd={cmd}>
+              <span class="verb-type">{'type  '}</span>
+              <span class="verb-tap">{'tap   '}</span>
               <span class="text-nvim-dark3">:</span>
               <span class="cmd text-nvim-magenta">{cmd}</span>
-              <span class="text-nvim-dark3">&lt;Enter&gt;</span>
+              <span class="enter text-nvim-dark3">&lt;Enter&gt;</span>
               <span class="hidden sm:inline">{pad(cmd) + desc.padEnd(descWidth)}</span>
             </button>
           ))}
@@ -131,10 +132,22 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     font: inherit;
     cursor: pointer;
   }
+  .verb-tap {
+    display: none;
+  }
+  /* Touch screens have no keyboard: rows are tapped, so drop "type", <Enter> and the key help row */
   @media (hover: none) {
     .cmd {
       text-decoration: underline dotted;
       text-underline-offset: 3px;
+    }
+    .verb-type,
+    .enter,
+    .keys-only {
+      display: none;
+    }
+    .verb-tap {
+      display: inline;
     }
   }
   .intro-row:hover {
