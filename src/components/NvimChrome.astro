@@ -746,8 +746,12 @@ const tabs: Tab[] = [
     font-size: 14px;
     color: var(--color-nvim-fg);
   }
+  /* cmdheight=1: the row always exists under the statusline, empty until it has something to show */
   .nvim-cmdline[hidden] {
-    display: none;
+    display: flex;
+  }
+  .nvim-cmdline[hidden] > * {
+    visibility: hidden;
   }
   .cmd-prompt {
     color: var(--color-nvim-fg);
