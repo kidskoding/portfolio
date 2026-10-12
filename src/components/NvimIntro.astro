@@ -45,20 +45,18 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
       ))}
       <div class="blank"></div>
     </div>
-    <p class="line text-nvim-green">PORTFOLIO v{version}</p>
+    <p class="line text-nvim-green">ANIRUDH KONIDALA v{version}</p>
     <div class="sep" aria-hidden="true"></div>
+    <p class="line">This is the portfolio of Anirudh Konidala,</p>
     <p class="line">
-      This is the portfolio of{' '}
-      <a class="text-nvim-teal hover:text-nvim-cyan" href={linkedin} target="_blank" rel="noopener noreferrer">
-        Anirudh Konidala
-      </a>
-    </p>
-    <p class="line">
-      open source and freely distributable on{' '}
+      which is open source and freely distributable on{' '}
       <a class="text-nvim-teal hover:text-nvim-cyan" href={repo} target="_blank" rel="noopener noreferrer">
         Codeberg
       </a>
     </p>
+    <a class="line text-nvim-teal hover:text-nvim-cyan" href={linkedin} target="_blank" rel="noopener noreferrer">
+      {linkedin.replace('https://www.', '')}
+    </a>
     {groups.map((rows) => (
       <>
         <div class="sep" aria-hidden="true" />
