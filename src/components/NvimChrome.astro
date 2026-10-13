@@ -324,7 +324,7 @@ const tabs: Tab[] = [
     flex-shrink: 0;
   }
   .nvim-tree-trigger {
-    display: none;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
     position: absolute;
@@ -860,10 +860,6 @@ const tabs: Tab[] = [
       white-space: nowrap;
     }
 
-    .nvim-tree-trigger {
-      display: inline-flex;
-    }
-
     .nvim-bufferline {
       min-height: 31px;
     }
@@ -947,8 +943,16 @@ const tabs: Tab[] = [
       trigger.setAttribute('aria-label', isOpen ? 'Close file explorer' : 'Open file explorer');
     };
 
+    // Narrow screens slide the tree in as a drawer; wide screens show or hide the sidebar column
     trigger.addEventListener('click', () => {
-      setOpen(!shell.classList.contains('tree-drawer-open'));
+      if (window.matchMedia(DRAWER_QUERY).matches) {
+        setOpen(!shell.classList.contains('tree-drawer-open'));
+        return;
+      }
+      const hidden = !shell.classList.contains('tree-hidden');
+      shell.classList.toggle('tree-hidden', hidden);
+      sessionStorage.setItem(TREE_HIDDEN_KEY, String(hidden));
+      syncTreeTrigger();
     });
 
     closeButton.addEventListener('click', () => setOpen(false));
@@ -1119,6 +1123,7 @@ const tabs: Tab[] = [
   }
 
   const TREE_HIDDEN_KEY = 'nvim:tree-hidden';
+  const DRAWER_QUERY = '(max-width: 760px)';
   const PENDING_TIMEOUT = 900;
   const MESSAGE_TIMEOUT = 4000;
   const LINE_STEP = 60;
@@ -1126,6 +1131,16 @@ const tabs: Tab[] = [
   function applyTreeHidden() {
     const shell = document.querySelector<HTMLElement>('.nvim-shell');
     if (shell) shell.classList.toggle('tree-hidden', sessionStorage.getItem(TREE_HIDDEN_KEY) === 'true');
+    syncTreeTrigger();
+  }
+
+  function syncTreeTrigger() {
+    const shell = document.querySelector<HTMLElement>('.nvim-shell');
+    const trigger = document.querySelector<HTMLButtonElement>('[data-tree-drawer-toggle]');
+    if (!shell || !trigger || window.matchMedia(DRAWER_QUERY).matches) return;
+    const visible = !shell.classList.contains('tree-hidden');
+    trigger.setAttribute('aria-expanded', String(visible));
+    trigger.setAttribute('aria-label', visible ? 'Hide file explorer' : 'Show file explorer');
   }
 
   // Site-wide vim layer: scroll keys, buffer switching, command line, help.
@@ -1194,16 +1209,7 @@ const tabs: Tab[] = [
       tab.querySelector<HTMLButtonElement>('[data-buf-close]')?.click();
     }
     function toggleTree() {
-      const drawerToggle = q<HTMLButtonElement>('[data-tree-drawer-toggle]');
-      if (drawerToggle && drawerToggle.offsetParent !== null) {
-        drawerToggle.click();
-        return;
-      }
-      const shell = q('.nvim-shell');
-      if (!shell) return;
-      const hidden = !shell.classList.contains('tree-hidden');
-      shell.classList.toggle('tree-hidden', hidden);
-      sessionStorage.setItem(TREE_HIDDEN_KEY, String(hidden));
+      q<HTMLButtonElement>('[data-tree-drawer-toggle]')?.click();
     }
     function openTelescope() {
       if (telescopeOpen()) return;

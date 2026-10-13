@@ -76,8 +76,10 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     ))}
     <div class="sep" aria-hidden="true"></div>
     <p class="line">not a vim user? no problem</p>
-    <p class="line hint-wide">click any file in the tree on the left</p>
-    <p class="line hint-narrow">tap ☰ NvimTree at the top for the files</p>
+    <p class="line">
+      <span class="verb-type">click</span>
+      <span class="verb-tap">tap</span> on a row above, or pick a file from <span class="tree-chip">☰ NvimTree</span>
+    </p>
   </div>
 </section>
 
@@ -89,16 +91,12 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     display: block;
     white-space: pre-wrap;
   }
-  .hint-narrow {
-    display: none;
-  }
-  @media (max-width: 760px) {
-    .hint-wide {
-      display: none;
-    }
-    .hint-narrow {
-      display: block;
-    }
+  .tree-chip {
+    border: 1px solid var(--color-nvim-fg-gutter);
+    background: var(--color-nvim-bg-highlight);
+    color: var(--color-nvim-fg-dark);
+    padding: 0 5px;
+    white-space: nowrap;
   }
   .blank {
     height: 2ch;
