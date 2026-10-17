@@ -340,10 +340,17 @@ const tabs: Tab[] = [
     line-height: 1.4;
     cursor: pointer;
   }
+  /* Highlight follows the shell's tree state, which is right in the server HTML, so it never flickers on navigation */
   .nvim-tree-trigger:hover,
-  .nvim-tree-trigger[aria-expanded='true'] {
+  .nvim-shell.tree-drawer-open .nvim-tree-trigger {
     color: var(--color-nvim-yellow);
     border-color: var(--color-nvim-yellow);
+  }
+  @media (min-width: 761px) {
+    .nvim-shell:not(.tree-hidden) .nvim-tree-trigger {
+      color: var(--color-nvim-yellow);
+      border-color: var(--color-nvim-yellow);
+    }
   }
   .nvim-tree-trigger:focus-visible {
     outline: 1px solid var(--color-nvim-yellow);
@@ -671,6 +678,10 @@ const tabs: Tab[] = [
     color: var(--color-nvim-fg);
     gap: 5px;
   }
+  .sl-b {
+    color: var(--sl-mode);
+    transition: color 0.12s ease;
+  }
   .branch-icon {
     font-family: 'Terminess Nerd Font Icons', var(--font-mono);
     font-size: 16px;
@@ -957,7 +968,9 @@ const tabs: Tab[] = [
     closeButton.addEventListener('click', () => setOpen(false));
 
     tree.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
-      link.addEventListener('click', () => setOpen(false));
+      link.addEventListener('click', () => {
+        if (window.matchMedia(DRAWER_QUERY).matches) setOpen(false);
+      });
     });
 
     document.addEventListener('keydown', (event) => {
@@ -1681,5 +1694,6 @@ const tabs: Tab[] = [
   document.addEventListener('astro:page-load', initNvimTree);
   document.addEventListener('astro:page-load', initStatusline);
   document.addEventListener('astro:page-load', initBuffers);
+  document.addEventListener('astro:after-swap', applyTreeHidden);
   document.addEventListener('astro:page-load', applyTreeHidden);
 </script>
