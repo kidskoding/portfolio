@@ -16,7 +16,7 @@ import { milestones, commitTypeColor } from '../data/milestones';
         <div class="commit-body">
           <div class="commit-msg-row">
             <span class="commit-hash">{m.hash}</span>
-            <span class="commit-type" style={`color: ${commitTypeColor[m.type] ?? 'var(--color-nvim-comment)'}`}>
+            <span class="commit-type" style={`color: ${commitTypeColor[m.type] ?? 'var(--color-nvim-fg3)'}`}>
               {m.type}:
             </span>
             <span class="commit-msg">{m.msg}</span>
@@ -34,10 +34,10 @@ import { milestones, commitTypeColor } from '../data/milestones';
 
 <style>
   .git-log-title {
-    color: var(--color-nvim-fg-dark);
+    color: var(--color-nvim-fg2);
   }
   .git-log-prompt {
-    color: var(--color-nvim-magenta);
+    color: var(--color-nvim-red);
   }
   .commit-list {
     display: flex;
@@ -61,17 +61,17 @@ import { milestones, commitTypeColor } from '../data/milestones';
     margin-top: 4px;
   }
   .dot-head {
-    background: var(--color-nvim-teal);
-    box-shadow: 0 0 8px rgba(130, 170, 255, 0.5);
+    background: var(--color-nvim-yellow);
+    box-shadow: 0 0 8px rgba(250, 189, 47, 0.5);
   }
   .dot-past {
-    background: var(--color-nvim-fg-gutter);
-    border: 1px solid var(--color-nvim-bg-highlight);
+    background: var(--color-nvim-bg3);
+    border: 1px solid var(--color-nvim-bg2);
   }
   .commit-line {
     width: 1px;
     flex: 1;
-    background: var(--color-nvim-fg-gutter);
+    background: var(--color-nvim-bg3);
     margin: 3px 0;
     min-height: 16px;
   }
@@ -86,7 +86,7 @@ import { milestones, commitTypeColor } from '../data/milestones';
   .commit-hash {
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--color-nvim-fg-dark);
+    color: var(--color-nvim-fg2);
     margin-right: 5px;
   }
   .commit-type {
@@ -102,9 +102,9 @@ import { milestones, commitTypeColor } from '../data/milestones';
   .commit-tag {
     font-family: var(--font-mono);
     font-size: 14px;
-    background: var(--color-nvim-bg-highlight);
-    color: var(--color-nvim-fg-dark);
-    border: 1px solid var(--color-nvim-fg-gutter);
+    background: var(--color-nvim-bg2);
+    color: var(--color-nvim-fg2);
+    border: 1px solid var(--color-nvim-bg3);
     padding: 0 5px;
     border-radius: 2px;
     margin-left: 5px;
@@ -113,18 +113,18 @@ import { milestones, commitTypeColor } from '../data/milestones';
   .commit-date {
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--color-nvim-orange);
+    color: var(--color-nvim-aqua);
     margin-top: 6px;
   }
   .commit-more {
     font-family: var(--font-mono);
     font-size: 14px;
-    color: var(--color-nvim-comment);
+    color: var(--color-nvim-fg3);
     padding-left: 23px;
     margin-top: 4px;
   }
   .commit-more a {
-    color: var(--color-nvim-teal);
+    color: var(--color-nvim-blue);
     text-decoration: none;
   }
   .commit-more a:hover {

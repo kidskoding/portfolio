@@ -40,7 +40,7 @@ src/
 ├── data/
 │   ├── experience.ts   # Work experience entries
 │   ├── education.ts    # Education entries
-│   ├── language-colors.ts # GitHub language hex per language (fixed colors, never themed)
+│   ├── language-colors.ts # GitHub language hex per language (fixed colors, never gruvboxed)
 │   ├── devicons.ts     # nvim-web-devicons glyphs for file icons (tree, tabs, statusline, Telescope)
 │   ├── project-sort.ts # Shared gallery and case-study ordering
 │   ├── certificates.ts # Certificates; PDF paths come from PUBLIC_CERTIFICATE_PDFS env var
@@ -60,12 +60,11 @@ src/
 │   ├── package-json.astro # Renders package.json as a JSON buffer (/package-json)
 │   └── blog/
 └── styles/
-    ├── global.css
-    └── shiki-tokyonight-moon.json # Shiki code theme, converted from the vendored tokyonight tmTheme
+    └── global.css
 
 flake.nix             # Nix dev shell + `nix run` apps wrapping bun scripts
 .forgejo/workflows/ci.yml # Codeberg Forgejo Actions: format, alejandra, astro check, build; master then deploys to Vercel via the Vercel CLI
-vendor/tokyonight/    # folke/tokyonight.nvim git subtree (squashed), reference for palette + highlight roles (not built)
+vendor/gruvbox/       # morhetz/gruvbox git subtree, reference for palette + highlight roles (not built)
 ```
 
 ## Key Conventions
@@ -83,7 +82,7 @@ Add an `.mdx` file to `src/content/blog/` or use `/blog-post`. Frontmatter field
 Add an `.mdx` file to `src/content/projects/` or use `/add-project`. Frontmatter fields: `title`, `description`, `category` (`project` | `hackathon` | `agentic`), `repo`, `language`, `stack`, `date`, and optional `cover`, `event`, `placement`, `order`, and `draft`. Tiles sort by `order` then newest `date`. A project with a cover lives at `src/content/projects/<slug>/index.mdx` with `cover.png` beside it. Projects open as `<slug>.mdx` buffers and appear in NvimTree and Telescope automatically.
 
 ### Colors
-TokyoNight Moon palette by role, like a colorscheme (`vendor/tokyonight/lua/tokyonight/colors/moon.lua` and `groups/`): page h1 keeps the blue-magenta `gradient-text`; section titles, card titles and eyebrow labels blue (`Title`); dates orange (`Number`); links teal (`@markup.link`), cyan on hover; tags yellow; event badges cyan; placement badges purple; prompts magenta (Telescope prompt prefix); blog post `##` yellow and `###` green (markdown heading rainbow), bold text plain fg; inline code blue on terminal_black (`@markup.raw.markdown_inline`); code blocks use `src/styles/shiki-tokyonight-moon.json`, converted from `vendor/tokyonight/extras/sublime/tokyonight_moon.tmTheme`, on bg_dark (`astro.config.mjs`); separators, icons and hints comment/dark5; cursor and timeline dot blue; active tab indicator git.change; lualine, Telescope, NvimTree and the help sheet follow their tokyonight groups. `--color-nvim-*` tokens in `global.css` use tokyonight palette key names (`bg-dark`, `bg-highlight`, `fg-gutter`, `comment`, `fg-dark`, `teal`, `magenta`, ...). Use `text-nvim-*` utilities, never raw hex. Fixed colors (GitHub language colors, brand icons, company logos, file-type icons use their nvim-web-devicons default via `--color-devicon-*` tokens in `global.css`) stay unchanged.
+Gruvbox palette by role, like a colorscheme (`vendor/gruvbox/colors/gruvbox.vim`): page h1 keeps the yellow-orange `gradient-text`; section titles, card titles and eyebrow labels green; dates aqua; links blue, aqua on hover; tags yellow; blog post `##`/`###` headings yellow and bold text green; inline code in blog posts orange on bg-hard (not aqua: aqua is link hover and dates); code blocks use Shiki's `gruvbox-dark-hard` theme (`astro.config.mjs`); event badges orange; placement badges purple; prompts red; separators, icons and hints gray/fg3; cursor, active tab and timeline dot yellow; the home intro copies nvim's own intro under gruvbox (logo orange and green, header green, commands blue, `:`, `<Enter>` and separators bg3). Use `text-nvim-*` utilities, never raw hex. Fixed colors (GitHub language colors, brand icons, company logos, file-type icons use their nvim-web-devicons default via `--color-devicon-*` tokens in `global.css`) stay unchanged.
 
 ### Keyboard layer
 `NvimChrome.astro` binds site-wide vim keys once per document: `j`/`k`/arrows scroll the editor pane, `ctrl+d`/`ctrl+u`, `gg`/`G`, `]b`/`[b` switch buffers, `space e` toggles the tree (same as the `☰ NvimTree` titlebar button: a drawer at 760px and below, the sidebar column above), `space space`, `space ff` or `ctrl+k` opens Telescope (centered, about 70% x 65% of the window, capped at 820x600), `space bd` closes the buffer, `:` opens a command line (`:q`, `:e <file>`, `:bn`, `:bp`, `:help`), `?` opens the help sheet. A page can claim keys with `data-vim-layer="grid"` on its `<main>` (projects gallery does). Cards marked `data-vim-item` turn `h`/`j`/`k`/`l` into a card cursor (`Enter` opens, `gg`/`G` jump); the cursor carries the `.vim-cursor` class, which the `hover` variant in `global.css` treats like a real hover. The home intro behaves like nvim's: it shows only on launch, meaning a fresh document load of `/` with no `nvim:launched` sessionStorage key (a reload clears it), or after `:qa` or closing the last buffer (they set `nvim:relaunch`). Any page load sets `nvim:launched`, so soft navigation to `/` (tree, `:e index.astro`) opens the buffer directly. A key press clears the intro; scrolling and clicking do nothing, like an empty nvim buffer. While it shows, `html[data-intro='on']` turns the index tab, titlebar and statusline into a `[No Name]` buffer (SVG file icon in `--color-devicon-default`) and hides the winbar and file info; `[No Name]` has no close button and `:q`/`:bd`/`space bd` leave it open. On touch screens (`hover: none`) the intro rows read `tap :cmd` without `<Enter>`, and the `:help` row is hidden. Every tab can be closed; there are no pinned tabs. Any element with `data-nvim-cmd="<command>"` runs that command on click, the same as typing it after `:` (the home intro rows use this). Every key has a mouse equivalent. Statusline mode reflects NORMAL / INSERT / VISUAL / COMMAND.

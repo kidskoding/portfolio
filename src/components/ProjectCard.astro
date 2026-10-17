@@ -33,10 +33,10 @@ const extra = stack.length - shownStack.length;
 
   <div class="flex min-w-0 flex-1 flex-col gap-2 p-5">
     <div class="flex min-w-0 items-start justify-between gap-3">
-      <span class="truncate text-sm font-semibold text-nvim-blue">{title}</span>
+      <span class="truncate text-sm font-semibold text-nvim-green">{title}</span>
       {(event || placement) && (
         <div class="flex shrink-0 flex-wrap justify-end gap-1.5">
-          {event && <span class="font-mono text-[10px] font-semibold text-nvim-cyan">{event}</span>}
+          {event && <span class="font-mono text-[10px] font-semibold text-nvim-orange">{event}</span>}
           {placement && <span class="font-mono text-[10px] font-semibold text-nvim-purple">{placement}</span>}
         </div>
       )}
@@ -73,7 +73,7 @@ const extra = stack.length - shownStack.length;
   }
   .project-tile.tile-cursor,
   .project-tile:focus-visible {
-    outline-color: var(--color-nvim-teal);
+    outline-color: var(--color-nvim-yellow);
   }
 </style>
 

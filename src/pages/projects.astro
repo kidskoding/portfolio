@@ -19,7 +19,7 @@ const groups = tabs.map((tab) => ({
 <Layout title="Projects">
   <main class="mx-auto w-full max-w-3xl px-6 py-8" id="main-content" data-vim-layer="grid">
     <div data-animate>
-      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-nvim-blue">Projects</p>
+      <p class="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-nvim-green">Projects</p>
       <h1 class="gradient-text text-4xl font-bold tracking-tight md:text-5xl">Projects</h1>
       <p class="mt-3 text-base text-text-muted">things i've built. click on a tile!</p>
     </div>
@@ -49,11 +49,11 @@ const groups = tabs.map((tab) => ({
       class="mt-4 flex min-w-0 items-center gap-2 border border-border-subtle bg-bg-secondary px-3 py-2 font-mono"
       data-animate
     >
-      <span class="font-bold text-nvim-magenta" aria-hidden="true">
+      <span class="font-bold text-nvim-red" aria-hidden="true">
         &gt;
       </span>
       <input
-        class="min-w-0 flex-1 border-0 bg-transparent text-sm text-text-primary outline-none placeholder:text-nvim-comment"
+        class="min-w-0 flex-1 border-0 bg-transparent text-sm text-text-primary outline-none placeholder:text-nvim-gray"
         id="project-filter"
         type="search"
         placeholder="filter tiles..."
@@ -79,7 +79,7 @@ const groups = tabs.map((tab) => ({
         href="https://github.com/kidskoding"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-nvim-teal hover:underline"
+        class="text-nvim-blue hover:underline"
       >
         more on github &rarr;
       </a>
@@ -89,8 +89,8 @@ const groups = tabs.map((tab) => ({
 
 <style>
   .tab-btn[aria-selected='true'] {
-    color: var(--color-nvim-teal);
-    border-color: var(--color-nvim-git-change);
+    color: var(--color-nvim-green);
+    border-color: var(--color-nvim-yellow);
   }
   .tab-btn[aria-selected='false'] {
     color: var(--color-text-muted);

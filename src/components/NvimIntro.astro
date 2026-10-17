@@ -4,8 +4,8 @@ import { version } from '../../package.json';
 const repo = 'https://codeberg.org/kidskoding/portfolio';
 const linkedin = 'https://www.linkedin.com/in/anirudh-konidala';
 
-type Cell = { ch: string; blue: boolean };
-const cells = (row: string, blueCount: number): Cell[] => [...row].map((ch, i) => ({ ch, blue: i < blueCount }));
+type Cell = { ch: string; orange: boolean };
+const cells = (row: string, orangeCount: number): Cell[] => [...row].map((ch, i) => ({ ch, orange: i < orangeCount }));
 const logo = [cells('│ ╲ ││', 1), cells('││╲╲││', 2), cells('││ ╲ │', 2)];
 
 const groups = [
@@ -32,8 +32,8 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     <div aria-hidden="true">
       {logo.map((row) => (
         <div class="logo-row">
-          {row.map(({ ch, blue }) => (
-            <span class:list={['cell', blue ? 'text-nvim-blue1' : 'text-nvim-green']}>
+          {row.map(({ ch, orange }) => (
+            <span class:list={['cell', orange ? 'text-nvim-orange' : 'text-nvim-green']}>
               {ch !== ' ' && (
                 <svg viewBox="0 0 1 2" preserveAspectRatio="none">
                   {ch === '│' ? <line x1="0.5" y1="0" x2="0.5" y2="2" /> : <line x1="0" y1="0" x2="1" y2="2" />}
@@ -50,11 +50,11 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     <p class="line">This is the portfolio of Anirudh Konidala,</p>
     <p class="line">
       which is open source and freely distributable on{' '}
-      <a class="text-nvim-teal hover:text-nvim-cyan" href={repo} target="_blank" rel="noopener noreferrer">
+      <a class="text-nvim-blue hover:text-nvim-aqua" href={repo} target="_blank" rel="noopener noreferrer">
         Codeberg
       </a>
     </p>
-    <a class="line text-nvim-teal hover:text-nvim-cyan" href={linkedin} target="_blank" rel="noopener noreferrer">
+    <a class="line text-nvim-blue hover:text-nvim-aqua" href={linkedin} target="_blank" rel="noopener noreferrer">
       {linkedin.replace('https://www.', '')}
     </a>
     {groups.map((rows) => (
@@ -65,9 +65,9 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
             <button type="button" class:list={['line intro-row', { 'keys-only': cmd === 'help' }]} data-nvim-cmd={cmd}>
               <span class="verb-type">{'type  '}</span>
               <span class="verb-tap">{'tap   '}</span>
-              <span class="text-nvim-dark3">:</span>
-              <span class="cmd text-nvim-magenta">{cmd}</span>
-              <span class="enter text-nvim-dark3">&lt;Enter&gt;</span>
+              <span class="text-nvim-bg3">:</span>
+              <span class="cmd text-nvim-blue">{cmd}</span>
+              <span class="enter text-nvim-bg3">&lt;Enter&gt;</span>
               <span class="hidden sm:inline">{pad(cmd) + desc.padEnd(descWidth)}</span>
             </button>
           ))}
@@ -92,9 +92,9 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     white-space: pre-wrap;
   }
   .tree-chip {
-    border: 1px solid var(--color-nvim-fg-gutter);
-    background: var(--color-nvim-bg-highlight);
-    color: var(--color-nvim-fg-dark);
+    border: 1px solid var(--color-nvim-bg3);
+    background: var(--color-nvim-bg1);
+    color: var(--color-nvim-fg2);
     padding: 0 5px;
     white-space: nowrap;
   }
@@ -123,7 +123,7 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
   }
   .sep {
     height: 2ch;
-    background: linear-gradient(var(--color-nvim-dark3), var(--color-nvim-dark3)) center / 100% 1px no-repeat;
+    background: linear-gradient(var(--color-nvim-bg3), var(--color-nvim-bg3)) center / 100% 1px no-repeat;
   }
   .intro-row {
     width: 100%;
@@ -149,10 +149,10 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     }
   }
   .intro-row:hover {
-    background: var(--color-nvim-bg-highlight);
+    background: var(--color-nvim-bg1);
   }
   .intro-row:focus-visible {
-    outline: 1px solid var(--color-nvim-blue);
+    outline: 1px solid var(--color-nvim-yellow);
     outline-offset: -1px;
   }
 </style>

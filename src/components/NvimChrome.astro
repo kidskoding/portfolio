@@ -309,18 +309,18 @@ const tabs: Tab[] = [
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-    background: var(--color-nvim-bg-dark);
+    background: var(--color-nvim-bg-hard);
     font-family: var(--font-mono);
   }
 
   .nvim-titlebar {
     position: relative;
-    background: var(--color-nvim-bg-dark);
+    background: var(--color-nvim-bg-hard);
     padding: 4px 14px;
     text-align: center;
     font-size: 14px;
-    color: var(--color-nvim-fg-dark);
-    border-bottom: 1px solid var(--color-nvim-black);
+    color: var(--color-nvim-fg2);
+    border-bottom: 1px solid var(--color-nvim-bg);
     flex-shrink: 0;
   }
   .nvim-tree-trigger {
@@ -331,9 +331,9 @@ const tabs: Tab[] = [
     left: 8px;
     top: 50%;
     transform: translateY(-50%);
-    border: 1px solid var(--color-nvim-fg-gutter);
-    background: var(--color-nvim-bg-highlight);
-    color: var(--color-nvim-fg-dark);
+    border: 1px solid var(--color-nvim-bg3);
+    background: var(--color-nvim-bg1);
+    color: var(--color-nvim-fg2);
     padding: 1px 7px;
     font-family: var(--font-mono);
     font-size: 14px;
@@ -342,18 +342,18 @@ const tabs: Tab[] = [
   }
   .nvim-tree-trigger:hover,
   .nvim-tree-trigger[aria-expanded='true'] {
-    color: var(--color-nvim-blue);
-    border-color: var(--color-nvim-blue);
+    color: var(--color-nvim-yellow);
+    border-color: var(--color-nvim-yellow);
   }
   .nvim-tree-trigger:focus-visible {
-    outline: 1px solid var(--color-nvim-blue);
+    outline: 1px solid var(--color-nvim-yellow);
     outline-offset: 2px;
   }
 
   .nvim-bufferline {
     display: flex;
-    background: var(--color-nvim-bg-dark);
-    border-bottom: 1px solid var(--color-nvim-black);
+    background: var(--color-nvim-bg);
+    border-bottom: 1px solid var(--color-nvim-bg-hard);
     flex-shrink: 0;
     overflow-x: auto;
     scrollbar-width: none;
@@ -367,8 +367,8 @@ const tabs: Tab[] = [
     display: flex;
     align-items: center;
     font-size: 14px;
-    color: var(--color-nvim-comment);
-    border-right: 1px solid var(--color-nvim-black);
+    color: var(--color-nvim-fg2);
+    border-right: 1px solid var(--color-nvim-bg-hard);
     white-space: nowrap;
     flex-shrink: 0;
     transition: color 0.15s;
@@ -377,12 +377,12 @@ const tabs: Tab[] = [
     display: none;
   }
   .nvim-buffer:hover {
-    color: var(--color-nvim-fg-dark);
+    color: var(--color-nvim-fg2);
   }
   .nvim-buffer.active {
-    background: var(--color-nvim-bg);
+    background: var(--color-nvim-bg1);
     color: var(--color-nvim-fg);
-    border-top: 2px solid var(--color-nvim-git-change);
+    border-top: 2px solid var(--color-nvim-yellow);
   }
 
   .buf-link {
@@ -407,7 +407,7 @@ const tabs: Tab[] = [
     border: 0;
     border-radius: 3px;
     background: transparent;
-    color: var(--color-nvim-comment);
+    color: var(--color-nvim-fg3);
     font-family: var(--font-mono);
     font-size: 14px;
     line-height: 1;
@@ -423,12 +423,12 @@ const tabs: Tab[] = [
     opacity: 1;
   }
   .buf-close:hover {
-    background: var(--color-nvim-fg-gutter);
-    color: var(--color-nvim-red);
+    background: var(--color-nvim-bg3);
+    color: var(--color-nvim-red, var(--color-nvim-yellow));
   }
   .buf-close:focus-visible {
     opacity: 1;
-    outline: 1px solid var(--color-nvim-blue);
+    outline: 1px solid var(--color-nvim-yellow);
     outline-offset: -1px;
   }
 
@@ -444,8 +444,8 @@ const tabs: Tab[] = [
 
   .nvimtree {
     width: 320px;
-    background: var(--color-nvim-bg-dark);
-    border-right: 2px solid var(--color-nvim-black);
+    background: var(--color-nvim-bg);
+    border-right: 2px solid var(--color-nvim-bg-hard);
     flex-shrink: 0;
     overflow-y: auto;
     font-size: 14px;
@@ -454,7 +454,7 @@ const tabs: Tab[] = [
     width: 3px;
   }
   .nvimtree::-webkit-scrollbar-thumb {
-    background: var(--color-nvim-fg-gutter);
+    background: var(--color-nvim-bg3);
   }
 
   .tree-folder {
@@ -473,7 +473,7 @@ const tabs: Tab[] = [
     text-align: left;
   }
   .tree-folder:hover {
-    background: var(--color-nvim-bg-highlight);
+    background: var(--color-nvim-bg1);
   }
   .tree-folder:not(button) {
     cursor: default;
@@ -482,13 +482,13 @@ const tabs: Tab[] = [
     background: transparent;
   }
   .tree-folder:focus-visible {
-    outline: 1px solid var(--color-nvim-blue);
+    outline: 1px solid var(--color-nvim-yellow);
     outline-offset: -1px;
   }
   .tree-caret {
     width: 10px;
     flex-shrink: 0;
-    color: var(--color-nvim-comment);
+    color: var(--color-nvim-fg3);
   }
   [data-tree-group][hidden] {
     display: none;
@@ -498,17 +498,17 @@ const tabs: Tab[] = [
     align-items: center;
     gap: 6px;
     padding: 2px 10px;
-    color: var(--color-nvim-fg-dark);
+    color: var(--color-nvim-fg2);
     font-size: 14px;
     line-height: 1.8;
     text-decoration: none;
     transition: background 0.1s;
   }
   .tree-file:hover {
-    background: var(--color-nvim-bg-highlight);
+    background: var(--color-nvim-bg1);
   }
   .tree-file.tree-active {
-    background: var(--color-nvim-fg-gutter);
+    background: var(--color-nvim-bg2);
     color: var(--color-nvim-fg);
   }
 
@@ -571,7 +571,7 @@ const tabs: Tab[] = [
   }
   :global(html[data-intro='on']) .tree-file.tree-active:not(:hover) {
     background: transparent;
-    color: var(--color-nvim-fg-dark);
+    color: var(--color-nvim-fg2);
   }
   .noname-icon {
     width: 22px;
@@ -588,11 +588,11 @@ const tabs: Tab[] = [
   }
 
   .nvim-winbar {
-    background: var(--color-nvim-bg-dark);
+    background: var(--color-nvim-bg1);
     padding: 3px 14px;
     font-size: 14px;
-    color: var(--color-nvim-fg-dark);
-    border-bottom: 1px solid var(--color-nvim-black);
+    color: var(--color-nvim-fg2);
+    border-bottom: 1px solid var(--color-nvim-bg-hard);
     flex-shrink: 0;
     display: flex;
     align-items: center;
@@ -602,11 +602,11 @@ const tabs: Tab[] = [
     color: var(--color-nvim-blue);
   }
   .winbar-sep {
-    color: var(--color-nvim-comment);
+    color: var(--color-nvim-fg3);
     margin: 0 6px;
   }
   .winbar-file {
-    color: var(--color-nvim-fg);
+    color: var(--color-nvim-yellow);
   }
 
   .nvim-editor {
@@ -620,7 +620,7 @@ const tabs: Tab[] = [
     width: 4px;
   }
   .nvim-editor::-webkit-scrollbar-thumb {
-    background: var(--color-nvim-fg-gutter);
+    background: var(--color-nvim-bg3);
   }
 
   .nvim-statusline {
@@ -630,20 +630,20 @@ const tabs: Tab[] = [
     height: 22px;
     flex-shrink: 0;
     overflow: hidden;
-    background: var(--color-nvim-bg-dark);
-    --sl-mode: var(--color-nvim-blue);
+    background: var(--color-nvim-bg2);
+    --sl-mode: var(--color-nvim-yellow-dim);
   }
   .nvim-statusline[data-mode='INSERT'] {
-    --sl-mode: var(--color-nvim-green);
+    --sl-mode: var(--color-nvim-blue);
   }
   .nvim-statusline[data-mode='VISUAL'] {
-    --sl-mode: var(--color-nvim-magenta);
+    --sl-mode: var(--color-nvim-orange);
   }
   .nvim-statusline[data-mode='COMMAND'] {
-    --sl-mode: var(--color-nvim-yellow);
+    --sl-mode: var(--color-nvim-green);
   }
 
-  /* lualine tokyonight: a/z take the mode color, b/y fg_gutter with mode-colored text, c/x bg_dark */
+  /* lualine gruvbox: a/z take the mode color, b/y bg3, c/x bg2 */
   .sl-a,
   .sl-b,
   .sl-c,
@@ -658,7 +658,7 @@ const tabs: Tab[] = [
   .sl-a,
   .sl-z {
     background: var(--sl-mode);
-    color: var(--color-nvim-black);
+    color: var(--color-nvim-bg);
     font-weight: 700;
     transition: background 0.12s ease;
   }
@@ -667,10 +667,9 @@ const tabs: Tab[] = [
   }
   .sl-b,
   .sl-y {
-    background: var(--color-nvim-fg-gutter);
-    color: var(--sl-mode);
+    background: var(--color-nvim-bg3);
+    color: var(--color-nvim-fg);
     gap: 5px;
-    transition: color 0.12s ease;
   }
   .branch-icon {
     font-family: 'Terminess Nerd Font Icons', var(--font-mono);
@@ -679,7 +678,7 @@ const tabs: Tab[] = [
     flex-shrink: 0;
   }
   .sl-c {
-    color: var(--color-nvim-fg-dark);
+    color: var(--color-nvim-fg2);
     flex-shrink: 1;
     min-width: 0;
     overflow: hidden;
@@ -690,12 +689,12 @@ const tabs: Tab[] = [
     flex: 1;
   }
   .sl-x {
-    color: var(--color-nvim-fg-dark);
+    color: var(--color-nvim-fg2);
   }
   .sl-x-div {
     display: flex;
     align-items: center;
-    color: var(--color-nvim-comment);
+    color: var(--color-nvim-fg3);
     flex-shrink: 0;
   }
   .sl-filetype {
@@ -721,7 +720,7 @@ const tabs: Tab[] = [
   }
 
   .sl-showcmd {
-    color: var(--color-nvim-fg-dark);
+    color: var(--color-nvim-fg2);
     padding: 0 8px;
     min-width: 0;
   }
@@ -747,7 +746,7 @@ const tabs: Tab[] = [
     height: 22px;
     padding: 0 10px;
     flex-shrink: 0;
-    background: var(--color-nvim-bg);
+    background: var(--color-nvim-bg-hard);
     font-size: 14px;
     color: var(--color-nvim-fg);
   }
@@ -770,7 +769,7 @@ const tabs: Tab[] = [
     padding: 0;
     color: var(--color-nvim-fg);
     font: inherit;
-    caret-color: var(--color-nvim-fg);
+    caret-color: var(--color-nvim-yellow);
   }
   .cmd-msg {
     color: var(--color-nvim-fg);
@@ -798,7 +797,7 @@ const tabs: Tab[] = [
     position: absolute;
     inset: 0;
     border: 0;
-    background: rgba(25, 27, 41, 0.75);
+    background: rgba(10, 8, 5, 0.75);
     cursor: default;
   }
   .nvim-help-panel {
@@ -807,19 +806,19 @@ const tabs: Tab[] = [
     max-width: calc(100vw - 32px);
     max-height: calc(100vh - 32px);
     overflow-y: auto;
-    background: var(--color-nvim-bg-dark);
-    border: 1px solid var(--color-nvim-border-highlight);
+    background: var(--color-nvim-bg1);
+    border: 1px solid var(--color-nvim-bg3);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
     padding: 14px 18px;
     font-size: 14px;
   }
   .nvim-help-title {
-    color: var(--color-nvim-blue);
+    color: var(--color-nvim-green);
     font-weight: 700;
     margin-bottom: 8px;
   }
   .nvim-help-sub {
-    color: var(--color-nvim-blue);
+    color: var(--color-nvim-fg2);
     margin: 10px 0 4px;
   }
   .nvim-help dl {
@@ -829,14 +828,14 @@ const tabs: Tab[] = [
     margin: 0;
   }
   .nvim-help dt {
-    color: var(--color-nvim-cyan);
+    color: var(--color-nvim-yellow);
   }
   .nvim-help dd {
-    color: var(--color-nvim-magenta);
+    color: var(--color-nvim-fg2);
     margin: 0;
   }
   .nvim-help-hint {
-    color: var(--color-nvim-comment);
+    color: var(--color-nvim-fg2);
     margin-top: 12px;
   }
 
@@ -877,7 +876,7 @@ const tabs: Tab[] = [
       inset: 0 auto 0 0;
       z-index: 20;
       width: min(82vw, 300px);
-      border-right: 2px solid var(--color-nvim-border-highlight);
+      border-right: 2px solid var(--color-nvim-yellow);
       box-shadow: 18px 0 40px rgba(0, 0, 0, 0.55);
       transform: translateX(-100%);
       transition: transform 0.18s ease;
@@ -893,7 +892,7 @@ const tabs: Tab[] = [
       inset: 0;
       z-index: 10;
       border: 0;
-      background: rgba(25, 27, 41, 0.58);
+      background: rgba(10, 8, 5, 0.58);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.18s ease;
