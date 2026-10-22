@@ -108,7 +108,14 @@ Each example file starts with the line `if true then return {} end`, which keeps
 
 After the plugins finish installing and you restart, AstroNvim opens on a dashboard you can click or drive with single keys:
 
-![Stock AstroNvim dashboard after the first restart, before any theme](./screenshots/dashboard.png)
+<img
+  src="/blog/vscode-to-neovim/dashboard.png"
+  alt="Stock AstroNvim dashboard after the first restart, before any theme"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
 
 <br />
 
@@ -154,7 +161,14 @@ return {
 
 Save both files and run `nvim`, and it downloads gruvbox.nvim and opens with it. On the inventory demo file you get gruvbox with AstroNvim's default status bar — the yellow Normal-mode segment comes in the next step:
 
-![AstroNvim with gruvbox open on report.py, before lualine](./screenshots/astro-gruvbox.png)
+<img
+  src="/blog/vscode-to-neovim/astro-gruvbox.png"
+  alt="AstroNvim with gruvbox open on report.py, before lualine"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
 
 <br />
 
@@ -221,11 +235,25 @@ return {
 
 lualine's icons come from a [Nerd Font](https://www.nerdfonts.com), so if they show up as empty boxes, see [the appendix](#fonts-and-icons). With the overrides above, Normal mode gets the yellow segment on the left, and Insert mode switches to a teal one:
 
-![lualine status bar in Normal mode](./screenshots/statusline-normal.png)
+<img
+  src="/blog/vscode-to-neovim/statusline-normal.png"
+  alt="lualine status bar in Normal mode"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
 
 <br />
 
-![lualine status bar in Insert mode](./screenshots/statusline-insert.png)
+<img
+  src="/blog/vscode-to-neovim/statusline-insert.png"
+  alt="lualine status bar in Insert mode"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
 
 <br />
 
@@ -271,7 +299,14 @@ A line that starts with `--` is a comment, so the two commented lines do nothing
 
 Save the file and run `nvim`. The language tools install in the background, and `:Mason` opens a window where you can watch them finish. After this step, ty and Ruff both show up under Installed:
 
-![Mason window with ty and Ruff installed](./screenshots/mason.png)
+<img
+  src="/blog/vscode-to-neovim/mason.png"
+  alt="Mason window with ty and Ruff installed"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
 
 <br />
 
@@ -378,7 +413,14 @@ In VS Code, you probably open files with `Ctrl/Cmd+P` more often than with the s
 
 Press Space on its own first and wait a moment. A menu appears listing every key that can come next, grouped by category, such as `f` for finding things and `g` for Git. That menu comes from a plugin called [which-key](https://github.com/folke/which-key.nvim), and it's the reason **you don't have to memorize anything in this post: if you forget a key, press Space and read the menu.** Press `Esc` to close it.
 
-![which-key menu after pressing Space](./screenshots/which-key.png)
+<img
+  src="/blog/vscode-to-neovim/which-key.png"
+  alt="which-key menu after pressing Space"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
 
 <br />
 
@@ -398,13 +440,27 @@ There was no single command that flipped a switch for me. The model clicked beca
 
 Changing the quantity to a string broke the types, and a red error message has appeared at the end of the line. ty reports it as `Argument is incorrect: Expected 'int', found 'Literal["5"]'`:
 
-![ty type error after changing the quantity to a string](./screenshots/ty-error.png)
+<img
+  src="/blog/vscode-to-neovim/ty-error.png"
+  alt="ty type error after changing the quantity to a string"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
 
 <br />
 
 When a message is too long to read there, `gl` shows it in full:
 
-![Full diagnostic float for the ty error](./screenshots/ty-error-full.png)
+<img
+  src="/blog/vscode-to-neovim/ty-error-full.png"
+  alt="Full diagnostic float for the ty error"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
 
 <br />
 

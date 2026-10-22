@@ -297,9 +297,8 @@ body::before {
   animation: pulse-dot 3s ease-in-out infinite;
 }
 
-/* Scroll-triggered animation base states */
+/* GSAP fromTo sets the initial hidden state; keep content visible if JS never runs */
 [data-animate] {
-  opacity: 0;
   transform: translateY(8px);
 }
 

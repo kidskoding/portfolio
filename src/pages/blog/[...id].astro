@@ -61,18 +61,3 @@ const linkAt = titleLink ? title.indexOf(titleLink.text) : -1;
     </div>
   </article>
 </BlogLayout>
-
-{/* Lazy-load uses the window viewport; images live in .nvim-editor's overflow scroller, so they never trip. Load them eagerly. */}
-<script>
-  function eagerBlogImages() {
-    document.querySelectorAll<HTMLImageElement>('.blog-content img').forEach((img) => {
-      img.loading = 'eager';
-      if (!img.complete && img.src) {
-        // re-assign so a previously-deferred request actually starts
-        img.src = img.src;
-      }
-    });
-  }
-  eagerBlogImages();
-  document.addEventListener('astro:page-load', eagerBlogImages);
-</script>
