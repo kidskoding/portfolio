@@ -162,7 +162,7 @@ That's the whole configuration process: **open or create a file, write the few l
 
 ### The status bar, tabs, and icons
 
-The tabs along the top and the breadcrumb line above the code are already set up, but AstroNvim's status bar along the bottom shows little more than your position in the file. Most people replace it with [lualine](https://github.com/nvim-lualine/lualine.nvim), which shows the mode, the file, the Git branch, and any errors.
+The tabs along the top and the breadcrumb line above the code are already set up, but AstroNvim's status bar along the bottom — the thin strip in the screenshot above — shows little more than your position in the file. Most people replace it with [lualine](https://github.com/nvim-lualine/lualine.nvim), which shows the mode, the file, the Git branch, and any errors.
 
 Adding it is your first change in `lua/community.lua`, which turns on add-ons from [AstroCommunity](https://github.com/AstroNvim/astrocommunity). AstroCommunity is a community-maintained collection of ready-made plugin setups for AstroNvim, and each one includes the plugin, anything it depends on, and its keys, so a line that would otherwise mean copying 20 to 40 lines from a plugin's README becomes a single import. It works like VS Code's Extensions panel, with the difference that it isn't run by the AstroNvim team, so it's worth glancing at a module's folder on GitHub before you rely on it. Open `community.lua`, delete the `if true then return {} end` line, and add the lualine line:
 
