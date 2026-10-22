@@ -108,7 +108,7 @@ Each example file starts with the line `if true then return {} end`, which keeps
 
 After the plugins finish installing and you restart, AstroNvim opens on a dashboard you can click or drive with single keys:
 
-![AstroNvim dashboard after the first restart](./screenshots/dashboard.png)
+![Stock AstroNvim dashboard after the first restart, before any theme](./screenshots/dashboard.png)
 
 <br />
 
@@ -152,9 +152,9 @@ return {
 
 <br />
 
-Save both files and run `nvim`, and it downloads gruvbox.nvim and opens with it. The finished AstroNvim build looks like this on the inventory demo file (tabs, line numbers, and the status bar you'll set up next):
+Save both files and run `nvim`, and it downloads gruvbox.nvim and opens with it. On the inventory demo file you get gruvbox with AstroNvim's default status bar — the yellow Normal-mode segment comes in the next step:
 
-![AstroNvim with gruvbox open on report.py](./screenshots/astro-gruvbox.png)
+![AstroNvim with gruvbox open on report.py, before lualine](./screenshots/astro-gruvbox.png)
 
 <br />
 
@@ -267,25 +267,9 @@ return {
 
 The `base` line gives you everything Python needs apart from those two tools, including the syntax parser and the debugger. ty then does the job Pylance does in VS Code, checking types as you type and powering go-to-definition, rename, and documentation on hover. Ruff checks your code for style problems and likely bugs as you type, and it formats the file when you save. Don't add the plain `pack.python` line as well, because it would install a second type checker and formatter that would compete with these.
 
-A line that starts with `--` is a comment, so the two commented lines do nothing until you delete the `--` in front of them. These are the packs for the most common languages:
+A line that starts with `--` is a comment, so the two commented lines do nothing until you delete the `--` in front of them. Uncomment only the languages you actually use — each pack installs its tools when Neovim starts, and a pack for a language that isn't on your machine shows errors. Go needs `go`, Rust needs `rustup`, and Java needs a JDK; the web packs only need Node.js. AstroCommunity has packs for about 90 languages in its [pack folder](https://github.com/AstroNvim/astrocommunity/tree/main/lua/astrocommunity/pack), including TypeScript, Go, Rust, and the usual web stack, plus `prettier` and `eslint` if you used those in VS Code.
 
-| Language | Line to add | What it installs |
-|---|---|---|
-| Python | `{ import = "astrocommunity.pack.python" }` | The default: basedpyright, black, isort, and debugpy (we use ty and Ruff instead, above) |
-| JavaScript and TypeScript | `{ import = "astrocommunity.pack.typescript" }` | vtsls, which uses the same TypeScript engine as VS Code |
-| HTML and CSS | `{ import = "astrocommunity.pack.html-css" }` | HTML and CSS servers, plus Emmet |
-| JSON | `{ import = "astrocommunity.pack.json" }` | A JSON server that checks files like `package.json` |
-| Markdown | `{ import = "astrocommunity.pack.markdown" }` | Markdown tools |
-| Go | `{ import = "astrocommunity.pack.go" }` | gopls |
-| Rust | `{ import = "astrocommunity.pack.rust" }` | rust-analyzer |
-| Java | `{ import = "astrocommunity.pack.java" }` | jdtls |
-| C and C++ | `{ import = "astrocommunity.pack.cpp" }` | clangd |
-
-<br />
-
-Add only the languages you actually use, because each pack installs its tools when Neovim starts, and a pack for a language that isn't installed on your machine shows errors. Go needs `go`, Rust needs `rustup`, and Java needs a JDK, while the web packs only need Node.js. If you used Prettier or ESLint in VS Code, `astrocommunity.pack.prettier` and `astrocommunity.pack.eslint` add them the same way. AstroCommunity has packs for about 90 languages in total, listed in its [pack folder](https://github.com/AstroNvim/astrocommunity/tree/main/lua/astrocommunity/pack).
-
-Save the file and run `nvim`. The language tools install in the background, and `:Mason` opens a window where you can watch them finish. In the finished build, ty and Ruff both show up under Installed:
+Save the file and run `nvim`. The language tools install in the background, and `:Mason` opens a window where you can watch them finish. After this step, ty and Ruff both show up under Installed:
 
 ![Mason window with ty and Ruff installed](./screenshots/mason.png)
 
@@ -332,72 +316,7 @@ The files are restored when you `cd` into a project folder and run `nvim` with n
 
 ### Your whole configuration
 
-That's the whole setup. Here's every line you added or changed, using Python as the example language:
-
-```lua
--- lua/plugins/gruvbox.lua
-return {
-  "ellisonleao/gruvbox.nvim",
-  priority = 1000,
-  opts = {
-    overrides = {
-      SignColumn = { link = "Normal" },
-      FoldColumn = { link = "Normal" },
-    },
-  },
-}
-
--- lua/plugins/astroui.lua (the line you changed)
-return {
-  "AstroNvim/astroui",
-  opts = {
-    colorscheme = "gruvbox",
-  },
-}
-
--- lua/plugins/lualine.lua
-return {
-  "nvim-lualine/lualine.nvim",
-  opts = function()
-    local theme = require("lualine.themes.gruvbox_dark")
-    theme.normal.a.bg = "#fabd2f" -- gruvbox yellow for Normal mode
-    for _, mode in pairs(theme) do
-      mode.c = theme.normal.c -- same middle color in every mode
-    end
-    return { options = { theme = theme, globalstatus = true } }
-  end,
-}
-
--- lua/plugins/astrocore.lua (the line you added)
-return {
-  "AstroNvim/astrocore",
-  opts = {
-    options = {
-      opt = {
-        cmdheight = 1, -- keep lualine visible while typing a command
-      },
-    },
-  },
-}
-
--- lua/community.lua
-return {
-  "AstroNvim/astrocommunity",
-  { import = "astrocommunity.pack.lua" }, -- helps when editing these config files
-  { import = "astrocommunity.bars-and-lines.lualine-nvim" }, -- the status bar
-  { import = "astrocommunity.pack.python.base" },
-  { import = "astrocommunity.pack.python.ty" },
-  { import = "astrocommunity.pack.python.ruff" },
-
-  -- vibecoding with neovim!
-  { import = "astrocommunity.ai.claudecode-nvim" },
-  { import = "astrocommunity.recipes.auto-session-restore" },
-}
-```
-
-<br />
-
-With those five files, **you now have an editor with a theme, a full status bar, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish.
+That's the whole setup. Across five files you added gruvbox, pointed `astroui` at it, turned on lualine (with the small color overrides), set `cmdheight = 1` in `astrocore`, and filled `community.lua` with the language packs, Claude Code, and session restore. **You now have an editor with a theme, a full status bar, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish. If you want the snippets in one place, [nvimforge](https://codeberg.org/kidskoding/nvimforge) is the same build.
 
 It's a good moment to start tracking the folder with Git, including the `lazy-lock.json` file, which records the exact version of every plugin. Pushing the folder to a Git host and cloning it on another machine gives you the same editor there, which is what VS Code's Settings Sync was doing for you.
 
@@ -532,13 +451,11 @@ For me, feeling as fast as I was in VS Code was not a clean milestone after a fe
 
 ## When you want more
 
-Everything up to this point is enough to work in Neovim every day, and you can stop here for as long as you like. If you want to practice the editing keys on their own, `:Tutor` opens Neovim's built-in tutorial. When you're ready to go further, these are the next steps, roughly in the order most people find them useful.
-
-I would not recommend switching all at once. What worked for me was keeping Neovim installed, using it for small tasks, and letting VS Code stay the default whenever a full-grade app needed the comfort of an IDE. The keys stuck because they showed up in real work, not because I finished a tutorial first.
+Everything up to this point is enough to work in Neovim every day. Keep VS Code for full-grade apps if you want; the keys stick from small real tasks, not from finishing a tutorial first. `:Tutor` is there when you want drills on their own.
 
 ### Finding keys you haven't learned
 
-You never need a cheat sheet. Pressing Space shows which-key's menu of everything available, and `<Leader>fk` searches every key by its description, so you can type "split" or "format" and find the key for it, the same way you'd search VS Code's keyboard shortcuts screen. Neovim's own documentation is searchable with `<Leader>fh`, and `:Tutor` opens an interactive tutorial that covers the editing commands in more depth.
+Pressing Space shows which-key's menu, and `<Leader>fk` searches every key by description — type "split" or "format" the way you'd search VS Code's keyboard shortcuts. `<Leader>fh` searches Neovim's help.
 
 ### More editing commands
 
