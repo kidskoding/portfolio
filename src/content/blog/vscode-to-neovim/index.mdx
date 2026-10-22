@@ -15,8 +15,6 @@ The usual reasons people give for never switching are that setting Neovim up see
 
 I first opened Neovim in 2022, and I did not stick with it. For a long time I kept cycling between VS Code, [Zed](https://zed.dev), and whatever else looked promising that month, because a full-grade app still felt safer in a familiar IDE. What eventually changed was not a single clever keybinding, but rather keeping Neovim around long enough that the muscle memory had somewhere to land. This post is the setup I wish I'd had then: a complete editor first, and the keys only when a real edit needs them.
 
-> **TODO (config):** A 20–30 second GIF of the reference build performing the minute described above: open a file, jump to a function, edit an argument, rename a symbol, hit a breakpoint, commit. Without on-screen key labels, or with them small, so it shows the result rather than the notation.
-
 ---
 
 ## Why Neovim, now that AI writes so much of the code
@@ -108,7 +106,11 @@ The template has one file per job, and you'll only touch a few of them:
 
 Each example file starts with the line `if true then return {} end`, which keeps it switched off until you delete that line.
 
-> **TODO (config):** Screenshot of the first launch, and of the dashboard after restarting.
+After the plugins finish installing and you restart, AstroNvim opens on a dashboard you can click or drive with single keys:
+
+![AstroNvim dashboard after the first restart](./screenshots/dashboard.png)
+
+<br />
 
 ### The theme
 
@@ -116,7 +118,11 @@ One of the first things many people do when it comes to configuring their Neovim
 
 VS Code also has this option, where you can install themes through their **Extensions** and then pick one from the Color Theme menu. Neovim works the same way in two steps: first you install the theme as a plugin, and then you tell the editor to use it.
 
-> **TODO (config):** Side-by-side screenshot: stock `nvim --clean` vs our config with gruvbox.
+Stock Neovim on the left, and the same file in our gruvbox build on the right:
+
+![Stock nvim --clean next to the gruvbox AstroNvim config](./screenshots/clean-vs-gruvbox.png)
+
+<br />
 
 Every plugin you add gets a small file in `lua/plugins/`. The theme we'll add is [gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim), a warm, low-contrast theme that styles most popular plugins, so create `lua/plugins/gruvbox.lua` in VS Code and paste this into it:
 
@@ -154,9 +160,7 @@ return {
 
 Save both files and run `nvim`, and it downloads gruvbox.nvim and opens with it.
 
-That's the whole configuration process: **open or create a file, write the few lines you need, and restart.** Every other change in this section follows it.
-
-> **TODO (config):** Make the reference build add gruvbox.nvim with this `lua/plugins/gruvbox.lua` spec (and the contrast you actually use), and optionally add a sentence on why you like gruvbox. Confirm the theme loads on the first restart.
+That's the whole configuration process: **open or create a file, write the few lines you need, and restart.** Every other change in this section follows it. [nvimforge](https://codeberg.org/kidskoding/nvimforge) uses this same gruvbox setup, which is why the screenshots in this post match the snippets above.
 
 ### The status bar, tabs, and icons
 
@@ -217,9 +221,15 @@ return {
 
 `astrocore.lua` is where any other editor setting goes too, the same way you'd change something in VS Code's `settings.json`.
 
-lualine's icons come from a [Nerd Font](https://www.nerdfonts.com), so if they show up as empty boxes, see [the appendix](#fonts-and-icons).
+lualine's icons come from a [Nerd Font](https://www.nerdfonts.com), so if they show up as empty boxes, see [the appendix](#fonts-and-icons). With the overrides above, Normal mode gets the yellow segment on the left, and Insert mode switches to a teal one:
 
-> **TODO (config):** Screenshot of the status bar before and after these changes, in Normal and Insert mode.
+![lualine status bar in Normal mode](./screenshots/statusline-normal.png)
+
+<br />
+
+![lualine status bar in Insert mode](./screenshots/statusline-insert.png)
+
+<br />
 
 ### The file tree and finder
 
@@ -277,9 +287,11 @@ A line that starts with `--` is a comment, so the two commented lines do nothing
 
 Add only the languages you actually use, because each pack installs its tools when Neovim starts, and a pack for a language that isn't installed on your machine shows errors. Go needs `go`, Rust needs `rustup`, and Java needs a JDK, while the web packs only need Node.js. If you used Prettier or ESLint in VS Code, `astrocommunity.pack.prettier` and `astrocommunity.pack.eslint` add them the same way. AstroCommunity has packs for about 90 languages in total, listed in its [pack folder](https://github.com/AstroNvim/astrocommunity/tree/main/lua/astrocommunity/pack).
 
-Save the file and run `nvim`. The language tools install in the background, and `:Mason` opens a window where you can watch them finish.
+Save the file and run `nvim`. The language tools install in the background, and `:Mason` opens a window where you can watch them finish. In the finished build, ty and Ruff both show up under Installed:
 
-> **TODO (config):** Screenshot of ty and Ruff installed in `:Mason`.
+![Mason window with ty and Ruff installed](./screenshots/mason.png)
+
+<br />
 
 ### The debugger, Git, and the terminal
 
@@ -306,7 +318,7 @@ If you also want inline suggestions as you type, like Copilot in VS Code, you ca
 
 <br />
 
-> **TODO (config):** Whether the reference build includes Copilot. Confirm the claudecode.nvim keys below work as described.
+[nvimforge](https://codeberg.org/kidskoding/nvimforge) ships the Claude Code line and skips Copilot, so treat Copilot as optional extras on top of the reference build.
 
 ### Sessions
 
@@ -449,7 +461,9 @@ In VS Code, you probably open files with `Ctrl/Cmd+P` more often than with the s
 
 Press Space on its own first and wait a moment. A menu appears listing every key that can come next, grouped by category, such as `f` for finding things and `g` for Git. That menu comes from a plugin called [which-key](https://github.com/folke/which-key.nvim), and it's the reason **you don't have to memorize anything in this post: if you forget a key, press Space and read the menu.** Press `Esc` to close it.
 
-> **TODO (config):** Screenshot of the which-key menu after pressing Space.
+![which-key menu after pressing Space](./screenshots/which-key.png)
+
+<br />
 
 Now press `<Leader>ff`, type `rep`, and press Enter to open `report.py`. The finder matches loosely, so a few letters of a name are usually enough. `<Leader>fw` searches for text across the whole project, like `Ctrl/Cmd+Shift+F`, and `<Leader>e` opens a file tree on the left that you can click, like VS Code's Explorer. Open files appear as tabs across the top, which you can also click.
 
@@ -465,7 +479,19 @@ There was no single command that flipped a switch for me. The model clicked beca
 
 ### Read and fix an error
 
-Changing the quantity to a string broke the types, and a red error message has appeared at the end of the line. When a message is too long to read there, `gl` shows it in full. Press `u` to undo your change, which brings back the `5` and clears the error, and save again with `Ctrl+S`.
+Changing the quantity to a string broke the types, and a red error message has appeared at the end of the line. ty reports it as `Argument is incorrect: Expected 'int', found 'Literal["5"]'`:
+
+![ty type error after changing the quantity to a string](./screenshots/ty-error.png)
+
+<br />
+
+When a message is too long to read there, `gl` shows it in full:
+
+![Full diagnostic float for the ty error](./screenshots/ty-error-full.png)
+
+<br />
+
+Press `u` to undo your change, which brings back the `5` and clears the error, and save again with `Ctrl+S`.
 
 Most of what you're used to from VS Code's language support is already here. Suggestions appear as you type in Insert mode, and you move through them with `Tab` and accept one with `Enter`. Files format themselves when you save, and a few keys cover the rest. Put the cursor on `total_value` in the `print` line and try them:
 
@@ -477,8 +503,6 @@ Most of what you're used to from VS Code's language support is already here. Sug
 | `Ctrl/Cmd+/` | `<Leader>/` | Comment or uncomment the current line |
 
 <br />
-
-> **TODO (config):** Screenshot of the real error message ty shows for the `"5"` change. Don't paraphrase the message.
 
 ### Rename a function everywhere
 
@@ -492,8 +516,6 @@ Press `<Leader>Ac` to open Claude Code in a panel beside your code, and ask it t
 
 When Claude Code proposes the change, it opens as a diff in Neovim, with your current code on one side and the proposed code on the other. Read it, then press `<Leader>Aa` to accept it or `<Leader>Ad` to reject it, so nothing touches your files until you've checked it. Press `<Leader>Ac` again to close the panel.
 
-> **TODO (config):** Screenshot of the Claude Code diff open in Neovim, with the Claude panel beside it.
-
 ### Run, debug, and commit
 
 `F7` opens a terminal panel at the bottom of the screen, like VS Code's integrated terminal. Run `python report.py` to check that everything still works, then press `F7` again to hide it.
@@ -501,8 +523,6 @@ When Claude Code proposes the change, it opens as a diff in Neovim, with your cu
 The debugger uses the same keys as VS Code. Move to the `print` line, press `F9` to set a breakpoint, and press `F5` to start. The first time, Neovim asks which launch configuration to use, and you pick the one for the current file. When the program stops, panels open showing your variables and the call stack, `F10` steps over a line, and `F5` continues to the end, after which the panels close on their own.
 
 Finally, press `<Leader>gg` to open lazygit, which does the job of VS Code's Source Control panel. Press Space on each changed file to stage it, `c` to write a commit message, and Enter to commit, then `q` to close lazygit.
-
-> **TODO (config):** Confirm every step of this tour works with the reference build, including the debugger's configuration prompt, then record a short GIF of the whole tour.
 
 ### You're done
 
@@ -591,9 +611,7 @@ This is the full setup for every platform, for anyone who skipped ahead from [In
 
 <br />
 
-On Linux you'll also want a clipboard tool, either `wl-clipboard` or `xclip`.
-
-> **TODO (config):** Any extra tools the reference build depends on outside Mason, with tested versions. Test the install commands below on each platform.
+On Linux you'll also want a clipboard tool, either `wl-clipboard` or `xclip`. The [nvimforge](https://codeberg.org/kidskoding/nvimforge) flake also pulls in ripgrep, fd, tree-sitter, lazygit, Node.js, and a C compiler so Mason and the finder work without a separate package-manager pass on Nix.
 
 ### Installing the tools
 
@@ -637,9 +655,7 @@ The file icons, Git symbols, and error markers in our config are characters from
 
 ### Neovide
 
-[Neovide](https://neovide.dev) draws Neovim in its own window, with smooth scrolling and an animated cursor, and its [installation page](https://neovide.dev/installation.html) covers every platform. It runs whichever `nvim` is on your `PATH` with the same configuration, so running `neovide` opens our config in its own window. Because Neovide has no terminal settings, you set its font in Neovim instead, for example by adding `vim.o.guifont = "JetBrainsMono Nerd Font:h14"` to `lua/polish.lua`.
-
-> **TODO (config):** Whether the reference build includes Neovide settings, and if so the real snippet and the file it lives in.
+[Neovide](https://neovide.dev) draws Neovim in its own window, with smooth scrolling and an animated cursor, and its [installation page](https://neovide.dev/installation.html) covers every platform. It runs whichever `nvim` is on your `PATH` with the same configuration, so running `neovide` opens our config in its own window. Because Neovide has no terminal settings, you set its font in Neovim instead, for example by adding `vim.o.guifont = "JetBrainsMono Nerd Font:h14"` to `lua/polish.lua`. [nvimforge](https://codeberg.org/kidskoding/nvimforge) exposes the same config through `nix run .#neovide` and does not ship a separate `polish.lua` font override, so set that line yourself if you use Neovide outside Nix.
 
 ### Installing on Windows
 
