@@ -118,12 +118,6 @@ One of the first things many people do when it comes to configuring their Neovim
 
 VS Code also has this option, where you can install themes through their **Extensions** and then pick one from the Color Theme menu. Neovim works the same way in two steps: first you install the theme as a plugin, and then you tell the editor to use it.
 
-Once gruvbox is on, the same inventory file looks like this in the finished AstroNvim build (tabs, line numbers, and the status bar you'll set up next):
-
-![AstroNvim with gruvbox open on report.py](./screenshots/gruvbox.png)
-
-<br />
-
 Every plugin you add gets a small file in `lua/plugins/`. The theme we'll add is [gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim), a warm, low-contrast theme that styles most popular plugins, so create `lua/plugins/gruvbox.lua` in VS Code and paste this into it:
 
 ```lua
@@ -158,7 +152,11 @@ return {
 
 <br />
 
-Save both files and run `nvim`, and it downloads gruvbox.nvim and opens with it.
+Save both files and run `nvim`, and it downloads gruvbox.nvim and opens with it. The finished AstroNvim build looks like this on the inventory demo file (tabs, line numbers, and the status bar you'll set up next):
+
+![AstroNvim with gruvbox open on report.py](./screenshots/astro-gruvbox.png)
+
+<br />
 
 That's the whole configuration process: **open or create a file, write the few lines you need, and restart.** Every other change in this section follows it. [nvimforge](https://codeberg.org/kidskoding/nvimforge) uses this same gruvbox setup, which is why the screenshots in this post match the snippets above.
 
