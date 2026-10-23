@@ -22,9 +22,19 @@ const linkAt = titleLink ? title.indexOf(titleLink.text) : -1;
 >
   <article class="rounded-xl border border-border-subtle bg-bg-card overflow-hidden" data-animate>
     {post.data.coverImage && (
-      <div class="w-full aspect-[1000/420] overflow-hidden bg-bg-secondary">
-        <img src={post.data.coverImage} alt="" class="block h-full w-full object-cover object-center" loading="eager" />
-      </div>
+      <figure>
+        <div class="w-full aspect-[1000/420] overflow-hidden bg-bg-secondary">
+          <img
+            src={post.data.coverImage}
+            alt=""
+            class="block h-full w-full object-cover object-center"
+            loading="eager"
+          />
+        </div>
+        {post.data.coverCaption && (
+          <figcaption class="px-8 pt-3 text-sm text-nvim-gray">{post.data.coverCaption}</figcaption>
+        )}
+      </figure>
     )}
     <div class="p-8">
       <header class="mb-8">
