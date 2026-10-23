@@ -47,7 +47,42 @@ Costs are real: a slower first week, you own the config, big Java/Kotlin refacto
 
 ## Config
 
-Template example files start with `if true then return {} end`: delete that line or nothing loads. Pattern for everything below: **file → few lines → restart.**
+In VS Code you already configure the editor as JSON. Install an extension from the marketplace, then tweak it in Settings (UI) or by editing the files under your user folder: on macOS/Linux that is `~/.config/Code/User/` (Windows: `%APPDATA%\Code\User\`). The two you touch most are `settings.json` (behavior) and, if you pin a workspace kit, something like `extensions.json` recommending what to install:
+
+```json
+// ~/.config/Code/User/settings.json (trimmed)
+{
+  "workbench.colorTheme": "Default Dark Modern",
+  "editor.fontFamily": "JetBrains Mono",
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "charliermarsh.ruff",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  }
+}
+```
+
+```json
+// .vscode/extensions.json in a project (optional)
+{
+  "recommendations": [
+    "anthropic.claude-code",
+    "charliermarsh.ruff",
+    "ms-python.python"
+  ]
+}
+```
+
+Neovim does the same job with a folder of Lua files instead of one big JSON blob. Plugins are listed by GitHub name (Lazy.nvim downloads them the way the marketplace installs extensions), options live next to the plugin, and the whole tree is just text you can put in Git. AstroNvim's layout maps roughly like this:
+
+| VS Code | Neovim (this build) |
+|---|---|
+| Marketplace + Extensions view | lines in `lua/community.lua` (and small files under `lua/plugins/`) |
+| `settings.json` | `lua/plugins/astrocore.lua` (`opt`, keymaps) |
+| Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `gruvbox.lua` |
+| Extension-specific settings | `opts = { ... }` in that plugin's Lua file |
+
+You will edit those files in VS Code with `code ~/.config/nvim`, same as opening your User folder. Template example files start with `if true then return {} end`: delete that line or nothing loads. Pattern for everything below: **file → few lines → restart.**
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
@@ -67,7 +102,7 @@ code ~/.config/nvim
 
 ### Theme
 
-`lua/plugins/gruvbox.lua`:
+Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua` (installs the theme the way an extension would) and point AstroUI at it:
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -113,7 +148,7 @@ return {
 
 ### community.lua + overrides
 
-[AstroCommunity](https://github.com/AstroNvim/astrocommunity) = one import per feature. Paste this as `lua/community.lua` (matches nvimforge). Python uses [ty](https://docs.astral.sh/ty/) + [Ruff](https://docs.astral.sh/ruff/); don't also enable plain `pack.python`.
+[AstroCommunity](https://github.com/AstroNvim/astrocommunity) is the closest thing to the Extensions marketplace: one `import` line turns on a ready-made feature (plugin, deps, keys). Paste this as `lua/community.lua` (matches nvimforge). Python uses [ty](https://docs.astral.sh/ty/) + [Ruff](https://docs.astral.sh/ruff/); don't also enable plain `pack.python`.
 
 ```lua
 -- lua/community.lua
