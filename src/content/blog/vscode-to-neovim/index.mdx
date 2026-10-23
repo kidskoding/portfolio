@@ -142,6 +142,15 @@ return {
 
 Save both, run `nvim`, and the dashboard picks up gruvbox. That is the whole pattern for the rest of this section: create or open a file, write the few lines you need, restart.
 
+<img
+  src="/blog/vscode-to-neovim/dashboard-gruvbox.png"
+  alt="Stock AstroNvim dashboard on gruvbox (Find Word and Bookmarks still present)"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
 ### Dashboard
 
 Stock still lists Find Word and Bookmarks, and it skips Quit. Keep five splash rows: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (you still have `<Leader>fw` for project search) and Bookmarks. `q` is the same `:qa` you already used. Create `lua/plugins/snacks.lua`:
@@ -177,7 +186,7 @@ return {
 Restart once more. The splash should look like this:
 
 <img
-  src="/blog/vscode-to-neovim/dashboard-gruvbox.png"
+  src="/blog/vscode-to-neovim/dashboard-splash.png"
   alt="Gruvbox dashboard with New File, Find File, Recents, Last Session, and Quit"
   width="1920"
   height="1080"
