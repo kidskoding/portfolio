@@ -17,7 +17,7 @@ Reference copy of the same files: [nvimforge](https://github.com/kidskoding/nvim
 
 ## What Neovim is
 
-[Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in **Normal** mode (keys move and change text) and drop into **Insert** only when you type. VS Code is modeless: you are always "typing," and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
+[Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in `Normal` mode (keys move and change text) and drop into `Insert` only when you type. VS Code is modeless: you are always "typing," and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
 
 That sounds worse until you see what modal editing buys. In VS Code a small fix is often: reach for the mouse, select a word, type, click elsewhere, maybe open the Command Palette. In Neovim the same fix is a short sentence on the home row: `ciw` (change inside word), type the replacement, `Esc`. Operators (`c` change, `d` delete, `y` yank) compose with motions and text objects (`iw` inner word, `i(` inside parens, `ap` a paragraph). You describe the edit instead of painting it. After a week that loop is faster than selecting with a mouse for the boring 80% of edits: rename a local, flip a condition, delete a function, jump to the next call site.
 
@@ -88,11 +88,11 @@ Neovim does the same job with a folder of **Lua** files instead of one big **JSO
 | Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `gruvbox.lua` |
 | Extension-specific settings | `opts = { ... }` in that plugin's **Lua** file |
 | Language servers / formatters (often bundled in an extension) | `:Mason` installs the binaries those plugins call |
-| Status bar / tabs | **lualine** + **bufferline** (two small files) |
+| Status bar / tabs | `lualine` + `bufferline` (two small files) |
 | Explorer / `Ctrl/Cmd+P` | Neo-tree / `<Leader>ff` (built in) |
 | Pylance, format-on-save, etc. | One AstroCommunity line per tool |
 | Run and Debug / Terminal / Source Control | Built in (`F5`/`F9`, `F7`, `lazygit`) |
-| Claude Code side panel | Same Claude Code, via **claudecode.nvim** |
+| Claude Code side panel | Same Claude Code, via `claudecode.nvim` |
 | Reopen last files | One line |
 
 ---
@@ -128,7 +128,7 @@ Work through these in order: theme → dashboard → community imports → `:Laz
 
 ### Theme
 
-Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua`. The first string (`"ellisonleao/gruvbox.nvim"`) is the plugin id: Lazy installs that GitHub repo the way the Marketplace installs a theme extension. `priority = 1000` loads it before other plugins so colors apply cleanly. The `SignColumn` / `FoldColumn` overrides clear the gray band AstroNvim leaves in those gutters under **gruvbox**. (**which-key** colors come later.)
+Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua`. The first string (`"ellisonleao/gruvbox.nvim"`) is the plugin id: Lazy installs that GitHub repo the way the Marketplace installs a theme extension. `priority = 1000` loads it before other plugins so colors apply cleanly. The `SignColumn` / `FoldColumn` overrides clear the gray band AstroNvim leaves in those gutters under `gruvbox`. (`which-key` colors come later.)
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -156,7 +156,7 @@ return {
 }
 ```
 
-Save both, run `nvim`, and the same dashboard picks up **gruvbox** (same rows, new colors). That is the whole pattern for the rest of this section: create or open a file, write the few lines you need, restart.
+Save both, run `nvim`, and the same dashboard picks up `gruvbox` (same rows, new colors). That is the whole pattern for the rest of this section: create or open a file, write the few lines you need, restart.
 
 <img
   src="/blog/vscode-to-neovim/dashboard-gruvbox.png"
@@ -218,7 +218,7 @@ return {
 
 [AstroCommunity](https://github.com/AstroNvim/astrocommunity) is curated plugin packs: one `import` line turns on a ready-made feature (the plugin, its dependencies, and its keys), closer to clicking Install on a recommended VS Code Extension Pack than writing a full Lazy spec by hand. Open `lua/community.lua`, delete the guard line, and paste this whole file (it matches [nvimforge](https://github.com/kidskoding/nvimforge)).
 
-The `pack.lua` line was already in the template; it helps when you edit these config files. **lualine** and **bufferline** are the status-bar and tab plugins. The **Python** lines use [ty](https://docs.astral.sh/ty/) (types, go-to-definition, hover: Pylance's job) and [Ruff](https://docs.astral.sh/ruff/) (lint + format on save). Do not also enable the plain `pack.python` import, or you get two competing toolchains. Uncomment **TypeScript**, **Rust**, and so on only for languages you actually have installed. The Claude Code line is the side-panel plugin. The last line restores open files when you `nvim` in a folder with nothing after it, like VS Code reopening a workspace.
+The `pack.lua` line was already in the template; it helps when you edit these config files. `lualine` and `bufferline` are the status-bar and tab plugins. The **Python** lines use [ty](https://docs.astral.sh/ty/) (types, go-to-definition, hover: Pylance's job) and [Ruff](https://docs.astral.sh/ruff/) (lint + format on save). Do not also enable the plain `pack.python` import, or you get two competing toolchains. Uncomment **TypeScript**, **Rust**, and so on only for languages you actually have installed. The Claude Code line is the side-panel plugin. The last line restores open files when you `nvim` in a folder with nothing after it, like VS Code reopening a workspace.
 
 ```lua
 -- lua/community.lua
@@ -261,7 +261,7 @@ After a restart, open `:Lazy` anytime you want Extensions-view energy: every plu
   decoding="async"
 />
 
-`:Mason` is a second installer, not for editor plugins but for language tooling those plugins call: servers, debuggers, linters, formatters (**ty**, **Ruff**, **lua_ls**, **debugpy**, and friends). Watch them download the way you watch a VS Code extension finish installing.
+`:Mason` is a second installer, not for editor plugins but for language tooling those plugins call: servers, debuggers, linters, formatters (`ty`, `ruff`, `lua_ls`, `debugpy`, and friends). Watch them download the way you watch a VS Code extension finish installing.
 
 <img
   src="/blog/vscode-to-neovim/mason.png"
@@ -276,7 +276,7 @@ Community lines install defaults. The small files below are per-plugin settings:
 
 ### Status bar and tabs
 
-Create `lua/plugins/lualine.lua` to tweak the status-bar plugin the community line just installed. This starts from lualine's **gruvbox** theme, makes **Normal** mode yellow, gives **Terminal** mode purple (Claude Code, `F7`, `lazygit`: without this, Terminal stays yellow), keeps the middle of the bar stable across modes, and uses one status bar for the whole screen, like VS Code's.
+Create `lua/plugins/lualine.lua` to tweak the status-bar plugin the community line just installed. This starts from lualine's `gruvbox` theme, makes `Normal` mode yellow, gives `Terminal` mode purple (Claude Code, `F7`, `lazygit`: without this, `Terminal` stays yellow), keeps the middle of the bar stable across modes, and uses one status bar for the whole screen, like VS Code's.
 
 ```lua
 -- lua/plugins/lualine.lua
@@ -345,7 +345,7 @@ return {
 
 ### Command line
 
-Open `lua/plugins/astrocore.lua` (AstroNvim's core settings plugin; treat it as `settings.json`), delete the guard line, and set `cmdheight = 1`. AstroNvim hides the command line by default, so typing after `:` sits on top of the status bar and **lualine** never shows **Command** mode. This gives `:` its own row underneath, like the Command Palette not covering the status bar.
+Open `lua/plugins/astrocore.lua` (AstroNvim's core settings plugin; treat it as `settings.json`), delete the guard line, and set `cmdheight = 1`. AstroNvim hides the command line by default, so typing after `:` sits on top of the status bar and `lualine` never shows `Command` mode. This gives `:` its own row underneath, like the Command Palette not covering the status bar.
 
 ```lua
 -- lua/plugins/astrocore.lua (template, trimmed; delete the guard line)
