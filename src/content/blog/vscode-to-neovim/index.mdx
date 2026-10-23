@@ -9,7 +9,7 @@ coverImage: "/blog/vscode-to-neovim-banner.png"
 
 import VimMode from '../../../components/VimMode.astro';
 
-Most people's first minute in Neovim is figuring out how to quit. After this post yours is different: fuzzy-open a file, change an argument without selecting it, rename a function across the project, review an AI diff, hit a breakpoint, commit, no mouse.
+Most people's first minute in Neovim is figuring out how to quit. After this post, yours will be different: fuzzy-open a file, change an argument without selecting it, rename a function across the project, review an AI diff, hit a breakpoint, commit, no mouse.
 
 I bounced off Neovim in 2022 and spent years cycling through VS Code, [Zed](https://zed.dev), and whatever looked promising that month. What eventually stuck was a full editor first, not a clever keymap. This is that build. Keep VS Code installed; I still open it for full-grade IDE work. The point is a daily driver you can actually live in, not purity.
 
@@ -21,7 +21,7 @@ Reference copy of the same files: [nvimforge](https://github.com/kidskoding/nvim
 
 [Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in <VimMode mode="normal" /> mode (keys move and change text) and drop into <VimMode mode="insert" /> only when you type. **VS Code is modeless:** you are always "typing" and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
 
-That sounds worse until you see what modal editing buys. In VS Code a small fix is often: reach for the mouse, select a word, type, click elsewhere, maybe open the Command Palette. In Neovim the same fix is a short sentence on the home row: `ciw` (change inside word), type the replacement, `Esc`. Operators (`c` change, `d` delete, `y` yank) compose with motions and text objects (`iw` inner word, `i(` inside parens, `ap` a paragraph). **You describe the edit instead of painting it.** After a week that loop is faster than selecting with a mouse for the boring 80% of edits: rename a local, flip a condition, delete a function, jump to the next call site.
+That sounds worse until you see what modal editing buys. In VS Code a small fix is often: reach for the mouse, select a word, type, click elsewhere, maybe open the Command Palette. In Neovim the same fix is a short sentence on the home row: `ciw` (change inside word), type the replacement, `Esc`. Operators (`c` change, `d` delete, `y` yank) compose with motions and text objects (`iw` inner word, `i(` inside parens, `ap` a paragraph). **You describe the edit instead of painting it.** After a week, that loop is faster than selecting with a mouse for the boring 80% of edits: rename a local, flip a condition, delete a function, jump to the next call site.
 
 Neovim also stays out of your way as an app. It starts in tens of milliseconds, uses little RAM, is the same binary over SSH in terminal multiplexers like [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), and its whole UI is text you can script and theme. VS Code is a full Electron IDE: richer out of the box for giant refactor UIs and designer workflows, heavier to open, and its "remote" story is a different product surface. Neither wins every day. **Neovim wins the ordinary edit / navigate / commit day once the keys land.**
 
@@ -109,9 +109,9 @@ rm -rf ~/.config/nvim/.git
 nvim   # wait for the download UI to finish
 ```
 
-The first launch runs [lazy.nvim](https://github.com/folke/lazy.nvim) (**Lazy**): AstroNvim's plugin manager. It clones the built-in plugins from GitHub into your machine, the way the Extensions view installs Marketplace packages. Wait until that finishes; do not close the terminal mid-download.
+The first launch runs [lazy.nvim](https://github.com/folke/lazy.nvim) (**Lazy**): AstroNvim's plugin manager. It clones the built-in plugins from GitHub onto your machine, the way the Extensions view installs Marketplace packages. Wait until that finishes; do not close the terminal mid-download.
 
-When it settles you are not in a file yet. You are on the **dashboard**: AstroNvim's start page (Get Started / welcome screen energy). Big logo, a short menu of actions, each with a single-key shortcut. It is a launcher, not a document. (When you do open a file, Neovim calls that open document a **buffer**, same idea as the file in a VS Code tab.)
+When it settles, you are not in a file yet. You are on the **dashboard**: AstroNvim's start page (Get Started / welcome screen energy). Big logo, a short menu of actions, each with a single-key shortcut. It is a launcher, not a document. (When you do open a file, Neovim calls that open document a **buffer**, same idea as the file in a VS Code tab.)
 
 <img
   src="/blog/vscode-to-neovim/dashboard.png"
@@ -224,7 +224,7 @@ return {
 
 ### community.lua
 
-You already told Lazy about one plugin by hand (`gruvbox`). [AstroCommunity](https://github.com/AstroNvim/astrocommunity) is the shortcut for the rest: a catalog of **packs**, each pack a ready-made bundle (plugins + defaults + keys). One `{ import = "..." }` line is closer to installing a VS Code Extension Pack than writing every `owner/repo` yourself.
+You already told Lazy about one plugin by hand (`gruvbox`). [AstroCommunity](https://github.com/AstroNvim/astrocommunity) is the shortcut for the rest: a catalog of **packs**, each a ready-made bundle (plugins + defaults + keys). One `{ import = "..." }` line is closer to installing a VS Code Extension Pack than writing every `owner/repo` yourself.
 
 Open `lua/community.lua`, delete the guard line, and paste this whole file (it matches [nvimforge](https://github.com/kidskoding/nvimforge)). Read the comments in the file as you paste; the next paragraphs walk the same lines in order.
 
@@ -267,7 +267,7 @@ Top to bottom:
 
 AstroNvim already ships Neo-tree (Explorer), the fuzzy finder (`Ctrl/Cmd+P`), the debugger keys (`F5` / `F9` / `F10`), the terminal (`F7`), and Git signs. `lazygit` and `claude` are still OS installs from the appendix, not Lazy plugins.
 
-Save `community.lua`. Those `import` lines only *wire* features into Neovim. Lazy still has to download the new plugins, and the Python packs still need programs on disk (`ty`, `ruff`, …) before jump-to-definition or format-on-save can work. Next you restart, confirm Lazy got the plugins, then let Mason install those programs.
+Save `community.lua`. Those `import` lines only *wire* features into Neovim. Lazy still has to download the new plugins, and the Python packs still need programs on disk (`ty`, `ruff`, …) before jump-to-definition or format-on-save can work. Next, you restart, confirm Lazy got the plugins, then let Mason install those programs.
 
 ### Confirm Lazy downloaded the new plugins
 
