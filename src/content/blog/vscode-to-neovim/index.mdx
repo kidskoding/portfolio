@@ -157,16 +157,21 @@ return {
   "folke/snacks.nvim",
   opts = function(_, opts)
     local get_icon = require("astroui").get_icon
+
     opts.dashboard = opts.dashboard or {}
     opts.dashboard.preset = opts.dashboard.preset or {}
+
     -- Full list, then clear leftover stock rows Lazy may have merged in.
     opts.dashboard.preset.keys = {
       { key = "n", action = "<Leader>n", icon = get_icon("FileNew", 0, true), desc = "New File  " },
       { key = "f", action = "<Leader>ff", icon = get_icon("Search", 0, true), desc = "Find File  " },
       { key = "o", action = "<Leader>fo", icon = get_icon("DefaultFile", 0, true), desc = "Recents  " },
+
       { key = "s", action = "<Leader>Sl", icon = get_icon("Refresh", 0, true), desc = "Last Session  " },
+
       { key = "q", action = ":qa", icon = get_icon("BufferClose", 0, true), desc = "Quit  " },
     }
+
     for i = #opts.dashboard.preset.keys + 1, 12 do
       opts.dashboard.preset.keys[i] = nil
     end
@@ -199,7 +204,9 @@ The `pack.lua` line was already in the template; it helps when you edit these co
 ---@type LazySpec
 return {
   "AstroNvim/astrocommunity",
+
   { import = "astrocommunity.pack.lua" }, -- helps when editing these config files
+
   { import = "astrocommunity.bars-and-lines.lualine-nvim" }, -- the status bar
   { import = "astrocommunity.bars-and-lines.bufferline-nvim" }, -- the tabs
 
@@ -238,12 +245,16 @@ return {
   "nvim-lualine/lualine.nvim",
   opts = function()
     local theme = require("lualine.themes.gruvbox_dark")
+
     theme.normal.a.bg = "#fabd2f"
+
     theme.terminal = vim.deepcopy(theme.insert)
     theme.terminal.a.bg = "#d3869b"
+
     for _, mode in pairs(theme) do
       mode.c = theme.normal.c
     end
+
     return { options = { theme = theme, globalstatus = true } }
   end,
 }
@@ -258,6 +269,7 @@ return {
   opts = function(_, opts)
     local bufferline = require "bufferline"
     local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg or "#282828"
+
     opts.options = vim.tbl_deep_extend("force", opts.options or {}, {
       style_preset = {
         bufferline.style_preset.minimal,
@@ -279,12 +291,14 @@ return {
         },
       },
     })
+
     opts.highlights = vim.tbl_deep_extend("force", opts.highlights or {}, {
       fill = { bg = normal_bg },
       background = { bg = normal_bg },
       indicator_selected = { fg = "#d79921" },
       offset_separator = { bg = normal_bg },
     })
+
     return opts
   end,
 }
