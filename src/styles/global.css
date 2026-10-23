@@ -3,48 +3,47 @@
 /* keyboard cursor (hjkl) gets the exact same styling as mouse hover */
 @custom-variant hover (&:hover, &.vim-cursor);
 
-/* Terminess Nerd Font Mono, the author's terminal font (OFL, public/fonts/terminess-nerd-LICENSE.txt), subset to the
-   characters the site uses plus the nvim-web-devicons glyphs in src/data/devicons.ts */
+/* JetBrains Mono (OFL, public/fonts/JetBrainsMono-OFL.txt) */
 @font-face {
-  font-family: 'Terminess Nerd Font Mono';
-  src: url('/fonts/terminess-nerd-mono-Regular.woff2') format('woff2');
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Terminess Nerd Font Mono';
-  src: url('/fonts/terminess-nerd-mono-Bold.woff2') format('woff2');
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
-  font-family: 'Terminess Nerd Font Mono';
-  src: url('/fonts/terminess-nerd-mono-Italic.woff2') format('woff2');
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-Italic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
   font-display: swap;
 }
-/* Icons only, from the Propo variant: full-size glyphs whose advance matches their width (non-Mono overflows into the next character) */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-BoldItalic.woff2') format('woff2');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+/* Nerd Font icons only (Terminess Propo subset): full-size glyphs for nvim-web-devicons in src/data/devicons.ts */
 @font-face {
   font-family: 'Terminess Nerd Font Icons';
   src: url('/fonts/terminess-nerd-icons.woff2') format('woff2');
   font-display: block;
 }
-@font-face {
-  font-family: 'Terminess Nerd Font Mono';
-  src: url('/fonts/terminess-nerd-mono-BoldItalic.woff2') format('woff2');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
 
 @theme {
-  --font-sans: 'Terminess Nerd Font Mono', ui-monospace, monospace;
-  --font-mono: 'Terminess Nerd Font Mono', ui-monospace, monospace;
+  --font-sans: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* Terminus is a pixel font: crisp only at 12/14/16/18/20/22/24/28/32px, so every step snaps to one */
+  /* Dense mono UI scale (chrome labels stay 14px) */
   --text-xs: 14px;
   --text-sm: 16px;
   --text-base: 18px;
