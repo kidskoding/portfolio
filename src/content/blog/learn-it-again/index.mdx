@@ -221,7 +221,7 @@ graph TD
   end
 ```
 
-On the left, a lot comes for free without anyone deciding it should. The process lives a long time, so you can keep a connection pool in a global, cache things in memory, and set something up at boot and assume it's still there. Those are assumptions too, just ones built into the shape of the server.
+On the left, a lot comes for free without anyone deciding it should. The process lives a long time, so you can keep a connection pool in a global, cache things in memory, and set something up at boot and assume it's still there. **Those are assumptions too, just ones built into the shape of the server.**
 
 Workers run in lightweight isolates that Cloudflare can start and stop whenever it wants. A global variable might still be there on the next request, or it might not, and Cloudflare's own docs tell you not to rely on it. So **the question changes from "what server is running this?" to "what does this request need?"**
 
@@ -260,11 +260,11 @@ RUNTIME         Workers    What does this request need? Where does state live?
          Make the assumptions explicit.
 ```
 
-Each one took something that's usually implicit (a module-level import, a machine's installed tools, a long-running process) and made it something you have to declare. A lot of what makes systems hard to work on is assumptions nobody wrote down, so I think that's a good engineering lesson to take away.
+Each one took something that's usually implicit (a module-level import, a machine's installed tools, a long-running process) and made it something you have to declare. **A lot of what makes systems hard to work on is assumptions nobody wrote down**, so I think that's a good engineering lesson to take away.
 
 But there's a second lesson underneath it, and it's the one I keep coming back to. **Every time a tool forced a system's assumptions into the open, it exposed some of mine too.**
 
-I assumed I knew Drizzle, I assumed I knew why Nix mattered, and I assumed "serverless" was a complete description of Workers. None of those were exactly wrong, but they were incomplete in ways I couldn't see until something familiar ended up somewhere unfamiliar.
+I assumed I knew Drizzle, I assumed I knew why Nix mattered, and I assumed "serverless" was a complete description of Workers. None of those were exactly wrong, but **they were incomplete in ways I couldn't see until something familiar ended up somewhere unfamiliar**.
 
 ---
 
@@ -274,11 +274,11 @@ Relearning this many tools at once meant I needed somewhere to put what I was le
 
 {/* TODO: Obsidian graph view screenshot. Show only public tools and concepts, nothing internal to Brunswick. */}
 
-The part that made it useful was pairing it with AI. While I was developing, I built a custom agent skill that has an AI assistant explain things by referencing that graph. When I ask about something I don't understand yet, the explanation starts from notes I've already written, so instead of a generic answer, I get one that connects the new idea to the tools I already know.
+The part that made it useful was pairing it with AI. While I was developing, I built a custom agent skill that has an AI assistant explain things by referencing that graph. When I ask about something I don't understand yet, the explanation starts from notes I've already written, so **instead of a generic answer, I get one that connects the new idea to the tools I already know**.
 
 That fits the rest of this post, because **the interesting part of the graph is the links between notes rather than the notes themselves**. A note on Drizzle by itself is a summary of an API, but a link from Drizzle to Effect, or from Effect to Workers, records a place where two tools had to meet, and that's where most of my relearning happened.
 
-I think that's what people mean when they say learning happens at the seams: not inside one tool, but where two things that each make sense on their own have to fit together. The graph is where I can actually see those seams.
+I think that's what people mean when they say **learning happens at the seams**: not inside one tool, but where two things that each make sense on their own have to fit together. The graph is where I can actually see those seams.
 
 ---
 
@@ -286,10 +286,21 @@ I think that's what people mean when they say learning happens at the seams: not
 
 I used to think learning mostly meant encountering something new, like a new language, a new framework, or a new tool.
 
-The first half of this internship showed me another kind that's just as useful, and easier to miss because it doesn't feel like learning at first.
+The first half of this internship showed me another kind that's just as useful, and **easier to miss because it doesn't feel like learning at first**.
 
-```mermaid
+```mermaid edgeNodeSpacing=28 alignment=RIGHTDOWN padding=24
 graph LR
-  A[Take something<br/>familiar] --> B[Put it somewhere<br/>unfamiliar] --> C[Find the assumptions you<br/>didn't know you were making] --> D[Learn it<br/>again]
+  %% Edge order keeps the layout from breaking the loop anywhere but D --> A
+  B[Put it<br/>somewhere<br/>unfamiliar] --> C[Find the assumptions<br/>you didn't know<br/>you were making]
+  A[Take<br/>something<br/>familiar] --> B
+  C --> D[Learn<br/>it<br/>again]
   D --> A
 ```
+
+Drizzle is the same library it was before this internship, with the same `select`, `from`, and `where` I started with. What changed is what I see when I use it: a client that something has to create and close, queries that can fail in ways the caller should know about, and a boundary that I get to decide on. **I didn't pick up a new tool there, but rather learned an old one again.**
+
+I still have half of this internship left, and I expect a few more of the checkmarks in my head to turn out to be incomplete. **I'd rather find that out than keep the checkmark.**
+
+I had used Drizzle before this internship.
+
+Halfway through, I'm learning it again.
