@@ -42,7 +42,11 @@ The bugs were found in August by the security firms **Calif and Wiz, working wit
 
 It didn't hold. On Tuesday the 20th, the CVE IDs started circulating online, followed by an accidentally published proof-of-concept video<sup>[2](#references)</sup>. Then on Wednesday morning **Chainguard**, a company that had been briefed to help test the fixes, published patched container images more than six hours before the official release<sup>[3](#references)</sup>. Anyone could diff those images against the previous ones and see exactly which code changed, which is why the PHP Foundation said Chainguard had **"unilaterally broke[n] the embargo."**
 
-PHP moved its release up a day, to Wednesday at 14:00 UTC, and shipped **8.5.12, 8.4.27, 8.3.36 and 8.2.35**. Within about a day, VulnCheck had an exploit working against PHP 8.4.10 through 8.4.26 with ASLR on<sup>[7](#references)</sup>, a public proof of concept on GitHub had passed 900 stars, and security firms were logging exploitation attempts. Amazon's threat intelligence team says it saw one attempt dated **October 17**, before the leak, which would mean someone outside the embargo already knew.
+PHP moved its release up a day, to Wednesday at 14:00 UTC, and shipped **8.5.12, 8.4.27, 8.3.36 and 8.2.35**. Within about a day, VulnCheck had an exploit working against PHP 8.4.10 through 8.4.26 with ASLR on<sup>[7](#references)</sup>, a public proof of concept on GitHub had passed 900 stars, and security firms were logging exploitation attempts. Amazon says it saw attackers trying their luck as early as **October 17**, four days before the patches landed, which means someone outside the embargo already knew<sup>[15](#references)</sup>.
+
+The clearest picture of how fast this moved came from **Matthew Prince**, Cloudflare's CEO, in a post on X that Reuters picked up the same night<sup>[16](#references)</sup>. Cloudflare's network logged a few thousand exploit attempts in the 10 hours before the announcement, which is the leak at work. After the announcement, attempts climbed to **tens of thousands within 45 minutes, hundreds of thousands within two hours, and then millions**<sup>[15](#references)</sup>. Cloudflare said attackers were also tweaking their payloads to slip past its firewall rules, so it turned new rules on for free and paid plans alike while stressing that a WAF is no substitute for patching.
+
+Those are attempts, not break-ins, and officials in Germany, the Netherlands and Japan said they hadn't confirmed a successful exploit<sup>[17](#references)</sup>. **But the curve is the point: the moment the fix became public was also the moment the attacks scaled up.**
 
 **Embargoes assume that turning a fix back into an exploit takes days, and this week it took hours.** Once a patched binary exists anywhere, the bug is effectively public.
 
@@ -112,3 +116,6 @@ Somewhere there's still a server nobody has thought about since demo day.
 12. [TuxCare: Patches php2shell for the PHP Versions Upstream Left Behind](https://tuxcare.com/blog/php2shell-cve/)
 13. [SOCRadar: PHP2Shell Affected Versions and Fix](https://socradar.io/blog/php2shell-cve-2026-109618-cve-2026-109619/)
 14. [Digidop: PHP2Shell critical PHP flaw, what to do about WordPress](https://www.digidop.com/blog/php2shell-php-vulnerability-wordpress-webflow)
+15. [The Register: Hackers pile on PHP2Shell as AWS reveals attacks began before disclosure](https://www.theregister.com/cyber-crime/2026/10/22/hackers-pile-on-php2shell-as-aws-reveals-attacks-began-before-disclosure/5304749)
+16. [Reuters (via U.S. News): Cloudflare Sees Millions of Exploit Attempts After PHP Disclosure](https://money.usnews.com/investing/news/articles/2026-10-22/cloudflare-sees-millions-of-exploit-attempts-after-php-disclosure)
+17. [The Next Web: Millions of PHP2Shell attempts so far, but officials see no break-in](https://thenextweb.com/news/php2shell-millions-exploit-attempts-no-confirmed-breaches)
