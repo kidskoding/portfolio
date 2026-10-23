@@ -349,7 +349,7 @@ The packs you imported already give you a working status bar and tabs, so these 
 
 lualine (`nvim-lualine/lualine.nvim`) draws the bar along the bottom, showing the mode, Git branch, and file details, like VS Code's status bar.
 
-The snippet starts from lualine's gruvbox theme and paints the <VimMode mode="normal" /> badge yellow. It gives <VimMode mode="terminal" /> mode a copy of the insert colors with a purple badge, so terminal panels like `F7` and the Claude panel don't stay yellow.
+The snippet starts from lualine's gruvbox theme, paints the <VimMode mode="normal" /> badge yellow, and brightens the middle section's text, since the theme's muted gray is hard to read on the bar. It gives <VimMode mode="terminal" /> mode a copy of the insert colors with a purple badge, so terminal panels like `F7` and the Claude panel don't stay yellow.
 
 The loop gives every mode normal mode's middle section, so only the badge changes color, and `globalstatus = true` draws one bar across the whole screen instead of one per split. Create `lua/plugins/lualine.lua`:
 
@@ -361,6 +361,7 @@ return {
     local theme = require "lualine.themes.gruvbox_dark"
 
     theme.normal.a.bg = "#fabd2f"
+    theme.normal.c.fg = "#d5c4a1"
 
     theme.terminal = vim.deepcopy(theme.insert)
     theme.terminal.a.bg = "#d3869b"
