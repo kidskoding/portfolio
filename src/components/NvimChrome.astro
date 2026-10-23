@@ -1065,7 +1065,12 @@ const tabs: Tab[] = [
     const current = bufferline.querySelector<HTMLElement>('.nvim-buffer.active');
     const currentPath = current?.dataset.path;
     let opened = getOpened();
-    if (currentPath && current && !opened.includes(currentPath)) {
+    // The [No Name] intro is not a buffer yet: opening a file replaces it, like :e from an untouched nvim launch.
+    // index.astro is recorded once a key clears the intro (pages/index.astro).
+    if (currentPath === '/' && document.documentElement.dataset.intro === 'on') {
+      opened = opened.filter((p) => p !== '/');
+      setOpened(opened);
+    } else if (currentPath && current && !opened.includes(currentPath)) {
       opened.push(currentPath);
       setOpened(opened);
     }
@@ -1109,20 +1114,24 @@ const tabs: Tab[] = [
       const wasActive = tab.classList.contains('active');
       const all = [...bufferline.querySelectorAll<HTMLElement>('.nvim-buffer')];
       const idx = all.indexOf(tab);
-      tab.hidden = true;
+      const neighbor =
+        all.slice(idx + 1).find((t) => !t.hidden) ||
+        all
+          .slice(0, idx)
+          .reverse()
+          .find((t) => !t.hidden);
 
-      if (wasActive) {
-        const neighbor =
-          all.slice(idx + 1).find((t) => !t.hidden) ||
-          all
-            .slice(0, idx)
-            .reverse()
-            .find((t) => !t.hidden);
-        const target = neighbor?.querySelector<HTMLAnchorElement>('.buf-link');
-        // Closing the last buffer relaunches: back to / with the intro
-        if (!target) sessionStorage.setItem(RELAUNCH_KEY, 'true');
-        navigate(target ? target.href : '/');
+      if (!neighbor) {
+        // Closing the last buffer relaunches: back to / with the intro. The tab stays until the swap
+        // replaces it with [No Name], so the bufferline never empties and the page does not jump.
+        sessionStorage.setItem(RELAUNCH_KEY, 'true');
+        navigate('/');
+        return;
       }
+
+      tab.hidden = true;
+      const target = neighbor.querySelector<HTMLAnchorElement>('.buf-link');
+      if (wasActive && target) navigate(target.href);
     });
   }
 

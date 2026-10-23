@@ -55,6 +55,7 @@ import anirudhProfileImg from '../assets/anirudh.jpeg';
 
 <script>
   const LAUNCHED_KEY = 'nvim:launched';
+  const OPENED_KEY = 'nvim:opened-buffers';
   const KEEP_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'Tab', 'Enter', ':', '?', ' ']);
 
   // nvim clears its intro on the first key; scrolling or clicking an empty buffer does nothing
@@ -69,6 +70,9 @@ import anirudhProfileImg from '../assets/anirudh.jpeg';
       delete document.documentElement.dataset.intro;
       try {
         sessionStorage.setItem(LAUNCHED_KEY, 'true');
+        // Clearing the intro turns [No Name] into the index.astro buffer, so it now stays open beside later files
+        const opened: string[] = JSON.parse(sessionStorage.getItem(OPENED_KEY) || '[]');
+        if (!opened.includes('/')) sessionStorage.setItem(OPENED_KEY, JSON.stringify([...opened, '/']));
       } catch {}
     };
     document.addEventListener(
