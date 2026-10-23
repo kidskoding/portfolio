@@ -1,0 +1,20 @@
+diff --git a/dist/index.js b/dist/index.js
+index e7e087bcb6f29d0d8f36cd558e0183bc0f162fcb..86a823ebcf26b1a118a41e4b8a6d2bf24ac105d3 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -235,10 +235,13 @@ function getCharWidth(char) {
+   return 1;
+ }
+ function measureTextWidth(text, fontSize, fontWeight) {
+-  const baseRatio = fontWeight >= 600 ? 0.6 : fontWeight >= 500 ? 0.57 : 0.54;
++  // Patched for a monospace font (JetBrains Mono): every glyph advances 0.6em, wide glyphs twice that.
++  const baseRatio = 0.6;
+   let totalWidth = 0;
+   for (const char of text) {
+-    totalWidth += getCharWidth(char);
++    const code = char.codePointAt(0);
++    if (code === void 0 || isCombiningMark(code)) continue;
++    totalWidth += isFullwidth(code) || isEmoji(char) ? 2 : 1;
+   }
+   const minPadding = fontSize * 0.15;
+   return totalWidth * fontSize * baseRatio + minPadding;
