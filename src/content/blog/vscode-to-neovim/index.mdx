@@ -138,6 +138,13 @@ return {
     overrides = {
       SignColumn = { link = "Normal" },
       FoldColumn = { link = "Normal" },
+      WhichKey = { link = "Function" },
+      WhichKeyNormal = { link = "NormalFloat" },
+      WhichKeyBorder = { link = "FloatBorder" },
+      WhichKeyDesc = { link = "Identifier" },
+      WhichKeyGroup = { link = "Keyword" },
+      WhichKeySeparator = { link = "Comment" },
+      WhichKeyValue = { link = "Comment" },
     },
   },
 }
@@ -145,7 +152,7 @@ return {
 
 <br />
 
-The first line is the plugin's GitHub name, which is all Neovim needs to download it. `priority = 1000` loads the theme before other plugins, and `opts` holds gruvbox's own settings. The `overrides` there change two of gruvbox's colors: gruvbox gives the column of line numbers on the left a gray background, which makes the line under your cursor look broken in AstroNvim, so linking those two groups to `Normal` gives the column the same background as the rest of the editor. Most plugin READMEs show their install instructions in this same format, so you can add almost any plugin by copying its example into a new file.
+The first line is the plugin's GitHub name, which is all Neovim needs to download it. `priority = 1000` loads the theme before other plugins, and `opts` holds gruvbox's own settings. The `overrides` fix a couple of gaps: gruvbox gives the line-number column a gray background (which looks broken next to AstroNvim's cursor line), so those two groups are linked to `Normal`, and it only styles the title of the which-key popup, so the `WhichKey*` links keep the key list readable instead of an empty box. Most plugin READMEs show their install instructions in this same format, so you can add almost any plugin by copying its example into a new file.
 
 Then select the theme. Open `lua/plugins/astroui.lua`, delete the `if true then return {} end` line at the top, and change the colorscheme from `astrodark` to `gruvbox`:
 
