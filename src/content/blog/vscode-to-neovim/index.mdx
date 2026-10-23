@@ -100,7 +100,8 @@ The template has one file per job, and you'll only touch a few of them:
     ├── astroui.lua         controls how the editor looks
     ├── (gruvbox.lua)       a file you'll create for your theme
     ├── (lualine.lua)       a file you'll create for your status bar
-    └── (claudecode.lua)    a file you'll create for Claude Code's panel
+    ├── (claudecode.lua)    a file you'll create for Claude Code's panel
+    └── (heirline.lua)      a file you'll create to drop the duplicate winbar
 ```
 
 <br />
@@ -190,7 +191,7 @@ That's the whole configuration process: **open or create a file, write the few l
 
 ### The status bar, tabs, and icons
 
-The tabs along the top and the breadcrumb line above the code are already set up, but AstroNvim's status bar along the bottom — the thin strip in the screenshot above — shows little more than your position in the file. Most people replace it with [lualine](https://github.com/nvim-lualine/lualine.nvim), which shows the mode, the file, the Git branch, and any errors.
+The tabs along the top are already set up, but AstroNvim's status bar along the bottom — the thin strip in the screenshot above — shows little more than your position in the file. Most people replace it with [lualine](https://github.com/nvim-lualine/lualine.nvim), which shows the mode, the file, the Git branch, and any errors.
 
 Adding it is your first change in `lua/community.lua`, which turns on add-ons from [AstroCommunity](https://github.com/AstroNvim/astrocommunity). AstroCommunity is a community-maintained collection of ready-made plugin setups for AstroNvim, and each one includes the plugin, anything it depends on, and its keys, so a line that would otherwise mean copying 20 to 40 lines from a plugin's README becomes a single import. It works like VS Code's Extensions panel, with the difference that it isn't run by the AstroNvim team, so it's worth glancing at a module's folder on GitHub before you rely on it. Open `community.lua`, delete the `if true then return {} end` line, and add the lualine line:
 
@@ -376,7 +377,9 @@ It also marks changed lines in the left margin the way VS Code does, opens [lazy
 
 That line installs claudecode.nvim and gives it keys under `<Leader>A`, which you'll use [later in this post](#ask-claude-code-for-a-change).
 
-One small override is worth adding right away. Claude Code opens through [Snacks](https://github.com/folke/snacks.nvim)'s terminal helper, which draws its own winbar on the split — a second title like `1: *Claude Code` sitting under AstroNvim's real tabline, so the panel looks like it has a duplicate buffer. Create `lua/plugins/claudecode.lua` and turn that winbar off:
+Two small overrides are worth adding right away, or the panel looks like it has duplicate buffers.
+
+Claude Code opens through [Snacks](https://github.com/folke/snacks.nvim)'s terminal helper, which draws its own winbar on the split — a second title like `1: *Claude Code` under AstroNvim's real tabline. Create `lua/plugins/claudecode.lua` and turn that winbar off:
 
 ```lua
 -- lua/plugins/claudecode.lua
@@ -394,7 +397,22 @@ return {
 
 <br />
 
-Because the file names the same plugin as the AstroCommunity line, Lazy.nvim merges the two configs, the same way `lualine.lua` only changed the parts we cared about. After a restart, `<Leader>Ac` toggles Claude Code beside the buffer with a single tabline:
+AstroNvim also draws a per-window winbar above the code. When focus is in Claude Code, that winbar on the file pane goes inactive and redraws the filename as a second grey bar under the tab — another fake duplicate. Drop the winbar entirely; the tabline already shows which file is open:
+
+```lua
+-- lua/plugins/heirline.lua
+return {
+  "rebelot/heirline.nvim",
+  opts = function(_, opts)
+    opts.winbar = nil
+    return opts
+  end,
+}
+```
+
+<br />
+
+Because those files name the same plugins AstroNvim already loads, Lazy.nvim merges the configs, the same way `lualine.lua` only changed the parts we cared about. After a restart, `<Leader>Ac` toggles Claude Code beside the buffer with a single tabline:
 
 <img
   src="/blog/vscode-to-neovim/claude-code.png"
@@ -417,7 +435,7 @@ If you also want inline suggestions as you type, like Copilot in VS Code, you ca
 
 <br />
 
-[nvimforge](https://codeberg.org/kidskoding/nvimforge) ships the Claude Code line, the winbar override, and skips Copilot, so treat Copilot as optional extras on top of the reference build.
+[nvimforge](https://codeberg.org/kidskoding/nvimforge) ships the Claude Code line, both winbar overrides, and skips Copilot, so treat Copilot as optional extras on top of the reference build.
 
 ### Sessions
 
@@ -433,7 +451,7 @@ The files are restored when you `cd` into a project folder and run `nvim` with n
 
 ### Your whole configuration
 
-That's the whole setup. Across a handful of files you added gruvbox, pointed `astroui` at it, turned on lualine (with the small color overrides), set `cmdheight = 1` in `astrocore`, filled `community.lua` with the language packs, Claude Code, and session restore, and hid Claude Code's duplicate Snacks winbar in `claudecode.lua`. **You now have an editor with a theme, a full status bar, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish. If you want the snippets in one place, [nvimforge](https://codeberg.org/kidskoding/nvimforge) is the same build.
+That's the whole setup. Across a handful of files you added gruvbox, pointed `astroui` at it, turned on lualine (with the small color overrides), set `cmdheight = 1` in `astrocore`, filled `community.lua` with the language packs, Claude Code, and session restore, and hid the duplicate winbars in `claudecode.lua` and `heirline.lua`. **You now have an editor with a theme, a full status bar, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish. If you want the snippets in one place, [nvimforge](https://codeberg.org/kidskoding/nvimforge) is the same build.
 
 It's a good moment to start tracking the folder with Git, including the `lazy-lock.json` file, which records the exact version of every plugin. Pushing the folder to a Git host and cloning it on another machine gives you the same editor there, which is what VS Code's Settings Sync was doing for you.
 
