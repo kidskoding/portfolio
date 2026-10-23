@@ -51,7 +51,7 @@ Costs are real: a slower first week, you own the config, big Java/Kotlin refacto
 
 Neovim calls them **plugins**. Mentally map them to VS Code **extensions**: same job (add a theme, a file tree, a side panel), different packaging. In VS Code you install from the Marketplace (`publisher.name`) and tweak Settings. In Neovim each plugin is usually a GitHub repo written as `owner/repo` (example: `ellisonleao/gruvbox.nvim`), and you put options in a small **Lua** file next to that name. You will meet the plugin manager (Lazy) on first launch in the next section, and a second installer (Mason) only after you turn on language packs.
 
-In VS Code your user folder is `~/.config/Code/User/` on macOS/Linux (Windows: `%APPDATA%\Code\User\`). The two files you touch most are `settings.json` (behavior) and, if you pin a workspace kit, `extensions.json`:
+In VS Code, your user folder is `~/.config/Code/User/` on macOS/Linux (Windows: `%APPDATA%\Code\User\`). The two files you touch most are `settings.json` (behavior) and, if you pin a workspace kit, `extensions.json`:
 
 ```json
 // ~/.config/Code/User/settings.json (trimmed)
@@ -122,7 +122,7 @@ When it settles, you are not in a file yet. You are on the **dashboard**: AstroN
   decoding="async"
 />
 
-To leave Neovim you use a **colon command**: press `:`, type a command name, press Enter. That is Neovim's "run this by name" box (cousin of the Command Palette, but typed after a colon). Quit everything with `:qa` (quit all), then Enter.
+To leave Neovim, you use a **colon command**: press `:`, type a command name, press Enter. That is Neovim's "run this by name" box (cousin of the Command Palette, but typed after a colon). Quit everything with `:qa` (quit all), then Enter.
 
 From here on, edit the config in VS Code, not inside Neovim yet:
 
@@ -495,7 +495,7 @@ Restart, press Space, and you should get a readable key list instead of a blank 
 
 Empty icons → [Nerd Font](#fonts-and-icons). Want Copilot-style ghost text as you type? Optional community plugin: `astrocommunity.completion.blink-copilot` + `:Copilot auth` (nvimforge skips it).
 
-After a restart you have theme, language tools, Claude Code panel, sessions, finder, tree, debugger, Git, and terminal. Track `~/.config/nvim` in Git, including `lazy-lock.json` (exact plugin versions Lazy pinned), if you want the same editor on another machine the way Settings Sync did in VS Code.
+After a restart, you have theme, language tools, Claude Code panel, sessions, finder, tree, debugger, Git, and terminal. Track `~/.config/nvim` in Git, including `lazy-lock.json` (exact plugin versions Lazy pinned), if you want the same editor on another machine the way Settings Sync did in VS Code.
 
 ---
 
