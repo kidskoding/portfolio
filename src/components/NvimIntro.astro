@@ -78,7 +78,10 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     <p class="line">not a vim user? no problem</p>
     <p class="line">
       <span class="verb-type">click</span>
-      <span class="verb-tap">tap</span> on a row above, or pick a file from <span class="tree-chip">☰ NvimTree</span>
+      <span class="verb-tap">tap</span> on a row above, or pick a file from{' '}
+      <button type="button" class="tree-chip" data-nvim-cmd="NvimTreeFocus">
+        ☰ NvimTree
+      </button>
     </p>
   </div>
 </section>
@@ -97,6 +100,17 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     color: var(--color-nvim-fg2);
     padding: 0 5px;
     white-space: nowrap;
+    font: inherit;
+    cursor: pointer;
+  }
+  /* Same as the titlebar ☰ NvimTree button */
+  .tree-chip:hover {
+    color: var(--color-nvim-yellow);
+    border-color: var(--color-nvim-yellow);
+  }
+  .tree-chip:focus-visible {
+    outline: 1px solid var(--color-nvim-yellow);
+    outline-offset: 2px;
   }
   .blank {
     height: 2ch;
