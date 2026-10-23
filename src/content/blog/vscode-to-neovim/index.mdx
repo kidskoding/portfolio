@@ -83,7 +83,7 @@ Neovim does the same job with a folder of Lua files instead of one big JSON blob
 | Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `gruvbox.lua` |
 | Extension-specific settings | `opts = { ... }` in that plugin's Lua file |
 
-Install the template and open Neovim once so Lazy can pull plugins (you will open `:Lazy` and `:Mason` after the community imports below). You land on the stock dashboard:
+Install the template and open Neovim once so Lazy can pull plugins (you will open `:Lazy` and `:Mason` after the community imports below). With no file on the command line you land on the **dashboard**: AstroNvim's start page (Get Started / welcome screen energy). Big logo, a short menu of actions, each with a single-key shortcut. It is not a buffer you edit; it is a launcher that goes away when you open a file.
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
@@ -140,7 +140,7 @@ return {
 }
 ```
 
-Save both, run `nvim`, and the dashboard picks up gruvbox. That is the whole pattern for the rest of this section: create or open a file, write the few lines you need, restart.
+Save both, run `nvim`, and the same dashboard picks up gruvbox (same rows, new colors). That is the whole pattern for the rest of this section: create or open a file, write the few lines you need, restart.
 
 <img
   src="/blog/vscode-to-neovim/dashboard-gruvbox.png"
@@ -153,7 +153,9 @@ Save both, run `nvim`, and the dashboard picks up gruvbox. That is the whole pat
 
 ### Dashboard
 
-Stock still lists Find Word and Bookmarks, and it skips Quit. Keep five splash rows: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (you still have `<Leader>fw` for project search) and Bookmarks. `q` is the same `:qa` you already used. Create `lua/plugins/snacks.lua`:
+That start page is drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim), a kitchen-sink plugin AstroNvim already ships (dashboard, pickers, terminal helpers, notifications). You are not installing Snacks; you are overriding one table inside it: `dashboard.preset.keys`, the list of splash rows. Each row is `{ key, action, icon, desc }`. `key` is what you type on the splash, `action` is the command or `<Leader>…` map it runs, `desc` is the label you see.
+
+Stock still lists Find Word and Bookmarks, and it skips Quit. Keep five rows beginners actually use: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. Create `lua/plugins/snacks.lua`. The `opts` function receives AstroNvim's merged Snacks config; you replace `keys`, then nil out any leftover stock rows Lazy may have concatenated onto the list:
 
 ```lua
 -- lua/plugins/snacks.lua
@@ -183,7 +185,7 @@ return {
 }
 ```
 
-Restart once more. The splash should look like this:
+`get_icon(...)` pulls AstroNvim's Nerd Font glyphs so the row icons match the rest of the UI. Restart once more. The splash should look like this:
 
 <img
   src="/blog/vscode-to-neovim/dashboard-splash.png"
