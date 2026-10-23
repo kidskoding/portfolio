@@ -239,7 +239,7 @@ return {
   "akinsho/bufferline.nvim",
   opts = function(_, opts)
     local bufferline = require "bufferline"
-    local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg
+    local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg or "#282828"
     opts.options = vim.tbl_deep_extend("force", opts.options or {}, {
       style_preset = {
         bufferline.style_preset.minimal,
@@ -247,8 +247,6 @@ return {
       },
       tab_size = 0,
       separator_style = { "", "" },
-      indicator = { style = "icon", icon = "▎" },
-      always_show_bufferline = false,
       offsets = {
         {
           filetype = "neo-tree",
@@ -265,7 +263,8 @@ return {
     })
     opts.highlights = vim.tbl_deep_extend("force", opts.highlights or {}, {
       fill = { bg = normal_bg },
-      indicator_selected = { fg = "#d79921", bg = normal_bg },
+      background = { bg = normal_bg },
+      indicator_selected = { fg = "#d79921" },
       offset_separator = { bg = normal_bg },
     })
     return opts
@@ -275,7 +274,7 @@ return {
 
 <br />
 
-That turns on bufferline's minimal preset (no bold/italic tab chrome), trims the empty padding around each tab, draws a thin yellow marker on the active tab instead of a thick separator, paints the bar background to match the editor so it doesn't look like a second statusline, and hides the tab strip on the dashboard (and whenever only one buffer is open) so you don't get an empty black bar across the top.
+That turns on bufferline's minimal preset (no bold/italic tab chrome), trims the empty padding around each tab, and paints the bar (including the empty fill on the dashboard) to match the editor background so you don't get a black strip across the top.
 
 One more setting finishes the status bar. AstroNvim hides the command line by default, so anything you type after `:` appears on top of the status bar, and lualine never gets to show Command mode. To give the command line its own row below the status bar, open `lua/plugins/astrocore.lua`, delete the `if true then return {} end` line at the top, and add `cmdheight = 1` to the options under `opt`:
 
