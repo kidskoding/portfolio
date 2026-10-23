@@ -2,14 +2,12 @@
 title: "From VS Code to Neovim"
 description: "A complete AstroNvim setup in a handful of files, Claude Code included, and only the keys you need to start living in it"
 pubDate: 2026-10-11
-updatedDate: 2026-10-22
+updatedDate: 2026-10-23
 draft: false
 coverImage: "/blog/vscode-to-neovim-banner.png"
 ---
 
 Most people's first minute in Neovim is figuring out how to quit. After this post yours is different: fuzzy-open a file, change an argument without selecting it, rename a function across the project, review an AI diff, hit a breakpoint, commit, no mouse.
-
-The usual reasons not to switch are that setup takes weeks and that you must memorize a wiki of keys. Both are true if you assemble Neovim from scratch and drill `:Tutor` before you edit anything. You don't have to. **You can replace day-to-day VS Code with a complete Neovim in a handful of short files, then learn each key when a real edit needs it.**
 
 I bounced off Neovim in 2022 and spent years cycling through VS Code, [Zed](https://zed.dev), and whatever looked promising that month. What eventually stuck was a full editor first, not a clever keymap. This is that build. Keep VS Code installed; I still open it for full-grade IDE work. The point is a daily driver you can actually live in, not purity.
 
@@ -17,37 +15,39 @@ Reference copy of the same files: [nvimforge](https://github.com/kidskoding/nvim
 
 ---
 
-## What you get
+## What Neovim is
 
-[AstroNvim](https://astronvim.com) is a ready-made Neovim that already includes most of what a VS Code user expects. You add a theme, language tools, the Claude Code side panel, and session restore. Configure in VS Code until the tour: no Neovim keys required for setup.
+[Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in Normal mode (keys move and change text) and drop into Insert only when you type. VS Code is modeless: you are always "typing," and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
 
-| VS Code | Here |
-|---|---|
-| Color Theme | You add gruvbox |
-| Status bar / tabs | lualine + bufferline (two small files) |
-| Explorer / `Ctrl/Cmd+P` | Neo-tree / `<Leader>ff` (built in) |
-| Pylance, format-on-save, etc. | One AstroCommunity line per tool |
-| Run and Debug / Terminal / Source Control | Built in (`F5`/`F9`, `F7`, lazygit) |
-| Claude Code side panel (the VS Code extension) | Same Claude Code, via claudecode.nvim |
-| Reopen last files | One line |
+That sounds worse until you see what modal editing buys. In VS Code a small fix is often: reach for the mouse, select a word, type, click elsewhere, maybe open the Command Palette. In Neovim the same fix is a short sentence on the home row: `ciw` (change inside word), type the replacement, `Esc`. Operators (`c` change, `d` delete, `y` yank) compose with motions and text objects (`iw` inner word, `i(` inside parens, `ap` a paragraph). You describe the edit instead of painting it. After a week that loop is faster than selecting with a mouse for the boring 80% of edits: rename a local, flip a condition, delete a function, jump to the next call site.
 
-Space is the *leader* key (`<Leader>`). Press Space alone and [which-key](https://github.com/folke/which-key.nvim) lists what comes next, so you do not memorize this post.
+Neovim also stays out of your way as an app. It starts in tens of milliseconds, uses little RAM, is the same binary over SSH inside [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), and its whole UI is text you can script and theme. VS Code is a full Electron IDE: richer out of the box for giant refactor UIs and designer workflows, heavier to open, and its "remote" story is a different product surface. Neither wins every day. Neovim wins the ordinary edit / navigate / commit day once the keys land.
+
+---
+
+## The learning curve people fear
+
+The usual reasons not to switch are that setup takes weeks and that you must memorize a wiki of keys. Both are true if you assemble Neovim from scratch and drill `:Tutor` before you edit anything. That is the wrong onboarding.
+
+**You do not memorize this post.** Space is the *leader* key (`<Leader>`). Press Space alone and [which-key](https://github.com/folke/which-key.nvim) lists what comes next, the way the Command Palette lists commands. Learn `ciw`, `gd`, and `<Leader>ff` when a real edit needs them; ignore the rest until friction shows up. The mouse still works for scrolling and clicking if you need a safety net.
+
+**You do not configure inside Neovim on day one either.** This build is a handful of short Lua files. You edit them in VS Code, restart `nvim`, and only later live in the keys. **Replace day-to-day VS Code with a complete Neovim first, then learn each key when work demands it.**
 
 ---
 
 ## Why bother, when VS Code already has Claude Code and Copilot?
 
-Fair question. Most people open VS Code today for the AI side panel as much as for the editor: chat with the project, get a diff, Accept or Reject. You are not giving that up. [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is the same CLI Anthropic ships for VS Code; [claudecode.nvim](https://github.com/coder/claudecode.nvim) is the Neovim plug that docks it beside your buffer the way the official VS Code extension does. Same agent, same review loop.
+Fair question. Most people open VS Code today for the AI side panel as much as for the editor: chat with the project, get a diff, Accept or Reject. You are not giving that up. [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is the same CLI Anthropic ships for VS Code; [claudecode.nvim](https://github.com/coder/claudecode.nvim) is the Neovim extension that docks it beside your buffer the way the official VS Code extension does. Same agent, same review loop.
 
-You switch for the editor underneath: Neovim starts instantly, runs the same over SSH in [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), lives in Git as plain text, and once the keys land, makes the read / navigate / small-fix pass faster than painting selections with a mouse.
+You switch for the editor underneath: instant start, SSH-native, config in Git as plain text, and that compose-the-edit pass once the keys land.
 
 Costs are real: a slower first week, you own the config, big Java/Kotlin refactors and designers stay in an IDE. Keep VS Code or Cursor when they win a day. The rest of this post is how to make Neovim win the ordinary ones.
 
 ---
 
-## Config
+## Plugins are extensions
 
-In VS Code you already configure the editor as JSON. Install an extension from the marketplace, then tweak it in Settings (UI) or by editing the files under your user folder: on macOS/Linux that is `~/.config/Code/User/` (Windows: `%APPDATA%\Code\User\`). The two you touch most are `settings.json` (behavior) and, if you pin a workspace kit, something like `extensions.json` recommending what to install:
+In VS Code you install an extension from the Marketplace, then tweak it in Settings. On macOS/Linux your user folder is `~/.config/Code/User/` (Windows: `%APPDATA%\Code\User\`). The two files you touch most are `settings.json` (behavior) and, if you pin a workspace kit, `extensions.json`:
 
 ```json
 // ~/.config/Code/User/settings.json (trimmed)
@@ -74,21 +74,35 @@ In VS Code you already configure the editor as JSON. Install an extension from t
 }
 ```
 
-Neovim does the same job with a folder of Lua files instead of one big JSON blob. **A plugin is an extension:** same idea as installing something from the VS Code Marketplace, just named `owner/repo` on GitHub instead of `publisher.name`. [Lazy.nvim](https://github.com/folke/lazy.nvim) is the installer (Extensions view energy): it downloads, updates, and lazy-loads those repos. Options live next to the plugin in a small Lua file, and the whole tree is text you can put in Git. AstroNvim's layout maps roughly like this:
+Neovim does the same job with a folder of Lua files instead of one big JSON blob. **A plugin is an extension:** same idea as the Marketplace, just named `owner/repo` on GitHub instead of `publisher.name`. [Lazy.nvim](https://github.com/folke/lazy.nvim) is the installer (Extensions view energy): it downloads, updates, and lazy-loads those repos. Options live next to the extension in a small Lua file. The whole tree is text you can put in Git.
+
+[AstroNvim](https://astronvim.com) is a ready-made Neovim that already includes most of what a VS Code user expects (Explorer, fuzzy find, debugger, terminal, Git signs). You add a theme, language tools, the Claude Code side panel, and session restore. Configure in VS Code until the tour: no Neovim keys required for setup.
 
 | VS Code | Neovim (this build) |
 |---|---|
-| Marketplace + Extensions view | lines in `lua/community.lua` (and small files under `lua/plugins/`) |
+| Marketplace + Extensions view | lines in `lua/community.lua` + small files under `lua/plugins/` + `:Lazy` |
+| Extension Pack / recommended extensions | one AstroCommunity `import` line |
 | `settings.json` | `lua/plugins/astrocore.lua` (`opt`, keymaps) |
 | Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `gruvbox.lua` |
-| Extension-specific settings | `opts = { ... }` in that plugin's Lua file |
+| Extension-specific settings | `opts = { ... }` in that extension's Lua file |
+| Language servers / formatters (often bundled in an extension) | `:Mason` installs the binaries those extensions call |
+| Status bar / tabs | lualine + bufferline (two small files) |
+| Explorer / `Ctrl/Cmd+P` | Neo-tree / `<Leader>ff` (built in) |
+| Pylance, format-on-save, etc. | One AstroCommunity line per tool |
+| Run and Debug / Terminal / Source Control | Built in (`F5`/`F9`, `F7`, lazygit) |
+| Claude Code side panel | Same Claude Code, via claudecode.nvim |
+| Reopen last files | One line |
+
+---
+
+## Config
 
 Install the template and open Neovim once so Lazy can pull the template's extensions (you will open `:Lazy` and `:Mason` after the community imports below). With no file on the command line you land on the **dashboard**: AstroNvim's start page (Get Started / welcome screen energy). Big logo, a short menu of actions, each with a single-key shortcut. It is not a buffer you edit; it is a launcher that goes away when you open a file.
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
 rm -rf ~/.config/nvim/.git
-nvim   # wait for plugins to finish
+nvim   # wait for extensions to finish
 ```
 
 <img
