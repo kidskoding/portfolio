@@ -108,9 +108,11 @@ code ~/.config/nvim
 
 Template example files start with `if true then return {} end`: delete that line or nothing loads. Pattern for everything below: **file → few lines → restart `nvim`.**
 
+Work through these in order: theme → dashboard → community imports → Lazy/Mason → status bar and tabs → command line → Claude panel → which-key polish.
+
 ### Theme
 
-Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua`. The first string is the plugin's GitHub name (Lazy.nvim installs it like the marketplace). `priority = 1000` loads the theme before other plugins so colors apply cleanly. The `overrides` fix two rough edges under AstroNvim: the sign/fold columns get a gray band otherwise, and which-key's popup needs those `WhichKey*` links or the key list can look empty under gruvbox.
+Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua`. The first string is the plugin's GitHub name (Lazy.nvim installs it like the marketplace). `priority = 1000` loads the theme before other plugins so colors apply cleanly. The `SignColumn` / `FoldColumn` overrides clear the gray band AstroNvim leaves in those gutters under gruvbox. (which-key colors come later.)
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -121,15 +123,6 @@ return {
     overrides = {
       SignColumn = { link = "Normal" },
       FoldColumn = { link = "Normal" },
-
-      -- which key overrides
-      WhichKey = { link = "Function" },
-      WhichKeyNormal = { link = "NormalFloat" },
-      WhichKeyBorder = { link = "FloatBorder" },
-      WhichKeyDesc = { link = "Identifier" },
-      WhichKeyGroup = { link = "Keyword" },
-      WhichKeySeparator = { link = "Comment" },
-      WhichKeyValue = { link = "Comment" },
     },
   },
 }
@@ -148,6 +141,8 @@ return {
 ```
 
 Save both, run `nvim`, and the dashboard picks up gruvbox. That is the whole pattern for the rest of this section: create or open a file, write the few lines you need, restart.
+
+### Dashboard
 
 Stock still lists Find Word and Bookmarks, and it skips Quit. Keep five splash rows: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (you still have `<Leader>fw` for project search) and Bookmarks. `q` is the same `:qa` you already used. Create `lua/plugins/snacks.lua`:
 
@@ -190,7 +185,7 @@ Restart once more. The splash should look like this:
   decoding="async"
 />
 
-### community.lua + overrides
+### community.lua
 
 [AstroCommunity](https://github.com/AstroNvim/astrocommunity) is the closest thing to the Extensions marketplace: one `import` line turns on a ready-made feature (the plugin, its dependencies, and its keys). Open `lua/community.lua`, delete the guard line, and paste this whole file (it matches [nvimforge](https://github.com/kidskoding/nvimforge)).
 
@@ -249,6 +244,8 @@ After a restart, open `:Lazy` anytime you want the Extensions-view energy: every
 />
 
 Community lines install defaults. The small files below are extension settings: they name the same plugin and only change the parts you care about (Lazy merges them), like tweaking an extension in `settings.json` after you install it.
+
+### Status bar and tabs
 
 Create `lua/plugins/lualine.lua`. This starts from lualine's gruvbox theme, makes Normal mode yellow, gives Terminal mode purple (Claude Code, `F7`, lazygit: without this, Terminal stays yellow), keeps the middle of the bar stable across modes, and uses one status bar for the whole screen, like VS Code's.
 
@@ -317,6 +314,8 @@ return {
 }
 ```
 
+### Command line
+
 Open `lua/plugins/astrocore.lua` (this is your `settings.json`), delete the guard line, and set `cmdheight = 1`. AstroNvim hides the command line by default, so typing after `:` sits on top of the status bar and lualine never shows Command mode. This gives `:` its own row underneath, like the Command Palette not covering the status bar.
 
 ```lua
@@ -332,6 +331,8 @@ return {
   },
 }
 ```
+
+### Claude Code panel
 
 Claude Code's panel needs two tiny fixes or it looks like a duplicate buffer (extra title bars under the real tabs). Create both files:
 
@@ -360,8 +361,6 @@ return {
 }
 ```
 
-Empty icons → [Nerd Font](#fonts-and-icons). Want Copilot-style ghost text as you type? Optional: `astrocommunity.completion.blink-copilot` + `:Copilot auth` (nvimforge skips it).
-
 <img
   src="/blog/vscode-to-neovim/claude-code.png"
   alt="Claude Code beside report.py"
@@ -379,6 +378,46 @@ Empty icons → [Nerd Font](#fonts-and-icons). Want Copilot-style ghost text as 
   loading="eager"
   decoding="async"
 />
+
+### which-key
+
+AstroNvim already opens [which-key](https://github.com/folke/which-key.nvim) when you press Space. Under gruvbox the popup can look empty until its highlight groups link into the theme. Open `lua/plugins/gruvbox.lua` again and add the which-key block under `overrides` so the file looks like this:
+
+```lua
+-- lua/plugins/gruvbox.lua
+return {
+  "ellisonleao/gruvbox.nvim",
+  priority = 1000,
+  opts = {
+    overrides = {
+      SignColumn = { link = "Normal" },
+      FoldColumn = { link = "Normal" },
+
+      -- which key overrides
+      WhichKey = { link = "Function" },
+      WhichKeyNormal = { link = "NormalFloat" },
+      WhichKeyBorder = { link = "FloatBorder" },
+      WhichKeyDesc = { link = "Identifier" },
+      WhichKeyGroup = { link = "Keyword" },
+      WhichKeySeparator = { link = "Comment" },
+      WhichKeyValue = { link = "Comment" },
+    },
+  },
+}
+```
+
+Restart, press Space, and you should get a readable key list instead of a blank popup:
+
+<img
+  src="/blog/vscode-to-neovim/which-key.png"
+  alt="which-key after Space"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+Empty icons → [Nerd Font](#fonts-and-icons). Want Copilot-style ghost text as you type? Optional: `astrocommunity.completion.blink-copilot` + `:Copilot auth` (nvimforge skips it).
 
 After a restart you have theme, language tools, Claude Code panel, sessions, finder, tree, debugger, Git, and terminal. Track `~/.config/nvim` in Git, including `lazy-lock.json` (the lockfile of exact plugin versions), if you want the same editor on another machine the way Settings Sync did in VS Code.
 
@@ -447,15 +486,6 @@ Same as in VS Code, Claude Code often proposes almost-right edits: easy to accep
 ```
 
 Reject the diff or delete the function with `daf` and put the one-liner back. That loop (open, edit, rename, review, run, commit) is ordinary VS Code work, now in Neovim.
-
-<img
-  src="/blog/vscode-to-neovim/which-key.png"
-  alt="which-key after Space"
-  width="1920"
-  height="1080"
-  loading="eager"
-  decoding="async"
-/>
 
 <img
   src="/blog/vscode-to-neovim/ty-error.png"
