@@ -169,9 +169,11 @@ Save both, run `nvim`, and the same dashboard picks up `gruvbox` (same rows, new
 
 ### Dashboard
 
-That start page is drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim), a kitchen-sink plugin AstroNvim already ships (dashboard, pickers, terminal helpers, notifications). You are not installing a new plugin; you are editing its settings, the same way you tweak an already-installed VS Code extension. Create `lua/plugins/snacks.lua` that names `"folke/snacks.nvim"` again: Lazy merges your `opts` into the existing install. You only touch one table: `dashboard.preset.keys`, the splash rows. Each row is `{ key, action, icon, desc }`. `key` is what you type on the splash, `action` is the command or `<Leader>…` map it runs, `desc` is the label you see.
+The gruvbox dashboard you see above (logo plus the New File / Find File / Recents / Find Word / Bookmarks / Last Session menu) is drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim). Snacks is a kitchen-sink plugin AstroNvim already ships: start page, pickers, terminal helpers, notifications. You are not installing Snacks. You are editing its settings, the same way you tweak an already-installed VS Code extension.
 
-Stock still lists Find Word and Bookmarks, and it skips Quit. Keep five rows beginners actually use: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then `nil` out any leftover stock rows Lazy may have concatenated onto the list:
+Create `lua/plugins/snacks.lua` that names `"folke/snacks.nvim"` again so Lazy merges your `opts` into the existing install. The only table you change is `dashboard.preset.keys`: that is the list of splash rows. Each row is `{ key, action, icon, desc }`. `key` is the letter you press on the splash, `action` is the command or `<Leader>…` map it runs, `desc` is the label next to it.
+
+Stock still shows Find Word and Bookmarks, and it has no Quit. Trim it to five rows beginners actually use: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then `nil` out any leftover stock rows Lazy may have concatenated onto the list:
 
 ```lua
 -- lua/plugins/snacks.lua
@@ -201,7 +203,7 @@ return {
 }
 ```
 
-`get_icon(...)` pulls AstroNvim's Nerd Font glyphs so the row icons match the rest of the UI. Restart once more. The splash should look like this:
+`get_icon(...)` pulls AstroNvim's Nerd Font glyphs so the row icons match the rest of the UI. Restart once more. The dashboard should now look like this (Find Word and Bookmarks gone, Quit on `q`):
 
 <img
   src="/blog/vscode-to-neovim/dashboard-splash.png"
