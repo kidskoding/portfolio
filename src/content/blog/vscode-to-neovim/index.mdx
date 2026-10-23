@@ -160,6 +160,7 @@ You'll come back here later for which-key's colors, but for now the file needs o
 
 ```lua
 -- lua/plugins/gruvbox.lua
+-- Gruvbox theme: gutters match the editor background.
 return {
   "ellisonleao/gruvbox.nvim",
   priority = 1000,
@@ -355,6 +356,7 @@ The loop gives every mode normal mode's middle section, so only the badge change
 
 ```lua
 -- lua/plugins/lualine.lua
+-- Status bar on the gruvbox theme: one bar for the whole screen, a purple badge for terminal panels.
 return {
   "nvim-lualine/lualine.nvim",
   opts = function()
@@ -383,6 +385,7 @@ The `offsets` reserve space for Neo-tree and Snacks' side panels, so tabs don't 
 
 ```lua
 -- lua/plugins/bufferline.lua
+-- Tabs: the active tab sits on a raised background, and thin gray lines divide the rest.
 return {
   "akinsho/bufferline.nvim",
   opts = function(_, opts)
@@ -478,6 +481,7 @@ Out of the box, extra title bars stack under the tabs and make the panel look li
 
 ```lua
 -- lua/plugins/claudecode.lua
+-- Claude Code side panel, drawn without its own title bar.
 return {
   "coder/claudecode.nvim",
   opts = {
@@ -494,6 +498,7 @@ The second targets heirline (`rebelot/heirline.nvim`), which AstroNvim uses to d
 
 ```lua
 -- lua/plugins/heirline.lua
+-- Turn off AstroNvim's per-window title bar so the Claude panel doesn't stack a second bar under the tabs.
 return {
   "rebelot/heirline.nvim",
   opts = function(_, opts)
@@ -522,6 +527,7 @@ Under gruvbox, though, the popup can look blank, because which-key's highlight g
 
 ```lua
 -- lua/plugins/gruvbox.lua
+-- Gruvbox theme: gutters match the editor background, and which-key borrows the theme's colors.
 return {
   "ellisonleao/gruvbox.nvim",
   priority = 1000,
