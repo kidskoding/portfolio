@@ -1232,6 +1232,15 @@ const tabs: Tab[] = [
     function toggleTree() {
       q<HTMLButtonElement>('[data-tree-drawer-toggle]')?.click();
     }
+    // :NvimTreeFocus opens the tree when it is closed (never hides it) and moves focus into it
+    function focusTree() {
+      const shell = q('.nvim-shell');
+      const open = window.matchMedia(DRAWER_QUERY).matches
+        ? shell?.classList.contains('tree-drawer-open')
+        : !shell?.classList.contains('tree-hidden');
+      if (!open) toggleTree();
+      (q<HTMLAnchorElement>('.tree-file.tree-active') ?? q<HTMLAnchorElement>('.tree-file'))?.focus();
+    }
     function openTelescope() {
       if (telescopeOpen()) return;
       document.dispatchEvent(
@@ -1385,6 +1394,11 @@ const tabs: Tab[] = [
         case 'Explore':
           hideCmdline();
           toggleTree();
+          break;
+        case 'NvimTreeOpen':
+        case 'NvimTreeFocus':
+          hideCmdline();
+          focusTree();
           break;
         case 'noh':
         case 'nohlsearch':
