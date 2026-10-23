@@ -1,5 +1,5 @@
 diff --git a/dist/index.js b/dist/index.js
-index e7e087bcb6f29d0d8f36cd558e0183bc0f162fcb..86a823ebcf26b1a118a41e4b8a6d2bf24ac105d3 100644
+index e7e087bcb6f29d0d8f36cd558e0183bc0f162fcb..8324007a2b0455bea58885ec17108e4407229af6 100644
 --- a/dist/index.js
 +++ b/dist/index.js
 @@ -235,10 +235,13 @@ function getCharWidth(char) {
@@ -18,3 +18,18 @@ index e7e087bcb6f29d0d8f36cd558e0183bc0f162fcb..86a823ebcf26b1a118a41e4b8a6d2bf2
    }
    const minPadding = fontSize * 0.15;
    return totalWidth * fontSize * baseRatio + minPadding;
+@@ -6156,10 +6159,12 @@ function mermaidToElk(graph, opts) {
+       "elk.layered.spacing.nodeNodeBetweenLayers": String(opts.layerSpacing),
+       "elk.spacing.edgeEdge": "12",
+       "elk.layered.spacing.edgeEdgeBetweenLayers": "12",
+-      "elk.layered.spacing.edgeNodeBetweenLayers": "12",
++      // Patched: edgeNodeSpacing and alignment options, so a back edge can run clear below a row of nodes.
++      "elk.layered.spacing.edgeNodeBetweenLayers": String(opts.edgeNodeSpacing ?? 12),
++      "elk.spacing.edgeNode": String(opts.edgeNodeSpacing ?? 10),
+       "elk.padding": `[top=${opts.padding},left=${opts.padding},bottom=${opts.padding},right=${opts.padding}]`,
+       "elk.edgeRouting": "ORTHOGONAL",
+-      "elk.layered.nodePlacement.bk.fixedAlignment": "BALANCED",
++      "elk.layered.nodePlacement.bk.fixedAlignment": opts.alignment ?? "BALANCED",
+       "elk.contentAlignment": "H_CENTER V_CENTER",
+       "elk.layered.thoroughness": String(DEFAULTS2.thoroughness),
+       "elk.layered.highDegreeNodes.treatment": "true",

@@ -11,13 +11,33 @@ const colors = {
   border: 'var(--color-nvim-bg3)',
 };
 
+// Layout options a fence can override in its meta, e.g. ```mermaid edgeNodeSpacing=28 alignment=RIGHTDOWN.
+// edgeNodeSpacing and alignment (ELK's fixedAlignment) come from patches/beautiful-mermaid@1.1.3.patch.
+const numericKeys = ['padding', 'nodeSpacing', 'layerSpacing', 'edgeNodeSpacing'];
+const alignments = ['BALANCED', 'LEFTUP', 'RIGHTUP', 'LEFTDOWN', 'RIGHTDOWN'];
+
+function layoutFromMeta(meta) {
+  const layout = {};
+  for (const [, key, value] of (meta ?? '').matchAll(/(\w+)=(\w+)/g)) {
+    if (numericKeys.includes(key) && /^\d+$/.test(value)) layout[key] = Number(value);
+    if (key === 'alignment' && alignments.includes(value)) layout.alignment = value;
+  }
+  return layout;
+}
+
 // Sätteri mdast plugin: renders ```mermaid fences to inline SVG at build time, before Shiki sees them.
 export const mermaidPlugin = {
   name: 'mermaid',
   code(node, ctx) {
     if (node.lang !== 'mermaid') return;
 
-    const svg = renderMermaidSVG(node.value, { ...colors, font: 'JetBrains Mono', transparent: true, padding: 16 })
+    const svg = renderMermaidSVG(node.value, {
+      ...colors,
+      font: 'JetBrains Mono',
+      transparent: true,
+      padding: 16,
+      ...layoutFromMeta(node.meta),
+    })
       // Drop the embedded <style> (a Google Fonts import plus derived color variables): smart punctuation
       // would mangle its `--` and quotes, and its bare `svg {}` rule would leak onto every SVG on the page.
       // global.css defines the same variables under .mermaid-diagram.
