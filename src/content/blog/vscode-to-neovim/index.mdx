@@ -312,7 +312,42 @@ Save the file and run `nvim`. The language tools install in the background, and 
 
 ### The debugger, Git, and the terminal
 
-These are already set up as well. AstroNvim includes a debugger that uses the same Debug Adapter Protocol as VS Code, with the same `F5`, `F9`, and `F10` keys, and each language pack installs that language's debugger for it. It also marks changed lines in the left margin the way VS Code does, opens [lazygit](https://github.com/jesseduffield/lazygit) as a Git interface in place of VS Code's Source Control panel, and has a terminal panel that opens with `F7`. The only thing to do here is install lazygit, which the appendix covers.
+These are already set up as well. AstroNvim includes a debugger that uses the same Debug Adapter Protocol as VS Code, with the same `F5`, `F9`, and `F10` keys, and each language pack installs that language's debugger for it:
+
+<img
+  src="/blog/vscode-to-neovim/debugger.png"
+  alt="Neovim debugger paused on a Python breakpoint with locals and call stack panels"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+<br />
+
+It also marks changed lines in the left margin the way VS Code does, opens [lazygit](https://github.com/jesseduffield/lazygit) as a Git interface in place of VS Code's Source Control panel (`<Leader>gg`), and has a terminal panel that opens with `F7`. The only thing to do here is install lazygit, which the appendix covers.
+
+<img
+  src="/blog/vscode-to-neovim/lazygit.png"
+  alt="lazygit open over report.py showing an unstaged change"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+<br />
+
+<img
+  src="/blog/vscode-to-neovim/terminal.png"
+  alt="Toggleterm panel under report.py after running the inventory script"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+<br />
 
 ### An AI agent
 
@@ -325,7 +360,20 @@ These are already set up as well. AstroNvim includes a debugger that uses the sa
 
 <br />
 
-That line installs claudecode.nvim and gives it keys under `<Leader>A`, which you'll use [later in this post](#ask-claude-code-for-a-change). AstroCommunity has integrations for other AI tools too, including [sidekick.nvim](https://github.com/folke/sidekick.nvim), [CodeCompanion](https://github.com/olimorris/codecompanion.nvim), [avante.nvim](https://github.com/yetone/avante.nvim), and plugins for opencode and Codex, all in its `astrocommunity.ai` folder, so the same approach works whichever assistant you prefer.
+That line installs claudecode.nvim and gives it keys under `<Leader>A`, which you'll use [later in this post](#ask-claude-code-for-a-change). After a restart, `<Leader>Ac` toggles Claude Code beside the buffer:
+
+<img
+  src="/blog/vscode-to-neovim/claude-code.png"
+  alt="Claude Code panel beside report.py in Neovim"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+<br />
+
+AstroCommunity has integrations for other AI tools too, including [sidekick.nvim](https://github.com/folke/sidekick.nvim), [CodeCompanion](https://github.com/olimorris/codecompanion.nvim), [avante.nvim](https://github.com/yetone/avante.nvim), and plugins for opencode and Codex, all in its `astrocommunity.ai` folder, so the same approach works whichever assistant you prefer.
 
 If you also want inline suggestions as you type, like Copilot in VS Code, you can add this optional line, which needs a GitHub Copilot subscription. After restarting, run `:Copilot auth` once to sign in, and Copilot's suggestions appear in the same completion menu as everything else:
 
