@@ -31,7 +31,7 @@ export async function getStaticPaths() {
 const { project, prev, next } = Astro.props;
 const { Content } = await render(project);
 const { title, description, repo, language, stack, cover, event, placement, date } = project.data;
-const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+const dateLabel = date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', timeZone: 'UTC' });
 ---
 
 <BlogLayout
