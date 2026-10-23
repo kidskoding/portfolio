@@ -82,6 +82,8 @@ Neovim does the same job with a folder of **Lua** files instead of one big **JSO
 
 [AstroNvim](https://astronvim.com) is a ready-made Neovim that already includes most of what a VS Code user expects (Explorer, fuzzy find, debugger, terminal, Git signs). You add a theme, language tools, the Claude Code side panel, and session restore. **Configure in VS Code until the tour: no Neovim keys required for setup.**
 
+The table below is only a map of familiar VS Code pieces to where they live in this build. Each row gets a real introduction when you configure it in the next section.
+
 | VS Code | Neovim (this build) |
 |---|---|
 | Marketplace + Extensions view | lines in `lua/community.lua` + small files under `lua/plugins/` + `:Lazy` |
@@ -136,7 +138,7 @@ Work through these in order: theme → dashboard → community imports → check
 
 ### Theme
 
-Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua`. The first string (`"ellisonleao/gruvbox.nvim"`) is the plugin id: Lazy installs that GitHub repo (`owner/repo`) the way the Marketplace installs a theme extension. `priority = 1000` loads it before other plugins so colors apply cleanly. The `SignColumn` / `FoldColumn` overrides clear the gray band AstroNvim leaves in those gutters under `gruvbox`. (`which-key` colors come later.)
+Same job as `"workbench.colorTheme"` in `settings.json`. You are adding a **theme plugin**: [gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim). Create `lua/plugins/gruvbox.lua`. The first string (`"ellisonleao/gruvbox.nvim"`) is the plugin id Lazy will clone from GitHub (`owner/repo`), the way the Marketplace installs a theme extension. `opts` is the settings table for that plugin. `priority = 1000` loads it before other plugins so colors apply cleanly. The `SignColumn` / `FoldColumn` overrides clear the gray band AstroNvim leaves in those gutters under `gruvbox`. (which-key colors go in this same file later.)
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -152,7 +154,7 @@ return {
 }
 ```
 
-Then select it, the way you pick a Color Theme after installing one. Open `lua/plugins/astroui.lua`, delete the guard line at the top, and set `colorscheme` to `"gruvbox"`:
+Installing the plugin is not enough; you still have to select it, the way you pick a Color Theme after installing one. **astroui** (`AstroNvim/astroui`) is AstroNvim's UI settings plugin (colorscheme, icons). Open `lua/plugins/astroui.lua`, delete the guard line at the top, and set `colorscheme` to `"gruvbox"`:
 
 ```lua
 -- lua/plugins/astroui.lua (template, trimmed)
@@ -177,9 +179,9 @@ Save both, run `nvim`, and the same dashboard picks up `gruvbox` (same rows, new
 
 ### Dashboard
 
-**The gruvbox dashboard you see above** (logo plus the New File / Find File / Recents / Find Word / Bookmarks / Last Session menu) is drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim). Snacks is a kitchen-sink plugin AstroNvim already ships: start page, pickers, terminal helpers, notifications. **You are not installing Snacks. You are editing its settings,** the same way you tweak an already-installed VS Code extension.
+**The gruvbox dashboard you see above** (logo plus the New File / Find File / Recents / Find Word / Bookmarks / Last Session menu) is drawn by a plugin AstroNvim already installed for you: [Snacks.nvim](https://github.com/folke/snacks.nvim) (`folke/snacks.nvim`). Snacks is a kitchen-sink plugin: start page, pickers, terminal helpers, notifications. **You are not installing Snacks. You are editing its settings,** the same way you tweak an already-installed VS Code extension.
 
-Create `lua/plugins/snacks.lua` that names `"folke/snacks.nvim"` again so Lazy merges your `opts` into the existing install. The only table you change is `dashboard.preset.keys`: that is the list of splash rows. Each row is `{ key, action, icon, desc }`. `key` is the letter you press on the splash, `action` is the command or `<Leader>…` map it runs, `desc` is the label next to it.
+Create `lua/plugins/snacks.lua` that names `"folke/snacks.nvim"` again so Lazy merges your `opts` into the existing install. The only table you change is `dashboard.preset.keys`: that is the list of splash rows. Each row is `{ key, action, icon, desc }`. `key` is the letter you press on the splash, `action` is the command or Space-leader map it runs, `desc` is the label next to it.
 
 Stock still shows Find Word and Bookmarks, and it has no Quit. **Trim it to five rows you will actually use:** New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on Space then `fw` once you have a file open; Space is the leader key from earlier) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then `nil` out any leftover stock rows Lazy may have concatenated onto the list:
 
@@ -319,11 +321,13 @@ Quick reminder when you are stuck later in the post:
 | `ty`, `ruff`, `lua_ls`, `debugpy` | `:Mason` (programs those packs call) |
 | `lazygit` or the `claude` CLI | your OS package manager / their docs |
 
-Community lines only turn features on with defaults. The small files below tweak one plugin each: you name the same `owner/repo` again, and Lazy merges your `opts` (the settings table) into that install, like changing an extension's settings in VS Code after it is already installed.
+Community lines only turn features on with defaults. Everything below follows one pattern you already used for Snacks and gruvbox: create a small file under `lua/plugins/`, name the same `owner/repo` again, and put settings in `opts`. Lazy merges that table into the install, like changing an extension's settings in VS Code after it is already installed.
 
 ### Status bar and tabs
 
-Create `lua/plugins/lualine.lua` to tweak the status-bar plugin the community line just installed. This starts from lualine's `gruvbox` theme, makes <VimMode mode="normal" /> yellow, gives <VimMode mode="terminal" /> purple (Claude Code, `F7`, `lazygit`: without this, <VimMode mode="terminal" /> stays yellow), keeps the middle of the bar stable across modes, and uses one status bar for the whole screen, like VS Code's.
+In `community.lua` you imported two UI packs: **lualine** (bottom status bar: mode, branch, file info) and **bufferline** (top tabs for open files). Both are already installed; these files only change how they look.
+
+First, lualine (`nvim-lualine/lualine.nvim`). Create `lua/plugins/lualine.lua`. The snippet starts from lualine's built-in `gruvbox` theme, paints <VimMode mode="normal" /> yellow, and paints <VimMode mode="terminal" /> purple so terminal-style panels (the built-in terminal on `F7`, and the Claude panel you wire next) do not stay yellow. `globalstatus = true` uses one status bar for the whole screen, like VS Code.
 
 ```lua
 -- lua/plugins/lualine.lua
@@ -346,7 +350,7 @@ return {
 }
 ```
 
-Create `lua/plugins/bufferline.lua` for the tab-bar plugin. Minimal preset (no bold/italic chrome), less empty padding per tab, and a fill color that matches the editor so the dashboard is not a black strip across the top.
+Next, bufferline (`akinsho/bufferline.nvim`), the tab bar. Create `lua/plugins/bufferline.lua`. This uses a minimal preset (no bold/italic chrome), less empty padding per tab, and a fill color that matches the editor so the dashboard is not a black strip across the top. The `offsets` entries leave a gap for Neo-tree (AstroNvim's file explorer, already shipped) and for Snacks layout panels so tabs do not draw over those side columns.
 
 ```lua
 -- lua/plugins/bufferline.lua
@@ -392,7 +396,9 @@ return {
 
 ### Command line
 
-Open `lua/plugins/astrocore.lua` (AstroNvim's core settings plugin; treat it as `settings.json`), delete the guard line, and set `cmdheight = 1`. AstroNvim hides the command line by default, so typing after `:` sits on top of the status bar and `lualine` never shows <VimMode mode="command" /> mode. This gives `:` its own row underneath, like the Command Palette not covering the status bar.
+**astrocore** (`AstroNvim/astrocore`) is AstroNvim's core settings plugin: options, keymaps, and autocmds in one place. Treat `lua/plugins/astrocore.lua` like `settings.json`. Open it, delete the guard line, and set `cmdheight = 1`.
+
+AstroNvim hides the command line by default, so when you type after `:` the text sits on top of the status bar and lualine never shows <VimMode mode="command" /> mode. `cmdheight = 1` gives `:` its own row underneath, like the Command Palette not covering the status bar.
 
 ```lua
 -- lua/plugins/astrocore.lua (template, trimmed; delete the guard line)
@@ -410,7 +416,9 @@ return {
 
 ### Claude Code panel
 
-The community line already installed the Claude Code plugin (`coder/claudecode.nvim`). Its panel needs two tiny settings tweaks or it looks like a duplicate buffer (extra title bars under the real tabs). Create both files (same pattern: name the plugin, merge `opts`):
+Back in `community.lua`, `{ import = "astrocommunity.ai.claudecode-nvim" }` installed **claudecode.nvim** (`coder/claudecode.nvim`): the plugin that docks Anthropic's Claude Code CLI in a side panel, the way the official VS Code extension does. You still need the `claude` CLI on your PATH (appendix); the plugin only hosts it inside Neovim.
+
+Out of the box the panel can look like a duplicate buffer (extra title bars under the real tabs). Two small merges fix that. The first file tweaks the Claude plugin's terminal window. The second touches **heirline** (`rebelot/heirline.nvim`), AstroNvim's default winbar plugin (the per-window title strip above a buffer). Clearing `opts.winbar` removes that strip so Claude's panel does not stack a second chrome under bufferline.
 
 ```lua
 -- lua/plugins/claudecode.lua
@@ -457,7 +465,9 @@ return {
 
 ### which-key
 
-AstroNvim already ships the [which-key](https://github.com/folke/which-key.nvim) plugin: press Space and it lists what `<Leader>` maps come next (Command Palette cheat-sheet energy). Under `gruvbox` the popup can look empty until its highlight groups link into the theme. You are not installing `which-key`; you are finishing the theme plugin's colors. Open `lua/plugins/gruvbox.lua` again and add the which-key block under `overrides` so the file looks like this:
+You met [which-key](https://github.com/folke/which-key.nvim) in the learning-curve section: press Space (the leader) and it lists what comes next, Command Palette cheat-sheet energy. AstroNvim already ships that plugin; you are not adding a new `import` line.
+
+Under `gruvbox`, the popup can look empty until which-key's highlight groups link into the theme. Open `lua/plugins/gruvbox.lua` again (the theme plugin you created first) and add the which-key block under `overrides` so the file looks like this:
 
 ```lua
 -- lua/plugins/gruvbox.lua
