@@ -377,7 +377,7 @@ return {
 
 bufferline (`akinsho/bufferline.nvim`) draws a tab for each open buffer along the top, like VS Code's editor tabs.
 
-The snippet calms its defaults with the minimal and no-italic presets, drops the extra padding and separators, and marks the active tab in gruvbox yellow. It also paints the bar's empty space in the editor background, so the dashboard doesn't get a black strip across the top.
+The snippet calms its defaults with the minimal and no-italic presets and drops the extra padding. Instead of a colored marker, the active tab works the way it does in VS Code and Zed: it sits on a raised background (`#3c3836`, the same gray as the status bar) with a bright, bold name, while inactive tabs stay flat and thin gray dividers separate them, drawn flush against the raised tab so no dark sliver shows beside it. The loops apply that raised background to every piece of the active tab, such as its close button and diagnostics, so it reads as one block. The empty part of the bar keeps the editor background, so the dashboard doesn't get a black strip across the top.
 
 The `offsets` reserve space for Neo-tree and Snacks' side panels, so tabs don't draw over them. Create `lua/plugins/bufferline.lua`:
 
@@ -388,6 +388,7 @@ return {
   opts = function(_, opts)
     local bufferline = require "bufferline"
     local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg or "#282828"
+    local active_bg = "#3c3836"
 
     opts.options = vim.tbl_deep_extend("force", opts.options or {}, {
       style_preset = {
@@ -395,7 +396,8 @@ return {
         bufferline.style_preset.no_italic,
       },
       tab_size = 0,
-      separator_style = { "", "" },
+      indicator = { style = "none" },
+      separator_style = "thin",
       offsets = {
         {
           filetype = "neo-tree",
@@ -411,12 +413,26 @@ return {
       },
     })
 
-    opts.highlights = vim.tbl_deep_extend("force", opts.highlights or {}, {
+    local highlights = {
       fill = { bg = normal_bg },
       background = { bg = normal_bg },
-      indicator_selected = { fg = "#d79921" },
+      separator = { fg = "#504945", bg = normal_bg },
+      separator_visible = { fg = "#504945", bg = normal_bg },
+      separator_selected = { fg = "#504945", bg = normal_bg },
       offset_separator = { bg = normal_bg },
-    })
+    }
+
+    -- every piece of the active tab sits on the same raised background
+    for _, part in ipairs { "indicator", "close_button", "modified", "duplicate", "numbers", "pick", "diagnostic" } do
+      highlights[part .. "_selected"] = { bg = active_bg }
+    end
+    for _, level in ipairs { "hint", "info", "warning", "error" } do
+      highlights[level .. "_selected"] = { bg = active_bg }
+      highlights[level .. "_diagnostic_selected"] = { bg = active_bg }
+    end
+    highlights.buffer_selected = { fg = "#ebdbb2", bg = active_bg, bold = true }
+
+    opts.highlights = vim.tbl_deep_extend("force", opts.highlights or {}, highlights)
 
     return opts
   end,
