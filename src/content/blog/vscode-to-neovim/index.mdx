@@ -74,7 +74,7 @@ In VS Code you already configure the editor as JSON. Install an extension from t
 }
 ```
 
-Neovim does the same job with a folder of Lua files instead of one big JSON blob. Plugins are listed by GitHub name (Lazy.nvim downloads them the way the marketplace installs extensions), options live next to the plugin, and the whole tree is just text you can put in Git. AstroNvim's layout maps roughly like this:
+Neovim does the same job with a folder of Lua files instead of one big JSON blob. **A plugin is an extension:** same idea as installing something from the VS Code Marketplace, just named `owner/repo` on GitHub instead of `publisher.name`. [Lazy.nvim](https://github.com/folke/lazy.nvim) is the installer (Extensions view energy): it downloads, updates, and lazy-loads those repos. Options live next to the plugin in a small Lua file, and the whole tree is text you can put in Git. AstroNvim's layout maps roughly like this:
 
 | VS Code | Neovim (this build) |
 |---|---|
@@ -83,7 +83,7 @@ Neovim does the same job with a folder of Lua files instead of one big JSON blob
 | Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `gruvbox.lua` |
 | Extension-specific settings | `opts = { ... }` in that plugin's Lua file |
 
-Install the template and open Neovim once so Lazy can pull plugins (you will open `:Lazy` and `:Mason` after the community imports below). With no file on the command line you land on the **dashboard**: AstroNvim's start page (Get Started / welcome screen energy). Big logo, a short menu of actions, each with a single-key shortcut. It is not a buffer you edit; it is a launcher that goes away when you open a file.
+Install the template and open Neovim once so Lazy can pull the template's extensions (you will open `:Lazy` and `:Mason` after the community imports below). With no file on the command line you land on the **dashboard**: AstroNvim's start page (Get Started / welcome screen energy). Big logo, a short menu of actions, each with a single-key shortcut. It is not a buffer you edit; it is a launcher that goes away when you open a file.
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
@@ -112,7 +112,7 @@ Work through these in order: theme → dashboard → community imports → Lazy/
 
 ### Theme
 
-Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua`. The first string is the plugin's GitHub name (Lazy.nvim installs it like the marketplace). `priority = 1000` loads the theme before other plugins so colors apply cleanly. The `SignColumn` / `FoldColumn` overrides clear the gray band AstroNvim leaves in those gutters under gruvbox. (which-key colors come later.)
+Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua`. The first string (`"ellisonleao/gruvbox.nvim"`) is the extension id: Lazy installs that GitHub repo the way the marketplace installs a theme extension. `priority = 1000` loads it before other extensions so colors apply cleanly. The `SignColumn` / `FoldColumn` overrides clear the gray band AstroNvim leaves in those gutters under gruvbox. (which-key colors come later.)
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -153,9 +153,9 @@ Save both, run `nvim`, and the same dashboard picks up gruvbox (same rows, new c
 
 ### Dashboard
 
-That start page is drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim), a kitchen-sink plugin AstroNvim already ships (dashboard, pickers, terminal helpers, notifications). You are not installing Snacks; you are overriding one table inside it: `dashboard.preset.keys`, the list of splash rows. Each row is `{ key, action, icon, desc }`. `key` is what you type on the splash, `action` is the command or `<Leader>…` map it runs, `desc` is the label you see.
+That start page is drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim), a kitchen-sink **extension** AstroNvim already ships (dashboard, pickers, terminal helpers, notifications). You are not installing a new extension; you are editing its settings, the same way you open an installed extension's config in VS Code. Create `lua/plugins/snacks.lua` that names `"folke/snacks.nvim"` again: Lazy merges your `opts` into the existing install. You only touch one table: `dashboard.preset.keys`, the splash rows. Each row is `{ key, action, icon, desc }`. `key` is what you type on the splash, `action` is the command or `<Leader>…` map it runs, `desc` is the label you see.
 
-Stock still lists Find Word and Bookmarks, and it skips Quit. Keep five rows beginners actually use: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. Create `lua/plugins/snacks.lua`. The `opts` function receives AstroNvim's merged Snacks config; you replace `keys`, then nil out any leftover stock rows Lazy may have concatenated onto the list:
+Stock still lists Find Word and Bookmarks, and it skips Quit. Keep five rows beginners actually use: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then nil out any leftover stock rows Lazy may have concatenated onto the list:
 
 ```lua
 -- lua/plugins/snacks.lua
@@ -232,7 +232,7 @@ return {
 
 AstroNvim already ships Neo-tree (Explorer), the fuzzy finder (`Ctrl/Cmd+P`), the debugger (`F5` / `F9` / `F10`), the terminal (`F7`), and Git signs. You still need `lazygit` and the `claude` CLI from the appendix / their docs.
 
-After a restart, open `:Lazy` anytime you want the Extensions-view energy: every plugin Lazy downloaded, what is loaded vs waiting, Sync / Update / Clean. This is the same list as the GitHub names in your Lua files, not a separate marketplace UI.
+After a restart, open `:Lazy` anytime you want the real Extensions view: every extension Lazy downloaded, what is loaded vs waiting, Sync / Update / Clean. Same list as the GitHub names in your Lua files, just a UI on top instead of a separate marketplace website.
 
 <img
   src="/blog/vscode-to-neovim/lazy.png"
