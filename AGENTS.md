@@ -19,7 +19,7 @@ This repo is a **personal portfolio site** built with **Astro 5**, **Tailwind CS
 
 Detailed rules are in **`.cursor/rules/`**:
 
-- **auto-commit-push.mdc** – After you change any file, you must commit (with `Co-authored-by: Cursor <cursoragent@cursor.com>`) and push before finishing. Skip only if the user says "don't commit" or "no commit".
+- **auto-commit-push.mdc** – After you change any file, you must commit and push before finishing (no `Co-authored-by` line). Skip only if the user says "don't commit" or "no commit".
 - **astro-tailwind.mdc** – Astro and Tailwind usage (when editing `.astro`).
 - **data-layer.mdc** – Data and content structure (when editing `src/data/`).
 - **accessibility.mdc** – A11y and optional content (when editing `.astro`).

@@ -9,7 +9,7 @@ Whenever you (the agent) have modified, added, or deleted any file in this repos
 
 1. **Before ending your response**, run these steps:
    - `git add` the specific files you changed (or `git add -A` if many files).
-   - `git commit -m "Your short descriptive message"` with a second line in the message: `Co-authored-by: Cursor <cursoragent@cursor.com>` (use a multi-line message or `-m "msg" -m "Co-authored-by: Cursor <cursoragent@cursor.com>"`).
+   - `git commit -m "Your short descriptive message"` — message only; **do not** add a `Co-authored-by` line (including Cursor).
    - `git push origin $(git branch --show-current)` (or `git push`).
 2. Request **git_write** and **network** permissions when running these commands.
 
