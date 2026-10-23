@@ -182,7 +182,7 @@ Save both, run `nvim`, and the same dashboard picks up `gruvbox` (same rows, new
 
 Create `lua/plugins/snacks.lua` that names `"folke/snacks.nvim"` again so Lazy merges your `opts` into the existing install. The only table you change is `dashboard.preset.keys`: that is the list of splash rows. Each row is `{ key, action, icon, desc }`. `key` is the letter you press on the splash, `action` is the command or `<Leader>…` map it runs, `desc` is the label next to it.
 
-Stock still shows Find Word and Bookmarks, and it has no Quit. **Trim it to five rows beginners actually use:** New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then `nil` out any leftover stock rows Lazy may have concatenated onto the list:
+Stock still shows Find Word and Bookmarks, and it has no Quit. **Trim it to five rows you will actually use:** New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then `nil` out any leftover stock rows Lazy may have concatenated onto the list:
 
 ```lua
 -- lua/plugins/snacks.lua
