@@ -19,7 +19,7 @@ Reference copy of the same files: [nvimforge](https://github.com/kidskoding/nvim
 
 ## What Neovim is
 
-[Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in <VimMode mode="normal" /> mode (keys move and change text) and drop into <VimMode mode="insert" /> only when you type. **VS Code is modeless:** you are always "typing," and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
+[Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in <VimMode mode="normal" /> mode (keys move and change text) and drop into <VimMode mode="insert" /> only when you type. **VS Code is modeless:** you are always "typing" and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
 
 That sounds worse until you see what modal editing buys. In VS Code a small fix is often: reach for the mouse, select a word, type, click elsewhere, maybe open the Command Palette. In Neovim the same fix is a short sentence on the home row: `ciw` (change inside word), type the replacement, `Esc`. Operators (`c` change, `d` delete, `y` yank) compose with motions and text objects (`iw` inner word, `i(` inside parens, `ap` a paragraph). **You describe the edit instead of painting it.** After a week that loop is faster than selecting with a mouse for the boring 80% of edits: rename a local, flip a condition, delete a function, jump to the next call site.
 
