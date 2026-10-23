@@ -99,7 +99,8 @@ The template has one file per job, and you'll only touch a few of them:
     ├── astrocore.lua       options and keymaps, like settings.json
     ├── astroui.lua         controls how the editor looks
     ├── (gruvbox.lua)       a file you'll create for your theme
-    └── (lualine.lua)       a file you'll create for your status bar
+    ├── (lualine.lua)       a file you'll create for your status bar
+    └── (claudecode.lua)    a file you'll create for Claude Code's panel
 ```
 
 <br />
@@ -373,7 +374,27 @@ It also marks changed lines in the left margin the way VS Code does, opens [lazy
 
 <br />
 
-That line installs claudecode.nvim and gives it keys under `<Leader>A`, which you'll use [later in this post](#ask-claude-code-for-a-change). After a restart, `<Leader>Ac` toggles Claude Code beside the buffer:
+That line installs claudecode.nvim and gives it keys under `<Leader>A`, which you'll use [later in this post](#ask-claude-code-for-a-change).
+
+One small override is worth adding right away. Claude Code opens through [Snacks](https://github.com/folke/snacks.nvim)'s terminal helper, which draws its own winbar on the split — a second title like `1: *Claude Code` sitting under AstroNvim's real tabline, so the panel looks like it has a duplicate buffer. Create `lua/plugins/claudecode.lua` and turn that winbar off:
+
+```lua
+-- lua/plugins/claudecode.lua
+return {
+  "coder/claudecode.nvim",
+  opts = {
+    terminal = {
+      snacks_win_opts = {
+        wo = { winbar = "" },
+      },
+    },
+  },
+}
+```
+
+<br />
+
+Because the file names the same plugin as the AstroCommunity line, Lazy.nvim merges the two configs, the same way `lualine.lua` only changed the parts we cared about. After a restart, `<Leader>Ac` toggles Claude Code beside the buffer with a single tabline:
 
 <img
   src="/blog/vscode-to-neovim/claude-code.png"
@@ -396,7 +417,7 @@ If you also want inline suggestions as you type, like Copilot in VS Code, you ca
 
 <br />
 
-[nvimforge](https://codeberg.org/kidskoding/nvimforge) ships the Claude Code line and skips Copilot, so treat Copilot as optional extras on top of the reference build.
+[nvimforge](https://codeberg.org/kidskoding/nvimforge) ships the Claude Code line, the winbar override, and skips Copilot, so treat Copilot as optional extras on top of the reference build.
 
 ### Sessions
 
@@ -412,7 +433,7 @@ The files are restored when you `cd` into a project folder and run `nvim` with n
 
 ### Your whole configuration
 
-That's the whole setup. Across five files you added gruvbox, pointed `astroui` at it, turned on lualine (with the small color overrides), set `cmdheight = 1` in `astrocore`, and filled `community.lua` with the language packs, Claude Code, and session restore. **You now have an editor with a theme, a full status bar, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish. If you want the snippets in one place, [nvimforge](https://codeberg.org/kidskoding/nvimforge) is the same build.
+That's the whole setup. Across a handful of files you added gruvbox, pointed `astroui` at it, turned on lualine (with the small color overrides), set `cmdheight = 1` in `astrocore`, filled `community.lua` with the language packs, Claude Code, and session restore, and hid Claude Code's duplicate Snacks winbar in `claudecode.lua`. **You now have an editor with a theme, a full status bar, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish. If you want the snippets in one place, [nvimforge](https://codeberg.org/kidskoding/nvimforge) is the same build.
 
 It's a good moment to start tracking the folder with Git, including the `lazy-lock.json` file, which records the exact version of every plugin. Pushing the folder to a Git host and cloning it on another machine gives you the same editor there, which is what VS Code's Settings Sync was doing for you.
 
