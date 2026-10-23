@@ -49,7 +49,14 @@ Costs are real: a slower first week, you own the config, big Java/Kotlin refacto
 
 ## Plugins are extensions
 
-Neovim calls them **plugins**. Mentally map them to VS Code **extensions**: same job (add a theme, a language tool, a side panel), different packaging. In VS Code you install from the Marketplace (`publisher.name`) and tweak Settings. In Neovim you list `owner/repo` on GitHub and put options in a small **Lua** file next to it. [Lazy.nvim](https://github.com/folke/lazy.nvim) is the plugin manager (Extensions-view energy at `:Lazy`). Language servers and formatters are a second installer, Mason. You will walk both after `community.lua` below.
+Neovim calls them **plugins**. Mentally map them to VS Code **extensions**: same job (add a theme, a file tree, a side panel), different packaging. In VS Code you install from the Marketplace (`publisher.name`) and tweak Settings. In Neovim each plugin is usually a GitHub repo written as `owner/repo` (example: `ellisonleao/gruvbox.nvim`), and you put options in a small **Lua** file next to that name.
+
+Two installers show up later; do not worry about driving them yet:
+
+- **Lazy** installs those plugins into Neovim (like the Extensions view).
+- **Mason** installs the separate programs plugins need for smart editing: type checkers, linters, formatters, debuggers (in VS Code the Python extension often pulls those in for you).
+
+You will open both UIs after `community.lua` below, with a step-by-step walkthrough.
 
 In VS Code your user folder is `~/.config/Code/User/` on macOS/Linux (Windows: `%APPDATA%\Code\User\`). The two files you touch most are `settings.json` (behavior) and, if you pin a workspace kit, `extensions.json`:
 
@@ -101,7 +108,7 @@ Neovim does the same job with a folder of **Lua** files instead of one big **JSO
 
 ## Configuring Neovim
 
-Time to build it. Install the AstroNvim template, let Lazy pull its plugins, then edit the config folder in VS Code. You will open `:Lazy` and `:Mason` after the community imports below. With no file on the command line you land on the **dashboard**. **That start page** (Get Started / welcome screen energy) is a big logo plus a short menu of actions, each with a single-key shortcut. It is not a buffer you edit; it is a launcher that goes away when you open a file. Pattern for everything below: **file → few lines → restart `nvim`.**
+Time to build it. Install the AstroNvim template, let Lazy download its plugins, then edit the config folder in VS Code. You will open `:Lazy` and `:Mason` after the community imports below (those screens get a full walkthrough once the imports are in). With no file on the command line you land on the **dashboard**. **That start page** (Get Started / welcome screen energy) is a big logo plus a short menu of actions, each with a single-key shortcut. It is not a file you edit; it is a launcher that goes away when you open a real file. (Neovim calls an open file a **buffer**; same idea as a tab's document in VS Code.) Pattern for everything below: **file → few lines → restart `nvim`.**
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
@@ -124,7 +131,7 @@ Quit with `:qa`. From here on, edit that folder in VS Code the same way you open
 code ~/.config/nvim
 ```
 
-Template example files start with `if true then return {} end`: delete that line or nothing loads.
+Template example files start with a **guard line**, `if true then return {} end`. That means "ignore the rest of this file." Delete that line or your changes never load.
 
 Work through these in order: theme → dashboard → community imports → `:Lazy` / `:Mason` → status bar and tabs → command line → Claude panel → which-key polish.
 
@@ -218,9 +225,16 @@ return {
 
 ### community.lua
 
-[AstroCommunity](https://github.com/AstroNvim/astrocommunity) is curated plugin packs: one `import` line turns on a ready-made feature (the plugin, its dependencies, and its keys), closer to clicking Install on a recommended VS Code Extension Pack than writing a full Lazy spec by hand. Open `lua/community.lua`, delete the guard line, and paste this whole file (it matches [nvimforge](https://github.com/kidskoding/nvimforge)).
+[AstroCommunity](https://github.com/AstroNvim/astrocommunity) is a catalog of **curated packs**: one `{ import = "..." }` line turns on a ready-made feature (plugins + sensible defaults + keys), closer to installing a VS Code Extension Pack than writing every plugin entry by hand. Open `lua/community.lua`, delete the guard line, and paste this whole file (it matches [nvimforge](https://github.com/kidskoding/nvimforge)).
 
-The `pack.lua` line was already in the template; it helps when you edit these config files. `lualine` and `bufferline` are the status-bar and tab plugins. The **Python** lines use [ty](https://docs.astral.sh/ty/) (types, go-to-definition, hover: Pylance's job) and [Ruff](https://docs.astral.sh/ruff/) (lint + format on save). Do not also enable the plain `pack.python` import, or you get two competing toolchains. Uncomment **TypeScript**, **Rust**, and so on only for languages you actually have installed. The Claude Code line is the side-panel plugin. The last line restores open files when you `nvim` in a folder with nothing after it, like VS Code reopening a workspace.
+What each block is for:
+
+- `pack.lua`: smart editing while you work on these config files.
+- `lualine` / `bufferline`: status bar (bottom) and tabs (top).
+- **Python** lines: [ty](https://docs.astral.sh/ty/) for types, jump-to-definition, and hover (Pylance's job in VS Code); [Ruff](https://docs.astral.sh/ruff/) for lint squiggles and format on save. Do not also enable a plain `pack.python` import, or two toolchains fight.
+- Commented **TypeScript** / **Rust** lines: uncomment only for languages you use.
+- Claude Code line: the AI side panel plugin (you still install the `claude` CLI separately; see the appendix).
+- Last line: reopen the files you had last time when you launch `nvim` in a folder with no file argument, like VS Code restoring a workspace.
 
 ```lua
 -- lua/community.lua
@@ -254,20 +268,40 @@ AstroNvim already ships Neo-tree (Explorer), the fuzzy finder (`Ctrl/Cmd+P`), th
 
 ### Lazy and Mason (two installers, not one)
 
-Save `community.lua`, quit Neovim (`:q` or `:qa`), and start it again with `nvim`. On first boot Lazy will pull the new packs; wait until the spinner settles. **You now have two different "install" UIs.** Mixing them up is the usual beginner trap, so walk them once in order.
+Save `community.lua`. Quit Neovim: type `:qa` and press Enter (colon commands are Neovim's "run a command by name" box; `:qa` means quit all windows). Start it again with `nvim` in the terminal. The first restart after new `import` lines can take a minute while downloads finish. Wait until the UI stops spinning.
 
-In VS Code, installing the Python extension often also fetches language tooling behind the scenes. Neovim splits that job:
+**Why there are two screens.** In VS Code you often install one extension (Python) and it quietly brings smart editing with it: jump to definition, lint squiggles, format on save, debug. Neovim splits that into two jobs on purpose:
 
-1. **Lazy** installs **editor plugins** (Lua packages that change Neovim itself: themes, status bar, Claude panel, community packs).
-2. **Mason** installs **language binaries** those plugins call (servers, linters, formatters, debuggers sitting on disk as programs).
+1. **Lazy** = install the **plugins** (extensions for the editor UI itself: colors, status bar, Claude side panel, the AstroCommunity packs you just listed).
+2. **Mason** = install the **tools those plugins talk to** (small programs on disk: type checker, linter, formatter, debugger). People call these language servers / formatters / debuggers; you do not need the jargon. Think "the engines under the hood."
 
-**Plugins are not language tools.** A pack can say "use Ruff," but until Mason has downloaded the `ruff` binary, format-on-save has nothing to run.
+Concrete example for this build:
 
-#### Step 1: open Lazy
+- The line `{ import = "astrocommunity.pack.python.ruff" }` tells Neovim "wire up Ruff."
+- That does **not** download Ruff by itself.
+- **Mason** downloads the actual `ruff` program. Until that finishes, format-on-save cannot run.
 
-Type `:Lazy` and press Enter (same pattern as every Neovim command: colon, then the name).
+Same split for type hints (`ty`) and for Lua config editing (`lua_ls`).
 
-You should land on a screen like this: a list of plugins, how many are loaded, Sync / Update / Clean at the top.
+#### Words on those screens
+
+| Word you will see | Plain meaning |
+|---|---|
+| plugin / pack | An editor add-on (like a VS Code extension). Pack = a ready-made bundle of several plugins. |
+| `owner/repo` | GitHub path Lazy clones (example: `nvim-lualine/lualine.nvim`). |
+| loaded / not loaded | Loaded = already running. Not loaded = waiting until you use that feature (keeps startup fast; that is why the manager is named Lazy). |
+| Sync / Update | Refresh plugins from GitHub, like Update in the Extensions view. |
+| language tool / binary | A program Mason installs (`ruff`, `ty`, …), not a Neovim plugin. |
+| `ty` | Python type checker + go-to-definition / hover (Pylance-shaped job). |
+| `ruff` | Python linter + formatter (squiggles + format on save). |
+| `lua_ls` | Same kind of smart editing, but for the **Lua** config files you are writing. |
+| `debugpy` | Python debugger backend (what `F5` / breakpoints talk to). |
+
+#### Step 1: open Lazy (the Extensions view)
+
+1. Make sure you are in <VimMode mode="normal" /> mode (press `Esc` if you were typing).
+2. Type `:Lazy` and press Enter.
+3. You should see a list like the screenshot below.
 
 <img
   src="/blog/vscode-to-neovim/lazy.png"
@@ -278,22 +312,21 @@ You should land on a screen like this: a list of plugins, how many are loaded, S
   decoding="async"
 />
 
-**What you are looking at:** [lazy.nvim](https://github.com/folke/lazy.nvim) is AstroNvim's plugin manager, the closest thing to VS Code's Extensions view. Every row is something named like `owner/repo` from GitHub (or an AstroCommunity pack that expands into several of those). Loaded means Neovim has already started that plugin; not loaded means it waits until you need it (that is the "lazy" part: faster startup).
+[lazy.nvim](https://github.com/folke/lazy.nvim) is AstroNvim's **plugin manager**. Every row is an editor plugin (or a pack that expands into several). This is where `gruvbox`, `lualine`, `bufferline`, Claude Code, and the community lines show up.
 
-**What to do the first time:**
+**First visit checklist:**
 
-- If anything still shows as installing, wait.
-- Press `S` (Sync) if the help bar says updates are available, the way you would Update in the Extensions view.
-- Skim for names you just added: `gruvbox`, `lualine`, `bufferline`, `claudecode`, the Python packs. If a name is missing after a restart, the `import` line or plugin file did not load; fix the **Lua**, restart, open `:Lazy` again.
-- Press `q` to close the Lazy window and return to the editor.
+- Wait if anything still says it is installing.
+- If the footer or header offers Sync, press `S` once (same idea as Update All in VS Code).
+- Skim the list for names that match what you added: gruvbox, lualine, bufferline, claudecode, python. Missing after a clean restart usually means a typo in `community.lua` or a plugin file still has the template guard line (`if true then return {} end`).
+- Press `q` to close Lazy and go back to the editor.
 
-You will reopen `:Lazy` later when a plugin fails to load or you want to update everything. You do **not** install language servers from here.
+Come back to `:Lazy` when a plugin fails to load or you want updates. **Do not look for `ruff` or `ty` here.** Those are Mason's job.
 
-#### Step 2: open Mason
+#### Step 2: open Mason (the tool installer)
 
-Type `:Mason` and press Enter.
-
-This UI looks similar (a list, install status) but the rows are different animals: `ty`, `ruff`, `lua_ls`, `debugpy`, and so on. Those are programs, not Neovim plugins.
+1. Still in <VimMode mode="normal" />, type `:Mason` and press Enter.
+2. You get another list UI. The rows are tool names (`ty`, `ruff`, `lua_ls`, `debugpy`), not GitHub plugin ids.
 
 <img
   src="/blog/vscode-to-neovim/mason.png"
@@ -304,25 +337,25 @@ This UI looks similar (a list, install status) but the rows are different animal
   decoding="async"
 />
 
-**What you are looking at:** [mason.nvim](https://github.com/williamboman/mason.nvim) downloads and updates the binaries your language packs expect. The community lines told Neovim *which* tools to use; Mason is what puts them on your machine. Watch the install finish the way you watch a VS Code extension finish downloading.
+[mason.nvim](https://github.com/williamboman/mason.nvim) downloads those programs onto your machine. The `community.lua` lines chose *which* tools Neovim should use; Mason is what actually installs them. Watch the status change to installed, the way a VS Code extension download finishes.
 
-**What to do the first time:**
+**First visit checklist:**
 
-- Confirm the tools for the languages you enabled show as installed (for this build: `ty`, `ruff`, `lua_ls`, and a Python debugger such as `debugpy`).
-- If one is missing, put the cursor on it and install it (Mason's footer lists the key; often `i`). Wait until the status turns installed.
+- Find `ty`, `ruff`, `lua_ls`, and `debugpy` (or the Python debugger row Mason shows). They should say installed.
+- If one is missing or says not installed: move onto that row with `j` / `k` (or the arrow keys), then press the install key shown in the footer (often `i`). Wait until it finishes.
 - Press `q` to leave Mason.
 
-**If go-to-definition or format-on-save does nothing later,** come back here first. Lazy can be healthy while Mason is empty; that is the usual failure mode.
+**Later, if jump-to-definition or format-on-save does nothing,** open `:Mason` before you rewrite config. Lazy can look perfect while Mason never installed the engine.
 
-Quick map when you are stuck:
+When you are stuck, use this map:
 
 | You want… | Open |
 |---|---|
-| Theme, status bar, Claude panel, community packs | `:Lazy` |
-| `ty` / `ruff` / `lua_ls` / debugger binaries | `:Mason` |
-| A CLI like `lazygit` or `claude` | your package manager / their docs (not Lazy, not Mason) |
+| Theme, status bar, tabs, Claude panel, community packs | `:Lazy` |
+| `ty`, `ruff`, `lua_ls`, `debugpy` (the engines) | `:Mason` |
+| Terminal apps like `lazygit` or the `claude` CLI | your OS package manager or their install docs (neither Lazy nor Mason) |
 
-Community lines install defaults. The small files below are per-plugin settings: each file names the same `owner/repo` again, and Lazy merges your `opts` into that install, like tweaking an extension in VS Code after you already have it.
+Community lines only turn features on with defaults. The small files below tweak one plugin each: you name the same `owner/repo` again, and Lazy merges your `opts` (settings table) into that install, like changing an extension's settings in VS Code after it is already installed.
 
 ### Status bar and tabs
 
