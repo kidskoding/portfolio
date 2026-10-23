@@ -63,7 +63,7 @@ src/
     └── global.css
 
 flake.nix             # Nix dev shell + `nix run` apps wrapping bun scripts
-.forgejo/workflows/ci.yml # Codeberg Forgejo Actions: format, alejandra, astro check, build; master then deploys to Vercel via the Vercel CLI
+.github/workflows/ci.yml # GitHub Actions: format, alejandra, astro check, build. Vercel Git integration deploys (master to production, PRs to previews)
 vendor/gruvbox/       # morhetz/gruvbox git subtree, reference for palette + highlight roles (not built)
 ```
 
@@ -97,7 +97,7 @@ All `[data-animate]` elements are animated on page load via GSAP in `Layout.astr
 The whole site uses Terminess Nerd Font Mono (icons fit one cell, like in a terminal), self-hosted in `public/fonts/` as woff2 files subset to the characters the site uses (about 10 KB per weight; OFL license beside them). File icons use the real nvim-web-devicons glyph from `src/data/devicons.ts`, rendered from `terminess-nerd-icons.woff2` (Propo variant glyphs: full size and correctly spaced; Mono squeezes them into one cell, non-Mono overflows into the next character), and color from the `--color-devicon-*` tokens. A character outside the subset (new symbol in a post, new devicon) falls back to `ui-monospace`: re-subset from the Terminus release in nerd-fonts with `fontTools.subset --flavor=woff2 --unicodes=...`, adding the new codepoints. Terminus is a pixel font, crisp only at 12/14/16/18/20/22/24/28/32px: the Tailwind `--text-*` scale in `global.css` is remapped to those sizes (`text-base` is 18px; chrome labels 14px), and any hand-written `font-size` must use one of them.
 
 ### Formatting and CI
-Prettier (`.prettierrc.json`, with `prettier-plugin-astro`): 2-space indent, single quotes, 120 columns. `src/content/` and Markdown files are ignored so prose stays as written. Nix files use alejandra. CI on Codeberg (`.forgejo/workflows/ci.yml`) fails on unformatted code, `astro check` errors or a broken build; run `bun run format` and `bun run check` before pushing.
+Prettier (`.prettierrc.json`, with `prettier-plugin-astro`): 2-space indent, single quotes, 120 columns. `src/content/` and Markdown files are ignored so prose stays as written. Nix files use alejandra. CI on GitHub Actions (`.github/workflows/ci.yml`) fails on unformatted code, `astro check` errors or a broken build; run `bun run format` and `bun run check` before pushing.
 
 ### Styling
 Tailwind CSS v4. Design tokens (colors, spacing) are defined as CSS variables in `global.css`. Use semantic token names like `text-text-primary`, `bg-bg-card`, `border-border-default`, `text-accent`.

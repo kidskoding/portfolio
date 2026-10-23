@@ -41,7 +41,7 @@ You'll build your own [Neovim](https://neovim.io) configuration using [AstroNvim
 
 The first half of the post goes through every part of a Neovim configuration in order, from the theme to language support and an AI agent, and most of them turn out to be things AstroNvim has already set up. You'll make those changes in VS Code, so you don't need to know any Neovim keys yet. The second half tries the finished editor on a small project, where you open files, edit code, rename a function, work with Claude Code, debug, and commit, learning only the keys each step needs.
 
-A finished copy of the same build lives at [nvimforge](https://codeberg.org/kidskoding/nvimforge) on Codeberg. Treat it as something to compare against if a step looks different on your machine, rather than as a thing to install instead of following along.
+A finished copy of the same build lives at [nvimforge](https://github.com/kidskoding/nvimforge) on GitHub. Treat it as something to compare against if a step looks different on your machine, rather than as a thing to install instead of following along.
 
 ---
 
@@ -191,7 +191,7 @@ Open the inventory demo file and you get gruvbox with AstroNvim's default status
 />
 
 
-That's the whole configuration process: **open or create a file, write the few lines you need, and restart.** Every other change in this section follows it. [nvimforge](https://codeberg.org/kidskoding/nvimforge) uses this same gruvbox setup, which is why the screenshots in this post match the snippets above.
+That's the whole configuration process: **open or create a file, write the few lines you need, and restart.** Every other change in this section follows it. [nvimforge](https://github.com/kidskoding/nvimforge) uses this same gruvbox setup, which is why the screenshots in this post match the snippets above.
 
 ### The status bar, tabs, and icons
 
@@ -481,7 +481,7 @@ If you also want inline suggestions as you type, like Copilot in VS Code, you ca
 
 <br />
 
-[nvimforge](https://codeberg.org/kidskoding/nvimforge) ships the Claude Code line, both winbar overrides, and skips Copilot, so treat Copilot as optional extras on top of the reference build.
+[nvimforge](https://github.com/kidskoding/nvimforge) ships the Claude Code line, both winbar overrides, and skips Copilot, so treat Copilot as optional extras on top of the reference build.
 
 ### Sessions
 
@@ -495,7 +495,7 @@ VS Code reopens your last files when you open a project folder, and our config c
 
 The files are restored when you `cd` into a project folder and run `nvim` with nothing after it. If you open a specific file instead, such as `nvim main.py`, Neovim opens just that file.
 
-At this point `lua/community.lua` matches [nvimforge](https://codeberg.org/kidskoding/nvimforge):
+At this point `lua/community.lua` matches [nvimforge](https://github.com/kidskoding/nvimforge):
 
 ```lua
 -- lua/community.lua
@@ -527,7 +527,7 @@ return {
 
 ### Your whole configuration
 
-That's the whole setup. Across a handful of files you added gruvbox, pointed `astroui` at it, turned on lualine and bufferline (with the small overrides), set `cmdheight = 1` in `astrocore`, filled `community.lua` with the language packs, Claude Code, and session restore, and hid the duplicate winbars in `claudecode.lua` and `heirline.lua`. **You now have an editor with a theme, a full status bar, clean tabs, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish. If you want the snippets in one place, [nvimforge](https://codeberg.org/kidskoding/nvimforge) is the same build.
+That's the whole setup. Across a handful of files you added gruvbox, pointed `astroui` at it, turned on lualine and bufferline (with the small overrides), set `cmdheight = 1` in `astrocore`, filled `community.lua` with the language packs, Claude Code, and session restore, and hid the duplicate winbars in `claudecode.lua` and `heirline.lua`. **You now have an editor with a theme, a full status bar, clean tabs, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish. If you want the snippets in one place, [nvimforge](https://github.com/kidskoding/nvimforge) is the same build.
 
 It's a good moment to start tracking the folder with Git, including the `lazy-lock.json` file, which records the exact version of every plugin. Pushing the folder to a Git host and cloning it on another machine gives you the same editor there, which is what VS Code's Settings Sync was doing for you.
 
@@ -718,7 +718,7 @@ return {
 
 The `desc` text is what which-key shows in its menu.
 
-**A good configuration grows from things that actually slowed you down, rather than from plugins that looked interesting**, so it helps to make one small change at a time and commit each one, which makes any change easy to undo. The overrides in this post, such as the gruvbox sign-column fix and the lualine colors, are that kind of change: each one exists because something looked wrong or got in the way, not because a plugin list told me to add it. For more of the same, compare against [nvimforge](https://codeberg.org/kidskoding/nvimforge) and steal only what you recognize from your own friction.
+**A good configuration grows from things that actually slowed you down, rather than from plugins that looked interesting**, so it helps to make one small change at a time and commit each one, which makes any change easy to undo. The overrides in this post, such as the gruvbox sign-column fix and the lualine colors, are that kind of change: each one exists because something looked wrong or got in the way, not because a plugin list told me to add it. For more of the same, compare against [nvimforge](https://github.com/kidskoding/nvimforge) and steal only what you recognize from your own friction.
 
 ### Understanding what's underneath
 
@@ -755,7 +755,7 @@ This is the full setup for every platform, for anyone who skipped ahead from [In
 
 <br />
 
-On Linux you'll also want a clipboard tool, either `wl-clipboard` or `xclip`. The [nvimforge](https://codeberg.org/kidskoding/nvimforge) flake also pulls in ripgrep, fd, tree-sitter, lazygit, Node.js, and a C compiler so Mason and the finder work without a separate package-manager pass on Nix.
+On Linux you'll also want a clipboard tool, either `wl-clipboard` or `xclip`. The [nvimforge](https://github.com/kidskoding/nvimforge) flake also pulls in ripgrep, fd, tree-sitter, lazygit, Node.js, and a C compiler so Mason and the finder work without a separate package-manager pass on Nix.
 
 ### Installing the tools
 
@@ -799,7 +799,7 @@ The file icons, Git symbols, and error markers in our config are characters from
 
 ### Neovide
 
-[Neovide](https://neovide.dev) draws Neovim in its own window, with smooth scrolling and an animated cursor, and its [installation page](https://neovide.dev/installation.html) covers every platform. It runs whichever `nvim` is on your `PATH` with the same configuration, so running `neovide` opens our config in its own window. Because Neovide has no terminal settings, you set its font in Neovim instead, for example by adding `vim.o.guifont = "JetBrainsMono Nerd Font:h14"` to `lua/polish.lua`. [nvimforge](https://codeberg.org/kidskoding/nvimforge) exposes the same config through `nix run .#neovide` and does not ship a separate `polish.lua` font override, so set that line yourself if you use Neovide outside Nix.
+[Neovide](https://neovide.dev) draws Neovim in its own window, with smooth scrolling and an animated cursor, and its [installation page](https://neovide.dev/installation.html) covers every platform. It runs whichever `nvim` is on your `PATH` with the same configuration, so running `neovide` opens our config in its own window. Because Neovide has no terminal settings, you set its font in Neovim instead, for example by adding `vim.o.guifont = "JetBrainsMono Nerd Font:h14"` to `lua/polish.lua`. [nvimforge](https://github.com/kidskoding/nvimforge) exposes the same config through `nix run .#neovide` and does not ship a separate `polish.lua` font override, so set that line yourself if you use Neovide outside Nix.
 
 ### Installing on Windows
 
@@ -859,4 +859,4 @@ mv ~/.cache/nvim.bak ~/.cache/nvim
 
 If you use [Nix](https://nixos.org), `nix shell nixpkgs#neovim` gives you a shell with Neovim, and on NixOS you can add `neovim git nodejs gcc tree-sitter ripgrep fd lazygit` to `environment.systemPackages`. Mason downloads prebuilt programs that expect a normal Linux filesystem layout, which NixOS doesn't have, so if a Mason tool won't start, enable `programs.nix-ld` or install that tool from nixpkgs instead.
 
-Nix can also run this config without replacing an existing Neovim configuration at all, which is how [nvimforge](https://codeberg.org/kidskoding/nvimforge) is meant to be tried alongside an existing setup. See that repo's `flake.nix` for the current command and lockfile.
+Nix can also run this config without replacing an existing Neovim configuration at all, which is how [nvimforge](https://github.com/kidskoding/nvimforge) is meant to be tried alongside an existing setup. See that repo's `flake.nix` for the current command and lockfile.
