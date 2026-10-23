@@ -9,49 +9,61 @@ coverImage: "/blog/vscode-to-neovim-banner.png"
 
 import VimMode from '../../../components/VimMode.astro';
 
-Most people's first minute in Neovim is figuring out how to quit. After this post, yours will be different: fuzzy-open a file, change an argument without selecting it, rename a function across the project, review an AI diff, hit a breakpoint, commit, no mouse.
+Most people's first minute in Neovim is figuring out how to quit. After this post, yours will be different: fuzzy-open a file, change an argument without selecting it, rename a function across the project, review an AI diff, hit a breakpoint, and commit, all without touching the mouse.
 
-I bounced off Neovim in 2022 and spent years cycling through VS Code, [Zed](https://zed.dev), and whatever looked promising that month. What eventually stuck was a full editor first, not a clever keymap. This is that build. Keep VS Code installed; I still open it for full-grade IDE work. The point is a daily driver you can actually live in, not purity.
+I started using Neovim in 2022, but it never became my main editor. I wasn't convinced it could replace a real IDE, so I kept drifting back to VS Code, then [Zed](https://zed.dev), then whatever looked promising that month.
 
-Reference copy of the same files: [nvimforge](https://github.com/kidskoding/nvimforge). Tools and platform installs: [appendix](#appendix-installing-everything). Already have a config? [Park it](#if-you-already-have-a-neovim-config).
+What finally made it stick wasn't a clever keymap, but rather starting from a complete editor, and this post is that build. Keep VS Code installed (I still open it for heavy IDE work), because the point is a daily driver you can live in, not purity.
+
+The finished files live in [nvimforge](https://github.com/kidskoding/nvimforge), and install steps for every platform are in the [appendix](#appendix-installing-everything). If you already have a Neovim config, [park it](#if-you-already-have-a-neovim-config) first.
 
 ---
 
 ## What Neovim is
 
-[Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in <VimMode mode="normal" /> mode (keys move and change text) and drop into <VimMode mode="insert" /> only when you type. **VS Code is modeless:** you are always "typing" and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
+[Neovim](https://neovim.io) is a modern fork of Vim, and like Vim it's a **modal** editor: you spend most of your time in <VimMode mode="normal" /> mode, where keys move and change text, and drop into <VimMode mode="insert" /> mode only to type. **VS Code is modeless:** you're always typing, and the mouse plus shortcuts like `Ctrl/Cmd+P` and multi-cursor do the rest.
 
-That sounds worse until you see what modal editing buys. In VS Code a small fix is often: reach for the mouse, select a word, type, click elsewhere, maybe open the Command Palette. In Neovim the same fix is a short sentence on the home row: `ciw` (change inside word), type the replacement, `Esc`. Operators (`c` change, `d` delete, `y` yank) compose with motions and text objects (`iw` inner word, `i(` inside parens, `ap` a paragraph). **You describe the edit instead of painting it.** After a week, that loop is faster than selecting with a mouse for the boring 80% of edits: rename a local, flip a condition, delete a function, jump to the next call site.
+That sounds worse until you see what it buys you. A small fix in VS Code means reaching for the mouse, selecting a word, typing, and clicking away. In Neovim it's a short sentence on the home row: `ciw` ("change inner word") deletes the word under your cursor, you type the replacement, and `Esc` returns you to normal mode.
 
-Neovim also stays out of your way as an app. It starts in tens of milliseconds, uses little RAM, is the same binary over SSH in terminal multiplexers like [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), and its whole UI is text you can script and theme. VS Code is a full Electron IDE: richer out of the box for giant refactor UIs and designer workflows, heavier to open, and its "remote" story is a different product surface. Neither wins every day. **Neovim wins the ordinary edit / navigate / commit day once the keys land.**
+That works because commands compose. Operators like `c` (change), `d` (delete), and `y` (yank, Vim's word for copy) combine with text objects like `iw` (inner word), `i(` (inside parentheses), and `ap` (a paragraph). **You describe the edit instead of painting it.** After a week or so, that beats the mouse for the boring 80% of edits: renaming a local, flipping a condition, deleting a function, or jumping to the next call site.
+
+Neovim also stays out of your way. It starts in tens of milliseconds, uses little memory, runs the same over SSH and inside [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), and its whole interface is text you can script and theme.
+
+VS Code is a full Electron IDE, richer out of the box for big refactors and design-heavy work, but heavier to open, with remote editing as a separate product. Neither one wins every day, **but once the keys land, Neovim wins the ordinary day of editing, navigating, and committing.**
 
 ---
 
 ## The learning curve people fear
 
-Many people are hesitant to switch because they expect setup to take weeks and think they have to memorize a long list of keys first. Both worries are fair if you assemble Neovim from scratch and drill `:Tutor` before you edit anything. **That is the wrong onboarding.**
+Most people hesitate because they expect weeks of setup and a long list of keys to memorize first. Both are fair worries if you build Neovim from scratch and drill `:Tutor` before editing anything, but that's the wrong way to start.
 
-**You do not memorize this post.** Space is the *leader* key (`<Leader>`). Press Space alone and [which-key](https://github.com/folke/which-key.nvim) lists what comes next, the way the Command Palette lists commands. Learn `ciw`, `gd`, and `<Leader>ff` when a real edit needs them; ignore the rest until friction shows up. The mouse still works for scrolling and clicking if you need a safety net.
+**You don't need to memorize anything here before you start.** Most shortcuts begin with the *leader* key, a prefix you press first, which is Space in this build (config files write it as `<Leader>`). Press Space and pause, and [which-key](https://github.com/folke/which-key.nvim) pops up listing every key that can come next and what it does, so you can look shortcuts up the way you'd search the Command Palette.
 
-**You do not configure inside Neovim on day one either.** This build is a handful of short **Lua** files. You edit them in VS Code, restart `nvim`, and only later live in the keys. **Replace day-to-day VS Code with a complete Neovim first, then learn each key when work demands it.**
+Pick up keys as real edits need them: `ciw` changes a word, `gd` ("go to definition") jumps to where a function is defined, and `<Leader>ff` ("find file") opens a file by name, like `Ctrl/Cmd+P`. Everything else can wait until something feels slow, and the mouse still works for scrolling and clicking if you get stuck.
+
+You won't configure anything inside Neovim on day one, either. This build is a handful of short **Lua** files you edit in VS Code, restarting `nvim` to see each change. **Replace your day-to-day VS Code with a complete Neovim first, then learn each key when your work calls for it.**
 
 ---
 
 ## Why bother, when VS Code already has Claude Code and Copilot?
 
-Fair question. Most people open VS Code today for the AI side panel as much as for the editor: chat with the project, get a diff, Accept or Reject. You are not giving that up. [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is the same CLI Anthropic ships for VS Code; [claudecode.nvim](https://github.com/coder/claudecode.nvim) is the Neovim plugin that docks it beside your buffer the way the official VS Code extension does. Same agent, same review loop.
+It's a fair question, since most people open VS Code as much for the AI side panel as for the editor: you chat with the project, get a diff, and accept or reject it.
 
-**You switch for the editor underneath:** instant start, SSH-native, config in Git as plain text, and that compose-the-edit pass once the keys land.
+You keep that. [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is the same CLI Anthropic ships for VS Code, and [claudecode.nvim](https://github.com/coder/claudecode.nvim) docks it beside your buffer the way the official extension does, so the agent and the review loop stay the same.
 
-Costs are real: a slower first week, you own the config, big Java/Kotlin refactors and designers stay in an IDE. Keep VS Code or Cursor when they win a day. The rest of this post is how to make Neovim win the ordinary ones.
+**What you're switching for is the editor underneath:** instant startup, native SSH, a plain-text config in Git, and compose-the-edit editing once the keys land.
+
+The costs are real: a slower first week, a config you own, and big Java or Kotlin refactors (and design work) that still belong in a full IDE. Keep VS Code or Cursor for the days they win, because the rest of this post is about making Neovim win the ordinary ones.
 
 ---
 
 ## Plugins are extensions
 
-Neovim calls them **plugins**. Mentally map them to VS Code **extensions**: same job (add a theme, a file tree, a side panel), different packaging. In VS Code you install from the Marketplace (`publisher.name`) and tweak Settings. In Neovim each plugin is usually a GitHub repo written as `owner/repo` (example: `ellisonleao/gruvbox.nvim`), and you put options in a small **Lua** file next to that name. You will meet the plugin manager (Lazy) on first launch in the next section, and a second installer (Mason) only after you turn on language packs.
+Neovim calls its add-ons **plugins**, and they map to VS Code **extensions**: same jobs (a theme, a file tree, a side panel), different packaging.
 
-In VS Code, your user folder is `~/.config/Code/User/` on macOS/Linux (Windows: `%APPDATA%\Code\User\`). The two files you touch most are `settings.json` (behavior) and, if you pin a workspace kit, `extensions.json`:
+VS Code installs extensions from the Marketplace as `publisher.name` and configures them in Settings. A Neovim plugin is usually a GitHub repo written as `owner/repo`, such as `ellisonleao/gruvbox.nvim`, with its options in a small **Lua** file. You'll meet Lazy, the plugin manager, on first launch, and Mason, a second installer, once you turn on language packs.
+
+For comparison, VS Code keeps its settings in `~/.config/Code/User/` on Linux, `~/Library/Application Support/Code/User/` on macOS, and `%APPDATA%\Code\User\` on Windows. The two files you touch most are `settings.json` and, if you pin extensions per project, `extensions.json`:
 
 ```json
 // ~/.config/Code/User/settings.json (trimmed)
@@ -78,11 +90,11 @@ In VS Code, your user folder is `~/.config/Code/User/` on macOS/Linux (Windows: 
 }
 ```
 
-Neovim does the same job with a folder of **Lua** files instead of one big **JSON** blob. **The whole tree is text you can put in Git.**
+Neovim replaces both with a folder of **Lua** files, **and because that folder is plain text, it lives in Git.**
 
-[AstroNvim](https://astronvim.com) is a ready-made Neovim that already includes most of what a VS Code user expects (Explorer, fuzzy find, debugger, terminal, Git signs). You add a theme, language tools, the Claude Code side panel, and session restore. **Configure in VS Code until the tour: no Neovim keys required for setup.**
+Instead of building that folder from scratch, this post starts from [AstroNvim](https://astronvim.com), a ready-made setup that already ships what a VS Code user expects: a file explorer, fuzzy finding, a debugger, a terminal, and Git signs. You'll add a theme, language tools, the Claude Code panel, and session restore, all edited from VS Code, so you won't need Neovim keys until the tour at the end.
 
-The table below is only a map of familiar VS Code pieces to where they live in this build. Each row gets a real introduction when you configure it in the next section.
+Here's where familiar VS Code pieces live in this build. Each row gets a proper introduction in the next section.
 
 | VS Code | Neovim (this build) |
 |---|---|
@@ -103,7 +115,7 @@ The table below is only a map of familiar VS Code pieces to where they live in t
 
 ## Configuring Neovim
 
-Time to build it. You clone a ready-made config, launch Neovim once so it can finish downloading, then edit that folder in VS Code the same way you edit User settings. Pattern for everything below: **file → few lines → restart `nvim`.**
+Start from AstroNvim's template: clone it into Neovim's config folder, then launch Neovim once so it can download everything the template asks for:
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
@@ -111,9 +123,9 @@ rm -rf ~/.config/nvim/.git
 nvim   # wait for the download UI to finish
 ```
 
-The first launch runs [lazy.nvim](https://github.com/folke/lazy.nvim) (**Lazy**): AstroNvim's plugin manager. It clones the built-in plugins from GitHub onto your machine, the way the Extensions view installs Marketplace packages. Wait until that finishes; do not close the terminal mid-download.
+That first launch runs [lazy.nvim](https://github.com/folke/lazy.nvim) (**Lazy**), AstroNvim's plugin manager, which clones every plugin your config names from GitHub, the way the Extensions view installs from the Marketplace. Let it finish, and don't close the terminal mid-download.
 
-When it settles, you are not in a file yet. You are on the **dashboard**: AstroNvim's start page (Get Started / welcome screen energy). Big logo, a short menu of actions, each with a single-key shortcut. It is a launcher, not a document. (When you do open a file, Neovim calls that open document a **buffer**, same idea as the file in a VS Code tab.)
+When it settles, you're on the **dashboard**, AstroNvim's version of VS Code's welcome screen: a logo and a short menu of actions, each with a single-key shortcut. Once you open a file, Neovim calls it a **buffer**, the same idea as a file in a VS Code tab.
 
 <img
   src="/blog/vscode-to-neovim/dashboard.png"
@@ -124,21 +136,27 @@ When it settles, you are not in a file yet. You are on the **dashboard**: AstroN
   decoding="async"
 />
 
-To leave Neovim, you use a **colon command**: press `:`, type a command name, press Enter. That is Neovim's "run this by name" box (cousin of the Command Palette, but typed after a colon). Quit everything with `:qa` (quit all), then Enter.
+To quit, use a **colon command**: press `:`, type a command's name, and press Enter, like a Command Palette you open with a colon. `:qa` ("quit all") closes everything.
 
-From here on, edit the config in VS Code, not inside Neovim yet:
+For now, edit the config in VS Code:
 
 ```sh
 code ~/.config/nvim
 ```
 
-Template example files start with a **guard line**, `if true then return {} end`. That means "ignore the rest of this file." Delete that line or your changes never load.
+One trap first: many template files start with a **guard line**, `if true then return {} end`, which tells Neovim to ignore the rest of the file. Delete it from any file you edit, or your changes never load.
 
-Work through these in order: theme → dashboard → community imports → check Lazy, then Mason → status bar and tabs → command line → Claude panel → which-key polish.
+The rest of this section builds the editor one piece at a time: the theme, the dashboard, the community packs, a check that Lazy and Mason installed everything, the status bar and tabs, the command line, the Claude Code panel, and which-key. Every step has the same rhythm: **open or create a small file, write a few lines, and restart `nvim`.**
 
 ### Theme
 
-Same job as `"workbench.colorTheme"` in `settings.json`. You are adding a **theme plugin**: [gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim). Create `lua/plugins/gruvbox.lua`. The first string (`"ellisonleao/gruvbox.nvim"`) is the plugin id Lazy will clone from GitHub (`owner/repo`), the way the Marketplace installs a theme extension. `opts` is the settings table for that plugin. `priority = 1000` loads it before other plugins so colors apply cleanly. The `SignColumn` / `FoldColumn` overrides clear the gray band AstroNvim leaves in those gutters under `gruvbox`. (which-key colors go in this same file later.)
+A theme is the easiest start, because you see the result on the next restart. Like VS Code's theme extension plus `"workbench.colorTheme"`, it takes two steps: install a **theme plugin**, then select it.
+
+This build uses [gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim), a port of the retro [gruvbox](https://github.com/morhetz/gruvbox) color scheme (the same palette this site uses, so you're already looking at it). Create `lua/plugins/gruvbox.lua`. Every plugin file here has the same shape, a **Lua** table that names a plugin and lists its settings, so this first one is worth reading line by line.
+
+`"ellisonleao/gruvbox.nvim"` is the plugin's `owner/repo` id, which Lazy clones from GitHub. `priority = 1000` loads the theme before every other plugin, so everything draws with the right colors. `opts` holds gruvbox's settings, and its two `overrides` link the `SignColumn` and `FoldColumn` gutters to the normal background, clearing the gray band AstroNvim otherwise leaves beside your code.
+
+You'll come back here later for which-key's colors, but for now the file needs only this:
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -154,7 +172,7 @@ return {
 }
 ```
 
-Installing the plugin is not enough; you still have to select it, the way you pick a Color Theme after installing one. **astroui** (`AstroNvim/astroui`) is AstroNvim's UI settings plugin (colorscheme, icons). Open `lua/plugins/astroui.lua`, delete the guard line at the top, and set `colorscheme` to `"gruvbox"`:
+Installing a theme doesn't select it. In AstroNvim, that choice lives in astroui (`AstroNvim/astroui`), the plugin for UI settings like the colorscheme and icons. Open `lua/plugins/astroui.lua`, delete the guard line, and set `colorscheme` to `"gruvbox"`:
 
 ```lua
 -- lua/plugins/astroui.lua (template, trimmed)
@@ -166,7 +184,7 @@ return {
 }
 ```
 
-Save both, run `nvim`, and the same dashboard picks up `gruvbox` (same rows, new colors). That is the whole pattern for the rest of this section: create or open a file, write the few lines you need, restart.
+Save both and restart `nvim`, and the same dashboard comes back in gruvbox's colors:
 
 <img
   src="/blog/vscode-to-neovim/dashboard-gruvbox.png"
@@ -179,11 +197,15 @@ Save both, run `nvim`, and the same dashboard picks up `gruvbox` (same rows, new
 
 ### Dashboard
 
-**The gruvbox dashboard you see above** (logo plus the New File / Find File / Recents / Find Word / Bookmarks / Last Session menu) is drawn by a plugin AstroNvim already installed for you: [Snacks.nvim](https://github.com/folke/snacks.nvim) (`folke/snacks.nvim`). Snacks is a kitchen-sink plugin: start page, pickers, terminal helpers, notifications. **You are not installing Snacks. You are editing its settings,** the same way you tweak an already-installed VS Code extension.
+Next, tidy the dashboard. It's drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim) (`folke/snacks.nvim`), a kitchen-sink plugin AstroNvim already installed that bundles the start page, pickers, terminal helpers, and notifications. **This time you aren't installing anything, but rather changing the settings of a plugin you already have.**
 
-Create `lua/plugins/snacks.lua` that names `"folke/snacks.nvim"` again so Lazy merges your `opts` into the existing install. The only table you change is `dashboard.preset.keys`: that is the list of splash rows. Each row is `{ key, action, icon, desc }`. `key` is the letter you press on the splash, `action` is the command or Space-leader map it runs, `desc` is the label next to it.
+Out of the box, the menu has New File, Find File, Recents, Find Word, Bookmarks, and Last Session, but no Quit. You'll trim it to New File, Find File, Recents, Last Session, and a new Quit row. Find Word can go because project search is still Space then `fw` once a file is open, and Bookmarks can go too.
 
-Stock still shows Find Word and Bookmarks, and it has no Quit. **Trim it to five rows you will actually use:** New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on Space then `fw` once you have a file open; Space is the leader key from earlier) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then `nil` out any leftover stock rows Lazy may have concatenated onto the list:
+To change an installed plugin, create a file that names it again: Lazy sees `"folke/snacks.nvim"` in `lua/plugins/snacks.lua` and merges your settings into the existing install. Here `opts` is a function instead of a table, so it receives AstroNvim's existing Snacks settings and changes only what you need rather than replacing them all.
+
+What you need is `dashboard.preset.keys`, the list of start-page rows. Each row has four fields: `key` is the letter you press, `action` is the command or leader mapping it runs, `icon` is the glyph, and `desc` is the label.
+
+The snippet replaces that list with your five rows, using `get_icon(...)` for AstroNvim's Nerd Font glyphs, and the Quit row runs `:qa`. The loop at the end clears any leftover stock rows Lazy merged onto the list, so only your five remain:
 
 ```lua
 -- lua/plugins/snacks.lua
@@ -213,7 +235,7 @@ return {
 }
 ```
 
-`get_icon(...)` pulls AstroNvim's Nerd Font glyphs so the row icons match the rest of the UI. Restart once more. The dashboard should now look like this (Find Word and Bookmarks gone, Quit on `q`):
+Restart, and the dashboard shows just your five rows, with Quit on `q`:
 
 <img
   src="/blog/vscode-to-neovim/dashboard-splash.png"
@@ -226,9 +248,18 @@ return {
 
 ### community.lua
 
-You already told Lazy about one plugin by hand (`gruvbox`). [AstroCommunity](https://github.com/AstroNvim/astrocommunity) is the shortcut for the rest: a catalog of **packs**, each a ready-made bundle (plugins + defaults + keys). One `{ import = "..." }` line is closer to installing a VS Code Extension Pack than writing every `owner/repo` yourself.
+So far you've named each plugin by hand. Most of this build instead comes from [AstroCommunity](https://github.com/AstroNvim/astrocommunity), a catalog of ready-made **packs** that bundle plugins with sensible defaults and keymaps. Each one turns on with a single `{ import = "..." }` line, much like installing a VS Code Extension Pack.
 
-Open `lua/community.lua`, delete the guard line, and paste this whole file (it matches [nvimforge](https://github.com/kidskoding/nvimforge)). Read the comments in the file as you paste; the next paragraphs walk the same lines in order.
+The imports live in `lua/community.lua`. Here's what each group turns on, top to bottom:
+
+- `pack.lua` adds completion and diagnostics for the **Lua** files in this config.
+- `lualine` and `bufferline` add the status bar at the bottom and the tabs at the top, which you'll restyle later.
+- The **Python** block is three packs. `python.base` adds syntax, debugger wiring, and a virtualenv picker, `python.ty` brings in [ty](https://docs.astral.sh/ty/) for type checking, jump-to-definition, and hover docs (Pylance's job in VS Code), and `python.ruff` brings in [Ruff](https://docs.astral.sh/ruff/) for linting and format on save. Don't also enable a plain `pack.python` import, or the two toolchains fight.
+- The **TypeScript** and **Rust** lines stay commented out until you need them.
+- The Claude Code line installs the side-panel **plugin**, while the `claude` CLI itself is a separate install from the appendix.
+- The last line restores your open files the next time you run `nvim` in a folder without naming a file, like VS Code reopening a workspace.
+
+Open `lua/community.lua`, delete the guard line, and paste the whole file, which matches [nvimforge](https://github.com/kidskoding/nvimforge):
 
 ```lua
 -- lua/community.lua
@@ -258,24 +289,15 @@ return {
 }
 ```
 
-Top to bottom:
+Neo-tree (the Explorer), the fuzzy finder, the debugger keys (`F5`, `F9`, `F10`), the terminal (`F7`), and Git signs need no import, because AstroNvim already ships them. `lazygit` and the `claude` CLI aren't plugins at all, but rather programs you install from the appendix.
 
-1. `pack.lua` turns on smart editing for the **Lua** files in this config folder (completion and diagnostics while you edit setup).
-2. `lualine` and `bufferline` are the status bar (bottom) and tabs (top). You will tweak their colors in the next subsection.
-3. The **Python** block is three packs. `python.base` is syntax, debugger wiring, and a virtualenv picker. `python.ty` pulls in [ty](https://docs.astral.sh/ty/) for types, jump-to-definition, and hover (Pylance's job in VS Code). `python.ruff` pulls in [Ruff](https://docs.astral.sh/ruff/) for lint squiggles and format on save. Do not also enable a plain `pack.python` import, or two toolchains fight.
-4. The commented **TypeScript** / **Rust** lines stay commented until you use those languages.
-5. The Claude Code line is the side-panel **plugin**. The `claude` CLI is separate; install that from the appendix when you reach the panel step.
-6. The last line restores the files you had open the next time you run `nvim` in a folder with no file argument, like VS Code reopening a workspace.
-
-AstroNvim already ships Neo-tree (Explorer), the fuzzy finder (`Ctrl/Cmd+P`), the debugger keys (`F5` / `F9` / `F10`), the terminal (`F7`), and Git signs. `lazygit` and `claude` are still OS installs from the appendix, not Lazy plugins.
-
-Save `community.lua`. Those `import` lines only *wire* features into Neovim. Lazy still has to download the new plugins, and the Python packs still need programs on disk (`ty`, `ruff`, …) before jump-to-definition or format-on-save can work. Next, you restart, confirm Lazy got the plugins, then let Mason install those programs.
+These `import` lines only *wire* features in. Lazy still has to download the new plugins, and the Python packs need `ty` and `ruff` on disk before jump-to-definition or format-on-save can work, so next you'll restart to let Lazy catch up, then let Mason install those programs.
 
 ### Confirm Lazy downloaded the new plugins
 
-Quit with `:qa` (same colon command as after the first launch) and start `nvim` again. Lazy will pull everything the new `import` lines added. Wait until the UI stops spinning.
+Quit with `:qa` and start `nvim` again. Lazy sees the new `import` lines and downloads what they added, so wait until its window stops spinning.
 
-You met Lazy on first boot as the downloader. Now open its list UI on purpose. Press `Esc` so you are in <VimMode mode="normal" />, type `:Lazy`, press Enter. You should see a screen like this:
+Lazy also has a window for seeing what's installed. Press `Esc` to make sure you're in <VimMode mode="normal" />, type `:Lazy`, and press Enter:
 
 <img
   src="/blog/vscode-to-neovim/lazy.png"
@@ -286,19 +308,19 @@ You met Lazy on first boot as the downloader. Now open its list UI on purpose. P
   decoding="async"
 />
 
-Each row is an editor plugin (or a pack that expands into several), named like the `owner/repo` strings you have been putting in **Lua** files. **Loaded** means Neovim already started that plugin; **not loaded** means it waits until you use it (that delay is why the manager is called Lazy, and why startup stays fast). Sync / Update at the top refresh plugins from GitHub, like Update in the Extensions view.
+Each row is a plugin, or a pack that expands into several, named by the same `owner/repo` strings you've been writing. Loaded plugins have already started, while not-loaded ones wait until you use them, which is where Lazy gets its name and why startup stays fast. Sync and Update refresh plugins from GitHub.
 
-Skim for what you just added: gruvbox, lualine, bufferline, claudecode, the Python packs. If something is missing after a clean restart, check `community.lua` for a typo or a file that still has the guard line. If Sync is offered, press `S` once. Press `q` to close Lazy.
+Check for what you just added: gruvbox, lualine, bufferline, claudecode, and the Python packs. If something's missing after a clean restart, look for a typo in `community.lua` or a leftover guard line. If Lazy offers a Sync, press `S`, then `q` to close.
 
-**You will not find `ruff` or `ty` in this list.** Lazy only manages editor plugins. Those names are programs on disk, and that is the next screen.
+**You won't find `ruff` or `ty` here, because Lazy only manages editor plugins.** Those are programs on disk, handled on the next screen.
 
 ### Install the language tools with Mason
 
-In VS Code, installing the Python extension often fetches jump-to-definition and formatting behind the scenes. Here the `community.lua` lines chose *which* tools to use; a second installer, [mason.nvim](https://github.com/williamboman/mason.nvim) (**Mason**), puts the actual programs on your machine.
+In VS Code, the Python extension often fetches its tools behind the scenes. Neovim splits that in two: `community.lua` chose *which* tools to use, and [mason.nvim](https://github.com/williamboman/mason.nvim) (**Mason**) installs the actual programs.
 
-Example you already pasted: `{ import = "astrocommunity.pack.python.ruff" }` means "wire Neovim to Ruff." It does not download Ruff. Mason downloads the `ruff` program. Until that finishes, format-on-save has nothing to run. Same idea for `ty` (types / jump-to-definition), `lua_ls` (smart editing for your **Lua** config), and `debugpy` (what breakpoints / `F5` talk to).
+The Ruff import, for example, wires Neovim to Ruff but doesn't download it, so until Mason installs the `ruff` program, format-on-save has nothing to run. The same goes for `ty` (types and jump-to-definition), `lua_ls` (smart editing for your **Lua** config), and `debugpy` (what breakpoints and `F5` talk to).
 
-Still in <VimMode mode="normal" />, type `:Mason`, press Enter:
+Still in <VimMode mode="normal" />, run `:Mason`:
 
 <img
   src="/blog/vscode-to-neovim/mason.png"
@@ -309,11 +331,9 @@ Still in <VimMode mode="normal" />, type `:Mason`, press Enter:
   decoding="async"
 />
 
-Find `ty`, `ruff`, `lua_ls`, and `debugpy` (or the Python debugger row Mason shows). They should say installed. If one is missing, move to that row with `j` / `k` or the arrow keys, press the install key in the footer (often `i`), and wait. Press `q` when you are done.
+Check that `ty`, `ruff`, `lua_ls`, and `debugpy` (or Mason's Python debugger row) say installed. If one is missing, move to it with `j`/`k` or the arrow keys, press the install key in the footer (often `i`), and wait. `q` closes the window.
 
-If jump-to-definition or format-on-save fails later, open `:Mason` before you rewrite config. Lazy can look fine while Mason never installed the program.
-
-Quick reminder when you are stuck later in the post:
+If jump-to-definition or format-on-save breaks later, check `:Mason` before rewriting config, because Lazy can look fine while Mason never installed the program. When you're stuck, this is where to look:
 
 | You want… | Open |
 |---|---|
@@ -321,13 +341,17 @@ Quick reminder when you are stuck later in the post:
 | `ty`, `ruff`, `lua_ls`, `debugpy` | `:Mason` (programs those packs call) |
 | `lazygit` or the `claude` CLI | your OS package manager / their docs |
 
-Community lines only turn features on with defaults. Everything below follows one pattern you already used for Snacks and gruvbox: create a small file under `lua/plugins/`, name the same `owner/repo` again, and put settings in `opts`. Lazy merges that table into the install, like changing an extension's settings in VS Code after it is already installed.
+From here on, you're restyling plugins that are already installed, with the same pattern as gruvbox and Snacks: a small file under `lua/plugins/` that names the `owner/repo` again and puts your changes in `opts`.
 
 ### Status bar and tabs
 
-In `community.lua` you imported two UI packs: **lualine** (bottom status bar: mode, branch, file info) and **bufferline** (top tabs for open files). Both are already installed; these files only change how they look.
+The packs you imported already give you a working status bar and tabs, so these files only change how they look.
 
-First, lualine (`nvim-lualine/lualine.nvim`). Create `lua/plugins/lualine.lua`. The snippet starts from lualine's built-in `gruvbox` theme, paints <VimMode mode="normal" /> yellow, and paints <VimMode mode="terminal" /> purple so terminal-style panels (the built-in terminal on `F7`, and the Claude panel you wire next) do not stay yellow. `globalstatus = true` uses one status bar for the whole screen, like VS Code.
+lualine (`nvim-lualine/lualine.nvim`) draws the bar along the bottom, showing the mode, Git branch, and file details, like VS Code's status bar.
+
+The snippet starts from lualine's gruvbox theme and paints the <VimMode mode="normal" /> badge yellow. It gives <VimMode mode="terminal" /> mode a copy of the insert colors with a purple badge, so terminal panels like `F7` and the Claude panel don't stay yellow.
+
+The loop gives every mode normal mode's middle section, so only the badge changes color, and `globalstatus = true` draws one bar across the whole screen instead of one per split. Create `lua/plugins/lualine.lua`:
 
 ```lua
 -- lua/plugins/lualine.lua
@@ -350,7 +374,11 @@ return {
 }
 ```
 
-Next, bufferline (`akinsho/bufferline.nvim`), the tab bar. Create `lua/plugins/bufferline.lua`. This uses a minimal preset (no bold/italic chrome), less empty padding per tab, and a fill color that matches the editor so the dashboard is not a black strip across the top. The `offsets` entries leave a gap for Neo-tree (AstroNvim's file explorer, already shipped) and for Snacks layout panels so tabs do not draw over those side columns.
+bufferline (`akinsho/bufferline.nvim`) draws a tab for each open buffer along the top, like VS Code's editor tabs.
+
+The snippet calms its defaults with the minimal and no-italic presets, drops the extra padding and separators, and marks the active tab in gruvbox yellow. It also paints the bar's empty space in the editor background, so the dashboard doesn't get a black strip across the top.
+
+The `offsets` reserve space for Neo-tree and Snacks' side panels, so tabs don't draw over them. Create `lua/plugins/bufferline.lua`:
 
 ```lua
 -- lua/plugins/bufferline.lua
@@ -394,11 +422,22 @@ return {
 }
 ```
 
+Restart, and both bars pick up the new look:
+
+<img
+  src="/blog/vscode-to-neovim/statusline-normal.png"
+  alt="lualine in Normal mode"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
 ### Command line
 
-**astrocore** (`AstroNvim/astrocore`) is AstroNvim's core settings plugin: options, keymaps, and autocmds in one place. Treat `lua/plugins/astrocore.lua` like `settings.json`. Open it, delete the guard line, and set `cmdheight = 1`.
+One more fix before the Claude panel. AstroNvim hides the command line by default, so whatever you type after `:` covers the status bar and lualine never shows <VimMode mode="command" /> mode. Giving the command line its own row fixes that.
 
-AstroNvim hides the command line by default, so when you type after `:` the text sits on top of the status bar and lualine never shows <VimMode mode="command" /> mode. `cmdheight = 1` gives `:` its own row underneath, like the Command Palette not covering the status bar.
+That's set in astrocore (`AstroNvim/astrocore`), the core settings plugin for options, keymaps, and autocommands, and the closest thing this build has to `settings.json`. Open `lua/plugins/astrocore.lua`, delete the guard line, and set `cmdheight = 1` under `options.opt`, where ordinary Neovim options go:
 
 ```lua
 -- lua/plugins/astrocore.lua (template, trimmed; delete the guard line)
@@ -416,9 +455,9 @@ return {
 
 ### Claude Code panel
 
-Back in `community.lua`, `{ import = "astrocommunity.ai.claudecode-nvim" }` installed **claudecode.nvim** (`coder/claudecode.nvim`): the plugin that docks Anthropic's Claude Code CLI in a side panel, the way the official VS Code extension does. You still need the `claude` CLI on your PATH (appendix); the plugin only hosts it inside Neovim.
+The `claudecode-nvim` import installed claudecode.nvim (`coder/claudecode.nvim`), which docks the Claude Code CLI in a side panel like the official VS Code extension. It only hosts the CLI, so `claude` still needs to be on your PATH (see the appendix).
 
-Out of the box the panel can look like a duplicate buffer (extra title bars under the real tabs). Two small merges fix that. The first file tweaks the Claude plugin's terminal window. The second touches **heirline** (`rebelot/heirline.nvim`), AstroNvim's default winbar plugin (the per-window title strip above a buffer). Clearing `opts.winbar` removes that strip so Claude's panel does not stack a second chrome under bufferline.
+Out of the box, extra title bars stack under the tabs and make the panel look like a duplicate buffer. Two small files fix that. The first sets the panel's `winbar` (the title strip above a window) to an empty string:
 
 ```lua
 -- lua/plugins/claudecode.lua
@@ -434,6 +473,8 @@ return {
 }
 ```
 
+The second targets heirline (`rebelot/heirline.nvim`), which AstroNvim uses to draw that strip above every window. Setting `opts.winbar` to `nil` turns it off everywhere, so the panel no longer stacks a second bar under bufferline:
+
 ```lua
 -- lua/plugins/heirline.lua
 return {
@@ -445,6 +486,8 @@ return {
 }
 ```
 
+Restart, and the panel docks cleanly beside your code:
+
 <img
   src="/blog/vscode-to-neovim/claude-code.png"
   alt="Claude Code beside report.py"
@@ -454,20 +497,11 @@ return {
   decoding="async"
 />
 
-<img
-  src="/blog/vscode-to-neovim/statusline-normal.png"
-  alt="lualine in Normal mode"
-  width="1920"
-  height="1080"
-  loading="eager"
-  decoding="async"
-/>
-
 ### which-key
 
-You met [which-key](https://github.com/folke/which-key.nvim) in the learning-curve section: press Space (the leader) and it lists what comes next, Command Palette cheat-sheet energy. AstroNvim already ships that plugin; you are not adding a new `import` line.
+Last comes polish. [which-key](https://github.com/folke/which-key.nvim), the menu that appears when you press Space, already ships with AstroNvim, so there's no new import.
 
-Under `gruvbox`, the popup can look empty until which-key's highlight groups link into the theme. Open `lua/plugins/gruvbox.lua` again (the theme plugin you created first) and add the which-key block under `overrides` so the file looks like this:
+Under gruvbox, though, the popup can look blank, because which-key's highlight groups aren't linked to any theme colors. Back in `lua/plugins/gruvbox.lua`, each new `overrides` line links one which-key group to an existing gruvbox group, so the popup borrows the theme's colors:
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -492,7 +526,7 @@ return {
 }
 ```
 
-Restart, press Space, and you should get a readable key list instead of a blank popup:
+Restart and press Space, and you get a readable key list instead of a blank popup:
 
 <img
   src="/blog/vscode-to-neovim/which-key.png"
@@ -503,13 +537,15 @@ Restart, press Space, and you should get a readable key list instead of a blank 
   decoding="async"
 />
 
-Empty icons → [Nerd Font](#fonts-and-icons). Want Copilot-style ghost text as you type? Optional community plugin: `astrocommunity.completion.blink-copilot` + `:Copilot auth` (nvimforge skips it).
+If icons show up as empty boxes, install a [Nerd Font](#fonts-and-icons). For Copilot-style ghost text, add the optional `astrocommunity.completion.blink-copilot` pack and sign in with `:Copilot auth` (nvimforge skips it).
 
-After a restart, you have theme, language tools, Claude Code panel, sessions, finder, tree, debugger, Git, and terminal. Track `~/.config/nvim` in Git, including `lazy-lock.json` (exact plugin versions Lazy pinned), if you want the same editor on another machine the way Settings Sync did in VS Code.
+That's the whole build: theme, language tools, Claude Code panel, session restore, finder, file tree, debugger, Git, and terminal. To get the same editor on another machine, like VS Code's Settings Sync, keep `~/.config/nvim` in Git, including `lazy-lock.json`, which pins the exact plugin versions.
 
 ---
 
 ## Live in it for a minute
+
+Now use it. Create a tiny two-file project:
 
 ```python
 # inventory/models.py
@@ -537,11 +573,73 @@ items = [
 print(f"Inventory value: {total_value(items):.2f}")
 ```
 
+Commit it, so lazygit has history to show later, and open Neovim in the folder:
+
 ```sh
 cd inventory && git init && git add . && git commit -m "Initial inventory" && nvim
 ```
 
-Mac: Ctrl stays Ctrl, not Cmd. Forget a key → Space → read which-key.
+On a Mac, Neovim's shortcuts use Ctrl, not Cmd. If you forget a key, press Space and read which-key.
+
+Open a file the way you would with `Ctrl/Cmd+P`: press `<Leader>ff`, type `rep`, and pick `report.py`. `<Leader>fw` searches the whole project for a word instead, and `<Leader>e` toggles the file tree.
+
+Now edit. `i` enters insert mode for normal typing, and `Esc` returns to normal mode. Put your cursor on a price, type `ciw`, type a string in its place, press `Esc`, and save with `Ctrl+S`. ty flags the type error right away, and `gl` shows the full diagnostic:
+
+<img
+  src="/blog/vscode-to-neovim/ty-error.png"
+  alt="ty error after ciw to a string"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+Press `u` to undo. Put your cursor on `total_value` and press `K` to see its signature, or `gd` to jump to its definition in `models.py`, and `Ctrl+O` jumps back.
+
+To rename it across the project, press `<Leader>lr`, type the new name, and press Enter. Neovim doesn't save the other changed buffers for you, so finish with `:wa`.
+
+For the Claude Code panel, `<Leader>Ac` opens it and `<Leader>As` sends your selection. When Claude proposes a change, `<Leader>Aa` accepts the diff and `<Leader>Ad` rejects it.
+
+As in VS Code, Claude often proposes edits that are almost right, which makes them easy to accept by mistake:
+
+```diff
+ def total_value(items: list[Item]) -> float:
+-    return sum(item.price * item.quantity for item in items)
++    total = 0.0
++    for item in items:
++        total += item.price * item.quantity * 1.08  # tax??
++    return round(total, 2)
+```
+
+Here, the one-liner turned into a loop with a made-up tax rate. Reject it with `<Leader>Ad`, or, if it already landed, delete the function with `daf` ("delete a function") and restore the one-liner.
+
+The rest of the IDE is a key away: `F7` opens a terminal, `F9` sets a breakpoint, `F5` starts the debugger, and `F10` steps over a line:
+
+<img
+  src="/blog/vscode-to-neovim/debugger.png"
+  alt="Debugger on a breakpoint"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+`<Leader>gg` opens lazygit, where you can stage, commit, and browse history:
+
+<img
+  src="/blog/vscode-to-neovim/lazygit.png"
+  alt="lazygit over the project"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+Quit with `:qa`, and session restore brings your buffers back the next time you run a bare `nvim` here.
+
+That loop of opening, editing, renaming, reviewing, running, and committing is ordinary VS Code work, now in Neovim. Once it feels normal, composition pays off: `c`, `d`, and `y` combine with `iw`, `i(`, `i"`, and `af` to change, delete, or copy exactly what you mean, `dd` deletes a line and `p` pastes it, `]f` jumps to the next function, and `.` repeats your last change.
+
+The whole tour, for quick reference:
 
 | Do | Keys |
 |---|---|
@@ -558,57 +656,15 @@ Mac: Ctrl stays Ctrl, not Cmd. Forget a key → Space → read which-key.
 | Terminal / debug / Git | `F7` · `F9`/`F5`/`F10` · `<Leader>gg` |
 | Quit | `:qa` |
 
-Neovim's advantage over clicking: compose. `c`/`d`/`y` + `iw` / `i(` / `i"` / `af`. Line ops `dd`/`p`. Next function `]f`. Repeat `.`
-
-Same as in VS Code, Claude Code often proposes almost-right edits: easy to accept, wrong for what you wanted:
-
-```diff
- def total_value(items: list[Item]) -> float:
--    return sum(item.price * item.quantity for item in items)
-+    total = 0.0
-+    for item in items:
-+        total += item.price * item.quantity * 1.08  # tax??
-+    return round(total, 2)
-```
-
-Reject the diff or delete the function with `daf` and put the one-liner back. That loop (open, edit, rename, review, run, commit) is ordinary VS Code work, now in Neovim.
-
-<img
-  src="/blog/vscode-to-neovim/ty-error.png"
-  alt="ty error after ciw to a string"
-  width="1920"
-  height="1080"
-  loading="eager"
-  decoding="async"
-/>
-
-<img
-  src="/blog/vscode-to-neovim/debugger.png"
-  alt="Debugger on a breakpoint"
-  width="1920"
-  height="1080"
-  loading="eager"
-  decoding="async"
-/>
-
-<img
-  src="/blog/vscode-to-neovim/lazygit.png"
-  alt="lazygit over the project"
-  width="1920"
-  height="1080"
-  loading="eager"
-  decoding="async"
-/>
-
-Session restore brings buffers back on the next bare `nvim` in this folder.
-
 Matching VS Code speed took me years of on-and-off use, not a clean two-week milestone. The turning point was quieter: Neovim stopped being a project I was adopting and became the place I opened without deciding to.
 
 ---
 
 ## When you want more
 
-`<Leader>fk` searches maps; `<Leader>fh` searches help. Grow `astrocore` from friction, not plugin FOMO:
+When you forget a key, `<Leader>fk` searches every keymap and `<Leader>fh` searches Neovim's help.
+
+Grow `astrocore.lua` from real friction, not plugin FOMO. This version keeps the `cmdheight` fix, turns off relative line numbers, and adds `<Leader>W` to save all buffers:
 
 ```lua
 -- lua/plugins/astrocore.lua (example)
@@ -631,11 +687,13 @@ return {
 }
 ```
 
-Want the wiring without AstroNvim? [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim). Staying on AstroNvim for years is fine.
+If you'd rather wire everything yourself, start from [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim), but staying on AstroNvim for years is fine, too.
 
 ---
 
-You've set up a complete editor, docked the same Claude Code you already know from VS Code, and learned keys only when a step needed them. Use Neovim for one small real task a day. Keep VS Code as a safety net. Give it years if you need to; I did. The goal was never a prettier terminal. It was having Neovim be where you actually work.
+You've built a complete editor, docked the Claude Code you already know, and learned keys only as you needed them. Use Neovim for one small, real task a day, and keep VS Code as a safety net.
+
+Give it years if you need to; I did. The goal was never a prettier terminal, but rather having Neovim be where you actually work.
 
 ---
 
@@ -658,11 +716,11 @@ You've set up a complete editor, docked the same Claude Code you already know fr
 | Python 3 | Examples | `python3 --version` |
 | Neovide | Optional GUI | `neovide --version` |
 
-Linux clipboard: `wl-clipboard` or `xclip`. nvimforge's flake also pulls ripgrep, fd, tree-sitter, lazygit, Node, and a C compiler.
+On Linux, add `wl-clipboard` or `xclip` for system clipboard support. nvimforge's Nix flake already pulls in ripgrep, fd, tree-sitter, lazygit, Node, and a C compiler.
 
 ### Installing the tools
 
-From Neovim's [install guide](https://github.com/neovim/neovim/blob/master/INSTALL.md); Claude Code from [its docs](https://docs.anthropic.com/en/docs/claude-code):
+These follow Neovim's [install guide](https://github.com/neovim/neovim/blob/master/INSTALL.md), and Claude Code has [its own docs](https://docs.anthropic.com/en/docs/claude-code).
 
 ```sh
 # macOS
@@ -688,19 +746,21 @@ sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 ```
 
-If `nvim --version` is older than 0.11, use the tarball and put the `export` in your shell rc. Debian/Ubuntu: `fd` is `fdfind`. Windows needs a C compiler (e.g. VS Build Tools). Missing tree-sitter CLI: drop the guard in template `lua/plugins/mason.lua`.
+If `nvim --version` is older than 0.11, use the tarball and add the `export` line to your shell rc.
+
+On Debian and Ubuntu, `fd` is called `fdfind`. Windows needs a C compiler, such as Visual Studio Build Tools. If the tree-sitter CLI is missing, delete the guard line in the template's `lua/plugins/mason.lua` so Mason installs it.
 
 ### Fonts and icons
 
-[Nerd Font](https://www.nerdfonts.com/font-downloads) in the terminal, or `icons_enabled = false` in `lua/lazy_setup.lua`.
+Icons need a [Nerd Font](https://www.nerdfonts.com/font-downloads) as your terminal font, or set `icons_enabled = false` in `lua/lazy_setup.lua` to turn them off.
 
 ### Neovide
 
-[Install](https://neovide.dev/installation.html), then `neovide` uses this config. GUI font example in `lua/polish.lua`: `vim.o.guifont = "JetBrainsMono Nerd Font:h14"`. Nix: `nix run .#neovide` from nvimforge.
+[Neovide](https://neovide.dev/installation.html) is an optional GUI that uses this same config. Set its font in `lua/polish.lua` with a line like `vim.o.guifont = "JetBrainsMono Nerd Font:h14"`, and on Nix, run it with `nix run .#neovide` from nvimforge.
 
 ### Windows template path
 
-Same order as above: clone, launch once for the dashboard, quit, then edit in VS Code.
+On Windows the config lives under `%LOCALAPPDATA%`, but the steps are the same: clone, launch once, quit, then edit in VS Code.
 
 ```powershell
 git clone --depth 1 https://github.com/AstroNvim/template $env:LOCALAPPDATA\nvim
@@ -711,16 +771,20 @@ code $env:LOCALAPPDATA\nvim
 
 ### When it doesn't work
 
-- Boxes for icons → Nerd Font or `icons_enabled = false`
-- No highlights → C compiler / tree-sitter CLI on `PATH`
-- LSP dead → `:Mason`, language toolchain installed
-- No `<Leader>fw` → install ripgrep
-- Config ignored → still have `if true then return {} end`
-- Stale red errors → `:w` / `:LspRestart`
-- No Claude panel → `claude` works in a shell
-- Nuclear → `:checkhealth`, or `nvim --clean`
+Most problems are a missing program or a leftover guard line:
+
+- If icons show as boxes, install a Nerd Font or set `icons_enabled = false`.
+- If there's no syntax highlighting, put a C compiler and the tree-sitter CLI on your `PATH`.
+- If language features don't work, check `:Mason` and the language's own toolchain.
+- If `<Leader>fw` finds nothing, install ripgrep.
+- If your config is ignored, a file still has its `if true then return {} end` guard line.
+- If fixed errors stay red, save with `:w` or run `:LspRestart`.
+- If the Claude panel won't open, check that `claude` runs in a shell.
+- If all else fails, run `:checkhealth`, or `nvim --clean` to rule out your config.
 
 ### If you already have a Neovim config
+
+Move your existing config and data folders aside so the template starts clean:
 
 ```sh
 mv ~/.config/nvim ~/.config/nvim.bak
@@ -729,9 +793,11 @@ mv ~/.local/state/nvim ~/.local/state/nvim.bak
 mv ~/.cache/nvim ~/.cache/nvim.bak
 ```
 
-Windows: `%LOCALAPPDATA%\nvim` and `%LOCALAPPDATA%\nvim-data`.
+On Windows, move `%LOCALAPPDATA%\nvim` and `%LOCALAPPDATA%\nvim-data`.
 
 ### Undoing it
+
+To go back, delete the new folders and restore the backups:
 
 ```sh
 rm -rf ~/.config/nvim \
@@ -746,4 +812,6 @@ mv ~/.cache/nvim.bak ~/.cache/nvim
 
 ### Nix
 
-`nix shell nixpkgs#neovim`; on NixOS add packages to `environment.systemPackages`. Mason + NixOS often needs `programs.nix-ld` or nixpkgs tools instead. nvimforge's `flake.nix` runs this config beside an existing Neovim install.
+On Nix, try Neovim with `nix shell nixpkgs#neovim`, or on NixOS add packages to `environment.systemPackages`.
+
+Mason's downloaded programs often won't run on NixOS as-is, so you'll usually need `programs.nix-ld` or the nixpkgs versions of those tools. nvimforge's `flake.nix` can also run this config beside an existing Neovim install.
