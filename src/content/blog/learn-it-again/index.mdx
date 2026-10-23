@@ -119,17 +119,17 @@ The Drizzle part is identical, with the same query and the same builder. What ch
 
 And because `Database` is a requirement rather than an import, a test can hand it a different implementation with `Effect.provideService` and never touch a real database.
 
-```text
-BEFORE                              AFTER
-
-findUser                            findUser
-   │                                   │  requires: Database
-   │  import { db }                    │  fails with: DatabaseError
-   ▼                                   ▼
- Drizzle (global)                   Database service
-   │                                   │  provided by a Layer
-   ▼                                   ▼
-Database                             Drizzle → Database
+```mermaid
+graph TD
+  subgraph Before
+    F1[findUser] -->|import db| G[Drizzle, global]
+    G --> D1[Database]
+  end
+  subgraph After
+    F2[findUser] -->|requires Database, fails with DatabaseError| S[Database service]
+    S -->|provided by a Layer| Z[Drizzle]
+    Z --> D2[Database]
+  end
 ```
 
 That's when Drizzle started to look different to me. Before, it was the thing I talked to the database through. Now it was an implementation detail behind a service boundary, and I had to decide what that boundary promised: which errors cross it, who creates the client, and who closes the connection when the program shuts down. Effect has answers for those (layers and scoped resources), but it doesn't let you skip the question.
