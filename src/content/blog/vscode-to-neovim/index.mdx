@@ -19,7 +19,7 @@ Reference copy of the same files: [nvimforge](https://github.com/kidskoding/nvim
 
 ## What you get
 
-[AstroNvim](https://astronvim.com) is a ready-made Neovim that already includes most of what a VS Code user expects. You add a theme, language tools, an AI panel, and session restore. Configure in VS Code until the tour: no Neovim keys required for setup.
+[AstroNvim](https://astronvim.com) is a ready-made Neovim that already includes most of what a VS Code user expects. You add a theme, language tools, the Claude Code side panel, and session restore. Configure in VS Code until the tour: no Neovim keys required for setup.
 
 | VS Code | Here |
 |---|---|
@@ -28,18 +28,20 @@ Reference copy of the same files: [nvimforge](https://github.com/kidskoding/nvim
 | Explorer / `Ctrl/Cmd+P` | Neo-tree / `<Leader>ff` (built in) |
 | Pylance, format-on-save, etc. | One AstroCommunity line per tool |
 | Run and Debug / Terminal / Source Control | Built in (`F5`/`F9`, `F7`, lazygit) |
-| Claude Code / Copilot | One line + two tiny winbar fixes |
+| Claude Code side panel (the VS Code extension) | Same Claude Code, via claudecode.nvim |
 | Reopen last files | One line |
 
 Space is the *leader* key (`<Leader>`). Press Space alone and [which-key](https://github.com/folke/which-key.nvim) lists what comes next, so you do not memorize this post.
 
 ---
 
-## Why bother, with Cursor and Copilot around
+## Why bother, when VS Code already has Claude Code and Copilot
 
-Fair question. You don't switch for “better AI.” [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is a terminal program either way; [claudecode.nvim](https://github.com/coder/claudecode.nvim) just puts its diffs in your buffers. You switch because Neovim starts instantly, runs the same over SSH in [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), lives in Git as plain text, and once the keys land, makes the read / navigate / small-fix pass faster than painting selections with a mouse.
+Fair question. Most people open VS Code today for the AI side panel as much as for the editor: chat with the project, get a diff, Accept or Reject. You are not giving that up. [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is the same CLI Anthropic ships for VS Code; [claudecode.nvim](https://github.com/coder/claudecode.nvim) is the Neovim plug that docks it beside your buffer the way the official VS Code extension does. Same agent, same review loop.
 
-Costs are real: a slower first week, you own the config, big Java/Kotlin refactors and designers stay in an IDE. Keep Cursor or VS Code when they win a day. The rest of this post is how to make Neovim win the ordinary ones.
+You switch for the editor underneath: Neovim starts instantly, runs the same over SSH in [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), lives in Git as plain text, and once the keys land, makes the read / navigate / small-fix pass faster than painting selections with a mouse.
+
+Costs are real: a slower first week, you own the config, big Java/Kotlin refactors and designers stay in an IDE. Keep VS Code or Cursor when they win a day. The rest of this post is how to make Neovim win the ordinary ones.
 
 ---
 
@@ -247,7 +249,7 @@ return {
 }
 ```
 
-`cmdheight = 1` keeps `:` off the statusline. The winbar files stop Claude Code from looking like a duplicate tab. Empty icons → [Nerd Font](#fonts-and-icons). Optional Copilot: `astrocommunity.completion.blink-copilot` + `:Copilot auth`.
+`cmdheight = 1` keeps `:` off the statusline. The winbar files stop the Claude Code panel from drawing a second fake tab (the same kind of chrome glitch you fix once in VS Code and forget). Empty icons → [Nerd Font](#fonts-and-icons). Want Copilot-style ghost text as you type? Optional: `astrocommunity.completion.blink-copilot` + `:Copilot auth`.
 
 <img
   src="/blog/vscode-to-neovim/claude-code.png"
@@ -316,13 +318,13 @@ Mac: Ctrl stays Ctrl, not Cmd. Forget a key → Space → read which-key.
 | Full diagnostic | `gl` |
 | Hover / go to def | `K` / `gd` (`Ctrl+O` back) |
 | Rename symbol | `<Leader>lr` … then `:wa` (other buffers aren't auto-saved) |
-| Claude Code | `<Leader>Ac` · send sel. `<Leader>As` · accept `<Leader>Aa` · reject `<Leader>Ad` |
+| Claude Code panel (like the VS Code extension) | `<Leader>Ac` open · `<Leader>As` send selection · `<Leader>Aa` accept · `<Leader>Ad` reject |
 | Terminal / debug / Git | `F7` · `F9`/`F5`/`F10` · `<Leader>gg` |
 | Quit | `:qa` |
 
 Neovim's advantage over clicking: compose. `c`/`d`/`y` + `iw` / `i(` / `i"` / `af`. Line ops `dd`/`p`. Next function `]f`. Repeat `.`
 
-Agents often propose almost-right edits: easy to accept, wrong for what you wanted:
+Same as in VS Code, Claude Code often proposes almost-right edits: easy to accept, wrong for what you wanted:
 
 ```diff
  def total_value(items: list[Item]) -> float:
@@ -405,7 +407,7 @@ Want the wiring without AstroNvim? [kickstart.nvim](https://github.com/nvim-lua/
 
 ---
 
-You've set up a complete editor, connected an agent, and learned keys only when a step needed them. Use Neovim for one small real task a day. Keep VS Code as a safety net. Give it years if you need to; I did. The goal was never a prettier terminal. It was having Neovim be where you actually work.
+You've set up a complete editor, docked the same Claude Code you already know from VS Code, and learned keys only when a step needed them. Use Neovim for one small real task a day. Keep VS Code as a safety net. Give it years if you need to; I did. The goal was never a prettier terminal. It was having Neovim be where you actually work.
 
 ---
 
