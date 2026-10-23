@@ -360,3 +360,27 @@ body::before {
   display: inline-block;
   margin: 0.25rem 0;
 }
+
+/* Shiki code blocks: padded, tight line boxes, no spacer tricks */
+.blog-content pre {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.blog-content pre code {
+  display: grid;
+  font-size: inherit;
+  line-height: inherit;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+}
+
+.blog-content pre .line {
+  display: block;
+  min-height: 1.5em;
+}
