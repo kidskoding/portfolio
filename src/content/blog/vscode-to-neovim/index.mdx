@@ -606,7 +606,7 @@ On a Mac, Neovim's shortcuts use Ctrl, not Cmd. If you forget a key, press Space
 
 Open a file the way you would with `Ctrl/Cmd+P`: press `<Leader>ff`, type `rep`, and pick `report.py`. `<Leader>fw` searches the whole project for a word instead, and `<Leader>e` toggles the file tree.
 
-Now edit. `i` enters insert mode for normal typing, and `Esc` returns to normal mode. Put your cursor on a price, type `ciw`, type a string in its place, press `Esc`, and save with `Ctrl+S`. ty flags the type error right away, and `gl` shows the full diagnostic:
+Now edit. `i` enters insert mode for normal typing, and `Esc` returns to normal mode. Put your cursor on the `5` in the mouse row, type `ciw`, type `"5"` in its place, press `Esc`, and save with `Ctrl+S`. ty flags the type error right away, and `gl` shows the full diagnostic:
 
 <img
   src="/blog/vscode-to-neovim/ty-error.png"
@@ -636,7 +636,7 @@ As in VS Code, Claude often proposes edits that are almost right, which makes th
 
 Here, the one-liner turned into a loop with a made-up tax rate. Reject it with `<Leader>Ad`, or, if it already landed, delete the function with `daf` ("delete a function") and restore the one-liner.
 
-The rest of the IDE is a key away: `F7` opens a terminal, `F9` sets a breakpoint, `F5` starts the debugger, and `F10` steps over a line:
+The rest of the IDE is a key away: `F7` opens a terminal, `F9` sets a breakpoint, `F5` starts the debugger (pick `file` the first time it asks), and `F10` steps over a line:
 
 <img
   src="/blog/vscode-to-neovim/debugger.png"
