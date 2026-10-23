@@ -307,6 +307,11 @@ body::before {
   transform: translateY(8px);
 }
 
+/* Set on soft navigation from the swap until GSAP starts (Layout.astro) */
+html[data-entering] [data-animate] {
+  opacity: 0;
+}
+
 [data-animate].is-visible {
   opacity: 1;
   transform: translateY(0);

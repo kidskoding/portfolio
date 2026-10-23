@@ -79,6 +79,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
             (el as HTMLElement).style.opacity = '1';
             (el as HTMLElement).style.transform = 'none';
           });
+          delete document.documentElement.dataset.entering;
           return;
         }
 
@@ -101,7 +102,15 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
             },
           );
         });
+        // GSAP now holds every element at its from-state, so the swap-time hide can lift
+        delete document.documentElement.dataset.entering;
       }
+
+      // A soft navigation paints the new page before astro:page-load starts GSAP; keep [data-animate]
+      // hidden until then so content does not show, blink to opacity 0 and fade back in
+      document.addEventListener('astro:before-swap', (e) => {
+        e.newDocument.documentElement.dataset.entering = 'true';
+      });
 
       initAnimations();
       // Run after the View Transition update callback finishes (not `astro:after-swap`),
