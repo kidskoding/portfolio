@@ -214,17 +214,17 @@ return {
   "nvim-lualine/lualine.nvim",
   opts = function()
     local theme = require("lualine.themes.gruvbox_dark")
-    theme.normal.a.bg = "#fabd2f" -- gruvbox yellow for Normal mode
-    -- Terminal isn't in the stock theme, so copy Insert and recolor it
+    theme.normal.a.bg = "#fabd2f"
     theme.terminal = vim.deepcopy(theme.insert)
-    theme.terminal.a.bg = "#d3869b" -- gruvbox purple for Terminal mode
+    theme.terminal.a.bg = "#d3869b"
     for _, mode in pairs(theme) do
-      mode.c = theme.normal.c -- same middle color in every mode
+      mode.c = theme.normal.c
     end
     return { options = { theme = theme, globalstatus = true } }
   end,
 }
 ```
+
 
 <br />
 
@@ -239,8 +239,7 @@ return {
   opts = {
     options = {
       opt = {
-        -- the template's other options stay as they are
-        cmdheight = 1, -- keep lualine visible while typing a command
+        cmdheight = 1,
       },
     },
   },
@@ -372,7 +371,6 @@ It also marks changed lines in the left margin the way VS Code does, opens [lazy
 [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is a separate program, so install it first by following its documentation, and check that running `claude` in a terminal works. Then add one more line to `lua/community.lua`:
 
 ```lua
-  -- vibecoding with neovim!
   { import = "astrocommunity.ai.claudecode-nvim" },
 ```
 
