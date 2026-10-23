@@ -1,0 +1,15 @@
+---
+description: Keep vscode-to-neovim blog screenshots in sync with nvimforge UI
+alwaysApply: true
+---
+
+# nvimforge ↔ blog screenshots
+
+The `vscode-to-neovim` post shows real nvimforge UI. Any change to chrome that appears in those shots (lualine modes — Terminal is purple `#d3869b`, Claude Code panel colors, heirline winbar, lazygit/Snacks theme, splash, debugger, statusline spacing) must be followed by recapturing the matching PNGs.
+
+Update **both** trees so they stay identical:
+
+- `public/blog/vscode-to-neovim/`
+- `src/content/blog/vscode-to-neovim/screenshots/`
+
+Do not leave prose or config claiming a look the screenshots no longer show.
