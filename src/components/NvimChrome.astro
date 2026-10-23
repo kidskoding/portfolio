@@ -318,7 +318,7 @@ const tabs: Tab[] = [
     background: var(--color-nvim-bg-hard);
     padding: 4px 14px;
     text-align: center;
-    font-size: 14px;
+    font-size: var(--text-sm);
     color: var(--color-nvim-fg2);
     border-bottom: 1px solid var(--color-nvim-bg);
     flex-shrink: 0;
@@ -336,7 +336,7 @@ const tabs: Tab[] = [
     color: var(--color-nvim-fg2);
     padding: 1px 7px;
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: var(--text-sm);
     line-height: 1.4;
     cursor: pointer;
   }
@@ -373,7 +373,7 @@ const tabs: Tab[] = [
   .nvim-buffer {
     display: flex;
     align-items: center;
-    font-size: 14px;
+    font-size: var(--text-sm);
     color: var(--color-nvim-fg2);
     border-right: 1px solid var(--color-nvim-bg-hard);
     white-space: nowrap;
@@ -416,7 +416,7 @@ const tabs: Tab[] = [
     background: transparent;
     color: var(--color-nvim-fg3);
     font-family: var(--font-mono);
-    font-size: 14px;
+    font-size: var(--text-sm);
     line-height: 1;
     cursor: pointer;
     opacity: 0;
@@ -455,7 +455,7 @@ const tabs: Tab[] = [
     border-right: 2px solid var(--color-nvim-bg-hard);
     flex-shrink: 0;
     overflow-y: auto;
-    font-size: 14px;
+    font-size: var(--text-sm);
   }
   .nvimtree::-webkit-scrollbar {
     width: 3px;
@@ -473,7 +473,7 @@ const tabs: Tab[] = [
     background: transparent;
     padding: 2px 10px;
     color: var(--color-nvim-blue);
-    font-size: 14px;
+    font-size: var(--text-sm);
     line-height: 1.8;
     cursor: pointer;
     font-family: var(--font-mono);
@@ -506,7 +506,7 @@ const tabs: Tab[] = [
     gap: 6px;
     padding: 2px 10px;
     color: var(--color-nvim-fg2);
-    font-size: 14px;
+    font-size: var(--text-sm);
     line-height: 1.8;
     text-decoration: none;
     transition: background 0.1s;
@@ -535,7 +535,7 @@ const tabs: Tab[] = [
   .buf-icon,
   .tree-icon {
     font-family: 'Terminess Nerd Font Icons', var(--font-mono);
-    font-size: 16px;
+    font-size: var(--text-base);
     font-weight: 400;
     width: 22px;
     display: inline-flex;
@@ -597,7 +597,7 @@ const tabs: Tab[] = [
   .nvim-winbar {
     background: var(--color-nvim-bg1);
     padding: 3px 14px;
-    font-size: 14px;
+    font-size: var(--text-sm);
     color: var(--color-nvim-fg2);
     border-bottom: 1px solid var(--color-nvim-bg-hard);
     flex-shrink: 0;
@@ -633,7 +633,7 @@ const tabs: Tab[] = [
   .nvim-statusline {
     display: flex;
     align-items: stretch;
-    font-size: 14px;
+    font-size: var(--text-sm);
     height: 22px;
     flex-shrink: 0;
     overflow: hidden;
@@ -684,7 +684,7 @@ const tabs: Tab[] = [
   }
   .branch-icon {
     font-family: 'Terminess Nerd Font Icons', var(--font-mono);
-    font-size: 16px;
+    font-size: var(--text-base);
     font-weight: 400;
     flex-shrink: 0;
   }
@@ -712,7 +712,7 @@ const tabs: Tab[] = [
     gap: 6px;
   }
   .sl-ft-icon {
-    font-size: 16px;
+    font-size: var(--text-base);
     font-family: 'Terminess Nerd Font Icons', var(--font-mono);
     font-weight: 400;
     display: inline-flex;
@@ -742,7 +742,7 @@ const tabs: Tab[] = [
     background: none;
     border: 0;
     font-family: inherit;
-    font-size: 14px;
+    font-size: var(--text-sm);
     font-weight: 700;
     cursor: pointer;
   }
@@ -758,7 +758,7 @@ const tabs: Tab[] = [
     padding: 0 10px;
     flex-shrink: 0;
     background: var(--color-nvim-bg-hard);
-    font-size: 14px;
+    font-size: var(--text-sm);
     color: var(--color-nvim-fg);
   }
   /* cmdheight=1: the row always exists under the statusline, empty until it has something to show */
@@ -821,7 +821,7 @@ const tabs: Tab[] = [
     border: 1px solid var(--color-nvim-bg3);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
     padding: 14px 18px;
-    font-size: 14px;
+    font-size: var(--text-sm);
   }
   .nvim-help-title {
     color: var(--color-nvim-green);

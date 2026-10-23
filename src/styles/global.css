@@ -43,16 +43,22 @@
   --font-sans: 'JetBrains Mono', ui-monospace, monospace;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* Dense mono UI scale for JetBrains Mono (chrome labels stay 14px) */
+  /*
+   * JetBrains Mono type scale.
+   * Large x-height → body at 16px (comfortable reading); chrome/UI at --text-sm (14px)
+   * so the shell stays denser than page copy. Steps ~1.125–1.2 from base, rounded to px.
+   * Roles: xs meta/tags · sm chrome+secondary · base body · lg section titles ·
+   * xl article h2 · 2xl mid display · 3xl article h1 · 4xl/5xl page heroes
+   */
   --text-xs: 12px;
   --text-sm: 14px;
   --text-base: 16px;
   --text-lg: 18px;
-  --text-xl: 20px;
-  --text-2xl: 22px;
-  --text-3xl: 26px;
-  --text-4xl: 30px;
-  --text-5xl: 40px;
+  --text-xl: 21px;
+  --text-2xl: 24px;
+  --text-3xl: 28px;
+  --text-4xl: 34px;
+  --text-5xl: 42px;
 
   /* Gruvbox Dark */
   --color-bg-primary: #282828;
