@@ -83,23 +83,30 @@ Neovim does the same job with a folder of Lua files instead of one big JSON blob
 | Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `gruvbox.lua` |
 | Extension-specific settings | `opts = { ... }` in that plugin's Lua file |
 
-You will edit those files in VS Code with `code ~/.config/nvim`, same as opening your User folder. Template example files start with `if true then return {} end`: delete that line or nothing loads. Pattern for everything below: **file → few lines → restart.**
+Install the template and open Neovim once so Lazy can pull plugins. You land on the stock dashboard:
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
 rm -rf ~/.config/nvim/.git
-nvim   # wait for plugins, then :qa
-code ~/.config/nvim
+nvim   # wait for plugins to finish
 ```
 
 <img
   src="/blog/vscode-to-neovim/dashboard.png"
-  alt="Stock AstroNvim dashboard after the first restart"
+  alt="Stock AstroNvim dashboard after the first launch"
   width="1920"
   height="1080"
   loading="eager"
   decoding="async"
 />
+
+Quit with `:qa`. From here on, edit that folder in VS Code the same way you open your User settings, not inside Neovim yet:
+
+```sh
+code ~/.config/nvim
+```
+
+Template example files start with `if true then return {} end`: delete that line or nothing loads. Pattern for everything below: **file → few lines → restart `nvim`.**
 
 ### Theme
 
@@ -520,10 +527,12 @@ If `nvim --version` is older than 0.11, use the tarball and put the `export` in 
 
 ### Windows template path
 
+Same order as above: clone, launch once for the dashboard, quit, then edit in VS Code.
+
 ```powershell
 git clone --depth 1 https://github.com/AstroNvim/template $env:LOCALAPPDATA\nvim
 Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
-nvim
+nvim   # wait for plugins, then :qa
 code $env:LOCALAPPDATA\nvim
 ```
 
