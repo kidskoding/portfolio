@@ -119,7 +119,6 @@ After the plugins finish installing and you restart, AstroNvim opens on a dashbo
   decoding="async"
 />
 
-<br />
 
 ### The theme
 
@@ -179,7 +178,6 @@ Save both files and run `nvim`, and it downloads gruvbox.nvim and opens with it.
   decoding="async"
 />
 
-<br />
 
 Open the inventory demo file and you get gruvbox with AstroNvim's default status bar — the yellow Normal-mode segment comes in the next step:
 
@@ -192,7 +190,6 @@ Open the inventory demo file and you get gruvbox with AstroNvim's default status
   decoding="async"
 />
 
-<br />
 
 That's the whole configuration process: **open or create a file, write the few lines you need, and restart.** Every other change in this section follows it. [nvimforge](https://codeberg.org/kidskoding/nvimforge) uses this same gruvbox setup, which is why the screenshots in this post match the snippets above.
 
@@ -314,7 +311,6 @@ lualine's icons come from a [Nerd Font](https://www.nerdfonts.com), so if they s
   decoding="async"
 />
 
-<br />
 
 <img
   src="/blog/vscode-to-neovim/statusline-insert.png"
@@ -325,7 +321,6 @@ lualine's icons come from a [Nerd Font](https://www.nerdfonts.com), so if they s
   decoding="async"
 />
 
-<br />
 
 ### The file tree and finder
 
@@ -380,7 +375,6 @@ Save the file and run `nvim`. The language tools install in the background, and 
   decoding="async"
 />
 
-<br />
 
 ### The debugger, Git, and the terminal
 
@@ -395,7 +389,6 @@ These are already set up as well. AstroNvim includes a debugger that uses the sa
   decoding="async"
 />
 
-<br />
 
 It also marks changed lines in the left margin the way VS Code does, opens [lazygit](https://github.com/jesseduffield/lazygit) as a Git interface in place of VS Code's Source Control panel (`<Leader>gg`), and has a terminal panel that opens with `F7`. The only thing to do here is install lazygit, which the appendix covers.
 
@@ -408,7 +401,6 @@ It also marks changed lines in the left margin the way VS Code does, opens [lazy
   decoding="async"
 />
 
-<br />
 
 <img
   src="/blog/vscode-to-neovim/terminal.png"
@@ -419,7 +411,6 @@ It also marks changed lines in the left margin the way VS Code does, opens [lazy
   decoding="async"
 />
 
-<br />
 
 ### An AI agent
 
@@ -479,7 +470,6 @@ Because those files name the same plugins AstroNvim already loads, Lazy.nvim mer
   decoding="async"
 />
 
-<br />
 
 AstroCommunity has integrations for other AI tools too, including [sidekick.nvim](https://github.com/folke/sidekick.nvim), [CodeCompanion](https://github.com/olimorris/codecompanion.nvim), [avante.nvim](https://github.com/yetone/avante.nvim), and plugins for opencode and Codex, all in its `astrocommunity.ai` folder, so the same approach works whichever assistant you prefer.
 
@@ -578,7 +568,6 @@ Press Space on its own first and wait a moment. A menu appears listing every key
   decoding="async"
 />
 
-<br />
 
 Now press `<Leader>ff`, type `rep`, and press Enter to open `report.py`. The finder matches loosely, so a few letters of a name are usually enough. `<Leader>fw` searches for text across the whole project, like `Ctrl/Cmd+Shift+F`, and `<Leader>e` opens a file tree on the left that you can click, like VS Code's Explorer. Open files appear as tabs across the top, which you can also click.
 
@@ -605,7 +594,6 @@ Changing the quantity to a string broke the types, and a red error message has a
   decoding="async"
 />
 
-<br />
 
 When a message is too long to read there, `gl` shows it in full:
 
@@ -618,7 +606,6 @@ When a message is too long to read there, `gl` shows it in full:
   decoding="async"
 />
 
-<br />
 
 Press `u` to undo your change, which brings back the `5` and clears the error, and save again with `Ctrl+S`.
 
