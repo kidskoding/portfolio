@@ -495,6 +495,36 @@ VS Code reopens your last files when you open a project folder, and our config c
 
 The files are restored when you `cd` into a project folder and run `nvim` with nothing after it. If you open a specific file instead, such as `nvim main.py`, Neovim opens just that file.
 
+At this point `lua/community.lua` matches [nvimforge](https://codeberg.org/kidskoding/nvimforge):
+
+```lua
+-- lua/community.lua
+-- AstroCommunity: ready-made plugin setups, turned on with one `import` line each
+-- browse everything available here: https://github.com/AstroNvim/astrocommunity
+
+---@type LazySpec
+return {
+  "AstroNvim/astrocommunity",
+  { import = "astrocommunity.pack.lua" }, -- helps when editing these config files
+  { import = "astrocommunity.bars-and-lines.lualine-nvim" }, -- the status bar
+  { import = "astrocommunity.bars-and-lines.bufferline-nvim" }, -- the tabs
+
+  -- languages (uncomment the languages you use!)
+  -- check out all available language extension packs here: https://github.com/AstroNvim/astrocommunity/tree/main/lua/astrocommunity/pack
+  { import = "astrocommunity.pack.python.base" }, -- Python syntax, the debugger, and a virtualenv picker
+  { import = "astrocommunity.pack.python.ty" }, -- ty: type checking, go-to-definition, and hover docs
+  { import = "astrocommunity.pack.python.ruff" }, -- Ruff: linting and formatting
+  -- { import = "astrocommunity.pack.typescript" },
+  -- { import = "astrocommunity.pack.rust" },
+
+  { import = "astrocommunity.ai.claudecode-nvim" },
+
+  { import = "astrocommunity.recipes.auto-session-restore" },
+}
+```
+
+<br />
+
 ### Your whole configuration
 
 That's the whole setup. Across a handful of files you added gruvbox, pointed `astroui` at it, turned on lualine and bufferline (with the small overrides), set `cmdheight = 1` in `astrocore`, filled `community.lua` with the language packs, Claude Code, and session restore, and hid the duplicate winbars in `claudecode.lua` and `heirline.lua`. **You now have an editor with a theme, a full status bar, clean tabs, full language support, an AI agent, a file tree, a fuzzy finder, a terminal, a debugger, Git integration, and session restore**, and everything you didn't configure is using AstroNvim's defaults. Run `nvim` once more and let the last installs finish. If you want the snippets in one place, [nvimforge](https://codeberg.org/kidskoding/nvimforge) is the same build.
