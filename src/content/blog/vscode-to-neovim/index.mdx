@@ -83,7 +83,7 @@ Neovim does the same job with a folder of Lua files instead of one big JSON blob
 | Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `gruvbox.lua` |
 | Extension-specific settings | `opts = { ... }` in that plugin's Lua file |
 
-Install the template and open Neovim once so Lazy can pull plugins. You land on the stock dashboard:
+Install the template and open Neovim once so Lazy can pull plugins (you will open `:Lazy` and `:Mason` after the community imports below). You land on the stock dashboard:
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
@@ -224,11 +224,24 @@ return {
 }
 ```
 
-AstroNvim already ships Neo-tree (Explorer), the fuzzy finder (`Ctrl/Cmd+P`), the debugger (`F5` / `F9` / `F10`), the terminal (`F7`), and Git signs. You still need `lazygit` and the `claude` CLI from the appendix / their docs. After a restart, `:Mason` shows language tools downloading, the way you watch an extension finish installing in VS Code.
+AstroNvim already ships Neo-tree (Explorer), the fuzzy finder (`Ctrl/Cmd+P`), the debugger (`F5` / `F9` / `F10`), the terminal (`F7`), and Git signs. You still need `lazygit` and the `claude` CLI from the appendix / their docs.
+
+After a restart, open `:Lazy` anytime you want the Extensions-view energy: every plugin Lazy downloaded, what is loaded vs waiting, Sync / Update / Clean. This is the same list as the GitHub names in your Lua files, not a separate marketplace UI.
+
+<img
+  src="/blog/vscode-to-neovim/lazy.png"
+  alt="lazy.nvim home showing loaded and not-loaded plugins"
+  width="1920"
+  height="1080"
+  loading="eager"
+  decoding="async"
+/>
+
+`:Mason` is the other half: language servers, debuggers, linters, and formatters (ty, Ruff, lua_ls, debugpy, and friends). Watch them install the way you watch an extension finish in VS Code.
 
 <img
   src="/blog/vscode-to-neovim/mason.png"
-  alt="Mason with ty and Ruff installed"
+  alt="Mason with ty, Ruff, lua_ls, and debugpy installed"
   width="1920"
   height="1080"
   loading="eager"
