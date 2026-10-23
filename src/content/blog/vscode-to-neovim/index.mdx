@@ -215,6 +215,9 @@ return {
   opts = function()
     local theme = require("lualine.themes.gruvbox_dark")
     theme.normal.a.bg = "#fabd2f" -- gruvbox yellow for Normal mode
+    -- Terminal isn't in the stock theme, so copy Insert and recolor it
+    theme.terminal = vim.deepcopy(theme.insert)
+    theme.terminal.a.bg = "#d3869b" -- gruvbox purple for Terminal mode
     for _, mode in pairs(theme) do
       mode.c = theme.normal.c -- same middle color in every mode
     end
@@ -225,7 +228,7 @@ return {
 
 <br />
 
-This starts from lualine's gruvbox theme, makes Normal mode gruvbox's yellow, keeps the middle of the bar the same color in every mode, and keeps one status bar across the whole screen, like VS Code's. Because the file names the same plugin as the AstroCommunity line, our config combines the two, so you only write the parts you want to change.
+This starts from lualine's gruvbox theme, makes Normal mode gruvbox's yellow, gives Terminal mode purple (the stock theme has no Terminal entry, so without this it would stay yellow), keeps the middle of the bar the same color in every mode, and keeps one status bar across the whole screen, like VS Code's. Because the file names the same plugin as the AstroCommunity line, our config combines the two, so you only write the parts you want to change.
 
 One more setting finishes the status bar. AstroNvim hides the command line by default, so anything you type after `:` appears on top of the status bar, and lualine never gets to show Command mode. To give the command line its own row below the status bar, open `lua/plugins/astrocore.lua`, delete the `if true then return {} end` line at the top, and add `cmdheight = 1` to the options under `opt`:
 
@@ -248,7 +251,7 @@ return {
 
 `astrocore.lua` is where any other editor setting goes too, the same way you'd change something in VS Code's `settings.json`.
 
-lualine's icons come from a [Nerd Font](https://www.nerdfonts.com), so if they show up as empty boxes, see [the appendix](#fonts-and-icons). With the overrides above, Normal mode gets the yellow segment on the left, and Insert mode switches to a teal one:
+lualine's icons come from a [Nerd Font](https://www.nerdfonts.com), so if they show up as empty boxes, see [the appendix](#fonts-and-icons). With the overrides above, Normal mode gets the yellow segment on the left, Insert mode switches to a teal one, and Terminal mode (Claude Code, `F7`, lazygit) uses purple:
 
 <img
   src="/blog/vscode-to-neovim/statusline-normal.png"
