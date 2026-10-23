@@ -43,7 +43,12 @@ const { education, isFirst = false } = Astro.props;
           {education.institution}
         </h3>
         <p class="text-sm text-text-secondary mt-0.5">
-          {education.degree} in {education.field}
+          {education.degree} in <strong class="font-bold text-nvim-green">{education.field}</strong>
+          {education.concentration && (
+            <>
+              , concentrated in <strong class="font-bold text-nvim-green">{education.concentration}</strong>
+            </>
+          )}
         </p>
 
         <div class="flex flex-wrap items-center gap-x-1.5 text-xs text-text-muted mt-1.5">

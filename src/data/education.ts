@@ -7,6 +7,7 @@ export interface Education {
   institutionLogo: string;
   degree: string;
   field: string;
+  concentration?: string;
   location?: string;
   startDate?: string;
   endDate: string;
@@ -19,7 +20,8 @@ export const educations: Education[] = [
     institution: 'University of Illinois Urbana-Champaign',
     institutionLogo: uiucLogoIcon.src,
     degree: 'Bachelor of Science',
-    field: 'Computer Science and Education, concentrated in Learning Sciences and Learning Technologies',
+    field: 'Computer Science and Education',
+    concentration: 'Learning Sciences and Learning Technologies',
     startDate: 'Aug 2024',
     endDate: 'May 2027',
     description: [],
