@@ -43,16 +43,16 @@
   --font-sans: 'JetBrains Mono', ui-monospace, monospace;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* Dense mono UI scale for JetBrains Mono (matches 14px chrome) */
-  --text-xs: 11px;
-  --text-sm: 12px;
-  --text-base: 14px;
-  --text-lg: 16px;
-  --text-xl: 18px;
-  --text-2xl: 20px;
-  --text-3xl: 24px;
-  --text-4xl: 28px;
-  --text-5xl: 36px;
+  /* Dense mono UI scale for JetBrains Mono (chrome labels stay 14px) */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 22px;
+  --text-3xl: 26px;
+  --text-4xl: 30px;
+  --text-5xl: 40px;
 
   /* Gruvbox Dark */
   --color-bg-primary: #282828;
