@@ -121,6 +121,8 @@ return {
     overrides = {
       SignColumn = { link = "Normal" },
       FoldColumn = { link = "Normal" },
+
+      -- which key overrides
       WhichKey = { link = "Function" },
       WhichKeyNormal = { link = "NormalFloat" },
       WhichKeyBorder = { link = "FloatBorder" },
@@ -155,6 +157,33 @@ Save both, run `nvim`, and the dashboard picks up gruvbox. That is the whole pat
   loading="eager"
   decoding="async"
 />
+
+Stock still lists Find Word and Bookmarks, and it skips Quit. Keep five splash rows: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (you still have `<Leader>fw` for project search) and Bookmarks. `q` is the same `:qa` you already used. Create `lua/plugins/snacks.lua`:
+
+```lua
+-- lua/plugins/snacks.lua
+return {
+  "folke/snacks.nvim",
+  opts = function(_, opts)
+    local get_icon = require("astroui").get_icon
+    opts.dashboard = opts.dashboard or {}
+    opts.dashboard.preset = opts.dashboard.preset or {}
+    -- Full list, then clear leftover stock rows Lazy may have merged in.
+    opts.dashboard.preset.keys = {
+      { key = "n", action = "<Leader>n", icon = get_icon("FileNew", 0, true), desc = "New File  " },
+      { key = "f", action = "<Leader>ff", icon = get_icon("Search", 0, true), desc = "Find File  " },
+      { key = "o", action = "<Leader>fo", icon = get_icon("DefaultFile", 0, true), desc = "Recents  " },
+      { key = "s", action = "<Leader>Sl", icon = get_icon("Refresh", 0, true), desc = "Last Session  " },
+      { key = "q", action = ":qa", icon = get_icon("BufferClose", 0, true), desc = "Quit  " },
+    }
+    for i = #opts.dashboard.preset.keys + 1, 12 do
+      opts.dashboard.preset.keys[i] = nil
+    end
+  end,
+}
+```
+
+Restart once more so the splash matches those five rows.
 
 ### community.lua + overrides
 
