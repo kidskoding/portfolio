@@ -252,7 +252,9 @@ return {
 
 AstroNvim already ships Neo-tree (Explorer), the fuzzy finder (`Ctrl/Cmd+P`), the debugger (`F5` / `F9` / `F10`), the terminal (`F7`), and Git signs. You still need `lazygit` and the `claude` CLI from the appendix / their docs (CLI tools, not Lazy plugins).
 
-After a restart, open `:Lazy` anytime you want Extensions-view energy: every plugin Lazy downloaded, what is loaded vs waiting, Sync / Update / Clean. Same list as the GitHub names in your **Lua** files, just a UI on top.
+After a restart, open two UIs that answer "what did that `import` actually install?"
+
+**Lazy** ([lazy.nvim](https://github.com/folke/lazy.nvim)) is the **plugin manager**. It is the closest thing to VS Code's Extensions view: it downloads Neovim plugins (GitHub `owner/repo` names from your **Lua** files), updates them, lazy-loads so startup stays fast, and shows what is loaded vs waiting. Run `:Lazy`. Sync / Update / Clean live there. Every row is an editor plugin (theme, lualine, claude panel, community packs), not a language binary.
 
 <img
   src="/blog/vscode-to-neovim/lazy.png"
@@ -263,7 +265,7 @@ After a restart, open `:Lazy` anytime you want Extensions-view energy: every plu
   decoding="async"
 />
 
-`:Mason` is a second installer, not for editor plugins but for language tooling those plugins call: servers, debuggers, linters, formatters (`ty`, `ruff`, `lua_ls`, `debugpy`, and friends). Watch them download the way you watch a VS Code extension finish installing.
+**Mason** ([mason.nvim](https://github.com/williamboman/mason.nvim)) is a **second installer**, for the binaries those plugins call: language servers, debuggers, linters, formatters. In VS Code a Python extension often ships or downloads that tooling for you. Here the community packs wire the plugins; Mason puts `ty`, `ruff`, `lua_ls`, `debugpy`, and friends on disk. Run `:Mason` and watch them install the way you watch an extension finish downloading. Without Mason, go-to-definition and format-on-save have nothing to talk to.
 
 <img
   src="/blog/vscode-to-neovim/mason.png"
