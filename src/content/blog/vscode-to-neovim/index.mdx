@@ -102,7 +102,7 @@ code ~/.config/nvim
 
 ### Theme
 
-Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua` (installs the theme the way an extension would) and point AstroUI at it:
+Same job as `"workbench.colorTheme"` in `settings.json`. Create `lua/plugins/gruvbox.lua`. The first string is the plugin's GitHub name (Lazy.nvim installs it like the marketplace). `priority = 1000` loads the theme before other plugins so colors apply cleanly. The `overrides` fix two rough edges under AstroNvim: the sign/fold columns get a gray band otherwise, and which-key's popup needs those `WhichKey*` links or the key list can look empty under gruvbox.
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -125,7 +125,7 @@ return {
 }
 ```
 
-`lua/plugins/astroui.lua` (drop the guard, set colorscheme):
+Then select it, the way you pick a Color Theme after installing one. Open `lua/plugins/astroui.lua`, delete the guard line at the top, and set `colorscheme` to `"gruvbox"`:
 
 ```lua
 -- lua/plugins/astroui.lua (template, trimmed)
@@ -136,6 +136,8 @@ return {
   },
 }
 ```
+
+Save both, run `nvim`, and the dashboard picks up gruvbox. That is the whole pattern for the rest of this section: create or open a file, write the few lines you need, restart.
 
 <img
   src="/blog/vscode-to-neovim/dashboard-gruvbox.png"
@@ -148,7 +150,9 @@ return {
 
 ### community.lua + overrides
 
-[AstroCommunity](https://github.com/AstroNvim/astrocommunity) is the closest thing to the Extensions marketplace: one `import` line turns on a ready-made feature (plugin, deps, keys). Paste this as `lua/community.lua` (matches nvimforge). Python uses [ty](https://docs.astral.sh/ty/) + [Ruff](https://docs.astral.sh/ruff/); don't also enable plain `pack.python`.
+[AstroCommunity](https://github.com/AstroNvim/astrocommunity) is the closest thing to the Extensions marketplace: one `import` line turns on a ready-made feature (the plugin, its dependencies, and its keys). Open `lua/community.lua`, delete the guard line, and paste this whole file (it matches [nvimforge](https://github.com/kidskoding/nvimforge)).
+
+The `pack.lua` line was already in the template; it helps when you edit these config files. lualine and bufferline are the status bar and tabs. The Python lines use [ty](https://docs.astral.sh/ty/) (types, go-to-definition, hover: Pylance's job) and [Ruff](https://docs.astral.sh/ruff/) (lint + format on save). Do not also enable the plain `pack.python` import, or you get two competing toolchains. Uncomment TypeScript, Rust, and so on only for languages you actually have installed. The Claude Code line is the side panel. The last line restores open files when you `nvim` in a folder with nothing after it, like VS Code reopening a workspace.
 
 ```lua
 -- lua/community.lua
@@ -176,7 +180,7 @@ return {
 }
 ```
 
-AstroNvim already ships Neo-tree, the finder, DAP (`F5`/`F9`/`F10`), terminal (`F7`), and Git signs. Install `lazygit` and `claude` from the appendix / their docs. `:Mason` after restart shows language tools landing.
+AstroNvim already ships Neo-tree (Explorer), the fuzzy finder (`Ctrl/Cmd+P`), the debugger (`F5` / `F9` / `F10`), the terminal (`F7`), and Git signs. You still need `lazygit` and the `claude` CLI from the appendix / their docs. After a restart, `:Mason` shows language tools downloading, the way you watch an extension finish installing in VS Code.
 
 <img
   src="/blog/vscode-to-neovim/mason.png"
@@ -187,7 +191,9 @@ AstroNvim already ships Neo-tree, the finder, DAP (`F5`/`F9`/`F10`), terminal (`
   decoding="async"
 />
 
-Paste these overrides:
+Community lines install defaults. The small files below are extension settings: they name the same plugin and only change the parts you care about (Lazy merges them), like tweaking an extension in `settings.json` after you install it.
+
+Create `lua/plugins/lualine.lua`. This starts from lualine's gruvbox theme, makes Normal mode yellow, gives Terminal mode purple (Claude Code, `F7`, lazygit: without this, Terminal stays yellow), keeps the middle of the bar stable across modes, and uses one status bar for the whole screen, like VS Code's.
 
 ```lua
 -- lua/plugins/lualine.lua
@@ -205,6 +211,8 @@ return {
   end,
 }
 ```
+
+Create `lua/plugins/bufferline.lua` for the tabs. Minimal preset (no bold/italic chrome), less empty padding per tab, and a fill color that matches the editor so the dashboard is not a black strip across the top.
 
 ```lua
 -- lua/plugins/bufferline.lua
@@ -245,6 +253,8 @@ return {
 }
 ```
 
+Open `lua/plugins/astrocore.lua` (this is your `settings.json`), delete the guard line, and set `cmdheight = 1`. AstroNvim hides the command line by default, so typing after `:` sits on top of the status bar and lualine never shows Command mode. This gives `:` its own row underneath, like the Command Palette not covering the status bar.
+
 ```lua
 -- lua/plugins/astrocore.lua (template, trimmed; delete the guard line)
 return {
@@ -258,6 +268,8 @@ return {
   },
 }
 ```
+
+Claude Code's panel needs two tiny fixes or it looks like a duplicate buffer (extra title bars under the real tabs). Create both files:
 
 ```lua
 -- lua/plugins/claudecode.lua
@@ -284,7 +296,7 @@ return {
 }
 ```
 
-`cmdheight = 1` keeps `:` off the statusline. The winbar files stop the Claude Code panel from drawing a second fake tab (the same kind of chrome glitch you fix once in VS Code and forget). Empty icons → [Nerd Font](#fonts-and-icons). Want Copilot-style ghost text as you type? Optional: `astrocommunity.completion.blink-copilot` + `:Copilot auth`.
+Empty icons → [Nerd Font](#fonts-and-icons). Want Copilot-style ghost text as you type? Optional: `astrocommunity.completion.blink-copilot` + `:Copilot auth` (nvimforge skips it).
 
 <img
   src="/blog/vscode-to-neovim/claude-code.png"
@@ -304,7 +316,7 @@ return {
   decoding="async"
 />
 
-Git-track `~/.config/nvim` including `lazy-lock.json` for the same editor on another machine.
+After a restart you have theme, language tools, Claude Code panel, sessions, finder, tree, debugger, Git, and terminal. Track `~/.config/nvim` in Git, including `lazy-lock.json` (the lockfile of exact plugin versions), if you want the same editor on another machine the way Settings Sync did in VS Code.
 
 ---
 
