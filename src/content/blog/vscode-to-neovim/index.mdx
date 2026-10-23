@@ -7,6 +7,8 @@ draft: false
 coverImage: "/blog/vscode-to-neovim-banner.png"
 ---
 
+import VimMode from '../../../components/VimMode.astro';
+
 Most people's first minute in Neovim is figuring out how to quit. After this post yours is different: fuzzy-open a file, change an argument without selecting it, rename a function across the project, review an AI diff, hit a breakpoint, commit, no mouse.
 
 I bounced off Neovim in 2022 and spent years cycling through VS Code, [Zed](https://zed.dev), and whatever looked promising that month. What eventually stuck was a full editor first, not a clever keymap. This is that build. Keep VS Code installed; I still open it for full-grade IDE work. The point is a daily driver you can actually live in, not purity.
@@ -17,17 +19,17 @@ Reference copy of the same files: [nvimforge](https://github.com/kidskoding/nvim
 
 ## What Neovim is
 
-[Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in `Normal` mode (keys move and change text) and drop into `Insert` only when you type. VS Code is modeless: you are always "typing," and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
+[Neovim](https://neovim.io) is a modern fork of Vim: a **modal** text editor. You spend most of the time in <VimMode mode="normal" /> mode (keys move and change text) and drop into <VimMode mode="insert" /> only when you type. **VS Code is modeless:** you are always "typing," and the mouse plus chords (`Ctrl/Cmd+P`, multi-cursor, click-drag select) do the rest.
 
-That sounds worse until you see what modal editing buys. In VS Code a small fix is often: reach for the mouse, select a word, type, click elsewhere, maybe open the Command Palette. In Neovim the same fix is a short sentence on the home row: `ciw` (change inside word), type the replacement, `Esc`. Operators (`c` change, `d` delete, `y` yank) compose with motions and text objects (`iw` inner word, `i(` inside parens, `ap` a paragraph). You describe the edit instead of painting it. After a week that loop is faster than selecting with a mouse for the boring 80% of edits: rename a local, flip a condition, delete a function, jump to the next call site.
+That sounds worse until you see what modal editing buys. In VS Code a small fix is often: reach for the mouse, select a word, type, click elsewhere, maybe open the Command Palette. In Neovim the same fix is a short sentence on the home row: `ciw` (change inside word), type the replacement, `Esc`. Operators (`c` change, `d` delete, `y` yank) compose with motions and text objects (`iw` inner word, `i(` inside parens, `ap` a paragraph). **You describe the edit instead of painting it.** After a week that loop is faster than selecting with a mouse for the boring 80% of edits: rename a local, flip a condition, delete a function, jump to the next call site.
 
-Neovim also stays out of your way as an app. It starts in tens of milliseconds, uses little RAM, is the same binary over SSH inside [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), and its whole UI is text you can script and theme. VS Code is a full Electron IDE: richer out of the box for giant refactor UIs and designer workflows, heavier to open, and its "remote" story is a different product surface. Neither wins every day. Neovim wins the ordinary edit / navigate / commit day once the keys land.
+Neovim also stays out of your way as an app. It starts in tens of milliseconds, uses little RAM, is the same binary over SSH inside [tmux](https://github.com/tmux/tmux) or [Zellij](https://zellij.dev), and its whole UI is text you can script and theme. VS Code is a full Electron IDE: richer out of the box for giant refactor UIs and designer workflows, heavier to open, and its "remote" story is a different product surface. Neither wins every day. **Neovim wins the ordinary edit / navigate / commit day once the keys land.**
 
 ---
 
 ## The learning curve people fear
 
-The usual reasons not to switch are that setup takes weeks and that you must memorize a wiki of keys. Both are true if you assemble Neovim from scratch and drill `:Tutor` before you edit anything. That is the wrong onboarding.
+The usual reasons not to switch are that setup takes weeks and that you must memorize a wiki of keys. Both are true if you assemble Neovim from scratch and drill `:Tutor` before you edit anything. **That is the wrong onboarding.**
 
 **You do not memorize this post.** Space is the *leader* key (`<Leader>`). Press Space alone and [which-key](https://github.com/folke/which-key.nvim) lists what comes next, the way the Command Palette lists commands. Learn `ciw`, `gd`, and `<Leader>ff` when a real edit needs them; ignore the rest until friction shows up. The mouse still works for scrolling and clicking if you need a safety net.
 
@@ -39,7 +41,7 @@ The usual reasons not to switch are that setup takes weeks and that you must mem
 
 Fair question. Most people open VS Code today for the AI side panel as much as for the editor: chat with the project, get a diff, Accept or Reject. You are not giving that up. [Claude Code](https://docs.anthropic.com/en/docs/claude-code) is the same CLI Anthropic ships for VS Code; [claudecode.nvim](https://github.com/coder/claudecode.nvim) is the Neovim plugin that docks it beside your buffer the way the official VS Code extension does. Same agent, same review loop.
 
-You switch for the editor underneath: instant start, SSH-native, config in Git as plain text, and that compose-the-edit pass once the keys land.
+**You switch for the editor underneath:** instant start, SSH-native, config in Git as plain text, and that compose-the-edit pass once the keys land.
 
 Costs are real: a slower first week, you own the config, big Java/Kotlin refactors and designers stay in an IDE. Keep VS Code or Cursor when they win a day. The rest of this post is how to make Neovim win the ordinary ones.
 
@@ -76,9 +78,9 @@ In VS Code your user folder is `~/.config/Code/User/` on macOS/Linux (Windows: `
 }
 ```
 
-Neovim does the same job with a folder of **Lua** files instead of one big **JSON** blob. The whole tree is text you can put in Git.
+Neovim does the same job with a folder of **Lua** files instead of one big **JSON** blob. **The whole tree is text you can put in Git.**
 
-[AstroNvim](https://astronvim.com) is a ready-made Neovim that already includes most of what a VS Code user expects (Explorer, fuzzy find, debugger, terminal, Git signs). You add a theme, language tools, the Claude Code side panel, and session restore. Configure in VS Code until the tour: no Neovim keys required for setup.
+[AstroNvim](https://astronvim.com) is a ready-made Neovim that already includes most of what a VS Code user expects (Explorer, fuzzy find, debugger, terminal, Git signs). You add a theme, language tools, the Claude Code side panel, and session restore. **Configure in VS Code until the tour: no Neovim keys required for setup.**
 
 | VS Code | Neovim (this build) |
 |---|---|
@@ -99,7 +101,7 @@ Neovim does the same job with a folder of **Lua** files instead of one big **JSO
 
 ## Configuring Neovim
 
-Time to build it. Install the AstroNvim template, let Lazy pull its plugins, then edit the config folder in VS Code. You will open `:Lazy` and `:Mason` after the community imports below. With no file on the command line you land on the **dashboard**: AstroNvim's start page (Get Started / welcome screen energy). Big logo, a short menu of actions, each with a single-key shortcut. It is not a buffer you edit; it is a launcher that goes away when you open a file. Pattern for everything below: **file → few lines → restart `nvim`.**
+Time to build it. Install the AstroNvim template, let Lazy pull its plugins, then edit the config folder in VS Code. You will open `:Lazy` and `:Mason` after the community imports below. With no file on the command line you land on the **dashboard**. **That start page** (Get Started / welcome screen energy) is a big logo plus a short menu of actions, each with a single-key shortcut. It is not a buffer you edit; it is a launcher that goes away when you open a file. Pattern for everything below: **file → few lines → restart `nvim`.**
 
 ```sh
 git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
@@ -169,11 +171,11 @@ Save both, run `nvim`, and the same dashboard picks up `gruvbox` (same rows, new
 
 ### Dashboard
 
-The gruvbox dashboard you see above (logo plus the New File / Find File / Recents / Find Word / Bookmarks / Last Session menu) is drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim). Snacks is a kitchen-sink plugin AstroNvim already ships: start page, pickers, terminal helpers, notifications. You are not installing Snacks. You are editing its settings, the same way you tweak an already-installed VS Code extension.
+**The gruvbox dashboard you see above** (logo plus the New File / Find File / Recents / Find Word / Bookmarks / Last Session menu) is drawn by [Snacks.nvim](https://github.com/folke/snacks.nvim). Snacks is a kitchen-sink plugin AstroNvim already ships: start page, pickers, terminal helpers, notifications. **You are not installing Snacks. You are editing its settings,** the same way you tweak an already-installed VS Code extension.
 
 Create `lua/plugins/snacks.lua` that names `"folke/snacks.nvim"` again so Lazy merges your `opts` into the existing install. The only table you change is `dashboard.preset.keys`: that is the list of splash rows. Each row is `{ key, action, icon, desc }`. `key` is the letter you press on the splash, `action` is the command or `<Leader>…` map it runs, `desc` is the label next to it.
 
-Stock still shows Find Word and Bookmarks, and it has no Quit. Trim it to five rows beginners actually use: New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then `nil` out any leftover stock rows Lazy may have concatenated onto the list:
+Stock still shows Find Word and Bookmarks, and it has no Quit. **Trim it to five rows beginners actually use:** New File, Find File, Recents, Last Session, and Quit. Drop Find Word (project search stays on `<Leader>fw` once you are in a buffer) and Bookmarks. `q` runs `:qa`, the same quit you already used. The `opts` function receives AstroNvim's merged Snacks settings; you replace `keys`, then `nil` out any leftover stock rows Lazy may have concatenated onto the list:
 
 ```lua
 -- lua/plugins/snacks.lua
@@ -276,7 +278,7 @@ Community lines install defaults. The small files below are per-plugin settings:
 
 ### Status bar and tabs
 
-Create `lua/plugins/lualine.lua` to tweak the status-bar plugin the community line just installed. This starts from lualine's `gruvbox` theme, makes `Normal` mode yellow, gives `Terminal` mode purple (Claude Code, `F7`, `lazygit`: without this, `Terminal` stays yellow), keeps the middle of the bar stable across modes, and uses one status bar for the whole screen, like VS Code's.
+Create `lua/plugins/lualine.lua` to tweak the status-bar plugin the community line just installed. This starts from lualine's `gruvbox` theme, makes <VimMode mode="normal" /> yellow, gives <VimMode mode="terminal" /> purple (Claude Code, `F7`, `lazygit`: without this, <VimMode mode="terminal" /> stays yellow), keeps the middle of the bar stable across modes, and uses one status bar for the whole screen, like VS Code's.
 
 ```lua
 -- lua/plugins/lualine.lua
@@ -345,7 +347,7 @@ return {
 
 ### Command line
 
-Open `lua/plugins/astrocore.lua` (AstroNvim's core settings plugin; treat it as `settings.json`), delete the guard line, and set `cmdheight = 1`. AstroNvim hides the command line by default, so typing after `:` sits on top of the status bar and `lualine` never shows `Command` mode. This gives `:` its own row underneath, like the Command Palette not covering the status bar.
+Open `lua/plugins/astrocore.lua` (AstroNvim's core settings plugin; treat it as `settings.json`), delete the guard line, and set `cmdheight = 1`. AstroNvim hides the command line by default, so typing after `:` sits on top of the status bar and `lualine` never shows <VimMode mode="command" /> mode. This gives `:` its own row underneath, like the Command Palette not covering the status bar.
 
 ```lua
 -- lua/plugins/astrocore.lua (template, trimmed; delete the guard line)
@@ -410,7 +412,7 @@ return {
 
 ### which-key
 
-AstroNvim already ships the [which-key](https://github.com/folke/which-key.nvim) plugin: press Space and it lists what `<Leader>` maps come next (Command Palette cheat-sheet energy). Under **gruvbox** the popup can look empty until its highlight groups link into the theme. You are not installing **which-key**; you are finishing the theme plugin's colors. Open `lua/plugins/gruvbox.lua` again and add the which-key block under `overrides` so the file looks like this:
+AstroNvim already ships the [which-key](https://github.com/folke/which-key.nvim) plugin: press Space and it lists what `<Leader>` maps come next (Command Palette cheat-sheet energy). Under `gruvbox` the popup can look empty until its highlight groups link into the theme. You are not installing `which-key`; you are finishing the theme plugin's colors. Open `lua/plugins/gruvbox.lua` again and add the which-key block under `overrides` so the file looks like this:
 
 ```lua
 -- lua/plugins/gruvbox.lua
@@ -491,7 +493,7 @@ Mac: Ctrl stays Ctrl, not Cmd. Forget a key → Space → read which-key.
 | Find file | `<Leader>ff` then `rep` → `report.py` |
 | Project search | `<Leader>fw` |
 | File tree | `<Leader>e` |
-| Insert / Normal | `i` / `Esc` |
+| <VimMode mode="insert" /> / <VimMode mode="normal" /> | `i` / `Esc` |
 | Change word under cursor | `ciw` (type, `Esc`, `Ctrl+S`) |
 | Undo | `u` |
 | Full diagnostic | `gl` |
