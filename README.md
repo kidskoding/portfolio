@@ -1,34 +1,64 @@
-# Anirudh Konidala — Portfolio
+# Anirudh Konidala's Portfolio
 
-Personal portfolio site built with Astro, Tailwind CSS v4, GSAP, and MDX.
+**[anirudh-konidala.vercel.app](https://anirudh-konidala.vercel.app)**
+
+A personal portfolio that looks and works like Neovim under gruvbox. Pages open as buffers in a bufferline, the sidebar is NvimTree, a fuzzy finder searches every page, post and project, and the home page opens on Neovim's `:intro` splash. Vim keys drive the site, and every key has a mouse equivalent, so it also works for people who have never opened Vim.
+
+## Try it
+
+| Key                         | Does                                                     |
+| --------------------------- | -------------------------------------------------------- |
+| `j` / `k`, `ctrl+d` / `ctrl+u` | Scroll the page                                        |
+| `gg` / `G`                  | Jump to top / bottom                                     |
+| `]b` / `[b`                 | Next / previous buffer (tab)                             |
+| `space e`                   | Toggle NvimTree                                          |
+| `space space` or `ctrl+k`   | Open Telescope to find any page, post or project         |
+| `space bd`                  | Close the buffer                                         |
+| `:`                         | Command line: `:e <file>`, `:bn`, `:bp`, `:q`, `:help`   |
+| `h` `j` `k` `l`, `Enter`    | Move between project cards and open one (on `/projects`) |
+| `?`                         | Show every key                                           |
+
+## What's inside
+
+- **Blog** with MDX posts. Mermaid fences render to gruvbox SVGs at build time, and code blocks use Shiki's `gruvbox-dark-medium` theme.
+- **Projects** as case studies, with a gallery split into projects, hackathons and agentic work.
+- **Experience**, **skills**, **certificates** and a career timeline rendered as `git log`.
+- **JetBrains Mono** everywhere, self-hosted, with real nvim-web-devicons glyphs for file icons.
 
 ## Stack
 
-- **[Astro](https://astro.build)** — static site framework with view transitions
-- **[Tailwind CSS v4](https://tailwindcss.com)** — utility-first styling
-- **[GSAP](https://gsap.com)** — page-entry animations
-- **[MDX](https://mdxjs.com)** — blog posts
+[Astro 7](https://astro.build) with MDX, [Tailwind CSS v4](https://tailwindcss.com), [GSAP](https://gsap.com) for page-entry animation, and [beautiful-mermaid](https://www.npmjs.com/package/beautiful-mermaid) for diagrams. Built with [Bun](https://bun.sh) and deployed on [Vercel](https://vercel.com).
 
-## Getting Started
+## Run it locally
 
 ```sh
 bun install
-bun run dev       # localhost:4321
-bun run build     # production build → ./dist/
-bun run preview   # preview production build
+bun run dev        # http://localhost:4321
+bun run build      # production build to ./dist/
+bun run preview    # serve the production build
+bun run check      # type check
+bun run format     # prettier
 ```
 
-## Pages
+With Nix, `nix develop` opens a shell with Bun, and `nix run` installs dependencies and starts the dev server.
 
-| Route | Description |
-|---|---|
-| `/` | Home |
-| `/about` | About |
-| `/experience` | Resume — work experience & education |
-| `/projects` | Projects gallery |
-| `/projects/<slug>` | Project case study |
-| `/skills` | Skills |
-| `/certificates` | Certificates |
-| `/blog` | Blog |
-| `/contact` | Contact |
-| `/package-json` | Package metadata rendered as a JSON buffer |
+## Adding content
+
+| What           | Where                                                    |
+| -------------- | -------------------------------------------------------- |
+| Blog post      | `src/content/blog/<slug>/index.mdx`                      |
+| Project        | `src/content/projects/<slug>.mdx` (or `<slug>/index.mdx` with a `cover.png`) |
+| Work experience | `src/data/experience.ts`                                |
+| Education      | `src/data/education.ts`                                  |
+| Certificate    | `src/data/certificates.ts`                               |
+| Career milestone | `src/data/milestones.ts`                               |
+
+New posts and projects show up as buffers, in NvimTree and in Telescope on their own. A new page route also needs an entry in `src/components/NvimChrome.astro` and `src/components/Telescope.astro`. [`CLAUDE.md`](CLAUDE.md) has the full conventions: frontmatter fields, the color roles, and the keyboard layer.
+
+## Deploys
+
+GitHub Actions checks formatting, types and the build on every push. Vercel deploys `master` to production and every pull request to a preview.
+
+## License
+
+[MIT](LICENSE)
