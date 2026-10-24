@@ -122,7 +122,7 @@ Review the draft and report findings before changing anything large. Check for:
 - unsupported claims
 - accidental disclosure of proprietary information (confidentiality check in `style-guide.md`)
 - an ending that does not resolve the opening
-- bold that is missing, decorative, or on tool names (see Bold in `style-guide.md`): read only the bold text and check it still tells the argument
+- bold that is missing, decorative, or on tool names (see Bold in `style-guide.md`): read only the bold text and check it still tells the argument, and that every section, including the closing reflection, has its key line bolded
 
 Recommend deleting entire sections when they don't earn their place.
 
