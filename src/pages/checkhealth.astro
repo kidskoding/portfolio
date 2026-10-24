@@ -1,0 +1,257 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { dependencies } from '../../package.json';
+
+// The site's colophon, laid out like the buffer nvim's :checkhealth opens:
+// a reversed title band per section, `Heading ~` subsections, and OK / WARNING / plain lines.
+type Line = { level: 'ok' | 'warn' | 'info'; text: string; advice?: string[] };
+type Check = { heading: string; lines: Line[] };
+type Section = { name: string; checks: Check[] };
+
+const v = (pkg: keyof typeof dependencies) => dependencies[pkg].replace(/^\^/, '');
+const a = (href: string, label: string) =>
+  `<a class="text-nvim-blue hover:text-nvim-aqua" href="${href}" target="_blank" rel="noopener noreferrer">${label}</a>`;
+const gh = (repo: string) => a(`https://github.com/${repo}`, repo);
+const code = (s: string) => `<code>${s}</code>`;
+
+const swatches = ['red', 'green', 'yellow', 'blue', 'purple', 'aqua', 'orange', 'gray'];
+
+const sections: Section[] = [
+  {
+    name: 'portfolio.font',
+    checks: [
+      {
+        heading: 'JetBrains Mono',
+        lines: [
+          { level: 'ok', text: `${a('https://www.jetbrains.com/lp/mono/', 'JetBrains Mono')}, self-hosted as woff2` },
+          {
+            level: 'info',
+            text: 'Regular, Bold, Italic and Bold Italic, licensed under the SIL Open Font License 1.1',
+          },
+          {
+            level: 'info',
+            text: 'Every piece of text on the site uses it: body, headings, code and the editor chrome',
+          },
+        ],
+      },
+      {
+        heading: 'File icons',
+        lines: [
+          {
+            level: 'ok',
+            text: `${a('https://www.nerdfonts.com/', 'JetBrains Mono Nerd Font Propo')}, subset down to the glyphs this site draws`,
+          },
+          { level: 'info', text: `Glyphs and colors come from ${gh('nvim-tree/nvim-web-devicons')}` },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'portfolio.colorscheme',
+    checks: [
+      {
+        heading: 'gruvbox',
+        lines: [
+          { level: 'ok', text: `${gh('ellisonleao/gruvbox.nvim')}, dark background, medium contrast` },
+          { level: 'info', text: 'Colors are assigned by role, the way the colorscheme highlights code' },
+          { level: 'info', text: `Code blocks use the Shiki theme ${code('gruvbox-dark-medium')}` },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'portfolio.ui',
+    checks: [
+      {
+        heading: 'Inspiration',
+        lines: [
+          { level: 'ok', text: `The home page is Neovim's own ${code(':intro')} screen from ${gh('neovim/neovim')}` },
+          { level: 'ok', text: `Tabs across the top follow ${gh('akinsho/bufferline.nvim')}` },
+          { level: 'ok', text: `The file tree follows ${gh('nvim-tree/nvim-tree.lua')}` },
+          { level: 'ok', text: `The statusline follows ${gh('nvim-lualine/lualine.nvim')}` },
+          { level: 'ok', text: `The finder on ${code('space space')} follows ${gh('nvim-telescope/telescope.nvim')}` },
+          { level: 'ok', text: `This page is Neovim's ${code(':checkhealth')} report` },
+        ],
+      },
+      {
+        heading: 'Input',
+        lines: [
+          { level: 'ok', text: `Vim keys work site-wide. Press ${code('?')} to see them` },
+          {
+            level: 'warn',
+            text: 'Mouse detected',
+            advice: ['Every key has a mouse equivalent, so clicking works just as well'],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'portfolio.build',
+    checks: [
+      {
+        heading: 'Stack',
+        lines: [
+          { level: 'ok', text: `${a('https://astro.build/', 'Astro')} ${v('astro')}` },
+          { level: 'ok', text: `${a('https://tailwindcss.com/', 'Tailwind CSS')} ${v('tailwindcss')}` },
+          { level: 'ok', text: `${a('https://gsap.com/', 'GSAP')} ${v('gsap')}, for the page-entry animations` },
+          {
+            level: 'ok',
+            text: `${a('https://mdxjs.com/', 'MDX')} ${v('@astrojs/mdx')}, for blog posts and project pages`,
+          },
+          {
+            level: 'ok',
+            text: `${gh('lukilabs/beautiful-mermaid')} ${v('beautiful-mermaid')}, which draws the diagrams at build time`,
+          },
+          { level: 'info', text: 'Built with Bun inside a Nix flake, deployed on Vercel' },
+        ],
+      },
+    ],
+  },
+];
+---
+
+<Layout title="health://" description="The font, colorscheme and Neovim plugins this portfolio is built on.">
+  <main class="health-wrap" id="main-content">
+    <article class="health" data-animate>
+      <h1 class="sr-only">health://</h1>
+      {sections.map((section) => (
+        <section class="health-section">
+          <h2 class="health-title">{section.name}:</h2>
+          {section.checks.map((check) => (
+            <div class="health-check">
+              <h3 class="health-heading">
+                {check.heading} <span class="health-tilde">~</span>
+              </h3>
+              {section.name === 'portfolio.colorscheme' && (
+                <p class="health-line">
+                  <span class="health-dash">-</span>
+                  <span class="swatches" aria-label="gruvbox palette">
+                    {swatches.map((name) => (
+                      <span class="swatch" title={name} style={`background: var(--color-nvim-${name})`} />
+                    ))}
+                  </span>
+                </p>
+              )}
+              {check.lines.map((line) => (
+                <>
+                  <p class="health-line">
+                    <span class="health-dash">-</span>
+                    <span>
+                      {line.level === 'ok' && <span class="health-ok">OK </span>}
+                      {line.level === 'warn' && <span class="health-warn">WARNING </span>}
+                      <span set:html={line.text} />
+                    </span>
+                  </p>
+                  {line.advice && (
+                    <div class="health-advice">
+                      <p class="health-line">
+                        <span class="health-dash">-</span>
+                        <span>ADVICE:</span>
+                      </p>
+                      {line.advice.map((tip) => (
+                        <p class="health-line health-indent">
+                          <span class="health-dash">-</span>
+                          <span>{tip}</span>
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                </>
+              ))}
+            </div>
+          ))}
+        </section>
+      ))}
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .health-wrap {
+    padding: 1.5rem 2rem;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .health {
+    max-width: 78ch;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    color: var(--color-nvim-fg);
+  }
+
+  .health-section + .health-section {
+    margin-top: 1.7em;
+  }
+
+  /* healthSectionDelim is gui=reverse: the title line is a full-width band of Normal reversed */
+  .health-title {
+    margin: 0;
+    padding: 0 1ch;
+    font-size: inherit;
+    font-weight: 400;
+    background: var(--color-nvim-fg);
+    color: var(--color-nvim-bg);
+  }
+
+  .health-check {
+    margin-top: 1.7em;
+  }
+
+  /* `Heading ~` is helpHeader, which gruvbox links to PreProc (aqua); the trailing ~ is concealed in nvim */
+  .health-heading {
+    margin: 0;
+    font-size: inherit;
+    font-weight: 400;
+    color: var(--color-nvim-aqua);
+  }
+  .health-tilde {
+    color: var(--color-nvim-fg3);
+  }
+
+  .health-line {
+    margin: 0;
+    display: flex;
+    gap: 1ch;
+  }
+  .health-indent {
+    padding-left: 2ch;
+  }
+  .health-advice {
+    padding-left: 2ch;
+  }
+  .health-dash {
+    color: var(--color-nvim-fg3);
+    flex-shrink: 0;
+  }
+
+  .health-ok {
+    color: var(--color-nvim-green);
+  }
+  .health-warn {
+    color: var(--color-nvim-yellow);
+  }
+
+  .health :global(code) {
+    font-family: inherit;
+    color: var(--color-nvim-orange);
+  }
+
+  .swatches {
+    display: inline-flex;
+    gap: 0.5ch;
+    align-items: center;
+  }
+  .swatch {
+    width: 2ch;
+    height: 1.1em;
+  }
+
+  @media (max-width: 640px) {
+    .health-wrap {
+      padding: 1rem;
+    }
+  }
+</style>

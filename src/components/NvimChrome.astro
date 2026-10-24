@@ -20,7 +20,7 @@ const buffers = [
   { path: '/contact', file: 'contact.astro', icon: 'astro' },
 ];
 const treeFiles = buffers;
-type TabIcon = 'astro' | 'mdx' | 'json';
+type TabIcon = 'astro' | 'mdx' | 'json' | 'checkhealth';
 interface Tab {
   path: string;
   file: string;
@@ -40,6 +40,9 @@ if (blogSlug) {
 } else if (currentPath === '/package-json') {
   activeFile = 'package.json';
   activeIcon = 'json';
+} else if (currentPath === '/checkhealth') {
+  activeFile = 'health://';
+  activeIcon = 'checkhealth';
 } else {
   const match = buffers.find((b) => b.path === currentPath);
   if (match) {
@@ -56,9 +59,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 const tabs: Tab[] = [
   ...(buffers as Tab[]),
   { path: '/package-json', file: 'package.json', icon: 'json' },
+  { path: '/checkhealth', file: 'health://', icon: 'checkhealth' },
   ...posts.map((post): Tab => ({ path: `/blog/${post.id}`, file: `${post.id}.mdx`, icon: 'mdx' })),
   ...projects.map((project): Tab => ({ path: `/projects/${project.id}`, file: `${project.id}.mdx`, icon: 'mdx' })),
 ];
+// package.json sits at the repo root and health:// is a scratch buffer, so neither is under src/
+const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
 ---
 
 <div class="nvim-shell">
@@ -75,7 +81,10 @@ const tabs: Tab[] = [
       <span>NvimTree</span>
     </button>
     <span>
-      nvim - <span class:list={{ 'file-label': currentPath === '/' }}>portfolio/src/{activeFile}</span>
+      nvim -{' '}
+      <span class:list={{ 'file-label': currentPath === '/' }}>
+        {activeIcon === 'checkhealth' ? activeFile : `portfolio/src/${activeFile}`}
+      </span>
       {currentPath === '/' && <span class="noname-text">[No Name]</span>}
     </span>
   </div>
@@ -195,8 +204,8 @@ const tabs: Tab[] = [
 
       <div class="nvim-winbar">
         <span class="winbar-root">portfolio</span>
-        {activeIcon !== 'json' && <span class="winbar-sep"> &gt; </span>}
-        {activeIcon !== 'json' && <span>src</span>}
+        {inSrc && <span class="winbar-sep"> &gt; </span>}
+        {inSrc && <span>src</span>}
         <span class="winbar-sep"> &gt; </span>
         <span class="winbar-file">{activeFile}</span>
       </div>
@@ -216,7 +225,9 @@ const tabs: Tab[] = [
       master
     </div>
     <div class="sl-c">
-      <span class:list={{ 'file-label': currentPath === '/' }}>{activeFile.split('/').pop()}</span>
+      <span class:list={{ 'file-label': currentPath === '/' }}>
+        {activeIcon === 'checkhealth' ? activeFile : activeFile.split('/').pop()}
+      </span>
       {currentPath === '/' && <span class="noname-label">[No Name]</span>}
     </div>
     <div class="sl-spacer"></div>
@@ -243,19 +254,22 @@ const tabs: Tab[] = [
     </div>
   </div>
 
-  <div class="nvim-cmdline" id="nvim-cmdline" hidden>
-    <span class="cmd-prompt" id="nvim-cmdline-prompt" aria-hidden="true">
-      :
-    </span>
-    <input
-      id="nvim-cmdline-input"
-      class="cmd-input"
-      type="text"
-      autocomplete="off"
-      spellcheck="false"
-      aria-label="Command line"
-    />
-    <span class="cmd-msg" id="nvim-cmdline-msg" hidden></span>
+  <div class="nvim-cmdline-row">
+    <div class="nvim-cmdline" id="nvim-cmdline" hidden>
+      <span class="cmd-prompt" id="nvim-cmdline-prompt" aria-hidden="true">
+        :
+      </span>
+      <input
+        id="nvim-cmdline-input"
+        class="cmd-input"
+        type="text"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Command line"
+      />
+      <span class="cmd-msg" id="nvim-cmdline-msg" hidden></span>
+      <ul class="cmd-pum" id="nvim-cmd-pum" role="listbox" aria-label="Command completion" hidden></ul>
+    </div>
   </div>
 </div>
 
@@ -279,7 +293,7 @@ const tabs: Tab[] = [
       <dt>space bd</dt>
       <dd>close buffer</dd>
       <dt>:</dt>
-      <dd>command line &mdash; :q :e file :bn :bp :help</dd>
+      <dd>command line &mdash; tab completes; :q :e file :bn :bp :help :checkhealth :intro</dd>
       <dt>?</dt>
       <dd>this help</dd>
     </dl>
@@ -534,7 +548,7 @@ const tabs: Tab[] = [
 
   .buf-icon,
   .tree-icon {
-    font-family: 'Terminess Nerd Font Icons', var(--font-mono);
+    font-family: 'JetBrains Mono Nerd Font Icons', var(--font-mono);
     font-size: var(--text-base);
     font-weight: 400;
     width: 22px;
@@ -552,6 +566,9 @@ const tabs: Tab[] = [
   /* package.json is the only JSON buffer; devicons colors it by filename */
   .icon-json {
     color: var(--color-devicon-package-json);
+  }
+  .icon-checkhealth {
+    color: var(--color-devicon-checkhealth);
   }
 
   /* While the home intro shows, index.astro is a fresh [No Name] buffer, like nvim right after launch */
@@ -683,7 +700,7 @@ const tabs: Tab[] = [
     transition: color 0.12s ease;
   }
   .branch-icon {
-    font-family: 'Terminess Nerd Font Icons', var(--font-mono);
+    font-family: 'JetBrains Mono Nerd Font Icons', var(--font-mono);
     font-size: var(--text-base);
     font-weight: 400;
     flex-shrink: 0;
@@ -713,7 +730,7 @@ const tabs: Tab[] = [
   }
   .sl-ft-icon {
     font-size: var(--text-base);
-    font-family: 'Terminess Nerd Font Icons', var(--font-mono);
+    font-family: 'JetBrains Mono Nerd Font Icons', var(--font-mono);
     font-weight: 400;
     display: inline-flex;
     align-items: center;
@@ -728,6 +745,9 @@ const tabs: Tab[] = [
   }
   .sl-ft-icon.icon-json {
     color: var(--color-devicon-package-json);
+  }
+  .sl-ft-icon.icon-checkhealth {
+    color: var(--color-devicon-checkhealth);
   }
 
   .sl-showcmd {
@@ -750,23 +770,23 @@ const tabs: Tab[] = [
     color: var(--color-nvim-fg);
   }
 
+  /* cmdheight=1: the row always exists under the statusline, empty until the command line or a message fills it.
+     The row itself is never [hidden]: Tailwind preflight's layered [hidden] { display: none !important } can't be
+     overridden from here, so hiding toggles the inner .nvim-cmdline instead. */
+  .nvim-cmdline-row {
+    height: 22px;
+    flex-shrink: 0;
+    background: var(--color-nvim-bg-hard);
+  }
   .nvim-cmdline {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 2px;
-    height: 22px;
+    height: 100%;
     padding: 0 10px;
-    flex-shrink: 0;
-    background: var(--color-nvim-bg-hard);
     font-size: var(--text-sm);
     color: var(--color-nvim-fg);
-  }
-  /* cmdheight=1: the row always exists under the statusline, empty until it has something to show */
-  .nvim-cmdline[hidden] {
-    display: flex;
-  }
-  .nvim-cmdline[hidden] > * {
-    visibility: hidden;
   }
   .cmd-prompt {
     color: var(--color-nvim-fg);
@@ -790,6 +810,40 @@ const tabs: Tab[] = [
   }
   .cmd-msg.error {
     color: var(--color-nvim-red);
+  }
+  /* The empty cmdheight row is clickable: it opens the command line, the mouse equivalent of : */
+  .nvim-cmdline-row:has(> .nvim-cmdline[hidden]) {
+    cursor: text;
+  }
+  /* wildoptions=pum: completion popup above the command line, gruvbox Pmenu / PmenuSel */
+  .cmd-pum {
+    position: absolute;
+    bottom: 100%;
+    left: 10px;
+    z-index: 50;
+    min-width: 18ch;
+    max-height: 60vh;
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--color-nvim-bg2);
+    color: var(--color-nvim-fg);
+  }
+  .cmd-pum[hidden] {
+    display: none;
+  }
+  .cmd-pum li {
+    padding: 0 1ch;
+    line-height: 22px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .cmd-pum li:hover,
+  .cmd-pum li[aria-selected='true'] {
+    background: var(--color-nvim-blue);
+    color: var(--color-nvim-bg2);
+    font-weight: 700;
   }
 
   .nvim-help {
@@ -1177,6 +1231,7 @@ const tabs: Tab[] = [
     const cmdInput = () => q<HTMLInputElement>('#nvim-cmdline-input');
     const cmdPrompt = () => q('#nvim-cmdline-prompt');
     const cmdMsg = () => q('#nvim-cmdline-msg');
+    const cmdPum = () => q<HTMLUListElement>('#nvim-cmd-pum');
     const help = () => q('#nvim-help');
     const telescopeOpen = () => document.getElementById('telescope')?.classList.contains('open') ?? false;
     const cmdOpen = () => {
@@ -1253,12 +1308,84 @@ const tabs: Tab[] = [
       h.hidden = force === undefined ? !h.hidden : !force;
     }
 
+    // Ex commands the completion popup offers: built-ins first, then plugin user commands, the order nvim lists them.
+    // takesArg ones fill the line and wait for an argument instead of running on click.
+    const COMMANDS: { name: string; takesArg?: boolean }[] = [
+      { name: 'bdelete' },
+      { name: 'bnext' },
+      { name: 'bprevious' },
+      { name: 'checkhealth' },
+      { name: 'edit', takesArg: true },
+      { name: 'help' },
+      { name: 'intro' },
+      { name: 'nohlsearch' },
+      { name: 'qall' },
+      { name: 'quit' },
+      { name: 'write' },
+      { name: 'NvimTreeFocus' },
+      { name: 'NvimTreeToggle' },
+      { name: 'Telescope' },
+    ];
+    // wildmenu state: what was typed before Tab, and which match is selected (-1 = the typed text itself)
+    let pumTyped = '';
+    let pumIndex = -1;
+    let pumMatches: typeof COMMANDS = [];
+
+    function hidePum() {
+      const pum = cmdPum();
+      if (pum) pum.hidden = true;
+      pumIndex = -1;
+      pumMatches = [];
+    }
+    // Completes the command name only; once an argument starts (a space), nvim stops offering commands
+    function renderPum() {
+      const pum = cmdPum(),
+        input = cmdInput();
+      if (!pum || !input) return;
+      pumTyped = input.value;
+      pumIndex = -1;
+      const needle = pumTyped.toLowerCase();
+      pumMatches = /\s/.test(pumTyped) ? [] : COMMANDS.filter(({ name }) => name.toLowerCase().startsWith(needle));
+      if (!pumMatches.length) return hidePum();
+      pum.replaceChildren(
+        ...pumMatches.map(({ name }, i) => {
+          const li = document.createElement('li');
+          li.role = 'option';
+          li.dataset.pumIndex = String(i);
+          li.textContent = name;
+          return li;
+        }),
+      );
+      pum.hidden = false;
+    }
+    function selectPum(next: number) {
+      const pum = cmdPum(),
+        input = cmdInput();
+      if (!pum || !input || pum.hidden || !pumMatches.length) return;
+      // Cycling past either end lands back on the typed text, like <Tab> in nvim's wildmenu
+      const span = pumMatches.length + 1;
+      pumIndex = ((((next + 1) % span) + span) % span) - 1;
+      input.value = pumIndex === -1 ? pumTyped : pumMatches[pumIndex].name;
+      pum.querySelectorAll('li').forEach((li, i) => li.setAttribute('aria-selected', String(i === pumIndex)));
+      pum.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
+    }
+    function pickPum(i: number) {
+      const input = cmdInput(),
+        match = pumMatches[i];
+      if (!input || !match) return;
+      if (!match.takesArg) return runCommand(match.name);
+      input.value = `${match.name} `;
+      input.focus();
+      hidePum();
+    }
+
     function showMessage(text: string, error = false) {
       const c = cmdline(),
         input = cmdInput(),
         m = cmdMsg(),
         prompt = cmdPrompt();
       if (!c || !input || !m) return;
+      hidePum();
       c.hidden = false;
       input.hidden = true;
       if (prompt) prompt.hidden = true;
@@ -1285,11 +1412,13 @@ const tabs: Tab[] = [
       input.value = '';
       input.focus();
       setMode('COMMAND');
+      renderPum();
     }
     function hideCmdline() {
       const c = cmdline(),
         input = cmdInput();
       window.clearTimeout(msgTimer);
+      hidePum();
       if (!c) return;
       c.hidden = true;
       if (input && document.activeElement === input) input.blur();
@@ -1339,6 +1468,7 @@ const tabs: Tab[] = [
           hideCmdline();
           break;
         case 'q':
+        case 'quit':
         case 'q!':
         case 'wq':
         case 'x':
@@ -1399,6 +1529,19 @@ const tabs: Tab[] = [
         case 'NvimTreeFocus':
           hideCmdline();
           focusTree();
+          break;
+        case 'che':
+        case 'checkh':
+        case 'checkhealth':
+          hideCmdline();
+          navigate('/checkhealth');
+          break;
+        // :intro shows the splash again without closing buffers; the next key clears it (pages/index.astro)
+        case 'int':
+        case 'intro':
+          sessionStorage.setItem(RELAUNCH_KEY, 'true');
+          hideCmdline();
+          navigate('/');
           break;
         case 'noh':
         case 'nohlsearch':
@@ -1539,6 +1682,16 @@ const tabs: Tab[] = [
       const input = cmdInput();
 
       if (input && target === input) {
+        const next = event.key === 'Tab' || event.key === 'ArrowDown' || (event.ctrlKey && event.key === 'n');
+        const prev =
+          (event.key === 'Tab' && event.shiftKey) || event.key === 'ArrowUp' || (event.ctrlKey && event.key === 'p');
+        if (prev || next) {
+          event.preventDefault();
+          // <Tab> with the popup closed (after an edited argument, say) reopens it for the current text
+          if (cmdPum()?.hidden) renderPum();
+          selectPum(pumIndex + (prev ? -1 : 1));
+          return;
+        }
         if (event.key === 'Enter') {
           event.preventDefault();
           runCommand(input.value);
@@ -1684,10 +1837,22 @@ const tabs: Tab[] = [
       }
     });
 
+    document.addEventListener('input', (event) => {
+      if (event.target === cmdInput()) renderPum();
+    });
+    // Keep focus in the command line while clicking a completion item
+    document.addEventListener('mousedown', (event) => {
+      if ((event.target as HTMLElement).closest('#nvim-cmd-pum')) event.preventDefault();
+    });
     document.addEventListener('click', (event) => {
       const target = event.target as HTMLElement;
       const command = target.closest<HTMLElement>('[data-nvim-cmd]')?.dataset.nvimCmd;
-      if (command) runCommand(command);
+      const pumItem = target.closest<HTMLElement>('#nvim-cmd-pum [data-pum-index]');
+      const row = target.closest<HTMLElement>('.nvim-cmdline-row');
+      if (pumItem) pickPum(Number(pumItem.dataset.pumIndex));
+      // The empty command-line row (or a message in it) opens : on click, the mouse equivalent of typing it
+      else if (row && (cmdline()?.hidden || cmdInput()?.hidden)) openCmdline();
+      else if (command) runCommand(command);
       else if (target.closest('[data-vim-help]')) toggleHelp();
       else if (target.closest('[data-help-close]')) toggleHelp(false);
     });
