@@ -18,16 +18,14 @@ A personal portfolio that looks and works like Neovim under gruvbox. Pages open 
 | `h` `j` `k` `l`, `Enter`    | Move between project cards and open one (on `/projects`) |
 | `?`                         | Show every key                                           |
 
-## What's inside
-
-- **Blog** with MDX posts. Mermaid fences render to gruvbox SVGs at build time, and code blocks use Shiki's `gruvbox-dark-medium` theme.
-- **Projects** as case studies, with a gallery split into projects, hackathons and agentic work.
-- **Experience**, **skills**, **certificates** and a career timeline rendered as `git log`.
-- **JetBrains Mono** everywhere, self-hosted, with real nvim-web-devicons glyphs for file icons.
-
 ## Stack
 
-[Astro 7](https://astro.build) with MDX, [Tailwind CSS v4](https://tailwindcss.com), [GSAP](https://gsap.com) for page-entry animation, and [beautiful-mermaid](https://www.npmjs.com/package/beautiful-mermaid) for diagrams. Built with [Bun](https://bun.sh) and deployed on [Vercel](https://vercel.com).
+- [Astro 7](https://astro.build) with MDX
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [GSAP](https://gsap.com) for page-entry animation
+- [beautiful-mermaid](https://www.npmjs.com/package/beautiful-mermaid) for diagrams
+
+> Built with [Bun](https://bun.sh) and deployed on [Vercel](https://vercel.com).
 
 ## Run it locally
 
@@ -54,10 +52,6 @@ With Nix, `nix develop` opens a shell with Bun, and `nix run` installs dependenc
 | Career milestone | `src/data/milestones.ts`                               |
 
 New posts and projects show up as buffers, in NvimTree and in Telescope on their own. A new page route also needs an entry in `src/components/NvimChrome.astro` and `src/components/Telescope.astro`. [`CLAUDE.md`](CLAUDE.md) has the full conventions: frontmatter fields, the color roles, and the keyboard layer.
-
-## Deploys
-
-GitHub Actions checks formatting, types and the build on every push. Vercel deploys `master` to production and every pull request to a preview.
 
 ## License
 
