@@ -89,6 +89,31 @@ manual machine state       declared environment
 
 Diagrams communicate an idea, never decorate. No giant diagrams. Readable in a few seconds.
 
+## Structure and Skimmability
+
+The user wants posts that are engaging to skim, not essays. A reader scrolling on a phone should be able to follow the post from the headings, the bold lines and the pull quotes alone.
+
+- **Headings generously.** Give every major idea its own `##`, and split a section that does two jobs into `###` subsections (the backstory and the turn, or "On the stream" and "At work"). A full post usually has 8–15 headings. Headings stay plain and descriptive (Tutorials and Guides below), never slogans.
+- **Numbered lessons.** When a post teaches several takeaways, give each its own heading: `## Lesson 1: Great leaders design the win around someone else`, or `### 1. Give away the final hit` under a parent section. The heading states the lesson as a plain sentence.
+- **Pair the story with the meaning.** When a section has an event and a lesson, split it into `### On the [stream / job / project]` and `### At work` (or `### What it taught me`) so the reader sees both halves.
+- **Stat tables for the numbers.** When a story has 3–5 numbers that matter (hours, attempts, deaths, users, latency), put them in a small table near the top instead of a sentence full of figures. Always give the table a header row; an empty one renders as a blank bordered row.
+- **Pull quotes.** Use 1–3 blockquotes (`>`) for the lines someone would screenshot, usually after the section that earns them. Not one under every heading.
+- **Show the real moment.** Embed the actual tweet, clip or screenshot (`<TweetEmbed>` on the portfolio) where the post describes it, as a visual rather than a citation.
+- **Introduce the cast early.** When the story depends on people or companies the reader may not know, a short `## Meet the team` section (one `###` each) comes before the events (Introduce People below).
+- **End on a takeaway list when it fits.** Reflection and career posts close with a short bulleted list where each bullet opens with a bold commitment ("**Set other people up to win.**"), then the closing reflection and the echo of the hook.
+
+Example skeleton (from "What a 73-Hour Minecraft Stream Taught Me About Great Teams"):
+
+```text
+three-line hook → why it matters to me
+## Meet the team            ### Jynxzi  ### StableRonaldo (Ron)  ### LosPollos (Los)
+## The run in 60 seconds    stat table + embedded tweet
+## Lesson 1: ...            ### On the stream  ### At work  > pull quote
+## Lesson 2–4: ...
+## What I'm taking into my career   bold-led bullets
+## The kind of teammate I want to be   reflection + echo
+```
+
 ## Voice
 
 Thoughtful, conversational, technically competent. A developer thinking through something they actually encountered.
@@ -104,7 +129,7 @@ Not personal branding. The technical idea is the interesting part.
 
 **Prefer:** short paragraphs, clear sentences that flow into each other (the user's voice: connected, conversational sentences joined with "but rather", "so", "because", not stacks of two-word fragments), specific language, natural first-person reflection, confidence without pretending to know everything, sections that flow into each other, rhetorical questions when useful, code and diagrams between prose.
 
-**Avoid:** choppy runs of fragments ("Nothing wrong with it. It works.", "Same query, same builder.", "Checkmark."), which the user reads as choppy; keep staccato lines for the closing beat only. Also avoid corporate marketing language, fake enthusiasm, piles of adjectives, motivational LinkedIn tone, "I'm thrilled to announce", "In today's rapidly evolving technological landscape", generic AI introductions, constant bullet lists, unnecessary headings, the thesis repeated word for word in every section, excessive em dashes, a motivational line closing every section.
+**Avoid:** choppy runs of fragments ("Nothing wrong with it. It works.", "Same query, same builder.", "Checkmark."), which the user reads as choppy; keep staccato lines for the closing beat only. Also avoid corporate marketing language, fake enthusiasm, piles of adjectives, motivational LinkedIn tone, "I'm thrilled to announce", "In today's rapidly evolving technological landscape", generic AI introductions, constant bullet lists, walls of text with no headings, the thesis repeated word for word in every section, excessive em dashes, a motivational line closing every section.
 
 ## Flowing Sentences
 
@@ -253,7 +278,7 @@ Idea-driven, not employer-driven. The job goes in the subtitle.
 
 Weak: "My First Month at Brunswick", "What I Learned During My First Month", "My Software Engineering Internship Experience".
 
-Better: "Learn It Again", "One Month In: Learn It Again", "The Things Your Development Environment Isn't Telling You", "Reproducibility Is a Team Feature", "Learning Happens at the Seams", "Making Assumptions Explicit".
+Better: "What a 73-Hour Minecraft Stream Taught Me About Great Teams", "The Patch Window Went Negative", "Learn It Again", "One Month In: Learn It Again", "The Things Your Development Environment Isn't Telling You", "Reproducibility Is a Team Feature", "Learning Happens at the Seams", "Making Assumptions Explicit".
 
 Example pair:
 - title: `Learn It Again`
