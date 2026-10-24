@@ -162,8 +162,8 @@ Tutorial-style posts (a tool switch, a setup walkthrough, "from X to Y") should 
 
 Bold is a skim path, not decoration. A reader who reads only the bold text should still follow the argument, so each bold phrase is one step of it.
 
-- About one per section, roughly 5–8 in a full post for argument turns.
-- Bold the sentence or clause where a section turns: the realization, the reframe, the line that connects one example to the next. Always bold the thesis sentence when it finally lands.
+- Bold generously: the user wants the key points and the lines that stand out to pop. Expect 1–3 per section and roughly 15–25 in a full post, and treat a section with no bold, including the reflection paragraphs near the end, as a miss.
+- Bold the sentence or clause where a section turns: the realization, the reframe, the line that connects one example to the next, and any line a reader would quote or remember. Always bold the thesis sentence when it finally lands.
 - Prefer a clause over a single word. "**the database stopped being something the function grabs from a module and became something it asks for**" beats "**dependency**".
 - Also bold **language and format names** when they matter in prose (**Lua**, **JSON**, **Python**, **TypeScript**, **Rust**). That is emphasis, not code.
 
@@ -171,7 +171,7 @@ Do not bold:
 - tool or company names used as résumé tokens (Effect, Nix, Cloudflare as a list) — different from language names above
 - pull quotes (the blockquote already sets them apart)
 - text that repeats a heading
-- the closing lines (the ending should land through white space, not weight)
+- the final echo lines (the last two or three short lines that mirror the opening hook land through white space, not weight); the reflection paragraphs before them still get bold
 - UI labels that are not code (Find Word, Marketplace, Settings Sync): leave plain
 
 ## Inline code (backticks)
@@ -266,6 +266,12 @@ Example pair:
 - "Reproducibility is not a developer convenience. It's a team feature."
 - "The interesting engineering happens at the boundaries between systems."
 - "You haven't necessarily learned a technology just because you've used it before."
+
+## Introduce People
+
+Assume the reader doesn't know who anyone is. On first mention of a person, creator, team or company the post depends on, give one to three sentences: who they are, what they're known for, and why that matters to the story (Jynxzi: "became one of the biggest streamers on Twitch playing Rainbow Six Siege on an Xbox controller"). When several people carry the story, give them their own short section (`## Meet the team`, one `###` each) before the events.
+
+Keep introductions LinkedIn-safe and relevant: skip bans, gambling, lawsuits or drama unless the post is about them, and don't pad with follower counts that aren't part of the point.
 
 ## Company Context and Confidentiality
 
