@@ -113,5 +113,8 @@ Tailwind CSS v4. Design tokens (colors, spacing) are defined as CSS variables in
 - `/add-experience` skill — appends a new entry to `src/data/experience.ts`
 - `/add-project` skill — fetches GitHub repo metadata and scaffolds `src/content/projects/<slug>.mdx`
 - `/add-role` skill — adds a new role to an existing company entry in `src/data/experience.ts`
-- `/blog-post` skill (global, lives in `~/anikonistack/skills/blog-post/`) — technical editor for developer posts: extract → thesis candidates → narrative → visual plan → draft → edit, plus critique mode, DEV.to import, and news analysis. Portfolio specifics (frontmatter, build check, rendering limits) are in its `portfolio.md`
+- `/blog-post` skill — technical editor for developer posts: extract → thesis candidates → narrative → visual plan → draft → edit, plus critique mode, DEV.to import, and news analysis. Portfolio specifics (frontmatter, build check, rendering limits) are in its `portfolio.md`
 - `/update-claude-md` skill — audits and updates CLAUDE.md when project structure or conventions change; auto-triggered on every prompt via hook
+- `/commit`, `/modular-commits`, `/creating-pull-requests`, `/diagnosing-bugs`, `/frontend-design` — general workflow skills
+
+`blog-post`, `update-claude-md` and the general workflow skills are copies of global skills from `~/anikonistack/skills/` (frontend-design from the Anthropic plugin), committed so Claude Code cloud sessions, which clone the repo and have no `~/.claude`, can use them. They are real files, not symlinks: a symlink to a home path is dangling in the clone. When the global copy changes, re-copy it with `cp -rL ~/.claude/skills/<name> .claude/skills/`.
