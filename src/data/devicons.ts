@@ -5,6 +5,8 @@ export const devicons = {
   mdx: '',
   // package.json is the only JSON buffer; devicons matches it by filename (npm logo), not extension
   json: '',
+  // :checkhealth opens the health:// scratch buffer; devicons matches its filetype, not a file
+  checkhealth: '󰓙',
 } as const;
 
 export type Devicon = keyof typeof devicons;

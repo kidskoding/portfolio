@@ -35,6 +35,12 @@ const pages = [
     path: '/blog',
     desc: 'my blog posts covering various tech news! takes on AI, startups, and where the industry is headed.',
   },
+  {
+    label: 'health://',
+    path: '/checkhealth',
+    desc: 'the font, colorscheme, and neovim plugins behind this site',
+    icon: 'checkhealth',
+  },
 ];
 
 const easterEggs = [
@@ -213,8 +219,12 @@ const easterEggs = [
   .telescope-item .icon-mdx {
     color: var(--color-devicon-mdx);
   }
+  .telescope-item .icon-checkhealth {
+    color: var(--color-devicon-checkhealth);
+  }
   .telescope-item .icon-astro,
-  .telescope-item .icon-mdx {
+  .telescope-item .icon-mdx,
+  .telescope-item .icon-checkhealth {
     font-size: var(--text-base);
     font-family: 'Terminess Nerd Font Icons', var(--font-mono);
     font-weight: 400;
@@ -287,6 +297,7 @@ const easterEggs = [
     label: string;
     path: string;
     desc: string;
+    icon?: 'astro' | 'checkhealth';
   }
   interface PostItem {
     id: string;
@@ -457,7 +468,7 @@ const easterEggs = [
       filteredPages.forEach((p, i) => {
         const sel = i === selectedIndex;
         html += `<div class="telescope-item${sel ? ' selected' : ''}" data-index="${i}">
-          <span class="item-icon icon-astro">${devicons.astro}</span>
+          <span class="item-icon icon-${p.icon ?? 'astro'}">${devicons[p.icon ?? 'astro']}</span>
           <span class="item-label">${escapeHtml(p.label)}</span>
           <span class="item-sub">${escapeHtml(p.desc)}</span>
           ${sel ? '<span class="item-enter">enter</span>' : ''}

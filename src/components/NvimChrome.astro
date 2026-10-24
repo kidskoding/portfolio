@@ -20,7 +20,7 @@ const buffers = [
   { path: '/contact', file: 'contact.astro', icon: 'astro' },
 ];
 const treeFiles = buffers;
-type TabIcon = 'astro' | 'mdx' | 'json';
+type TabIcon = 'astro' | 'mdx' | 'json' | 'checkhealth';
 interface Tab {
   path: string;
   file: string;
@@ -40,6 +40,9 @@ if (blogSlug) {
 } else if (currentPath === '/package-json') {
   activeFile = 'package.json';
   activeIcon = 'json';
+} else if (currentPath === '/checkhealth') {
+  activeFile = 'health://';
+  activeIcon = 'checkhealth';
 } else {
   const match = buffers.find((b) => b.path === currentPath);
   if (match) {
@@ -56,9 +59,12 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft)).so
 const tabs: Tab[] = [
   ...(buffers as Tab[]),
   { path: '/package-json', file: 'package.json', icon: 'json' },
+  { path: '/checkhealth', file: 'health://', icon: 'checkhealth' },
   ...posts.map((post): Tab => ({ path: `/blog/${post.id}`, file: `${post.id}.mdx`, icon: 'mdx' })),
   ...projects.map((project): Tab => ({ path: `/projects/${project.id}`, file: `${project.id}.mdx`, icon: 'mdx' })),
 ];
+// package.json sits at the repo root and health:// is a scratch buffer, so neither is under src/
+const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
 ---
 
 <div class="nvim-shell">
@@ -75,7 +81,10 @@ const tabs: Tab[] = [
       <span>NvimTree</span>
     </button>
     <span>
-      nvim - <span class:list={{ 'file-label': currentPath === '/' }}>portfolio/src/{activeFile}</span>
+      nvim -{' '}
+      <span class:list={{ 'file-label': currentPath === '/' }}>
+        {activeIcon === 'checkhealth' ? activeFile : `portfolio/src/${activeFile}`}
+      </span>
       {currentPath === '/' && <span class="noname-text">[No Name]</span>}
     </span>
   </div>
@@ -195,8 +204,8 @@ const tabs: Tab[] = [
 
       <div class="nvim-winbar">
         <span class="winbar-root">portfolio</span>
-        {activeIcon !== 'json' && <span class="winbar-sep"> &gt; </span>}
-        {activeIcon !== 'json' && <span>src</span>}
+        {inSrc && <span class="winbar-sep"> &gt; </span>}
+        {inSrc && <span>src</span>}
         <span class="winbar-sep"> &gt; </span>
         <span class="winbar-file">{activeFile}</span>
       </div>
@@ -216,7 +225,9 @@ const tabs: Tab[] = [
       master
     </div>
     <div class="sl-c">
-      <span class:list={{ 'file-label': currentPath === '/' }}>{activeFile.split('/').pop()}</span>
+      <span class:list={{ 'file-label': currentPath === '/' }}>
+        {activeIcon === 'checkhealth' ? activeFile : activeFile.split('/').pop()}
+      </span>
       {currentPath === '/' && <span class="noname-label">[No Name]</span>}
     </div>
     <div class="sl-spacer"></div>
@@ -279,7 +290,7 @@ const tabs: Tab[] = [
       <dt>space bd</dt>
       <dd>close buffer</dd>
       <dt>:</dt>
-      <dd>command line &mdash; :q :e file :bn :bp :help</dd>
+      <dd>command line &mdash; :q :e file :bn :bp :help :checkhealth</dd>
       <dt>?</dt>
       <dd>this help</dd>
     </dl>
@@ -553,6 +564,9 @@ const tabs: Tab[] = [
   .icon-json {
     color: var(--color-devicon-package-json);
   }
+  .icon-checkhealth {
+    color: var(--color-devicon-checkhealth);
+  }
 
   /* While the home intro shows, index.astro is a fresh [No Name] buffer, like nvim right after launch */
   .noname-label,
@@ -728,6 +742,9 @@ const tabs: Tab[] = [
   }
   .sl-ft-icon.icon-json {
     color: var(--color-devicon-package-json);
+  }
+  .sl-ft-icon.icon-checkhealth {
+    color: var(--color-devicon-checkhealth);
   }
 
   .sl-showcmd {
@@ -1399,6 +1416,12 @@ const tabs: Tab[] = [
         case 'NvimTreeFocus':
           hideCmdline();
           focusTree();
+          break;
+        case 'che':
+        case 'checkh':
+        case 'checkhealth':
+          hideCmdline();
+          navigate('/checkhealth');
           break;
         case 'noh':
         case 'nohlsearch':

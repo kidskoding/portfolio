@@ -16,7 +16,10 @@ const groups = [
     { cmd: 'Telescope', desc: 'to find anything' },
     { cmd: 'help', desc: 'for keys' },
   ],
-  [{ cmd: 'e package.json', desc: 'to see my deps' }],
+  [
+    { cmd: 'e package.json', desc: 'to see my deps' },
+    { cmd: 'checkhealth', desc: 'for the font and theme' },
+  ],
 ];
 const all = groups.flat();
 const cmdWidth = Math.max(...all.map(({ cmd }) => `:${cmd}<Enter>`.length)) + 3;
