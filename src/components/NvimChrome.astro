@@ -193,7 +193,7 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
                   [No Name]
                 </span>
               )}
-              <span class:list={{ 'file-label': tab.path === '/' }}>{tab.file}</span>
+              <span class:list={['buf-name', { 'file-label': tab.path === '/' }]}>{tab.file}</span>
             </a>
             <button type="button" class="buf-close" data-buf-close aria-label={`Close ${tab.file}`}>
               ×
@@ -911,14 +911,24 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
   }
 
   @media (max-width: 760px) {
+    /* The trigger sits in the flow here, so the title starts after it whatever the button's width */
     .nvim-titlebar {
-      padding-left: 100px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-left: 8px;
       padding-right: 10px;
       text-align: left;
+    }
+    .nvim-tree-trigger {
+      position: static;
+      transform: none;
+      flex-shrink: 0;
     }
 
     .nvim-titlebar > span {
       display: block;
+      min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -928,12 +938,13 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
       min-height: 31px;
     }
 
-    .nvim-buffer {
-      padding-left: 10px;
-      padding-right: 10px;
-      max-width: 140px;
+    /* Long names ellipsize inside the tab so the icon and close button never get clipped */
+    .buf-name {
+      display: inline-block;
+      max-width: 18ch;
       overflow: hidden;
       text-overflow: ellipsis;
+      vertical-align: bottom;
     }
 
     .nvimtree {
