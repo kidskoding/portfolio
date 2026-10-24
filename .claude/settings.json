@@ -1,5 +1,15 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = true ] || exit 0; mkdir -p \"$HOME/.claude/skills\" && cp -r \"$CLAUDE_PROJECT_DIR/.claude/cloud-skills/.\" \"$HOME/.claude/skills/\""
+          }
+        ]
+      }
+    ],
     "UserPromptSubmit": [
       {
         "matcher": ".*",
