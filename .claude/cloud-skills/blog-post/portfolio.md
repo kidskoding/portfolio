@@ -48,7 +48,7 @@ After writing or revising, run `bun run build` in the portfolio root and fix any
 
 - **Frontmatter is `pubDate`, not `date`, and there is no `tags` or `subtitle` field.** Zod strips unknown keys silently.
 - **MDX treats `<` and `{` in prose as JSX.** `Effect<A, E, R>` or `{id}` outside backticks breaks the build.
-- **Numbered lists render without numbers** in `src/pages/blog/[...id].astro` (only `ul` is styled). Use headings or bullets for sequences.
+- **Numbered lists render with numbers** (`[&_ol]:list-decimal` in `src/pages/blog/[...id].astro`), so a numbered `## References` list lines up with `<sup>[N](#references)</sup>` citations. Put `<a name="references"></a>` under that heading so the citation links land.
 - **Mermaid renders** at build time: a ```` ```mermaid ```` fence becomes a gruvbox SVG (flowchart, state, sequence, class, ER, xychart; via `beautiful-mermaid` in `src/lib/mermaid.mjs`). Use it for flows and boundaries; keep ASCII ```` ```text ```` fences for annotated code, trees, and side-by-side before/after columns, which Mermaid draws worse.
 - **No `og:image` or Twitter card tags** in the blog layout, so LinkedIn link previews show no cover. Mention it when the user plans to share on LinkedIn.
 - **Bold renders green** (`[&_strong]:text-nvim-green` in `src/pages/blog/[...id].astro`), so every bold phrase is a bright highlight. Keep to the skim-path budget in `style-guide.md`; heavy bolding turns the page green. Language names (**Lua**, **JSON**, …) are bold by design; do not put them in backticks.
