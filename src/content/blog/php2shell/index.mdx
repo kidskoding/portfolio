@@ -9,7 +9,7 @@ The fix shipped on Wednesday.
 
 A working exploit was public by Thursday.
 
-And at least one attacker may have been probing servers days before either.
+And attackers were already probing servers days before either.
 
 That's the week PHP just had. On **October 21**, the PHP project pushed an emergency release for **PHP2Shell**, two bugs in the PHP runtime itself (**CVE-2026-109618** and **CVE-2026-109619**) that let anyone who can send an HTTP request to a PHP server run code on it, without logging in<sup>[1](#references)</sup>. The usual story for a bug like this goes in order: someone finds it, the maintainers fix it, and attackers catch up weeks later. **This week the order ran backwards, and that's the part worth paying attention to.**
 
@@ -21,9 +21,9 @@ Most web security news is about an application, like a WordPress plugin or someb
 
 The first bug, CVE-2026-109618, starts with PHP's memory limit. When a request goes over `memory_limit`, PHP doesn't unwind carefully, but rather jumps straight out of whatever it was doing (a C `longjmp`) and runs request cleanup. Researchers found this can happen while PHP is halfway through building request data<sup>[4](#references)</sup><sup>[5](#references)</sup>. An attacker sends a multi-megabyte POST with an oversized form field name, PHP runs out of memory mid-parse, and cleanup then walks a structure that was never finished, trusting attacker-shaped bytes as a pointer to code it should call<sup>[6](#references)</sup>.
 
-The second bug, CVE-2026-109619, is about state that outlives its request. A PHP-FPM or Apache worker serves many requests in a row and is supposed to reset its global state between them, but this bug leaves request-owned state pointing at memory that's already been freed, so the next request on the same worker can use it<sup>[5](#references)</sup>. **Besides running code, that can leak pieces of earlier requests, along with whatever passwords, session cookies or API tokens were in them**<sup>[8](#references)</sup>.
+The second bug, CVE-2026-109619, is about state that outlives its request. A PHP-FPM or Apache worker serves many requests in a row and is supposed to reset its global state between them, but this bug leaves request-owned state pointing at memory that's already been freed, so the next request on the same worker can use it<sup>[5](#references)</sup>. Besides running code, that can leak pieces of earlier requests, along with whatever passwords, session cookies or API tokens were in them<sup>[8](#references)</sup>.
 
-Neither mistake is exotic. Error paths that skip initialization and state that survives a reset are classic **C** bugs, and early write-ups still disagree on some of the details. What makes them critical is where they sit: in code every request passes through, reachable before authentication, in every PHP version from **5.4 to 8.5** and every way of running it, from mod_php and PHP-FPM to php-cgi, FrankenPHP and LiteSpeed<sup>[1](#references)</sup>.
+Neither mistake is exotic, since error paths that skip initialization and state that survives a reset are classic **C** bugs, and early write-ups still disagree on some of the details. What makes them critical is where they sit: in code every request passes through, reachable before authentication, in every PHP version from **5.4 to 8.5** and every way of running it, from mod_php and PHP-FPM to php-cgi, FrankenPHP and LiteSpeed<sup>[1](#references)</sup>.
 
 ---
 
@@ -31,7 +31,8 @@ Neither mistake is exotic. Error paths that skip initialization and state that s
 
 ```mermaid
 graph TD
-  A[August: Calif and Wiz, working with OpenAI, report two bugs to PHP] --> B[Oct 20: CVE IDs leak, then a proof-of-concept video]
+  A[August: Calif and Wiz, working with OpenAI, report two bugs to PHP] --> Z[Oct 17: Amazon sees the first exploit attempts]
+  Z --> B[Oct 20: CVE IDs leak, then a proof-of-concept video]
   B --> C[Oct 21, morning: Chainguard ships patched images hours early]
   C --> D[Oct 21, 14:00 UTC: PHP releases fixes a day ahead of plan]
   D --> E[Oct 22: working exploits public, attempts hit sensors]
@@ -46,23 +47,23 @@ PHP moved its release up a day, to Wednesday at 14:00 UTC, and shipped **8.5.12,
 
 The clearest picture of how fast this moved came from **Matthew Prince**, Cloudflare's CEO, in a post on X that Reuters picked up the same night<sup>[16](#references)</sup>. Cloudflare's network logged a few thousand exploit attempts in the 10 hours before the announcement, which is the leak at work. After the announcement, attempts climbed to **tens of thousands within 45 minutes, hundreds of thousands within two hours, and then millions**<sup>[15](#references)</sup>. Cloudflare said attackers were also tweaking their payloads to slip past its firewall rules, so it turned new rules on for free and paid plans alike while stressing that a WAF is no substitute for patching.
 
-Those are attempts, not break-ins, and officials in Germany, the Netherlands and Japan said they hadn't confirmed a successful exploit<sup>[17](#references)</sup>. **But the curve is the point: the moment the fix became public was also the moment the attacks scaled up.**
-
-**Embargoes assume that turning a fix back into an exploit takes days, and this week it took hours.** Once a patched binary exists anywhere, the bug is effectively public.
+Those are attempts, not break-ins, and officials in Germany, the Netherlands and Japan said they hadn't confirmed a successful exploit<sup>[17](#references)</sup>. But the curve is the point, because the moment the fix became public was also the moment the attacks scaled up. **Embargoes assume that turning a fix back into an exploit takes days, and this week it took hours.** Once a patched binary exists anywhere, the bug is effectively public.
 
 ---
 
 ## AI found it first
 
-The detail that put PHP2Shell on CNN wasn't the bug class, but rather that **the researchers who found it were using AI models to read PHP's C source**<sup>[11](#references)</sup>.
+The detail that put PHP2Shell on CNN wasn't the bug class, but rather that the researchers who found it were using AI models to read PHP's **C** source<sup>[11](#references)</sup>.
 
-PHP's request parser has been read by humans for over twenty years, and the memory-limit bailout and the per-request reset are old, well-traveled code. I don't think finding two critical bugs there says much about PHP's maintainers. It says more about what got cheaper: going through every error path in a large C codebase and asking "what happens if this fails halfway?" at each one used to be too slow and too tedious for anyone to do exhaustively, and **now a model can do that reading for the cost of an API bill.**
+PHP's request parser has been read by humans for over twenty years, and the memory-limit bailout and the per-request reset are old, well-traveled code. I don't think finding two critical bugs there says much about PHP's maintainers.
 
-The same speed works for the other side, though. A leaked CVE ID plus a diff of patched images is exactly the kind of input that tools now turn into a working exploit quickly, and the timeline above shows it happening. So the model that clicked for me looks like this:
+It says more about what got cheaper. Going through every error path in a large C codebase and asking "what happens if this fails halfway?" at each one used to be too slow and too tedious for anyone to do exhaustively, and **now a model can do that reading for the cost of an API bill.**
+
+Attackers got faster too, though not necessarily because of AI. A leaked CVE ID plus a diff of patched images pointed straight at the broken code, and the timeline above shows a working exploit arriving within a day. So the model that clicked for me looks like this:
 
 ```text
 time to find the bug         ↓  (AI reads the code)
-time to build the exploit    ↓  (AI reads the diff)
+time to build the exploit    ↓  (the diff gives it away)
 time to patch every server   →  (unchanged)
 ```
 
@@ -89,7 +90,7 @@ If you run PHP yourself, this is the short version of what to do:
 
 ---
 
-PHP2Shell will probably be remembered as the bug AI found, and that part is real. **But the more lasting lesson is that a machine found the bug and a machine helped build the exploit, while the patch still has to be applied by a person who remembers the server exists.**
+PHP2Shell will probably be remembered as the bug AI found, and that part is real. **But the more lasting lesson is that the bug was found by a model and turned into an exploit within hours, while the patch still has to be applied by a person who remembers the server exists.**
 
 The fix shipped on Wednesday.
 
