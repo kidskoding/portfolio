@@ -59,7 +59,7 @@ src/
 │   ├── skills.astro
 │   ├── certificates.astro
 │   ├── contact.astro
-│   ├── package-json.astro # Renders package.json as a JSON buffer (/package-json)
+│   ├── package-json.astro # Renders the real package.json (imported at build time) as a JSON buffer (/package-json)
 │   ├── checkhealth.astro  # Colophon (font, theme, inspiration, stack) styled as nvim's :checkhealth report; opens as the health:// scratch buffer, not in NvimTree; versions read from package.json
 │   └── blog/
 └── styles/

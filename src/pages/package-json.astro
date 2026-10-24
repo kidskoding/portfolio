@@ -1,37 +1,30 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import pkg from '../../package.json';
 
-const k = (s: string) => `<span class="j-key">"${s}"</span>`;
-const s = (s: string) => `<span class="j-str">"${s}"</span>`;
+const esc = (v: string) => v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const k = (s: string) => `<span class="j-key">"${esc(s)}"</span>`;
+const s = (s: string) => `<span class="j-str">"${esc(s)}"</span>`;
 const p = (s: string) => `<span class="j-punct">${s}</span>`;
 
-const content = [
-  p('{'),
-  `  ${k('name')}${p(':')}         ${s('portfolio')}${p(',')}`,
-  `  ${k('type')}${p(':')}         ${s('module')}${p(',')}`,
-  `  ${k('version')}${p(':')}      ${s('0.0.1')}${p(',')}`,
-  `  ${k('description')}${p(':')}  ${s('Personal portfolio — Astro, Tailwind CSS, GSAP, MDX')}${p(',')}`,
-  `  ${k('author')}${p(':')}       ${s('Anirudh Konidala<anirudhkonidala@gmail.com>')}${p(',')}`,
-  `  ${k('license')}${p(':')}      ${s('MIT')}${p(',')}`,
-  '',
-  `  ${k('scripts')}${p(':')} ${p('{')}`,
-  `    ${k('dev')}${p(':')}     ${s('astro dev')}${p(',')}`,
-  `    ${k('build')}${p(':')}   ${s('astro build')}${p(',')}`,
-  `    ${k('preview')}${p(':')} ${s('astro preview')}`,
-  `  ${p('},')}`,
-  '',
-  `  ${k('dependencies')}${p(':')} ${p('{')}`,
-  `    ${k('@astrojs/mdx')}${p(':')}              ${s('^5.0.3')}${p(',')}`,
-  `    ${k('@iconify-json/ph')}${p(':')}           ${s('^1.2.2')}${p(',')}`,
-  `    ${k('@iconify-json/simple-icons')}${p(':')} ${s('^1.2.70')}${p(',')}`,
-  `    ${k('@iconify/utils')}${p(':')}             ${s('^3.1.0')}${p(',')}`,
-  `    ${k('@tailwindcss/vite')}${p(':')}          ${s('^4.1.18')}${p(',')}`,
-  `    ${k('astro')}${p(':')}                      ${s('^6.1.7')}${p(',')}`,
-  `    ${k('gsap')}${p(':')}                       ${s('^3.14.2')}${p(',')}`,
-  `    ${k('tailwindcss')}${p(':')}                ${s('^4.1.18')}`,
-  `  ${p('}')}`,
-  p('}'),
-].join('\n');
+// The real package.json, read at build time and laid out the way JSON.stringify(pkg, null, 2) writes it,
+// so the buffer always shows the versions the site is actually built with
+function render(value: unknown, depth: number): string {
+  if (typeof value === 'string') return s(value);
+  if (value === null || typeof value !== 'object') return esc(String(value));
+  const indent = '  '.repeat(depth + 1);
+  const close = '  '.repeat(depth);
+  const isArray = Array.isArray(value);
+  const entries = isArray ? value.map((v) => [null, v] as const) : Object.entries(value);
+  if (!entries.length) return p(isArray ? '[]' : '{}');
+  const lines = entries.map(
+    ([key, v], i) =>
+      `${indent}${key === null ? '' : `${k(key)}${p(':')} `}${render(v, depth + 1)}${i < entries.length - 1 ? p(',') : ''}`,
+  );
+  return [p(isArray ? '[' : '{'), ...lines, `${close}${p(isArray ? ']' : '}')}`].join('\n');
+}
+
+const content = render(pkg, 0);
 ---
 
 <Layout title="package.json">

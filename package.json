@@ -1,7 +1,10 @@
 {
   "name": "portfolio",
+  "description": "my developer portfolio! 🗺️",
   "type": "module",
   "version": "0.0.1",
+  "author": "Anirudh Konidala <anirudhkonidala@gmail.com>",
+  "license": "MIT",
   "packageManager": "bun@1.4.2",
   "scripts": {
     "dev": "astro dev",
