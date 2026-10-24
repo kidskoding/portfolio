@@ -10,7 +10,7 @@ The user's portfolio: Astro + MDX + Tailwind v4, usually at `~/uiuc/go-mama-27/p
 
 ## File
 
-Path: `src/content/blog/<kebab-case-slug>.mdx`. Frontmatter must match `src/content.config.ts`:
+Path: `src/content/blog/<kebab-case-slug>/index.mdx`. The slug follows the title's idea (`minecraft-stream-great-teams` for "What a 73-Hour Minecraft Stream Taught Me About Great Teams"); when the title changes before publishing, rename the folder with `git mv` and update any LinkedIn copy that links to it. Frontmatter must match `src/content.config.ts`:
 
 ```mdx
 ---
@@ -21,7 +21,7 @@ draft: true
 coverImage: "/blog/<slug>-cover.<ext>"
 ---
 
-import TweetEmbed from '../../components/TweetEmbed.astro';
+import TweetEmbed from '../../../components/TweetEmbed.astro';
 
 [post body]
 ```

@@ -75,6 +75,7 @@ Decide where the post goes before Stage 5:
 ## Gotchas
 
 - **Inline code vs bold is strict.** Backticks = paths, keys, commands, identifiers, plugin/package ids. Bold = key points, standout lines, and argument turns, generously (1–3 per section, every section), plus language/format names (**Lua**, **JSON**, …). Never backtick a language name; never bold a file path. See Bold and Inline code in `style-guide.md`.
+- **Posts should skim.** Generous headings (`##` per idea, `###` to split a section's two halves), numbered lesson headings, a stat table for the key numbers, 1–3 pull quotes, and the real tweet or screenshot embedded (Structure and Skimmability in `style-guide.md`). Headings stay plain sentences, not slogans.
 - **Punchy fragments read as choppy to this user.** Default to flowing, connected sentences; keep staccato for the opening hook and the closing beat only (Flowing Sentences in `style-guide.md`).
 - **Flowing does not mean one long paragraph.** Break at each turn (context → action, explanation → bold conclusion) and keep paragraphs near 2–4 sentences (Paragraph Breaks in `style-guide.md`).
 - **Flowing does not mean run-on.** "The usual reasons not to switch are that X and that Y" is grammatical but clunky; write "Many people are hesitant to switch because X." Lead with a subject and a plain verb, and avoid stacked "that ... and that ..." clauses (Plain Grammar in `style-guide.md`).
