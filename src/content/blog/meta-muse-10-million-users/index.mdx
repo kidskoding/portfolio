@@ -1,59 +1,130 @@
 ---
-title: "Muse Hit 10 Million Users. The Best Model Didn't Win."
-description: "Eighteen months ago Meta was the AI lab everyone had written off. Here's how it rebuilt, shipped a personal agent, and got to 10 million users faster than almost anyone, and what that says about which AI products actually win."
+title: "Meta's Muse Hit 10 Million Users. Here's Why It Became a Sensation."
+description: "Muse is the first AI agent that regular people actually use, and it got there in about six weeks. What it does, the private computer that makes it work, why Amazon slammed the door on it, and what comes next for personal agents."
 pubDate: 2026-11-01
 draft: true
 ---
 
-Eighteen months ago, Meta was the AI lab people had stopped taking seriously.
+import TweetEmbed from '../../../components/TweetEmbed.astro';
 
-Last week, Mark Zuckerberg told investors that **Muse**, Meta's personal agent, has passed **10 million users**.<sup>[13](#references)</sup>
+On September 8, Mark Zuckerberg posted a short announcement on X:
 
-Muse didn't get there by having the smartest model. It got there by being in the right place, doing one job people actually wanted done, and making money in a way Meta already understands.
+<TweetEmbed url="https://x.com/finkd/status/2097402101332590646" />
 
-> The AI race has more than one finish line, and Meta just crossed the one most developers weren't watching.
+The launch even started with a mix-up. Meta took the `@muse` handle on Instagram from the rock band of the same name, and Zuckerberg reportedly pasted his Threads announcement onto X, where it tagged the band instead of the agent.<sup>[2](#references)</sup>
 
----
+Six weeks later, nobody was confusing the two. On Meta's Q3 earnings call, Zuckerberg said Muse had passed **10 million users**, with shopping as its top activity.<sup>[1](#references)</sup> For a product that asks you to hand over your email, your calendar and your card, that's an absurd pace.
 
-## Where Meta Started
+The interesting question isn't whether Muse is popular, but rather why this agent took off when so many before it stayed a demo. The answer involves a computer you never see, a job people can measure in dollars, and a company that already had billions of users waiting.
 
-In April 2025, **Llama 4** launched under a cloud. Meta promoted a leaderboard result from a specially tuned "experimental" version of Maverick that ranked second on LMArena, and when the public release was tested on its own, it landed in **32nd place**.<sup>[1](#references)</sup> <sup>[2](#references)</sup> LMArena said Meta's reading of its policy "did not match what we expect from model providers," and independent coding benchmarks were even less kind.
-
-That mattered more than one bad launch usually would. Open weights were Meta's whole identity in AI, the thing that made developers root for it, and Llama 4 made it look like Meta was falling behind OpenAI, Google and Anthropic while giving its work away.
-
-**So Meta stopped trying to fix Llama and started over.**
+> Muse is the first AI agent that regular people use without thinking of it as AI.
 
 ---
 
-## The Rebuild
+## What Muse Actually Does
 
-The turnaround happened in a sequence, and each step set up the next one:
+Most AI products wait for a question and then answer it. Muse works the other way around: you give it a goal, and it plans the steps, uses a browser and your connected accounts to carry them out, keeps going after you close the app, and comes back when it's done or when it needs your approval.<sup>[8](#references)</sup>
 
-```text
-Apr 2025   Llama 4 stumbles on benchmarks
-Jun 2025   $14.3B into Scale AI, Alexandr Wang leads Meta Superintelligence Labs
-Jul 2025   "Hundreds of billions" committed to compute (Prometheus, Hyperion)
-Apr 2026   Muse Spark: MSL's first model, and Meta's first without open weights
-Jul 2026   Meta Model API and Muse Code open to developers
-Sep 2026   Muse launches as a personal agent
-Oct 2026   Muse Spark Open and an Apple partnership; 10M users
+That sounds abstract until you look at what people are actually using it for:
+
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
+  <div class="rounded-lg border border-nvim-bg3 bg-nvim-bg-hard p-4">
+    <div class="text-sm text-nvim-gray">negotiate</div>
+    <div class="text-2xl font-bold text-nvim-orange">-$85 a month</div>
+    <div class="text-sm text-nvim-fg2 mt-1">Talked a cable company down through its support chat</div>
+    <div class="text-xs text-nvim-gray mt-2">Example shared by Alexandr Wang<sup><a href="#references">3</a></sup></div>
+  </div>
+  <div class="rounded-lg border border-nvim-bg3 bg-nvim-bg-hard p-4">
+    <div class="text-sm text-nvim-gray">recover</div>
+    <div class="text-2xl font-bold text-nvim-green">Hidden refunds</div>
+    <div class="text-sm text-nvim-fg2 mt-1">Found refunds users didn't know they were owed</div>
+    <div class="text-xs text-nvim-gray mt-2">Example shared by Alexandr Wang<sup><a href="#references">3</a></sup></div>
+  </div>
+  <div class="rounded-lg border border-nvim-bg3 bg-nvim-bg-hard p-4">
+    <div class="text-sm text-nvim-gray">save</div>
+    <div class="text-2xl font-bold text-nvim-yellow">Insurance</div>
+    <div class="text-sm text-nvim-fg2 mt-1">Shopped car and home insurance for a lower rate</div>
+    <div class="text-xs text-nvim-gray mt-2">Example shared by Alexandr Wang<sup><a href="#references">3</a></sup></div>
+  </div>
+  <div class="rounded-lg border border-nvim-bg3 bg-nvim-bg-hard p-4">
+    <div class="text-sm text-nvim-gray">clean up</div>
+    <div class="text-2xl font-bold text-nvim-aqua">Subscriptions</div>
+    <div class="text-sm text-nvim-fg2 mt-1">Tracked down and cancelled forgotten subscriptions</div>
+    <div class="text-xs text-nvim-gray mt-2">User story via ABC News<sup><a href="#references">4</a></sup></div>
+  </div>
+  <div class="rounded-lg border border-nvim-bg3 bg-nvim-bg-hard p-4">
+    <div class="text-sm text-nvim-gray">shop</div>
+    <div class="text-2xl font-bold text-nvim-purple">#1 use case</div>
+    <div class="text-sm text-nvim-fg2 mt-1">Browses, compares and checks out for you</div>
+    <div class="text-xs text-nvim-gray mt-2">Per Zuckerberg on the Q3 call<sup><a href="#references">1</a></sup></div>
+  </div>
+  <div class="rounded-lg border border-nvim-bg3 bg-nvim-bg-hard p-4">
+    <div class="text-sm text-nvim-gray">book</div>
+    <div class="text-2xl font-bold text-nvim-blue">Travel</div>
+    <div class="text-sm text-nvim-fg2 mt-1">Fills out forms and books trips end to end</div>
+    <div class="text-xs text-nvim-gray mt-2">From Meta's launch<sup><a href="#references">31</a></sup></div>
+  </div>
+</div>
+
+The cable bill is the example that explains the whole product. Negotiating with a support chat is tedious, slow and slightly confrontational, which is exactly the kind of task people put off for months. Here's roughly what Muse does instead, simplified from the example Wang described:
+
+```mermaid
+sequenceDiagram
+  participant You
+  participant Muse
+  participant Chat as Cable support chat
+  You->>Muse: Lower my cable bill
+  Muse->>Chat: Opens a support chat on your account
+  Muse->>Chat: Asks for a better rate
+  Chat-->>Muse: Offers a cheaper plan
+  Muse->>You: Take the offer, 85 dollars a month less?
+  You->>Muse: Approve
+  Muse->>Chat: Accepts and confirms
 ```
 
-In June 2025, Meta put **$14.3 billion** into Scale AI for a 49% stake and brought in its CEO, Alexandr Wang, to lead the new **Meta Superintelligence Labs**.<sup>[3](#references)</sup> A month later, Zuckerberg said Meta would spend "hundreds of billions of dollars" on data centers, including Prometheus in Ohio and Hyperion in Louisiana, which can scale to five gigawatts.<sup>[4](#references)</sup> The message was simple: Meta had the cash from its ad business, and it would use it to buy back into the race.
+**That's the moment Muse stops being a chatbot: the output isn't text you have to act on, but rather money back in your account.** It's also why Muse spread the way it did. "My AI got my bill lowered while I slept" is a far easier story to tell a friend than "my AI wrote a good summary," and ABC News found users telling exactly those stories about internet bills and forgotten subscriptions.<sup>[4](#references)</sup>
 
-The first result was **Muse Spark** in April 2026, MSL's first model. Unlike Llama, it shipped without public weights.<sup>[5](#references)</sup> <sup>[6](#references)</sup> That was a real break from Meta's past, and it signaled that Meta now cared more about owning a product than about being the open-source favorite.
+Muse is also leaving the phone. At Connect on September 24, Meta gave it real-time voice and video, said it's coming to Meta's AI glasses, and announced shopping partnerships with Walmart, GameStop, Gap and Wayfair, along with an email address of its own and computer control on the Mac.<sup>[5](#references)</sup> <sup>[6](#references)</sup>
 
-In July, Meta opened the model to developers through the **Meta Model API**, which is OpenAI SDK–compatible and priced at $1.25 per million input tokens and $4.25 per million output tokens, with a coding tool, Muse Code, alongside it.<sup>[7](#references)</sup> <sup>[8](#references)</sup> That part of the strategy got a polite reception. The part that took off came two months later.
+<TweetEmbed url="https://x.com/finkd/status/2102913005730271579" />
 
 ---
 
-## The Agent That Actually Shipped
+## The Secret Is a Computer You Never See
 
-On September 8, Meta launched **Muse** as a personal agent.<sup>[9](#references)</sup> It isn't a chatbot that answers questions, but rather an agent that does things: it browses the web, fills out forms, books travel, sends email and checks out for you. It lives in the Meta AI app, on the web and inside WhatsApp, with a free tier and paid plans at $20 and $100 a month.
+The part of Muse I find most interesting as an engineer is the part users never see. Every Muse user gets their own **isolated Linux virtual machine** in Meta's cloud, with a browser and enough CPU, memory and storage to do real work.<sup>[7](#references)</sup> Muse isn't a model calling a few APIs, but rather a model operating a computer on your behalf.
 
-What's interesting from an engineering point of view is how Meta handled the scary part of letting an agent act for you. Each user gets an isolated virtual machine, and Muse asks for approval before sensitive actions like sending an email or paying for something.<sup>[10](#references)</sup> Meta says conversations stay away from its ad systems and that users can opt out of training. Those are the same guardrails I'd reach for when building an agent that touches someone's money: sandbox the execution and put a human in front of anything irreversible.
+```mermaid
+graph LR
+  subgraph VM[Your private VM]
+    M[Muse agent] --> B[Browser]
+    V[Credential vault<br/>separate container] --> B
+    F[Memory files<br/>you can edit] --> M
+  end
+  Y[You<br/>app, WhatsApp, voice] --> M
+  B --> S[Sentinel<br/>network gate]
+  S --> W[The web]
+```
 
-Then the numbers came in. Sensor Tower found that Muse took **36 days to reach 9 million US downloads**, a milestone that took Claude 670 days.<sup>[15](#references)</sup> 73% of new users came back the day after installing it.<sup>[16](#references)</sup> On the Q3 earnings call on October 21, Zuckerberg put the total above 10 million and said shopping was the top activity.<sup>[13](#references)</sup> Purchase demand was high enough that Meta had to ask Stripe to raise its credit limits.<sup>[14](#references)</sup>
+Three design choices in that diagram explain why Muse can do what earlier agents couldn't.
+
+The first is that **the VM keeps running when you don't**. Because the agent has its own machine, a task like "watch this flight and rebook me if it drops" doesn't need your phone to stay open. That's what Zuckerberg meant by an agent that "works 24/7."
+
+The second is that **the agent can use your logins without seeing them**. Credentials live in a separate isolated container inside your VM, and the browser uses them to sign in, so the model driving the browser never reads your password.<sup>[7](#references)</sup> A separate process Meta calls Sentinel sits between the VM and the internet and decides what the agent is allowed to reach.
+
+The third is that **Muse's memory about you is a set of files you can open**. Meta says you can inspect, edit and download them,<sup>[7](#references)</sup> which is a much more honest model than a black-box "personalization" setting.
+
+Zuckerberg admitted on the earnings call that Meta wasn't sure the architecture would land with users:
+
+<TweetEmbed url="https://x.com/firesidealpha/status/2103924932434702508" />
+
+There are limits worth stating plainly. Meta's own safety post says the current design doesn't stop Meta from accessing your data when it needs to support, secure or operate the service, and a "confidential VM" where you'd hold the encryption key is planned but not available yet.<sup>[7](#references)</sup> The most careful hands-on review I found suggests starting read-only, letting Muse read your email before it sends any, and watching its audit trail.<sup>[8](#references)</sup>
+
+---
+
+## Why It Became a Sensation
+
+The growth numbers are hard to overstate. Sensor Tower found that Muse took **36 days to reach 9 million US downloads**, a milestone that took Claude 670 days,<sup>[9](#references)</sup> and 73% of new users came back the day after installing it.<sup>[10](#references)</sup> Purchase demand got high enough that Meta had to ask Stripe to raise its credit limits.<sup>[11](#references)</sup>
 
 ```mermaid
 xychart-beta
@@ -63,78 +134,71 @@ xychart-beta
   bar [36, 670]
 ```
 
----
-
-## Why Meta Pulled Ahead Here
-
-None of this happened because Muse Spark beats every frontier model. It happened because Meta had three advantages that a better model can't buy.
-
-The first is **distribution**. Billions of people already use WhatsApp, so Muse didn't need anyone to download a new app, create an account or learn a new interface. The agent shows up where people already talk to friends and businesses, which is why a 36-day ramp was possible at all.
-
-The second is **a narrow job**. Most AI products try to be good at everything and leave the user to work out what to ask. Muse leaned into errands: shopping, booking and bills. That's a smaller ambition than "general assistant," but it's one where people can feel the value the first time they use it, which is exactly what that next-day retention number reflects.
-
-The third is **a business model that fits**. Meta plans to charge businesses a fee when Muse completes a sale.<sup>[15](#references)</sup> For a company that already makes its money connecting people to merchants, an agent that shops is a natural next step rather than a new business.
-
-**Put together, Meta didn't win the model race, but rather turned a capable model into the fastest-growing agent by putting it where people already were.**
+Plenty of AI products have good models. Muse had three things that a better model can't buy.
 
 ```mermaid
 graph LR
   D[Distribution<br/>WhatsApp, Meta AI app] --> M[Muse]
-  J[A narrow job<br/>shopping, booking, bills] --> M
+  J[A job you can measure<br/>bills, refunds, shopping] --> M
   B[A business model<br/>fees on completed sales] --> M
   M --> U[10M+ users<br/>in about six weeks]
 ```
 
----
+**Distribution.** Billions of people already use WhatsApp, so trying Muse didn't mean downloading an unfamiliar app, making an account or learning a new interface. It showed up where people already message friends and businesses, which is the only reason a 36-day ramp was possible.
 
-## What the 10 Million Doesn't Tell You
+**A job you can measure.** Most assistants leave you to figure out what to ask. Muse leaned into errands with a visible result: a lower bill, a refund, a finished checkout. People can feel that value on the first try, and that's what a 73% next-day return rate reflects.
 
-The headline number deserves some context, because it's company-reported and Meta hasn't said what counts as a "user." Third-party data tells a smaller story: Sensor Tower counted 6.6 million downloads and about **1.8 million daily active users** in early October, and Similarweb put daily users near 2.2 million.<sup>[19](#references)</sup> One analysis estimates only about a quarter of people who set up Muse use it every day,<sup>[17](#references)</sup> and while day-one retention beats ChatGPT, ChatGPT pulls ahead around days eight and nine.<sup>[16](#references)</sup>
+**A business model that fits.** Meta plans to charge businesses a fee when Muse completes a sale.<sup>[9](#references)</sup> <sup>[30](#references)</sup> For a company that already makes its money connecting people to merchants, an agent that shops isn't a new business, but rather the old one with the middle steps removed.
 
-The merchant side isn't settled either. Some sites, Amazon among them, reportedly block AI agents from browsing or checking out,<sup>[15](#references)</sup> and an agent built for shopping is only as useful as the stores that let it in.
+It also helps that Muse found an audience the AI industry rarely designs for. *Time* reports that older adults are among its most enthusiastic users,<sup>[12](#references)</sup> people who never wanted to learn prompting but are very happy to say "cancel the subscriptions I don't use."
 
-Then there's trust. Muse asks for access to email, calendars, payments and more, and *Time* reports that older adults are among its most enthusiastic users, which worries privacy experts.<sup>[18](#references)</sup> Meta itself says Muse "will sometimes make mistakes." That's an honest disclaimer, but it lands differently when the agent has your card on file.
-
-> Ten million people let an agent spend their money. The open question is whether they'll still trust it after the first wrong order.
+> Muse didn't win by being the smartest agent. It won by being the easiest one to say yes to.
 
 ---
 
-## Meta Is Also Winning Developers Back
+## How Meta Got Here
 
-Meta hasn't given up on the developers it lost after Llama. In October it released **Muse Spark Open**, which it calls the most capable US open-weight model to date, available on Hugging Face and through hosts like Groq, Together AI and OpenRouter.<sup>[11](#references)</sup> It also announced a partnership with Apple so developers can run the model locally on high-end Macs.<sup>[12](#references)</sup>
+None of this looked likely eighteen months ago. In April 2025, **Llama 4** launched under a cloud: Meta promoted a leaderboard result from a specially tuned "experimental" version of Maverick, and the public release ranked **32nd** on LMArena when it was tested on its own.<sup>[13](#references)</sup> <sup>[14](#references)</sup> Open weights had been Meta's whole identity in AI, and suddenly it looked like Meta was giving away models that weren't even competitive.
 
-That's the part I find most interesting as someone who builds agents. Meta kept the consumer product closed and monetized, then released an open model to rebuild goodwill with developers. It's the reverse of the Llama era, where openness was the strategy, and it suggests Meta now sees open weights as a way to support a product rather than as the product itself.
+So Meta started over:
+
+```text
+Apr 2025   Llama 4 stumbles on benchmarks
+Jun 2025   $14.3B into Scale AI; Alexandr Wang leads Meta Superintelligence Labs
+Jul 2025   "Hundreds of billions" committed to compute (Prometheus, Hyperion)
+Apr 2026   Muse Spark: MSL's first model, and Meta's first without open weights
+Sep 2026   Muse launches as a personal agent; Amazon blocks it 12 days later
+Oct 2026   Muse Wonder, Meta's first frontier model; 10M users
+```
+
+The Scale AI deal brought in Wang to run the new lab,<sup>[15](#references)</sup> and Zuckerberg committed "hundreds of billions of dollars" to data centers like Prometheus in Ohio and Hyperion in Louisiana.<sup>[16](#references)</sup> The first model out of that lab, Muse Spark, shipped closed in April 2026,<sup>[17](#references)</sup> a clear sign that Meta now cared more about owning a product than about being the open-source favorite.
+
+The order of what came next is the most telling part. Muse launched on Muse Spark, a capable model but not the strongest one available. **Meta got the users first and the frontier model second**: on October 12 it released **Muse Wonder**, the first model it places at the frontier, and said it would power the Muse agent, starting with subscribers.<sup>[18](#references)</sup> Most AI labs build the best model and then go looking for a product. Meta did it the other way around.
 
 ---
 
-## What's Next in the Personal Agent Space
+## Then Amazon Slammed the Door
 
-Muse proved that people will hand errands to an agent. The next year decides who owns that habit, and from everything that's shipped since September, I think the fight plays out on four fronts.
+Muse's biggest setback came only twelve days after launch. On September 20, **Amazon began blocking Muse from its US store**.<sup>[19](#references)</sup> <sup>[20](#references)</sup> Anyone who asks Muse to shop on Amazon now gets a message saying the agent isn't allowed.
 
-### Everyone now has a personal agent
+```mermaid
+sequenceDiagram
+  participant You
+  participant Muse
+  participant Amz as Amazon.com
+  You->>Muse: Reorder my usual coffee from Amazon
+  Muse->>Amz: Signs in and browses like a shopper
+  Amz-->>Muse: Blocked, this agent is not allowed
+  Muse->>You: Sorry, I can't shop on Amazon
+```
 
-Meta had the space mostly to itself for about three weeks. At DevDay on September 29, OpenAI introduced **Dots**, its own personal agent, starting on the $100-a-month Pro plan.<sup>[20](#references)</sup> On October 8, Google launched a Gemini agent that works across Gmail, Drive, Docs and Calendar,<sup>[21](#references)</sup> and Apple's new Siri works inside Messages, Mail, Calendar and Photos with on-device processing.<sup>[22](#references)</sup>
+Amazon's complaints are specific, and they're worth reading carefully. It says Meta never asked permission, that **Muse doesn't identify itself as an AI agent** when it browses, and that it can reach customer account pages and order history when a user prompts it to. Amazon says it first asked Meta to leave Amazon.com out of Muse voluntarily.<sup>[19](#references)</sup> <sup>[21](#references)</sup> Meta disputes the security concern, saying Muse "has no visibility into people's passwords or payment methods" because logins sit in separate storage the agent uses without reading.<sup>[19](#references)</sup>
 
-| Agent | Company | Where it lives | Its edge |
-| --- | --- | --- | --- |
-| Muse | Meta | WhatsApp, Meta AI app, web | Billions of people already in the app |
-| Dots | OpenAI | ChatGPT | ChatGPT's users and models |
-| Gemini agent | Google | Gmail, Drive, Docs, Calendar | Your work data is already there |
-| Siri | Apple | Messages, Mail, Calendar, Photos | On-device privacy |
+This isn't Amazon's first fight with an agent. It sued Perplexity over Comet, a browser whose built-in agent shopped Amazon for its users, and a federal judge reportedly sided with Amazon in March, barring that agent from password-protected parts of the site.<sup>[21](#references)</sup> Andy Jassy has since argued that few people shop through outside agents because the experience isn't good enough yet, and that Amazon's own Alexa for Shopping should be the agent people use to buy from its store.<sup>[22](#references)</sup>
 
-What stands out to me is that every company is playing the same card Meta played. **None of them is pitching the smartest agent, but rather the agent that already sits next to your data.** OpenAI is the interesting exception: it has the strongest consumer AI brand, but it's starting at $100 a month while Muse starts at free, which means Dots is competing for power users while Muse goes after everyone else.
+It's easy to read this as Amazon protecting its turf, and partly it is. Amazon makes a lot of money from search ads and from people browsing its pages, and an agent that goes straight to checkout skips all of it. But I think the more important part is the complaint about identification. **Amazon's problem isn't that an agent shopped there, but rather that it couldn't tell an agent from a person.**
 
-### The agent leaves the phone
-
-At Connect in September, Meta said Muse is coming to its AI glasses "in the coming months," without a firm date or price yet.<sup>[23](#references)</sup> <sup>[24](#references)</sup> It's also getting real-time voice, connectors to more services, its own email address and computer control on the Mac, along with shopping through Walmart, GameStop, Gap and Wayfair.<sup>[23](#references)</sup>
-
-Put those together and the agent stops being an app you open. It becomes something that sees what you see through your glasses, answers by voice, sends email as itself and drives your computer while you do something else. That's a much bigger surface than a chat window, and it's where Meta's hardware bet finally connects to its AI bet.
-
-### Payments get their own rails
-
-Today, most agents shop by doing what a person would do: open a browser, fill in a form and type in a card. That works, but it's fragile, and merchants can't tell a trusted agent from a scraper. So the payment industry is building rails made for agents. OpenAI and Stripe published the **Agentic Commerce Protocol**, Google has **AP2**, Visa has its **Trusted Agent Protocol** and Mastercard has **Agent Pay**.<sup>[27](#references)</sup>
-
-The details differ, but they converge on the same flow:
+That's a solvable problem, and the payment industry is already building the fix. Visa's **Trusted Agent Protocol** exists so a merchant can recognize a verified agent before checkout, Mastercard has **Agent Pay**, Google has **AP2**, and OpenAI and Stripe published the **Agentic Commerce Protocol**.<sup>[28](#references)</sup> They differ in details but converge on the same flow:
 
 ```mermaid
 sequenceDiagram
@@ -152,65 +216,94 @@ sequenceDiagram
   Net-->>Store: Payment confirmed
 ```
 
-The important piece is the **scoped token**. Instead of handing the agent your card number, the network issues a token limited to one merchant, one amount or one time window, so a mistake or a compromised agent can't drain your account. That's the payment version of the per-user VM and the approval step Muse already uses.
+The key piece is the **scoped token**: instead of the agent using your saved card, the network issues a token limited to one merchant, one amount or one time window. That answers both of Amazon's objections at once, because the agent announces itself and never touches your real credentials.
 
-### Merchants decide who gets in
+So the Amazon block points to where agent shopping is heading. The web is splitting into stores that partner with agents, like Walmart, Gap and Wayfair with Muse,<sup>[5](#references)</sup> and stores that keep agents out until they play by the store's rules. **I expect this to look less like a model race and more like the early days of app stores**, with merchants deciding which agents get in and fees deciding the terms.
 
-This is the front Meta can't win with distribution alone. Some stores, Amazon among them, reportedly block agents from browsing or checking out,<sup>[15](#references)</sup> while Walmart, Gap and Wayfair are partnering with Muse directly.<sup>[23](#references)</sup> If the biggest store on the internet keeps its doors closed, a shopping agent has a hole right where people shop most.
-
-**I expect the next phase to look less like a model race and more like the early days of app stores**, with merchants choosing which agents to let in, agents competing for those partnerships, and fees deciding the terms. Meta's plan to charge businesses when Muse completes a sale is an early version of that deal.<sup>[25](#references)</sup>
-
-### Trust becomes the product
-
-Underneath all four fronts is the same problem. One 2026 survey found that only 4% of consumers would let an AI agent complete a purchase on its own,<sup>[22](#references)</sup> and BCG argues that personal agents will compete on trust rather than capability.<sup>[26](#references)</sup>
-
-That matches what Muse's numbers already show. People installed it in record time, but only some of them use it every day, and the gap between those two numbers is mostly a trust gap. **The agent that wins the next year will be the one people stop double-checking.**
+> An agent that shops for you is only as useful as the stores that let it through the door.
 
 ---
 
-## The Lesson for Anyone Building Agents
+## What the 10 Million Doesn't Tell You
 
-Developers tend to judge agents the way we judge models, by benchmarks, reasoning and how well they fit our tools. By those measures, Muse is a good agent but not obviously the best one.
+The headline number deserves context, because it's company-reported and Meta hasn't said what counts as a "user." Third-party data tells a smaller story: Sensor Tower counted about **1.8 million daily active users** in early October, and Similarweb put daily users near 2.2 million.<sup>[23](#references)</sup> One analysis estimates only about a quarter of people who set Muse up use it every day,<sup>[24](#references)</sup> and while its next-day retention beats ChatGPT's, ChatGPT pulls ahead around days eight and nine.<sup>[10](#references)</sup>
 
-That's what makes its growth worth paying attention to. The product that reached 10 million users first wasn't the one with the strongest model, but rather the one that removed every step between a person and a finished task.
+That gap between installing Muse and relying on it is mostly a trust gap. Muse asks for access to email, calendars and payments, and privacy experts are uneasy that older adults are among its fastest adopters.<sup>[12](#references)</sup> Meta itself says Muse "will sometimes make mistakes," which is an honest disclaimer that lands differently when the agent has your card on file.
 
-I've built agents like [personal-finance-agent](/projects/personal-finance-agent), and the hard part was never getting the model to reason. The hard part is getting someone to trust it with something real and then come back tomorrow. Meta solved that with distribution most companies will never have, but the lesson still applies at a smaller scale: **pick one job, put the agent where people already are, and make the first task feel finished.**
+---
 
-Eighteen months ago, Meta was behind.
+## What's Next in the Personal Agent Space
 
-It didn't catch up by building the best model.
+Muse proved that people will hand errands to an agent. The next year decides who owns that habit, and Meta no longer has the space to itself.
 
-It caught up by building the agent people actually used.
+At DevDay on September 29, OpenAI introduced **Dots**, its own personal agent, starting on the $100-a-month Pro plan.<sup>[25](#references)</sup> On October 8, Google launched a Gemini agent that works across Gmail, Drive, Docs and Calendar,<sup>[26](#references)</sup> and Apple's new Siri works inside Messages, Mail, Calendar and Photos with on-device processing.<sup>[27](#references)</sup>
+
+| Agent | Company | Where it lives | Its edge |
+| --- | --- | --- | --- |
+| Muse | Meta | WhatsApp, Meta AI app, web, soon glasses | Billions of people already in the app |
+| Dots | OpenAI | ChatGPT | ChatGPT's users and models |
+| Gemini agent | Google | Gmail, Drive, Docs, Calendar | Your work data is already there |
+| Siri | Apple | Messages, Mail, Calendar, Photos | On-device privacy |
+
+What stands out is that every company is playing the card Meta played. **None of them is pitching the smartest agent, but rather the agent that already sits next to your data.** OpenAI is the interesting exception on price: Dots starts at $100 a month while Muse starts at free, so Dots is competing for power users while Muse goes after everyone else.
+
+Three things will decide how this plays out.
+
+**Where the agent lives.** Muse is moving into glasses, voice and your Mac. Once an agent can see what you see and act while you do something else, it stops being an app you open and becomes something closer to a person working for you, which is where Meta's hardware bet finally connects to its AI bet.
+
+**Who lets it in.** Amazon's block shows that a shopping agent is only as good as its access. The agents that sign merchant partnerships, and adopt the identity and payment protocols merchants trust, will be able to do more than the ones that only drive a browser.
+
+**Whether people stop double-checking.** One 2026 survey found that only 4% of consumers would let an AI agent complete a purchase on its own,<sup>[27](#references)</sup> and BCG argues that personal agents will compete on trust rather than capability.<sup>[29](#references)</sup> Muse's install numbers show curiosity; its daily-use numbers show how much trust is still missing.
+
+---
+
+## What I'm Taking Away as Someone Who Builds Agents
+
+Developers tend to judge agents the way we judge models, by benchmarks, reasoning and how well they plug into our tools. By that measure, Muse launched as a good agent, but not obviously the best one.
+
+That's what makes it worth studying. I've built agents like [personal-finance-agent](/projects/personal-finance-agent), and the hard part was never getting the model to reason. The hard part is getting someone to trust it with something real and come back tomorrow. Muse's answer was mostly architecture, not intelligence: a private machine per user, credentials the model can't read, memory you can edit, and an approval step before anything irreversible.
+
+**Pick one job people can measure, put the agent where they already are, and make the scary parts boring.**
+
+Meta was the AI lab people had written off.
+
+It didn't come back by building the best model first.
+
+It came back by building the agent people actually used, and then giving it the best model.
 
 ---
 
 ## References
 <a name="references"></a>
 
-1. [Meta scrambling to defend its AI after Llama 4 benchmark bungle (Sherwood News)](https://sherwood.news/tech/meta-scrambling-to-defend-its-ai-after-llama-4-benchmark-bungle)
-2. [Unmodified Llama 4 Maverick ranks below rivals following Meta cheating allegations (Neowin)](https://www.neowin.net/news/unmodified-llama-4-maverick-ranks-below-rivals-following-meta-cheating-allegations/)
-3. [Meta invests $14.3B in Scale AI, taps Alexandr Wang for superintelligence team (Fortune)](https://fortune.com/2025/06/13/meta-scale-ai-alexandr-wang-superintelligence-team)
-4. [Meta's building two massive data centres to achieve superintelligence (TechRepublic)](https://www.techrepublic.com/article/news-meta-data-centres-ai-superintelligence/)
-5. [Meta unveils Muse Spark, MSL's first model (The Next Web)](https://thenextweb.com/news/meta-muse-spark-msl-first-model)
-6. [Life After Llama: With Muse Spark, Meta pivots away from its open-weights strategy (DeepLearning.AI)](https://charonhub.deeplearning.ai/with-muse-spark-meta-pivots-away-from-its-open-weights-llama-strategy/)
-7. [Introducing Muse Spark 1.1 and the Meta Model API (Meta AI)](https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/)
-8. [Meta updates its Spark model, releases developer version (Axios)](https://www.axios.com/2026/07/09/meta-ai-spark-model-update-developer)
-9. [Meta debuts its Muse AI agent. Will consumers trust it? (TechCrunch)](https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/)
-10. [Meta pushes into personal AI agents in Muse Spark family (CNBC)](https://www.cnbc.com/2026/09/08/meta-personal-ai-agents-public-reckoning-privacy-safety.html)
-11. [Introducing Muse Spark Open (Meta Research)](https://research.meta.ai/blog/muse-spark-open)
-12. [Apple and Meta team up to make Muse AI model run on Mac computers (CNBC)](https://www.cnbc.com/2026/10/15/apple-meta-partner-ai.html)
-13. [Meta says Muse has over 10M users, with shopping a top activity (TechCrunch)](https://techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity/)
-14. [Zuckerberg said demand for Muse was so high he had to get Stripe to raise credit limits (Fortune)](https://fortune.com/2026/10/22/mark-zuckerberg-meta-muse-stripe-credit-limit-shopping/)
-15. [Meta Muse AI agent challenges Amazon and Apple (CNBC)](https://www.cnbc.com/2026/10/22/meta-muse-personal-ai-agents.html)
-16. [Meta's Muse AI agent brings back 73% of new users (Yahoo Finance)](https://finance.yahoo.com/technology/article/metas-muse-ai-agent-brings-back-73-of-new-users--nearly-double-chatgpts-rate-164557360.html)
-17. [Muse passes 10 million users: Meta agentic shopping trends (ALM Corp)](https://almcorp.com/news/muse-passes-10-million-users-meta-agentic-shopping/)
-18. [Meta's Muse AI is winning over older adults. Privacy experts are worried (Time)](https://time.com/article/2026/10/22/ai-meta-muse-agent-older-users/)
-19. [Meta's Muse AI agent posts strong early numbers as investors demand proof (Crypto Briefing)](https://cryptobriefing.com/meta-muse-ai-agent-early-data/)
-20. [OpenAI follows Meta into the red-hot market for personal agents. But will users pay? (CNBC)](https://www.cnbc.com/2026/09/30/openai-follows-meta-into-the-red-hot-market-for-personal-agents.html)
-21. [Google launches workplace AI agent that acts like a colleague (Bloomberg)](https://www.bloomberg.com/news/articles/2026-10-08/google-launches-universal-gemini-ai-agent-for-workplace)
-22. [The consumer AI agent race: five platforms, three pricing models, one winner (Yahoo Finance)](https://finance.yahoo.com/technology/ai/articles/consumer-ai-agent-race-five-115316091.html)
-23. [Everything we announced at Meta Connect 2026 (Meta)](https://www.meta.com/blog/meta-connect-2026-everything-we-announced/)
-24. [Meta wants Muse to be part of your everyday life (CNN)](https://www.cnn.com/2026/09/24/tech/meta-muse-ai-glasses-connect)
-25. [Meta put out an ambitious roadmap to Muse monetization (CNBC)](https://www.cnbc.com/investingclub/2026/10/21/meta-put-out-an-ambitious-roadmap-to-muse-monetization-after-strong-quarter-and-guide.html)
-26. [Personal AI agents compete on trust, not capability (BCG)](https://www.bcg.com/x/the-multiplier/personal-ai-agents-compete-on-trust)
-27. [2026 comparative analysis: agentic commerce payment protocols (Applied Technology Index)](https://appliedtechnologyindex.com/research/2026-comparative-analysis-agentic-commerce-payment-protocols/)
+1. [Meta says Muse has over 10M users, with shopping a top activity (TechCrunch)](https://techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity/)
+2. [Wait, did Zuckerberg just steal Muse the band's Instagram handle for his new AI? (Futurism)](https://futurism.com/artificial-intelligence/zuckerberg-meta-muse-handle)
+3. [Meta says its Muse AI agent can manage your money. Should you let it? (Yahoo Finance)](https://finance.yahoo.com/technology/ai/articles/meta-says-muse-ai-agent-120000470.html)
+4. [What to know about Meta's Muse AI agent (ABC News)](https://abcnews.com/Business/metas-muse-ai-agent/story?id=136680507)
+5. [Everything we announced at Meta Connect 2026 (Meta)](https://www.meta.com/blog/meta-connect-2026-everything-we-announced/)
+6. [Meta wants Muse to be part of your everyday life (CNN)](https://www.cnn.com/2026/09/24/tech/meta-muse-ai-glasses-connect)
+7. [How we built safety into Muse (Meta Research)](https://research.meta.ai/blog/security-and-safety-for-ai-agents-our-approach-with-muse)
+8. [Meta Muse review: what the personal AI agent can and can't do (eesel AI)](https://www.eesel.ai/blog/meta-muse-agent-review)
+9. [Meta Muse AI agent challenges Amazon and Apple (CNBC)](https://www.cnbc.com/2026/10/22/meta-muse-personal-ai-agents.html)
+10. [Meta's Muse AI agent brings back 73% of new users (Yahoo Finance)](https://finance.yahoo.com/technology/article/metas-muse-ai-agent-brings-back-73-of-new-users--nearly-double-chatgpts-rate-164557360.html)
+11. [Zuckerberg said demand for Muse was so high he had to get Stripe to raise credit limits (Fortune)](https://fortune.com/2026/10/22/mark-zuckerberg-meta-muse-stripe-credit-limit-shopping/)
+12. [Meta's Muse AI is winning over older adults. Privacy experts are worried (Time)](https://time.com/article/2026/10/22/ai-meta-muse-agent-older-users/)
+13. [Meta scrambling to defend its AI after Llama 4 benchmark bungle (Sherwood News)](https://sherwood.news/tech/meta-scrambling-to-defend-its-ai-after-llama-4-benchmark-bungle)
+14. [Unmodified Llama 4 Maverick ranks below rivals following Meta cheating allegations (Neowin)](https://www.neowin.net/news/unmodified-llama-4-maverick-ranks-below-rivals-following-meta-cheating-allegations/)
+15. [Meta invests $14.3B in Scale AI, taps Alexandr Wang for superintelligence team (Fortune)](https://fortune.com/2025/06/13/meta-scale-ai-alexandr-wang-superintelligence-team)
+16. [Meta's building two massive data centres to achieve superintelligence (TechRepublic)](https://www.techrepublic.com/article/news-meta-data-centres-ai-superintelligence/)
+17. [Meta unveils Muse Spark, MSL's first model (The Next Web)](https://thenextweb.com/news/meta-muse-spark-msl-first-model)
+18. [Meta releases its first frontier model, Muse Wonder (TechCrunch)](https://techcrunch.com/2026/10/12/meta-releases-its-first-frontier-model-muse-wonder)
+19. [Amazon blocks Meta's Muse AI agent from its retail site (Bloomberg)](https://www.bloomberg.com/news/articles/2026-09-21/amazon-blocks-meta-s-muse-ai-agent-from-its-retail-site)
+20. [Amazon blocks Meta's Muse agent from shopping on its platform (Forbes)](https://www.forbes.com/sites/jonmarkman/2026/09/21/amazon-blocks-metas-new-muse-ai-agent-from-shopping-on-amazoncom/)
+21. [Amazon blocks Meta's Muse AI agent from shopping on its site (PPC Land)](https://ppc.land/amazon-blocks-metas-muse-ai-agent-from-shopping-on-its-site/)
+22. [Alexa for Shopping hits 400M users after Amazon blocked Meta's Muse (The Next Web)](https://thenextweb.com/news/alexa-for-shopping-jassy-ai-shopping-agents-meta-muse)
+23. [Meta's Muse AI agent posts strong early numbers as investors demand proof (Crypto Briefing)](https://cryptobriefing.com/meta-muse-ai-agent-early-data/)
+24. [Muse passes 10 million users: Meta agentic shopping trends (ALM Corp)](https://almcorp.com/news/muse-passes-10-million-users-meta-agentic-shopping/)
+25. [OpenAI follows Meta into the red-hot market for personal agents. But will users pay? (CNBC)](https://www.cnbc.com/2026/09/30/openai-follows-meta-into-the-red-hot-market-for-personal-agents.html)
+26. [Google launches workplace AI agent that acts like a colleague (Bloomberg)](https://www.bloomberg.com/news/articles/2026-10-08/google-launches-universal-gemini-ai-agent-for-workplace)
+27. [The consumer AI agent race: five platforms, three pricing models, one winner (Yahoo Finance)](https://finance.yahoo.com/technology/ai/articles/consumer-ai-agent-race-five-115316091.html)
+28. [2026 comparative analysis: agentic commerce payment protocols (Applied Technology Index)](https://appliedtechnologyindex.com/research/2026-comparative-analysis-agentic-commerce-payment-protocols/)
+29. [Personal AI agents compete on trust, not capability (BCG)](https://www.bcg.com/x/the-multiplier/personal-ai-agents-compete-on-trust)
+30. [Meta put out an ambitious roadmap to Muse monetization (CNBC)](https://www.cnbc.com/investingclub/2026/10/21/meta-put-out-an-ambitious-roadmap-to-muse-monetization-after-strong-quarter-and-guide.html)
+31. [Meta debuts its Muse AI agent. Will consumers trust it? (TechCrunch)](https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/)
