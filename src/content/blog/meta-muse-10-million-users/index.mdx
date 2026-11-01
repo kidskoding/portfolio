@@ -1,0 +1,131 @@
+---
+title: "Muse Hit 10 Million Users. The Best Model Didn't Win."
+description: "Eighteen months ago Meta was the AI lab everyone had written off. Here's how it rebuilt, shipped a personal agent, and got to 10 million users faster than almost anyone, and what that says about which AI products actually win."
+pubDate: 2026-11-01
+draft: true
+---
+
+Eighteen months ago, Meta was the AI lab people had stopped taking seriously.
+
+Last week, Mark Zuckerberg told investors that **Muse**, Meta's personal agent, has passed **10 million users**.<sup>[13](#references)</sup>
+
+Muse didn't get there by having the smartest model. It got there by being in the right place, doing one job people actually wanted done, and making money in a way Meta already understands.
+
+> The AI race has more than one finish line, and Meta just crossed the one most developers weren't watching.
+
+---
+
+## Where Meta Started
+
+In April 2025, **Llama 4** launched under a cloud. Meta promoted a leaderboard result from a specially tuned "experimental" version of Maverick that ranked second on LMArena, and when the public release was tested on its own, it landed in **32nd place**.<sup>[1](#references)</sup> <sup>[2](#references)</sup> LMArena said Meta's reading of its policy "did not match what we expect from model providers," and independent coding benchmarks were even less kind.
+
+That mattered more than one bad launch usually would. Open weights were Meta's whole identity in AI, the thing that made developers root for it, and Llama 4 made it look like Meta was falling behind OpenAI, Google and Anthropic while giving its work away.
+
+**So Meta stopped trying to fix Llama and started over.**
+
+---
+
+## The Rebuild
+
+The turnaround happened in a sequence, and each step set up the next one:
+
+```text
+Apr 2025   Llama 4 stumbles on benchmarks
+Jun 2025   $14.3B into Scale AI, Alexandr Wang leads Meta Superintelligence Labs
+Jul 2025   "Hundreds of billions" committed to compute (Prometheus, Hyperion)
+Apr 2026   Muse Spark: MSL's first model, and Meta's first without open weights
+Jul 2026   Meta Model API and Muse Code open to developers
+Sep 2026   Muse launches as a personal agent
+Oct 2026   Muse Spark Open and an Apple partnership; 10M users
+```
+
+In June 2025, Meta put **$14.3 billion** into Scale AI for a 49% stake and brought in its CEO, Alexandr Wang, to lead the new **Meta Superintelligence Labs**.<sup>[3](#references)</sup> A month later, Zuckerberg said Meta would spend "hundreds of billions of dollars" on data centers, including Prometheus in Ohio and Hyperion in Louisiana, which can scale to five gigawatts.<sup>[4](#references)</sup> The message was simple: Meta had the cash from its ad business, and it would use it to buy back into the race.
+
+The first result was **Muse Spark** in April 2026, MSL's first model. Unlike Llama, it shipped without public weights.<sup>[5](#references)</sup> <sup>[6](#references)</sup> That was a real break from Meta's past, and it signaled that Meta now cared more about owning a product than about being the open-source favorite.
+
+In July, Meta opened the model to developers through the **Meta Model API**, which is OpenAI SDK–compatible and priced at $1.25 per million input tokens and $4.25 per million output tokens, with a coding tool, Muse Code, alongside it.<sup>[7](#references)</sup> <sup>[8](#references)</sup> That part of the strategy got a polite reception. The part that took off came two months later.
+
+---
+
+## The Agent That Actually Shipped
+
+On September 8, Meta launched **Muse** as a personal agent.<sup>[9](#references)</sup> It isn't a chatbot that answers questions, but rather an agent that does things: it browses the web, fills out forms, books travel, sends email and checks out for you. It lives in the Meta AI app, on the web and inside WhatsApp, with a free tier and paid plans at $20 and $100 a month.
+
+What's interesting from an engineering point of view is how Meta handled the scary part of letting an agent act for you. Each user gets an isolated virtual machine, and Muse asks for approval before sensitive actions like sending an email or paying for something.<sup>[10](#references)</sup> Meta says conversations stay away from its ad systems and that users can opt out of training. Those are the same guardrails I'd reach for when building an agent that touches someone's money: sandbox the execution and put a human in front of anything irreversible.
+
+Then the numbers came in. Sensor Tower found that Muse took **36 days to reach 9 million US downloads**, a milestone that took Claude 670 days.<sup>[15](#references)</sup> 73% of new users came back the day after installing it.<sup>[16](#references)</sup> On the Q3 earnings call on October 21, Zuckerberg put the total above 10 million and said shopping was the top activity.<sup>[13](#references)</sup> Purchase demand was high enough that Meta had to ask Stripe to raise its credit limits.<sup>[14](#references)</sup>
+
+---
+
+## Why Meta Pulled Ahead Here
+
+None of this happened because Muse Spark beats every frontier model. It happened because Meta had three advantages that a better model can't buy.
+
+The first is **distribution**. Billions of people already use WhatsApp, so Muse didn't need anyone to download a new app, create an account or learn a new interface. The agent shows up where people already talk to friends and businesses, which is why a 36-day ramp was possible at all.
+
+The second is **a narrow job**. Most AI products try to be good at everything and leave the user to work out what to ask. Muse leaned into errands: shopping, booking and bills. That's a smaller ambition than "general assistant," but it's one where people can feel the value the first time they use it, which is exactly what that next-day retention number reflects.
+
+The third is **a business model that fits**. Meta plans to charge businesses a fee when Muse completes a sale.<sup>[15](#references)</sup> For a company that already makes its money connecting people to merchants, an agent that shops is a natural next step rather than a new business.
+
+**Put together, Meta didn't win the model race, but rather turned a capable model into the fastest-growing agent by putting it where people already were.**
+
+---
+
+## What the 10 Million Doesn't Tell You
+
+The headline number deserves some context, because it's company-reported and Meta hasn't said what counts as a "user." Third-party data tells a smaller story: Sensor Tower counted 6.6 million downloads and about **1.8 million daily active users** in early October, and Similarweb put daily users near 2.2 million.<sup>[19](#references)</sup> One analysis estimates only about a quarter of people who set up Muse use it every day,<sup>[17](#references)</sup> and while day-one retention beats ChatGPT, ChatGPT pulls ahead around days eight and nine.<sup>[16](#references)</sup>
+
+The merchant side isn't settled either. Some sites, Amazon among them, reportedly block AI agents from browsing or checking out,<sup>[15](#references)</sup> and an agent built for shopping is only as useful as the stores that let it in.
+
+Then there's trust. Muse asks for access to email, calendars, payments and more, and *Time* reports that older adults are among its most enthusiastic users, which worries privacy experts.<sup>[18](#references)</sup> Meta itself says Muse "will sometimes make mistakes." That's an honest disclaimer, but it lands differently when the agent has your card on file.
+
+> Ten million people let an agent spend their money. The open question is whether they'll still trust it after the first wrong order.
+
+---
+
+## Meta Is Also Winning Developers Back
+
+Meta hasn't given up on the developers it lost after Llama. In October it released **Muse Spark Open**, which it calls the most capable US open-weight model to date, available on Hugging Face and through hosts like Groq, Together AI and OpenRouter.<sup>[11](#references)</sup> It also announced a partnership with Apple so developers can run the model locally on high-end Macs.<sup>[12](#references)</sup>
+
+That's the part I find most interesting as someone who builds agents. Meta kept the consumer product closed and monetized, then released an open model to rebuild goodwill with developers. It's the reverse of the Llama era, where openness was the strategy, and it suggests Meta now sees open weights as a way to support a product rather than as the product itself.
+
+---
+
+## The Lesson for Anyone Building Agents
+
+Developers tend to judge agents the way we judge models, by benchmarks, reasoning and how well they fit our tools. By those measures, Muse is a good agent but not obviously the best one.
+
+That's what makes its growth worth paying attention to. The product that reached 10 million users first wasn't the one with the strongest model, but rather the one that removed every step between a person and a finished task.
+
+I've built agents like [personal-finance-agent](/projects/personal-finance-agent), and the hard part was never getting the model to reason. The hard part is getting someone to trust it with something real and then come back tomorrow. Meta solved that with distribution most companies will never have, but the lesson still applies at a smaller scale: **pick one job, put the agent where people already are, and make the first task feel finished.**
+
+Eighteen months ago, Meta was behind.
+
+It didn't catch up by building the best model.
+
+It caught up by building the agent people actually used.
+
+---
+
+## References
+<a name="references"></a>
+
+1. [Meta scrambling to defend its AI after Llama 4 benchmark bungle (Sherwood News)](https://sherwood.news/tech/meta-scrambling-to-defend-its-ai-after-llama-4-benchmark-bungle)
+2. [Unmodified Llama 4 Maverick ranks below rivals following Meta cheating allegations (Neowin)](https://www.neowin.net/news/unmodified-llama-4-maverick-ranks-below-rivals-following-meta-cheating-allegations/)
+3. [Meta invests $14.3B in Scale AI, taps Alexandr Wang for superintelligence team (Fortune)](https://fortune.com/2025/06/13/meta-scale-ai-alexandr-wang-superintelligence-team)
+4. [Meta's building two massive data centres to achieve superintelligence (TechRepublic)](https://www.techrepublic.com/article/news-meta-data-centres-ai-superintelligence/)
+5. [Meta unveils Muse Spark, MSL's first model (The Next Web)](https://thenextweb.com/news/meta-muse-spark-msl-first-model)
+6. [Life After Llama: With Muse Spark, Meta pivots away from its open-weights strategy (DeepLearning.AI)](https://charonhub.deeplearning.ai/with-muse-spark-meta-pivots-away-from-its-open-weights-llama-strategy/)
+7. [Introducing Muse Spark 1.1 and the Meta Model API (Meta AI)](https://ai.meta.com/blog/introducing-muse-spark-meta-model-api/)
+8. [Meta updates its Spark model, releases developer version (Axios)](https://www.axios.com/2026/07/09/meta-ai-spark-model-update-developer)
+9. [Meta debuts its Muse AI agent. Will consumers trust it? (TechCrunch)](https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/)
+10. [Meta pushes into personal AI agents in Muse Spark family (CNBC)](https://www.cnbc.com/2026/09/08/meta-personal-ai-agents-public-reckoning-privacy-safety.html)
+11. [Introducing Muse Spark Open (Meta Research)](https://research.meta.ai/blog/muse-spark-open)
+12. [Apple and Meta team up to make Muse AI model run on Mac computers (CNBC)](https://www.cnbc.com/2026/10/15/apple-meta-partner-ai.html)
+13. [Meta says Muse has over 10M users, with shopping a top activity (TechCrunch)](https://techcrunch.com/2026/10/21/meta-says-muse-has-over-10m-users-with-shopping-a-top-activity/)
+14. [Zuckerberg said demand for Muse was so high he had to get Stripe to raise credit limits (Fortune)](https://fortune.com/2026/10/22/mark-zuckerberg-meta-muse-stripe-credit-limit-shopping/)
+15. [Meta Muse AI agent challenges Amazon and Apple (CNBC)](https://www.cnbc.com/2026/10/22/meta-muse-personal-ai-agents.html)
+16. [Meta's Muse AI agent brings back 73% of new users (Yahoo Finance)](https://finance.yahoo.com/technology/article/metas-muse-ai-agent-brings-back-73-of-new-users--nearly-double-chatgpts-rate-164557360.html)
+17. [Muse passes 10 million users: Meta agentic shopping trends (ALM Corp)](https://almcorp.com/news/muse-passes-10-million-users-meta-agentic-shopping/)
+18. [Meta's Muse AI is winning over older adults. Privacy experts are worried (Time)](https://time.com/article/2026/10/22/ai-meta-muse-agent-older-users/)
+19. [Meta's Muse AI agent posts strong early numbers as investors demand proof (Crypto Briefing)](https://cryptobriefing.com/meta-muse-ai-agent-early-data/)
