@@ -1,6 +1,6 @@
 ---
 title: "Meta's Muse Hit 10 Million Users. Here's Why It Became a Sensation."
-description: "Muse is the first AI agent that regular people actually use, and it got there in about six weeks. What it does, the private computer that makes it work, why Amazon slammed the door on it, and what comes next for personal agents."
+description: "Siri made talking to your phone mainstream. Muse made your phone get things done, and it reached 10 million users in about six weeks. What it does, the private computer that makes it work, why Amazon slammed the door on it, and why it looks more promising than OpenAI's Dots."
 pubDate: 2026-11-01
 draft: true
 ---
@@ -18,6 +18,38 @@ Six weeks later, nobody was confusing the two. On Meta's Q3 earnings call, Zucke
 The interesting question isn't whether Muse is popular, but rather why this agent took off when so many before it stayed a demo. The answer involves a computer you never see, a job people can measure in dollars, and a company that already had billions of users waiting.
 
 > Muse is the first AI agent that regular people use without thinking of it as AI.
+
+---
+
+## It Started With Siri
+
+To see why Muse feels different, it helps to go back fifteen years.
+
+In February 2010, a small startup released an iPhone app called **Siri**. It grew out of CALO, a DARPA-funded AI research project at SRI International, and its pitch was ambitious for the time: you'd say what you wanted in plain language, and it would get it done by working with the web services it connected to.<sup>[33](#references)</sup> Apple bought the company two months later, and in October 2011 Siri relaunched as the headline feature of the iPhone 4S.<sup>[32](#references)</sup>
+
+It's hard to overstate how big that moment felt. Before Siri, talking to a phone meant memorizing stiff voice commands. Siri let you just ask: "Do I need an umbrella today?", "Remind me to call Mom when I get home", "Text Sarah that I'm running late." It understood ordinary phrasing, it answered out loud, and it had a personality, with jokes people screenshotted and passed around. For a lot of people, it was the first time software felt like something you talk to rather than something you operate, and within a few years Google Now, Cortana and Alexa had all followed it.
+
+**Siri made the idea of a personal assistant mainstream, but it could only keep part of the promise.** Under the hood, it matched what you said against a fixed list of things it knew how to do: set a timer, check the weather, send a message, open an app. Anything outside that list ended with "Here's what I found on the web." It couldn't chain steps together, it couldn't operate a website for you, and it stopped the moment you put the phone down. When Apple finally opened Siri to outside apps in 2016, it was only for a handful of categories like messaging and ride booking.
+
+```mermaid
+graph LR
+  A[2011<br/>Siri<br/>answers by voice] --> B[2012 to 2014<br/>Google Now, Cortana,<br/>Alexa]
+  B --> C[2022<br/>ChatGPT<br/>understands anything]
+  C --> D[2026<br/>Muse<br/>finishes the task]
+```
+
+Fifteen years later, Muse is the step Siri pointed at. ChatGPT gave assistants the ability to understand nearly anything you ask; Muse gives them the ability to actually finish it.
+
+|  | Siri (2011) | Muse (2026) |
+| --- | --- | --- |
+| How you ask | A voice command | A goal, by text, voice or video |
+| What it understands | A fixed list of intents | Open-ended tasks it plans itself |
+| How it acts | Opens an app or reads an answer | Drives a browser and your accounts |
+| Multi-step tasks | One request, one action | Plans and chains the steps |
+| When you look away | Stops | Keeps working on its own computer |
+| What you get back | An answer | A finished task: a lower bill, a booking, a checkout |
+
+**Siri taught a generation to talk to their phones. Muse is teaching them to hand things off.** There's also an irony in it: Apple is back in the race with a new Siri that works across Messages, Mail, Calendar and Photos,<sup>[27](#references)</sup> which means the company that started the assistant era is now chasing the one that took the next step.
 
 ---
 
@@ -245,9 +277,29 @@ At DevDay on September 29, OpenAI introduced **Dots**, its own personal agent, s
 | Gemini agent | Google | Gmail, Drive, Docs, Calendar | Your work data is already there |
 | Siri | Apple | Messages, Mail, Calendar, Photos | On-device privacy |
 
-What stands out is that every company is playing the card Meta played. **None of them is pitching the smartest agent, but rather the agent that already sits next to your data.** OpenAI is the interesting exception on price: Dots starts at $100 a month while Muse starts at free, so Dots is competing for power users while Muse goes after everyone else.
+What stands out is that every company is playing the card Meta played. **None of them is pitching the smartest agent, but rather the agent that already sits next to your data.**
 
-Three things will decide how this plays out.
+### Why Muse looks more promising than Dots
+
+Dots is the closest thing Muse has to a direct rival, and on paper the two are built alike. Dots is an always-on agent with its own cloud computer and browser, it connects to thousands of apps, and it can run scheduled and recurring tasks.<sup>[34](#references)</sup> <sup>[35](#references)</sup> The difference is who each one is built for, and what each one is allowed to finish.
+
+|  | Muse | Dots |
+| --- | --- | --- |
+| Price to start | Free, then $20 or $100 a month | Pro plan, $100 a month and up |
+| Availability | US at launch, Singapore since October<sup>[36](#references)</sup> | Pro, Business and Enterprise; not in the EU, UK or Switzerland at launch |
+| Where you use it | WhatsApp, Meta AI app, web, glasses soon | ChatGPT |
+| Best at | Errands: bills, refunds, shopping, travel | Research and work across connected apps |
+| Logins and payments | Credential vault; checks out after your approval | Hands passwords and payments back to you |
+| Its own email address | Yes | No |
+| Memory | Files you can inspect, edit and download | Reviewers say you can't inspect or delete individual memories |
+
+Dots is a strong work tool, and for someone who already lives in ChatGPT and wants an agent to keep research or Slack threads moving, it may be the better pick. But as a *personal* agent, Muse has the stronger position on almost every axis that decides adoption. It's free to try, while Dots starts at $100 a month. It's inside an app billions of people already open every day, while Dots asks you to come to ChatGPT. And it can complete the task, because Muse can log in and check out on its own after you approve, while Dots stops and hands passwords and payments back to you.<sup>[34](#references)</sup>
+
+The memory difference matters more than it looks. Muse lets you open and edit what it knows about you,<sup>[7](#references)</sup> while reviewers of Dots say you can't inspect or delete individual memories.<sup>[34](#references)</sup> For an agent you're trusting with your life admin, being able to see what it remembers is a real advantage.
+
+**If Dots is a power tool for people who already pay for AI, Muse is an appliance for everyone else, and appliances are what reach billions.** Dots has a head start in work tools and OpenAI ships fast, so this isn't settled. But a personal agent wins by being trusted with the boring, everyday tasks, and Muse is much closer to that than Dots.
+
+Beyond that matchup, three things will decide how the whole space plays out.
 
 **Where the agent lives.** Muse is moving into glasses, voice and your Mac. Once an agent can see what you see and act while you do something else, it stops being an app you open and becomes something closer to a person working for you, which is where Meta's hardware bet finally connects to its AI bet.
 
@@ -307,3 +359,8 @@ It came back by building the agent people actually used, and then giving it the 
 29. [Personal AI agents compete on trust, not capability (BCG)](https://www.bcg.com/x/the-multiplier/personal-ai-agents-compete-on-trust)
 30. [Meta put out an ambitious roadmap to Muse monetization (CNBC)](https://www.cnbc.com/investingclub/2026/10/21/meta-put-out-an-ambitious-roadmap-to-muse-monetization-after-strong-quarter-and-guide.html)
 31. [Meta debuts its Muse AI agent. Will consumers trust it? (TechCrunch)](https://techcrunch.com/2026/09/08/meta-debuts-its-muse-ai-agent-will-consumers-trust-it/)
+32. [10 years of Siri: the history of Apple's voice assistant (TechRadar)](https://www.techradar.com/news/siri-10-year-anniversary)
+33. [The story of Siri, from birth at SRI to acquisition by Apple (Xconomy)](https://legacy.xconomy.com/2010/06/14/the-story-of-siri-from-birth-at-sri-to-acquisition-by-apple-virtual-personal-assistants-go-mobile/5)
+34. [OpenAI Dots explained: always-on agents, pricing, and limits (eesel AI)](https://www.eesel.ai/blog/openai-dots)
+35. [What is ChatGPT Dots? OpenAI's always-on AI agent explained (MindStudio)](https://www.mindstudio.ai/blog/chatgpt-dots-explained)
+36. [Meta launches personal AI agent Muse in Singapore (Mothership/MustShareNews)](https://mustsharenews.com/meta-personal-ai-agent-muse/)
