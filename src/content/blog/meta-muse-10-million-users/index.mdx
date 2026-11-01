@@ -55,6 +55,14 @@ What's interesting from an engineering point of view is how Meta handled the sca
 
 Then the numbers came in. Sensor Tower found that Muse took **36 days to reach 9 million US downloads**, a milestone that took Claude 670 days.<sup>[15](#references)</sup> 73% of new users came back the day after installing it.<sup>[16](#references)</sup> On the Q3 earnings call on October 21, Zuckerberg put the total above 10 million and said shopping was the top activity.<sup>[13](#references)</sup> Purchase demand was high enough that Meta had to ask Stripe to raise its credit limits.<sup>[14](#references)</sup>
 
+```mermaid
+xychart-beta
+  title "Days to reach 9 million US downloads"
+  x-axis [Muse, Claude]
+  y-axis "Days" 0 --> 700
+  bar [36, 670]
+```
+
 ---
 
 ## Why Meta Pulled Ahead Here
@@ -68,6 +76,14 @@ The second is **a narrow job**. Most AI products try to be good at everything an
 The third is **a business model that fits**. Meta plans to charge businesses a fee when Muse completes a sale.<sup>[15](#references)</sup> For a company that already makes its money connecting people to merchants, an agent that shops is a natural next step rather than a new business.
 
 **Put together, Meta didn't win the model race, but rather turned a capable model into the fastest-growing agent by putting it where people already were.**
+
+```mermaid
+graph LR
+  D[Distribution<br/>WhatsApp, Meta AI app] --> M[Muse]
+  J[A narrow job<br/>shopping, booking, bills] --> M
+  B[A business model<br/>fees on completed sales] --> M
+  M --> U[10M+ users<br/>in about six weeks]
+```
 
 ---
 
@@ -88,6 +104,67 @@ Then there's trust. Muse asks for access to email, calendars, payments and more,
 Meta hasn't given up on the developers it lost after Llama. In October it released **Muse Spark Open**, which it calls the most capable US open-weight model to date, available on Hugging Face and through hosts like Groq, Together AI and OpenRouter.<sup>[11](#references)</sup> It also announced a partnership with Apple so developers can run the model locally on high-end Macs.<sup>[12](#references)</sup>
 
 That's the part I find most interesting as someone who builds agents. Meta kept the consumer product closed and monetized, then released an open model to rebuild goodwill with developers. It's the reverse of the Llama era, where openness was the strategy, and it suggests Meta now sees open weights as a way to support a product rather than as the product itself.
+
+---
+
+## What's Next in the Personal Agent Space
+
+Muse proved that people will hand errands to an agent. The next year decides who owns that habit, and from everything that's shipped since September, I think the fight plays out on four fronts.
+
+### Everyone now has a personal agent
+
+Meta had the space mostly to itself for about three weeks. At DevDay on September 29, OpenAI introduced **Dots**, its own personal agent, starting on the $100-a-month Pro plan.<sup>[20](#references)</sup> On October 8, Google launched a Gemini agent that works across Gmail, Drive, Docs and Calendar,<sup>[21](#references)</sup> and Apple's new Siri works inside Messages, Mail, Calendar and Photos with on-device processing.<sup>[22](#references)</sup>
+
+| Agent | Company | Where it lives | Its edge |
+| --- | --- | --- | --- |
+| Muse | Meta | WhatsApp, Meta AI app, web | Billions of people already in the app |
+| Dots | OpenAI | ChatGPT | ChatGPT's users and models |
+| Gemini agent | Google | Gmail, Drive, Docs, Calendar | Your work data is already there |
+| Siri | Apple | Messages, Mail, Calendar, Photos | On-device privacy |
+
+What stands out to me is that every company is playing the same card Meta played. **None of them is pitching the smartest agent, but rather the agent that already sits next to your data.** OpenAI is the interesting exception: it has the strongest consumer AI brand, but it's starting at $100 a month while Muse starts at free, which means Dots is competing for power users while Muse goes after everyone else.
+
+### The agent leaves the phone
+
+At Connect in September, Meta said Muse is coming to its AI glasses "in the coming months," without a firm date or price yet.<sup>[23](#references)</sup> <sup>[24](#references)</sup> It's also getting real-time voice, connectors to more services, its own email address and computer control on the Mac, along with shopping through Walmart, GameStop, Gap and Wayfair.<sup>[23](#references)</sup>
+
+Put those together and the agent stops being an app you open. It becomes something that sees what you see through your glasses, answers by voice, sends email as itself and drives your computer while you do something else. That's a much bigger surface than a chat window, and it's where Meta's hardware bet finally connects to its AI bet.
+
+### Payments get their own rails
+
+Today, most agents shop by doing what a person would do: open a browser, fill in a form and type in a card. That works, but it's fragile, and merchants can't tell a trusted agent from a scraper. So the payment industry is building rails made for agents. OpenAI and Stripe published the **Agentic Commerce Protocol**, Google has **AP2**, Visa has its **Trusted Agent Protocol** and Mastercard has **Agent Pay**.<sup>[27](#references)</sup>
+
+The details differ, but they converge on the same flow:
+
+```mermaid
+sequenceDiagram
+  participant You
+  participant Agent
+  participant Store as Merchant
+  participant Net as Card network
+  You->>Agent: Find running shoes under 120 dollars
+  Agent->>Store: Browse, compare, add to cart
+  Store->>Net: Is this a verified agent?
+  Net-->>Store: Yes, acting for this user
+  Agent->>You: Approve 109.99 dollars?
+  You->>Agent: Approve
+  Agent->>Net: Pay with a scoped agent token
+  Net-->>Store: Payment confirmed
+```
+
+The important piece is the **scoped token**. Instead of handing the agent your card number, the network issues a token limited to one merchant, one amount or one time window, so a mistake or a compromised agent can't drain your account. That's the payment version of the per-user VM and the approval step Muse already uses.
+
+### Merchants decide who gets in
+
+This is the front Meta can't win with distribution alone. Some stores, Amazon among them, reportedly block agents from browsing or checking out,<sup>[15](#references)</sup> while Walmart, Gap and Wayfair are partnering with Muse directly.<sup>[23](#references)</sup> If the biggest store on the internet keeps its doors closed, a shopping agent has a hole right where people shop most.
+
+**I expect the next phase to look less like a model race and more like the early days of app stores**, with merchants choosing which agents to let in, agents competing for those partnerships, and fees deciding the terms. Meta's plan to charge businesses when Muse completes a sale is an early version of that deal.<sup>[25](#references)</sup>
+
+### Trust becomes the product
+
+Underneath all four fronts is the same problem. One 2026 survey found that only 4% of consumers would let an AI agent complete a purchase on its own,<sup>[22](#references)</sup> and BCG argues that personal agents will compete on trust rather than capability.<sup>[26](#references)</sup>
+
+That matches what Muse's numbers already show. People installed it in record time, but only some of them use it every day, and the gap between those two numbers is mostly a trust gap. **The agent that wins the next year will be the one people stop double-checking.**
 
 ---
 
@@ -129,3 +206,11 @@ It caught up by building the agent people actually used.
 17. [Muse passes 10 million users: Meta agentic shopping trends (ALM Corp)](https://almcorp.com/news/muse-passes-10-million-users-meta-agentic-shopping/)
 18. [Meta's Muse AI is winning over older adults. Privacy experts are worried (Time)](https://time.com/article/2026/10/22/ai-meta-muse-agent-older-users/)
 19. [Meta's Muse AI agent posts strong early numbers as investors demand proof (Crypto Briefing)](https://cryptobriefing.com/meta-muse-ai-agent-early-data/)
+20. [OpenAI follows Meta into the red-hot market for personal agents. But will users pay? (CNBC)](https://www.cnbc.com/2026/09/30/openai-follows-meta-into-the-red-hot-market-for-personal-agents.html)
+21. [Google launches workplace AI agent that acts like a colleague (Bloomberg)](https://www.bloomberg.com/news/articles/2026-10-08/google-launches-universal-gemini-ai-agent-for-workplace)
+22. [The consumer AI agent race: five platforms, three pricing models, one winner (Yahoo Finance)](https://finance.yahoo.com/technology/ai/articles/consumer-ai-agent-race-five-115316091.html)
+23. [Everything we announced at Meta Connect 2026 (Meta)](https://www.meta.com/blog/meta-connect-2026-everything-we-announced/)
+24. [Meta wants Muse to be part of your everyday life (CNN)](https://www.cnn.com/2026/09/24/tech/meta-muse-ai-glasses-connect)
+25. [Meta put out an ambitious roadmap to Muse monetization (CNBC)](https://www.cnbc.com/investingclub/2026/10/21/meta-put-out-an-ambitious-roadmap-to-muse-monetization-after-strong-quarter-and-guide.html)
+26. [Personal AI agents compete on trust, not capability (BCG)](https://www.bcg.com/x/the-multiplier/personal-ai-agents-compete-on-trust)
+27. [2026 comparative analysis: agentic commerce payment protocols (Applied Technology Index)](https://appliedtechnologyindex.com/research/2026-comparative-analysis-agentic-commerce-payment-protocols/)

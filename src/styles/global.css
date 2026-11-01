@@ -424,6 +424,26 @@ html[data-entering] [data-animate] {
   stroke-width: 1;
 }
 
+/* xychart: Sätteri's smart punctuation turns the SVG's own `--` vars into `–`, so restyle here. Title green like section titles, bars orange like arrowheads */
+.blog-content .mermaid-diagram .xychart-title {
+  fill: var(--color-nvim-green);
+}
+
+.blog-content .mermaid-diagram .xychart-label,
+.blog-content .mermaid-diagram .xychart-axis-title {
+  fill: var(--color-nvim-fg3);
+}
+
+.blog-content .mermaid-diagram .xychart-grid {
+  fill: var(--color-nvim-bg2);
+}
+
+.blog-content .mermaid-diagram .xychart-bar {
+  fill: color-mix(in srgb, var(--color-nvim-orange) 30%, var(--color-nvim-bg-hard));
+  stroke: var(--color-nvim-orange);
+  stroke-width: 1.5;
+}
+
 /* Shiki code blocks: padded, tight line boxes, no spacer tricks */
 .blog-content pre {
   margin: 1rem 0;
