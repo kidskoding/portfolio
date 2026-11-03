@@ -33,7 +33,7 @@ export const mermaidPlugin = {
 
     const svg = renderMermaidSVG(node.value, {
       ...colors,
-      font: 'JetBrains Mono',
+      font: 'Google Sans Code',
       transparent: true,
       padding: 16,
       ...layoutFromMeta(node.meta),
