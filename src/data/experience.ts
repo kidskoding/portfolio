@@ -56,6 +56,15 @@ export const experiences: Experience[] = [
       {
         title: 'software development engineering intern',
         employmentType: 'Internship',
+        startDate: 'Nov 2026',
+        endDate: 'Present',
+        duration: calculateDuration('Nov 2026', 'Present'),
+        description: ['spring 2027 | via uiuc research park, boating intelligence design lab'],
+        skills: [],
+      },
+      {
+        title: 'software development engineering intern',
+        employmentType: 'Internship',
         startDate: 'Aug 2026',
         endDate: 'Present',
         duration: calculateDuration('Aug 2026', 'Present'),
