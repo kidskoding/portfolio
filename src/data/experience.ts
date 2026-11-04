@@ -123,7 +123,7 @@ export const experiences: Experience[] = [
         endDate: 'Present',
         duration: calculateDuration('Sep 2026', 'Present'),
         description: [
-          'contract position via agentic ai @ uiuc | leading an engineering team within agentic ai @ uiuc',
+          'leading an engineering team within agentic ai @ uiuc',
           'driving voice productivity for operating systems',
           'aligning with an engineering team on product requirements and product design regarding various MCP integrations for VoiceOS (i.e Doordash, TikTok, GitHub, Microsoft Suite, Salesforce etc.)',
         ],
