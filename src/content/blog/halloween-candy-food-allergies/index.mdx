@@ -81,11 +81,11 @@ The job starts by downloading the Kaggle datasets into two bronze tables, with e
 
 A second notebook then archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
 
-From there, **dbt** builds everything in **SQL**. The silver models clean types and whitespace, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 41 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
+From there, **dbt** builds everything in **SQL**. The silver models will clean data types and whitespace within the data, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 41 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
 
 ## The results
 
-Each bowl holds the 10 most popular candies whose matched labels list none of the restricted allergens. "Popularity kept" compares a bowl's average win rate with the unrestricted bowl's.
+Each bowl holds the 10 most popular candies whose matched labels list none of the restricted allergens. The **unrestricted bowl** is the 10 most popular candies overall, with no allergens removed, and their average win rate in the vote is 76.3%. "Popularity kept" divides each restricted bowl's average win rate by that 76.3%, so a bowl that keeps 78% is about 22% less popular than the unrestricted one.
 
 | Restriction | Candies allowed | Popularity kept | The bowl, most popular first |
 |---|---|---|---|
