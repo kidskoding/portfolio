@@ -62,7 +62,17 @@ const isGrouped = experience.roles.length > 1;
           </>
         )}
 
-        {isGrouped && <p class="text-xs text-text-muted mt-1">{experience.duration}</p>}
+        {isGrouped && (
+          <p class="text-xs text-text-muted mt-1">
+            {experience.duration}
+            {experience.location && (
+              <>
+                <span class="text-nvim-fg3 mx-1.5">&middot;</span>
+                {experience.location}
+              </>
+            )}
+          </p>
+        )}
         {!isGrouped && (
           <div class="flex flex-wrap items-center gap-x-1.5 text-xs text-text-muted mt-1.5">
             <span class="inline-flex items-center gap-1">
@@ -113,10 +123,13 @@ const isGrouped = experience.roles.length > 1;
     {isGrouped ? (
       <div class="mt-5 sm:pl-16 space-y-5">
         {experience.roles.map((role, i) => (
-          <div>
-            {i > 0 && <div class="border-t border-border-default mb-5" />}
+          <div class="relative pl-6">
+            <span class="absolute left-0 top-2 w-2 h-2 rounded-full bg-nvim-gray" />
+            {i < experience.roles.length - 1 && (
+              <span class="absolute left-[3.5px] top-6 -bottom-4 w-px bg-border-default" />
+            )}
             <div>
-              <p class="text-sm font-medium text-text-primary">{role.title}</p>
+              <p class="text-base font-medium text-text-primary leading-snug">{role.title}</p>
               <div class="flex flex-wrap items-center gap-x-1.5 text-xs text-text-muted mt-1">
                 {role.employmentType && <span class="text-text-muted">{role.employmentType}</span>}
                 {role.employmentType && <span class="text-nvim-fg3">&middot;</span>}
