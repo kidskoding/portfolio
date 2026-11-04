@@ -133,7 +133,7 @@ The results use four measures. Each one is defined below, with a worked example 
 
 The ranking says "Snickers". Open Food Facts has hundreds of products with "Snickers" in the name, including ice cream bars, protein bars and almond variants. **Joining the two datasets is the riskiest step in the whole pipeline, because a wrong match can change a candy's allergy status without causing any error.**
 
-I compared two approaches. Matching on the candy's name alone found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as Almond Joy coffee creamer, Twix yogurt and Mounds ice cream bars. Hand-written matching rules, stored as a dbt seed so they are reviewed like code, found 68 candies with no non-candy matches. The rules handle spellings like "KitKat" and "Mike and Ike", and exclude variants like Snickers Almond.
+I compared two approaches: matching on the candy's name alone found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as Almond Joy coffee creamer, Twix yogurt and Mounds ice cream bars. Hand-written matching rules, stored as a dbt seed so they are reviewed like code, found 68 candies with no non-candy matches. The rules handle spellings like "KitKat" and "Mike and Ike", and exclude variants like Snickers Almond.
 
 ## The data almost said Butterfinger was peanut-free
 
