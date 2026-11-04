@@ -78,7 +78,7 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
       data-tree-drawer-toggle
     >
       <span aria-hidden="true">☰</span>
-      <span>NvimTree</span>
+      <span>Explorer</span>
     </button>
     <span>
       nvim -{' '}
@@ -287,7 +287,7 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
       <dt>]b / [b</dt>
       <dd>next / previous buffer</dd>
       <dt>space e</dt>
-      <dd>toggle file tree</dd>
+      <dd>toggle explorer</dd>
       <dt>space space, space ff, ctrl+k</dt>
       <dd>telescope</dd>
       <dt>space bd</dt>
@@ -1333,8 +1333,6 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
       { name: 'qall' },
       { name: 'quit' },
       { name: 'write' },
-      { name: 'NvimTreeFocus' },
-      { name: 'NvimTreeToggle' },
       { name: 'Telescope' },
     ];
     // wildmenu state: what was typed before Tab, and which match is selected (-1 = the typed text itself)
@@ -1494,6 +1492,10 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
         case 'wqa':
           sessionStorage.removeItem(OPENED_KEY);
           sessionStorage.setItem(RELAUNCH_KEY, 'true');
+          sessionStorage.setItem(TREE_HIDDEN_KEY, 'true');
+          if (q('.nvim-shell')?.classList.contains('tree-drawer-open')) {
+            q<HTMLButtonElement>('[data-tree-drawer-close]')?.click();
+          }
           hideCmdline();
           navigate('/');
           break;
