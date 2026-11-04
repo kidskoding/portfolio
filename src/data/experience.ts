@@ -118,7 +118,6 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'product manager',
-        employmentType: 'Contract',
         startDate: 'Sep 2026',
         endDate: 'Present',
         duration: calculateDuration('Sep 2026', 'Present'),
