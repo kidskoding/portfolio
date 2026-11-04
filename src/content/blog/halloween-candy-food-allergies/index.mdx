@@ -14,7 +14,7 @@ If you had gone trick-or-treating anytime during your youth, chances are you cam
 
 With Halloween coming up this year, I was curious to see what the best bowl looks like when it has to be safe, and how much a host gives up on buying certain candies to make it safe for all children.
 
-So I built **candyops**, a data pipeline on Databricks and dbt that answers one question: **for each common food allergy, which 10 popular candies can you still hand out, and how much less popular is that bowl than one with no allergy restrictions?**
+So I built [**candyops**](https://github.com/kidskoding/candyops), a data pipeline on Databricks and dbt that answers one question: **for each common food allergy, which 10 popular candies can you still hand out, and how much less popular is that bowl than one with no allergy restrictions?**
 
 ## Why this matters
 
@@ -189,14 +189,6 @@ The bowls stay on the pinned 2017 data, so the results above are reproducible. T
 For a company like Hershey or Mars, the same kind of pipeline could check how their products appear in public food databases, flag listings that show the wrong allergens, and spot when a recipe change has not reached the crowdsourced data. For a host, it is simpler: **a peanut-free or nut-free bowl built from Starburst, Skittles, Sour Patch Kids and Swedish Fish gives up about a fifth of the popularity, not most of it.**
 
 This is a demo, not a safety tool. The allergen parser reads English, French and German but not every phrasing, the 2017 data is old, and 62 candies do not yet have enough current labels to compare. **Always read the package label.**
-
-## The bowl, revisited
-
-Every Halloween bowl has a Reese's in it.
-
-It does not have to.
-
-The code, the dbt models and the results are on [GitHub](https://github.com/kidskoding/candyops).
 
 ## References
 <a name="references"></a>
