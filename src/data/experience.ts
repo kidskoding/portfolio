@@ -6,6 +6,7 @@ import agenticAiUiucLogoIcon from '../assets/agentic-ai-uiuc.jpg';
 import ivrLogoIcon from '../assets/ivr-logo.jpeg';
 import kidskodingLogoIcon from '../assets/kidskoding-logo.jpeg';
 import tmobileLogoIcon from '../assets/tmobile-logo.png';
+import voiceosLogoIcon from '../assets/voiceos.jpg';
 
 const calculateDuration = (startDate: string, endDate: string) => {
   const start = new Date(startDate);
@@ -44,6 +45,29 @@ export interface Experience {
 }
 
 export const experiences: Experience[] = [
+  {
+    id: '13',
+    company: 'VoiceOS (YC P25)',
+    companyLogo: voiceosLogoIcon.src,
+    startDate: 'Sep 2026',
+    endDate: 'Present',
+    duration: calculateDuration('Sep 2026', 'Present'),
+    roles: [
+      {
+        title: 'product manager',
+        employmentType: 'Contract',
+        startDate: 'Sep 2026',
+        endDate: 'Present',
+        duration: calculateDuration('Sep 2026', 'Present'),
+        description: [
+          'contract position via agentic ai @ uiuc | leading an engineering team within agentic ai @ uiuc',
+          'driving voice productivity for operating systems',
+          'aligning with an engineering team on product requirements and product design regarding various MCP integrations for VoiceOS (i.e Doordash, TikTok, GitHub, Microsoft Suite, Salesforce etc.)',
+        ],
+        skills: [],
+      },
+    ],
+  },
   {
     id: '11',
     company: 'Brunswick Corporation',
@@ -84,26 +108,6 @@ export const experiences: Experience[] = [
           'Vite Plus',
           'Vite',
         ],
-      },
-    ],
-  },
-  {
-    id: '12',
-    company: 'Astral',
-    companyLogo: astralLogoIcon.src,
-    startDate: 'Sep 2026',
-    endDate: 'Present',
-    duration: calculateDuration('Sep 2026', 'Present'),
-    roles: [
-      {
-        title: 'oss developer',
-        startDate: 'Sep 2026',
-        endDate: 'Present',
-        duration: calculateDuration('Sep 2026', 'Present'),
-        description: [
-          'improving the experience behind uv, ruff, and ty: the perfect triad for fast and efficient modern python development',
-        ],
-        skills: ['Rust', 'GitHub', 'Git', 'Python'],
       },
     ],
   },
@@ -161,7 +165,9 @@ export const experiences: Experience[] = [
         startDate: 'Aug 2026',
         endDate: 'Present',
         duration: calculateDuration('Aug 2026', 'Present'),
-        description: [],
+        description: [
+          'leading the biggest ai student organization on uiuc campus | fostering ai fluency by mimicking the build night / build sesh experience from the sf/bay to uiuc',
+        ],
         skills: [],
       },
       {
@@ -170,9 +176,29 @@ export const experiences: Experience[] = [
         endDate: 'Aug 2026',
         duration: calculateDuration('Feb 2026', 'Aug 2026'),
         description: [
-          'actively building a community that involves 200+ UIUC students building impactful AI agents that solve real world business problems',
+          'actively building a community that involves 200+ UIUC students building impactful AI agents that solve real world business problems via coding agents',
         ],
-        skills: ['Claude Code', 'Cursor', 'Langchain', 'MCP', 'RAG', 'Pinecone'],
+        skills: ['Claude Code', 'Cursor', 'LLMOps', 'Langchain', 'MCP', 'RAG', 'Pinecone'],
+      },
+    ],
+  },
+  {
+    id: '12',
+    company: 'Astral',
+    companyLogo: astralLogoIcon.src,
+    startDate: 'Sep 2026',
+    endDate: 'Present',
+    duration: calculateDuration('Sep 2026', 'Present'),
+    roles: [
+      {
+        title: 'oss developer',
+        startDate: 'Sep 2026',
+        endDate: 'Present',
+        duration: calculateDuration('Sep 2026', 'Present'),
+        description: [
+          'improving the experience behind uv, ruff, and ty: the perfect triad for fast and efficient modern python development',
+        ],
+        skills: ['Rust', 'GitHub', 'Git', 'Python'],
       },
     ],
   },
