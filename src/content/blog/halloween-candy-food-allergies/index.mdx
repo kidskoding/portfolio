@@ -117,15 +117,54 @@ In **Table 1.3**, each allergy restriction is shown with the number of candies a
 
 <p class="text-sm text-nvim-gray -mt-4 text-center">Table 1.3: The 10-candy bowl for each allergy restriction, with the number of candies allowed and the share of the unrestricted bowl's popularity it keeps.</p>
 
+In **Figure 1.1**, the popularity each bowl keeps is shown side by side, from the unrestricted bowl down to a bowl free of all six allergens.
+
+<img
+  src="/blog/halloween-candy-food-allergies/fig2_popularity_retained.png"
+  alt="Bar chart of the popularity each allergy-safe bowl keeps: gluten-free 88.2%, peanut-free 78.0%, nut-free 77.1%, milk-free 74.6%, free of all six 68.7%"
+  width="1600"
+  height="1000"
+  loading="lazy"
+  decoding="async"
+/>
+
+<p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.1: The share of the unrestricted bowl's popularity that each allergy-safe bowl keeps, with the number of candies each restriction allows.</p>
+
 ### Peanuts cost the most, gluten the least
 
 **Every candy in the unrestricted top 10 is chocolate, and at least five of them directly have peanuts in them:** four Reese's products and Peanut Butter M&M's sit in that top 10, which is exactly why the peanut-free bowl loses so much. It keeps 78% of the popularity, and none of the 10 candies in the unrestricted bowl make it in.
+
+In **Figure 1.2**, each bowl is split into chocolate and non-chocolate candies.
+
+<img
+  src="/blog/halloween-candy-food-allergies/fig3_chocolate_share.png"
+  alt="Stacked bar chart of chocolate and non-chocolate candies in each bowl: 10 chocolate with no restriction, 6 gluten-free, 3 peanut-free, 2 nut-free, and none in the milk-free and free-of-all-six bowls"
+  width="1600"
+  height="1000"
+  loading="lazy"
+  decoding="async"
+/>
+
+<p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.2: Chocolate and non-chocolate candies in each 10-candy bowl. The milk-free bowl and the bowl free of all six allergens contain no chocolate at all.</p>
 
 **A gluten-free bowl loses the least popularity:** it keeps 88% and still leads with Reese's, because Reese's Peanut Butter Cups list no wheat. A milk-free bowl drops to 75%, because it excludes every candy made with milk chocolate, and none of the 10 candies in the unrestricted bowl remain.
 
 > The safest bowl is a bowl of gummies and fruit candy, and it still keeps about two-thirds of the popularity.
 
 **Avoiding all six allergens leaves 18 candies and keeps 68.7%:** Skittles, Sour Patch Kids, Swedish Fish, Haribo Gold-Bears and others. That bowl still holds popular candy: Skittles and Sour Patch Kids rank in the top third of the vote.
+
+**Swapping chocolate for fruit candy also adds sugar:** the unrestricted bowl has a median of 51.7 g of sugar per 100 g, while the peanut-free and nut-free bowls reach about 69 g, as shown in **Figure 1.3**.
+
+<img
+  src="/blog/halloween-candy-food-allergies/fig4_sugar_by_bowl.png"
+  alt="Bar chart of median sugar per 100 grams in each bowl: 51.7 g with no restriction, 52.9 g gluten-free, about 65 g milk-free and free of all six, about 69 g peanut-free and nut-free"
+  width="1600"
+  height="1000"
+  loading="lazy"
+  decoding="async"
+/>
+
+<p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.3: Median sugar per 100 g in each bowl. Allergy-safe bowls rely on fruit candy, which contains more sugar per gram than chocolate.</p>
 
 ### What the top candies actually contain
 
@@ -143,11 +182,41 @@ In **Table 1.4**, five of the most popular candies are shown with their status f
 
 `varies` means some matched products list the allergen and others do not, usually because the same bar is made with different recipes in different countries.
 
+### The most popular candies carry the most allergens
+
+The pattern goes beyond these five candies. In **Figure 1.4**, each of the 59 candies with at least two labeled products is plotted by how many of the six allergens its label lists and how often it won its matchups.
+
+<img
+  src="/blog/halloween-candy-food-allergies/fig1_allergens_vs_popularity.png"
+  alt="Scatter plot of candy win rate against the number of major allergens listed. Candies with none average a 45% win rate and candies with five or more average 66%; Reese's, Twix and Snickers sit at the top right, and Skittles is the most popular candy with none of the six"
+  width="1600"
+  height="1120"
+  loading="lazy"
+  decoding="async"
+/>
+
+<p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.4: Win rate against the number of major allergens each candy's label lists, including may-contain warnings. Chocolate candies are orange; lines show the average win rate for each count.</p>
+
+**Candies with none of the six allergens average a 45% win rate, while candies with five or more average 66%.** Most of that gap comes from chocolate, which almost always contains milk and soy, so the candies voters like best are also the hardest for allergic kids to eat.
+
 ## Matching candy names was the hard part
 
 The ranking says "Snickers". Open Food Facts has hundreds of products with "Snickers" in the name, including ice cream bars, protein bars and almond variants. **Joining the two datasets is the riskiest step in the whole pipeline, because a wrong match can change a candy's allergy status without causing any error.**
 
 I compared two approaches: matching on the candy's name alone, and hand-written matching rules stored as a dbt seed so they are reviewed like code. Name matching found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as an Almond Joy coffee creamer and a Hershey's ice cream bar. The hand-written rules found 68 candies with no non-candy matches, because they handle spellings like "KitKat" and "Mike and Ike" and exclude variants like Snickers Almond.
+
+In **Figure 1.5**, the two approaches are compared on how many candies they match and how many non-candy products they pull in.
+
+<img
+  src="/blog/halloween-candy-food-allergies/fig6_matching_methods.png"
+  alt="Grouped bar chart comparing name-only matching, which matches 53 candies and 80 non-candy products, with curated rules, which match 68 candies and no non-candy products"
+  width="1600"
+  height="1000"
+  loading="lazy"
+  decoding="async"
+/>
+
+<p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.5: Name-only matching compared with the curated matching rules, by candies matched and non-candy products matched.</p>
 
 ## How a matching bug put Butterfinger in the peanut-free bowl
 
@@ -169,16 +238,18 @@ The change feed later confirmed that this rule was correct: this week's Butterfi
 
 Both Kaggle files are from 2017, so the obvious question is whether the labels on shelves today still agree. The daily change feed answers it. Its first two weeks held 98,694 product edits, 348 of them for ranked candies, and 21 candies had at least two current products with ingredient lists:
 
-In **Table 1.5**, the 83 candies are grouped by how their allergen status in the 2017 data compares with their current labels.
+In **Figure 1.6**, the 83 candies are grouped by how their allergen status in the 2017 data compares with their current labels.
 
-| Each candy, 2017 vs now | Candies |
-|---|---|
-| At least one allergen status changed | 12 |
-| All compared allergens unchanged | 7 |
-| Newly covered (too little 2017 data) | 2 |
-| Not enough current data yet | 62 |
+<img
+  src="/blog/halloween-candy-food-allergies/fig7_label_changes.png"
+  alt="Bar chart of the 83 candies grouped by how their 2017 allergen status compares with current labels: 12 changed, 7 unchanged, 2 newly covered, 62 without enough current data"
+  width="1600"
+  height="1000"
+  loading="lazy"
+  decoding="async"
+/>
 
-<p class="text-sm text-nvim-gray -mt-4 text-center">Table 1.5: How each candy's allergen status in the 2017 data compares with its current labels from the daily change feed.</p>
+<p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.6: How each candy's allergen status in the 2017 data compares with its current labels from the daily change feed.</p>
 
 **Most changes add allergen warnings rather than remove them:** Snickers and Milky Way moved from `varies` to `contains` for egg, which matches their egg-white nougat. Hershey's milk chocolate now carries a tree-nut "may contain" warning that the 2017 records did not show. Butterfinger, unknown in 2017, now has labels that list peanuts, milk and soy.
 
