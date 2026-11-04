@@ -23,6 +23,7 @@ const calculateDuration = (startDate: string, endDate: string) => {
 
 export interface ExperienceRole {
   title: string;
+  icon?: string;
   employmentType?: string;
   startDate: string;
   endDate: string;
@@ -56,6 +57,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'software development engineering intern',
+        icon: 'boat',
         employmentType: 'Internship',
         startDate: 'Nov 2026',
         endDate: 'Present',
@@ -65,6 +67,7 @@ export const experiences: Experience[] = [
       },
       {
         title: 'software development engineering intern',
+        icon: 'boat',
         employmentType: 'Internship',
         startDate: 'Aug 2026',
         endDate: 'Present',
@@ -98,6 +101,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'student fellowship',
+        icon: 'database',
         startDate: 'May 2026',
         endDate: 'Present',
         duration: calculateDuration('May 2026', 'Present'),
@@ -118,6 +122,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'product manager',
+        icon: 'microphone',
         employmentType: 'Contract',
         startDate: 'Sep 2026',
         endDate: 'Present',
@@ -141,6 +146,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'software engineering intern',
+        icon: 'cell-signal-full',
         employmentType: 'Internship',
         startDate: 'May 2026',
         endDate: 'Aug 2026',
@@ -161,6 +167,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'president',
+        icon: 'crown',
         startDate: 'Aug 2026',
         endDate: 'Present',
         duration: calculateDuration('Aug 2026', 'Present'),
@@ -171,6 +178,7 @@ export const experiences: Experience[] = [
       },
       {
         title: 'member of technical staff',
+        icon: 'sparkle',
         startDate: 'Feb 2026',
         endDate: 'Aug 2026',
         duration: calculateDuration('Feb 2026', 'Aug 2026'),
@@ -205,6 +213,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'oss developer',
+        icon: 'lightning',
         startDate: 'Sep 2026',
         endDate: 'Present',
         duration: calculateDuration('Sep 2026', 'Present'),
@@ -226,6 +235,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'google cloud ai & data intern',
+        icon: 'cloud',
         employmentType: 'Internship',
         startDate: 'Jun 2025',
         endDate: 'Aug 2025',
@@ -257,6 +267,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'vex software - ai & ml research and development',
+        icon: 'robot',
         startDate: 'Aug 2024',
         endDate: 'May 2025',
         duration: calculateDuration('Aug 2024', 'May 2025'),
@@ -277,6 +288,7 @@ export const experiences: Experience[] = [
     roles: [
       {
         title: 'founder',
+        icon: 'rocket-launch',
         startDate: 'Sep 2018',
         endDate: 'Aug 2023',
         duration: calculateDuration('Sep 2018', 'Aug 2023'),
