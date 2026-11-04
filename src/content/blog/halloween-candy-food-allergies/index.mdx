@@ -149,7 +149,7 @@ The ranking says "Snickers". Open Food Facts has hundreds of products with "Snic
 
 I compared two approaches: matching on the candy's name alone, and hand-written matching rules stored as a dbt seed so they are reviewed like code. Name matching found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as an Almond Joy coffee creamer and a Hershey's ice cream bar. The hand-written rules found 68 candies with no non-candy matches, because they handle spellings like "KitKat" and "Mike and Ike" and exclude variants like Snickers Almond.
 
-## The data almost said Butterfinger was peanut-free
+## How a matching bug put Butterfinger in the peanut-free bowl
 
 **Butterfinger is made with peanuts, yet the first version of the peanut-free bowl included it:** the 2017 data had only three Butterfinger products. One was the bar itself, with no ingredient list. The other two were a caramel apple and a box of marshmallow squares "made with" Butterfinger, and their ingredient lists never mention peanuts.
 
