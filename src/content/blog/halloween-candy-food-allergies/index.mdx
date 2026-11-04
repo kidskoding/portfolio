@@ -32,7 +32,7 @@ A lot of the candy you eat comes from **three** major corpoations.
 
 ## The data
 
-candyops joins two public datasets from Kaggle that were never meant to meet, and a third live source that keeps the answer current.
+candyops combines two public datasets from Kaggle that were collected separately and share no common ID, plus a third live source that keeps the results up to date.
 
 | Source | What it holds | Size |
 |---|---|---|
@@ -40,7 +40,7 @@ candyops joins two public datasets from Kaggle that were never meant to meet, an
 | [Open Food Facts (world-food-facts)](https://www.kaggle.com/datasets/openfoodfacts/world-food-facts) | Ingredients, allergens, sugar and serving size of packaged foods | 356,001 products x 163 columns, about 1 GB |
 | [Open Food Facts daily change feed](https://static.openfoodfacts.org/data/delta/index.txt) | Every product edited each day | 98,694 edits in its first two weeks |
 
-**FiveThirtyEight** was a data journalism site; its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again. **Open Food Facts** is a nonprofit, crowdsourced database of food labels that anyone can edit, a bit like Wikipedia for packaged food. Both Kaggle files are 2017 snapshots, and the pipeline pins their versions so every run reads the same bytes.
+**FiveThirtyEight** was a data journalism site; its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again. **Open Food Facts** is a nonprofit, crowdsourced database of food labels that anyone can edit. Both Kaggle files are 2017 snapshots, and the pipeline pins their versions so every run reads exactly the same data.
 
 This is one real row from Open Food Facts, a US pack of Reese's Peanut Butter Cups:
 
@@ -57,9 +57,9 @@ serving_size     42 g (1 PACKAGE)
 sugars_100g      50
 ```
 
-**The allergen field is empty, even though the ingredients plainly list milk, soy and peanuts:** only 37,177 of the 356,001 products fill it in. Most of the allergen information lives in free text, so the pipeline has to read ingredient lists the way a parent reads a wrapper.
+**The allergen field is empty, even though the ingredients list milk, soy and peanuts:** only 37,177 of the 356,001 products fill it in. Most of the allergen information is only in the ingredient text, so the pipeline has to read each ingredient list to find allergens.
 
-The raw files are messier than they look. The candy ranking stores apostrophes as `HersheyÕs` and includes two coins (a dime and a quarter) as joke entries. The Open Food Facts file has 26 rows with a stray carriage return inside a field; pandas and most CSV readers treat it as a line break and report 356,027 rows instead of 356,001. A test pins the correct count, so a reader that splits on the wrong character fails loudly instead of quietly inventing rows.
+The raw files are messier than they look. The candy ranking stores apostrophes as `HersheyÕs` and includes two coins (a dime and a quarter) as joke entries. The Open Food Facts file has 26 rows with a stray carriage return inside a field; pandas and most CSV readers treat it as a line break and report 356,027 rows instead of 356,001. A test pins the correct count, so a reader that splits on the wrong character fails with an error instead of producing extra rows.
 
 ## How the pipeline works
 
@@ -73,7 +73,7 @@ flowchart TD
   G --> D["dashboard + MLflow"]
 ```
 
-A Databricks job runs every morning. A **Python** notebook downloads the Kaggle files into bronze tables unchanged, as strings. A second notebook archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits land exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
+A Databricks job runs every morning. A **Python** notebook downloads the Kaggle files into bronze tables unchanged, as strings. A second notebook archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
 
 From there, **dbt** builds everything in **SQL**. The silver models clean types and whitespace, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 41 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
 
@@ -98,7 +98,7 @@ Each bowl holds the 10 most popular candies whose matched labels list none of th
 
 > The safest bowl is a bowl of gummies and fruit candy, and it still keeps about two-thirds of the popularity.
 
-**Avoiding all six allergens leaves 18 candies and keeps 68.7%:** Skittles, Sour Patch Kids, Swedish Fish, Haribo Gold-Bears and friends. That bowl is not a sad compromise. Skittles and Sour Patch Kids rank in the top third of the vote on their own.
+**Avoiding all six allergens leaves 18 candies and keeps 68.7%:** Skittles, Sour Patch Kids, Swedish Fish, Haribo Gold-Bears and others. That bowl still holds popular candy: Skittles and Sour Patch Kids rank in the top third of the vote.
 
 ### What the top candies actually contain
 
@@ -128,9 +128,9 @@ The change feed later confirmed the guard was right: this week's Butterfinger la
 
 ### Two more traps
 
-**Mixed packs leak one candy's allergens into another:** a "Reese's & Kit Kat Halloween Candy Assortment" made Kit Kat look like it contains peanuts. Assortments and variety packs are now excluded.
+**Mixed packs make one candy look like it contains another candy's allergens:** a "Reese's & Kit Kat Halloween Candy Assortment" made Kit Kat look like it contains peanuts. Assortments and variety packs are now excluded.
 
-**A couple of junk records can outvote dozens of good ones:** the pipeline prefers US labels because US and European recipes differ. With the threshold at two products, Snickers' only two current US records (a popcorn listing named "Snickers" and a wrapper scan of customer-service text) outweighed 25 proper labels from other countries and made Snickers look peanut-free. US labels now decide only when there are at least three.
+**A couple of bad records can override dozens of good ones:** the pipeline prefers US labels because US and European recipes differ. With the threshold at two products, Snickers' only two current US records (a popcorn listing named "Snickers" and a wrapper scan of customer-service text) outweighed 25 proper labels from other countries and made Snickers look peanut-free. US labels now decide only when there are at least three.
 
 > Every one of these bugs made a candy look safer than it is. In an allergy dataset, that is the direction that matters.
 
@@ -145,7 +145,7 @@ Both Kaggle files are from 2017, so the obvious question is whether the labels o
 | Newly covered (too little 2017 data) | 2 |
 | Not enough current data yet | 62 |
 
-**Most changes tighten the warnings rather than loosen them:** Snickers and Milky Way moved from `varies` to `contains` for egg, which matches their egg-white nougat. Hershey's milk chocolate now carries a tree-nut "may contain" warning that the 2017 records did not show. Butterfinger, unknown in 2017, now has labels that list peanuts, milk and soy.
+**Most changes add allergen warnings rather than remove them:** Snickers and Milky Way moved from `varies` to `contains` for egg, which matches their egg-white nougat. Hershey's milk chocolate now carries a tree-nut "may contain" warning that the 2017 records did not show. Butterfinger, unknown in 2017, now has labels that list peanuts, milk and soy.
 
 The bowls stay on the pinned 2017 data, so the results above are reproducible. The comparison grows every morning as the job archives another day of the feed, and a dbt test warns if a day is ever missed.
 
