@@ -27,13 +27,31 @@ Mondelez International is best known in the US for **Oreo**, and its [candy bran
 
 ## Where the data comes from
 
-No candy maker publishes its plant schedules, line rates, or inventory, so I generated the data myself. A seeded **Python** script in the repo writes the files a real plant's systems would export: customer orders and recipes from the planning system, line rates and downtime from the factory floor, stock and supplier deliveries from the warehouse, and good bags and rejects from quality checks. The same seed always produces the same files, so every number in this post can be reproduced.
+No candy maker publishes its plant schedules, line rates, or inventory, and I couldn't find a public dataset with all of them for one plant, so I generated the data myself. A seeded **Python** script in the repo plays the role of a fictional confectioner's software and writes the files each system would export. The same seed always produces the same files, so every number in this post can be reproduced.
+
+The company has two factories. **Northfield** has two packaging lines and ships 9 of the 12 retailer orders, and **Southgate** has one line, ships the other 3, and keeps its own stock of ingredients and film. They make three Halloween products: a Spooky Assortment bag of chocolate and gummies, a Chocolate Monster bag of chocolate and caramel, and a Gummy Ghosts bag.
+
+| Simulated system | What it exports | Rows |
+|---|---|---|
+| Planning (ERP) | products, materials, recipes, customer orders, production orders, cost settings | 51 |
+| Factory floor (MES) | lines, line rates and yields, the shift calendar, downtime events, actual output | 44 |
+| Warehouse and purchasing | opening stock of materials and finished bags, supplier deliveries | 25 |
+| Quality (QMS) | batch inspections with good bags, rejects, and scrap | 6 |
+
+A customer order looks like this, with a retailer, a product, a bag count, and the day it has to be ready:
+
+```csv
+order_id,customer_name,dispatch_factory_id,sku_id,order_qty_bags,ready_to_ship_deadline
+O-1002,Moonlight Grocers,NFD,SPK40,14000,2026-10-28
+```
+
+The files are small on purpose, so every result can be traced back by hand. **Before any modeling, the pipeline checks them with 86 data-quality checks**: every key and reference resolves, units and ranges make sense, timestamps line up, and the output the factory floor reports matches what quality inspected.
 
 **Everything here is synthetic:** the two factories, twelve retailers, orders, and costs are made up, and the costs are modeled rather than real savings. CandyOps is not affiliated with Hershey, Mars, Mondelez, or any other company, and it does not reflect any of their systems or data.
 
 ## The setup
 
-It is October 27. A fictional confectioner packs Halloween assortment bags in two plants, Northfield and Southgate, and twelve retailer orders have to be ready to ship between October 27 and October 30. Ready to ship means bagged, counted, and sitting at Northfield, the plant that ships them, by the end of the deadline day.
+It is October 27. A fictional confectioner packs Halloween assortment bags in two plants, Northfield and Southgate, and twelve retailer orders have to be ready to ship between October 27 and October 30. Ready to ship means bagged, counted, and sitting at the plant that ships the order by the end of the deadline day. The orders at risk all ship from Northfield, so bags made at Southgate count only once a truck brings them over.
 
 At 06:00 the bag sealer on Northfield's main line fails, and maintenance says it will be back on October 29 at 14:00. **The planner can accept the shortfall, run overtime at Northfield, or make bags at Southgate and truck them over**, which takes a day.
 
