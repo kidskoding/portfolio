@@ -60,7 +60,7 @@ export const experiences: Experience[] = [
         startDate: 'Nov 2026',
         endDate: 'Present',
         duration: calculateDuration('Nov 2026', 'Present'),
-        description: ['spring 2027 | via uiuc research park, boating intelligence design lab'],
+        description: ['spring 2027 | via uiuc research park, boating intelligence design lab 🚤'],
         skills: [],
       },
       {
@@ -70,7 +70,7 @@ export const experiences: Experience[] = [
         endDate: 'Present',
         duration: calculateDuration('Aug 2026', 'Present'),
         description: [
-          'fall 2026 | via uiuc research park, boating intelligence design lab',
+          'fall 2026 | via uiuc research park, boating intelligence design lab 🚤',
           'full stack development across various boating intelligence applications, enabling an ACES (autonomous, connected, electrified, and shared) strategy',
         ],
         skills: [
@@ -145,7 +145,7 @@ export const experiences: Experience[] = [
         startDate: 'May 2026',
         endDate: 'Aug 2026',
         duration: calculateDuration('May 2026', 'Aug 2026'),
-        description: ['summer 2026 | servicenow itsm team; ai agents and ai governance within servicenow as a PaaS'],
+        description: ['summer 2026 | servicenow itsm team; ai agents and ai governance within servicenow as a PaaS 📶'],
         skills: ['ServiceNow', 'Atlassian Suite', 'Agentic AI Development', 'Claude', 'Claude Cowork', 'Claude Code'],
       },
     ],
@@ -231,7 +231,7 @@ export const experiences: Experience[] = [
         endDate: 'Aug 2025',
         duration: calculateDuration('Jun 2025', 'Aug 2025'),
         description: [
-          'summer 2025 | interned at client IAA (Insurance Auto Auctions) on the data science & data engineering team',
+          'summer 2025 | interned at client IAA (Insurance Auto Auctions) on the data science & data engineering team 🚗',
           'google gemini and python extract important data from automobile registration documents → transform into structured JSON → load into Azure Blob Storage',
         ],
         skills: [
