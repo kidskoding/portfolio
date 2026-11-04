@@ -46,33 +46,10 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    id: '13',
-    company: 'VoiceOS (YC P25)',
-    companyLogo: voiceosLogoIcon.src,
-    startDate: 'Sep 2026',
-    endDate: 'Present',
-    duration: calculateDuration('Sep 2026', 'Present'),
-    roles: [
-      {
-        title: 'product manager',
-        employmentType: 'Contract',
-        startDate: 'Sep 2026',
-        endDate: 'Present',
-        duration: calculateDuration('Sep 2026', 'Present'),
-        description: [
-          'contract position via agentic ai @ uiuc | leading an engineering team within agentic ai @ uiuc',
-          'driving voice productivity for operating systems',
-          'aligning with an engineering team on product requirements and product design regarding various MCP integrations for VoiceOS (i.e Doordash, TikTok, GitHub, Microsoft Suite, Salesforce etc.)',
-        ],
-        skills: [],
-      },
-    ],
-  },
-  {
     id: '11',
     company: 'Brunswick Corporation',
     companyLogo: brunswickLogoIcon.src,
-    location: 'Champaign, Illinois',
+    location: 'Urbana-Champaign, Illinois',
     startDate: 'Aug 2026',
     endDate: 'Present',
     duration: calculateDuration('Aug 2026', 'Present'),
@@ -132,6 +109,29 @@ export const experiences: Experience[] = [
     ],
   },
   {
+    id: '13',
+    company: 'VoiceOS (YC P25)',
+    companyLogo: voiceosLogoIcon.src,
+    startDate: 'Sep 2026',
+    endDate: 'Present',
+    duration: calculateDuration('Sep 2026', 'Present'),
+    roles: [
+      {
+        title: 'product manager',
+        employmentType: 'Contract',
+        startDate: 'Sep 2026',
+        endDate: 'Present',
+        duration: calculateDuration('Sep 2026', 'Present'),
+        description: [
+          'contract position via agentic ai @ uiuc | leading an engineering team within agentic ai @ uiuc',
+          'driving voice productivity for operating systems',
+          'aligning with an engineering team on product requirements and product design regarding various MCP integrations for VoiceOS (i.e Doordash, TikTok, GitHub, Microsoft Suite, Salesforce etc.)',
+        ],
+        skills: [],
+      },
+    ],
+  },
+  {
     id: '8',
     company: 'T-Mobile',
     companyLogo: tmobileLogoIcon.src,
@@ -178,7 +178,21 @@ export const experiences: Experience[] = [
         description: [
           'actively building a community that involves 200+ UIUC students building impactful AI agents that solve real world business problems via coding agents',
         ],
-        skills: ['Claude Code', 'Cursor', 'LLMOps', 'Langchain', 'MCP', 'RAG', 'Pinecone'],
+        skills: [
+          'Cursor',
+          'LLMOps',
+          'RAG',
+          'LangChain',
+          'Claude Code',
+          'Agentic AI Development',
+          'LangGraph',
+          'Docker',
+          'GitHub',
+          'Vector Databases',
+          'OpenAI Codex',
+          'MCP',
+          'Pinecone',
+        ],
       },
     ],
   },
