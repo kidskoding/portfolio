@@ -68,6 +68,7 @@ src/
 patches/              # bun patchedDependencies; beautiful-mermaid measures labels as monospace (0.6em/char, Google Sans Code's advance width) so label text fits its boxes, and takes edgeNodeSpacing/alignment options. Edit with `bun patch beautiful-mermaid` then `bun patch --commit`, and drop the `.bun-tag-*` hunk it adds
 flake.nix             # Nix dev shell + `nix run` apps wrapping bun scripts
 .github/workflows/ci.yml # GitHub Actions: format, alejandra, astro check, build. Vercel Git integration deploys (master to production, PRs to previews)
+.github/dependabot.yml # weekly grouped PR bumping GitHub Actions versions (actions only, not npm)
 vendor/gruvbox/       # ellisonleao/gruvbox.nvim git subtree, reference for palette + highlight roles (not built)
 ```
 
