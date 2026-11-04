@@ -12,6 +12,8 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const { title, titleLink } = post.data;
 const linkAt = titleLink ? title.indexOf(titleLink.text) : -1;
+const { coverCaption, coverCaptionLink } = post.data;
+const captionLinkAt = coverCaption && coverCaptionLink ? coverCaption.indexOf(coverCaptionLink.text) : -1;
 ---
 
 <BlogLayout
@@ -31,8 +33,20 @@ const linkAt = titleLink ? title.indexOf(titleLink.text) : -1;
             loading="eager"
           />
         </div>
-        {post.data.coverCaption && (
-          <figcaption class="px-8 pt-3 text-sm text-nvim-gray">{post.data.coverCaption}</figcaption>
+        {coverCaption && (
+          <figcaption class="px-8 pt-3 text-sm text-nvim-gray">
+            {coverCaptionLink && captionLinkAt >= 0 ? (
+              <>
+                {coverCaption.slice(0, captionLinkAt)}
+                <a href={coverCaptionLink.href} class="text-nvim-blue underline hover:text-nvim-aqua transition-colors">
+                  {coverCaptionLink.text}
+                </a>
+                {coverCaption.slice(captionLinkAt + coverCaptionLink.text.length)}
+              </>
+            ) : (
+              coverCaption
+            )}
+          </figcaption>
         )}
       </figure>
     )}
