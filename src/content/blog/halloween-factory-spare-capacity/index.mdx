@@ -17,15 +17,25 @@ I built [CandyOps](https://github.com/kidskoding/candyops) to answer that questi
 
 Halloween is one of the biggest selling seasons in the United States. The National Retail Federation, the largest US retail trade group, [forecast a record $13.1 billion in Halloween spending for 2025](https://nrf.com/media-center/press-releases/nrf-consumer-survey-finds-halloween-spending-to-reach-record-13-1-billion), with $3.9 billion of it on candy.
 
-The big snack companies sell products made only for the season. PepsiCo, which owns Lay's, Doritos, and Cheetos through its Frito-Lay division, has released items like [Cheetos Bag of Bones and Quaker Chewy Halloween Minis](https://snackandbakery.com/articles/112234-pepsico-brands-launch-spooky-season-snacks). Mondelez, the maker of Oreo, Cadbury, and Sour Patch Kids, put out a [2025 Halloween lineup in the UK](https://www.betterretailing.com/br/product-news/mondelez-unveils-halloween-2025-line-up/) that included Oreo Spooky and treat-size sharing packs of Cadbury and Sour Patch Kids.
+The big snack companies sell products made only for the season, and two of the best-known snack companies show how far that goes.
 
-**These products share two traits that make them hard to plan.** Each one ships in packaging printed for the season, so the wrapper can't be swapped for a regular one. And they all have to reach store shelves before a date that never moves. If a packaging line breaks in late October, the planner has days rather than weeks to decide how to recover, and a wrong call leaves orders short or leaves holiday stock unsold after October 31.
+### PepsiCo
+
+PepsiCo makes its snacks through its Frito-Lay division, whose [brands](https://www.pepsico.com/brands) include **Lay's**, **Doritos**, **Cheetos**, **Tostitos**, **Fritos**, and **Cracker Jack**. For Halloween it has released seasonal items such as [Cheetos Bag of Bones and Quaker Chewy Halloween Minis](https://snackandbakery.com/articles/112234-pepsico-brands-launch-spooky-season-snacks).
+
+### Mondelez
+
+Mondelez International makes cookies, crackers, chocolate, and candy, and its [brands](https://www.mondelezinternational.com/our-brands/) include **Oreo**, **Cadbury**, **Milka**, **Toblerone**, **Ritz**, **Chips Ahoy!**, and **Sour Patch Kids**. Its [2025 Halloween lineup in the UK](https://www.betterretailing.com/br/product-news/mondelez-unveils-halloween-2025-line-up/) included **Oreo Spooky** and treat-size sharing packs of **Cadbury** and **Sour Patch Kids**.
+
+### Why these products are hard to plan
+
+**These products share two traits:** each one ships in packaging printed for the season, so the wrapper can't be swapped for a regular one, and they all have to reach store shelves before a date that never moves. If a packaging line breaks in late October, the planner has days rather than weeks to decide how to recover, and a wrong call leaves orders short or leaves holiday stock unsold after October 31.
 
 ## Where the data comes from
 
 No snack maker publishes its plant schedules, line rates, or inventory, so I generated the data myself. A seeded **Python** script in the repo writes the files a real plant's systems would export: customer orders and recipes from the planning system, line rates and downtime from the factory floor, stock and supplier deliveries from the warehouse, and good bags and rejects from quality checks. The same seed always produces the same files, so every number in this post can be reproduced.
 
-**Everything here is synthetic.** The two factories, twelve retailers, orders, and costs are made up, and the costs are modeled rather than real savings. CandyOps is not affiliated with PepsiCo, Mondelez, or any other company, and it does not reflect any of their systems or data.
+**Everything here is synthetic:** the two factories, twelve retailers, orders, and costs are made up, and the costs are modeled rather than real savings. CandyOps is not affiliated with PepsiCo, Mondelez, or any other company, and it does not reflect any of their systems or data.
 
 ## The setup
 
