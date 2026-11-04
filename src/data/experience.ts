@@ -145,7 +145,7 @@ export const experiences: Experience[] = [
         startDate: 'May 2026',
         endDate: 'Aug 2026',
         duration: calculateDuration('May 2026', 'Aug 2026'),
-        description: ['summer 2026 | servicenow itsm team; ai agents and ai governance within servicenow as a PaaS 📱📶'],
+        description: ['summer 2026 | servicenow itsm team; ai agents and ai governance within servicenow as a PaaS 📱'],
         skills: ['ServiceNow', 'Atlassian Suite', 'Agentic AI Development', 'Claude', 'Claude Cowork', 'Claude Code'],
       },
     ],
