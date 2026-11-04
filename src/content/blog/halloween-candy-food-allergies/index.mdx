@@ -18,11 +18,11 @@ So I built **candyops**, a data pipeline on Databricks and dbt that answers one 
 
 ## Why this matters
 
-Food allergies are quite common in children. **The CDC found that 5.8% of US children had a diagnosed food allergy in 2021**, about 1 in 17, according to its [National Health Interview Survey data brief](https://www.cdc.gov/nchs/products/databriefs/db459.htm). And this is especially important, considering that halloween is the one night of the year when those kids collect food from strangers.
+Food allergies are quite common in children. **The CDC found that 5.8% of US children had a diagnosed food allergy in 2021**, about 1 in 17, according to its [National Health Interview Survey data brief](https://www.cdc.gov/nchs/products/databriefs/db459.htm). And this is especially important, considering that Halloween is the one night of the year when those kids collect food from strangers.
 
 The labels many of these manufacturers produce do not make it easy for kids who have such food allergies, like peanuts. The US law requires packaged food to name the major allergens it contains, but many **"may contain" warnings are voluntary and vary from one manufacturer to the next**, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. While this is a viable solution, plenty of hosts and houses would much rather want to hand out candy that every kid can eat.
 
-A lot of the candy you eat comes from **three** major corpoations.
+A lot of the candy you eat comes from **three** major corporations.
 
 **The Hershey Company** is known for their iconic chocolates and candies, including **Hershey's**, **Reese's**, **Hershey's Kisses**, **Jolly Rancher**, and **Kit Kat**. As previously discussed, Reese's Peanut Butter Cups are some of the most common type of candy kids receive during trick or treating, and they are built around peanut butter!
 
@@ -77,7 +77,9 @@ flowchart TD
 
 I set up a Databricks job that runs every day and stores the data in a **medallion architecture**, which organizes it into three layers: <span class="font-bold text-nvim-orange">bronze</span> pulls in the raw data from the sources unchanged, <span class="font-bold text-nvim-fg2">silver</span> cleans it and reads the allergens from each ingredient list, and <span class="font-bold text-nvim-yellow">gold</span> turns it into the results this post reports, such as each candy's allergen status and the allergy-safe bowls.
 
-The job starts by downloading the Kaggle datasets into two bronze tables, with every value kept as text: `bronze_candy_ranking`, with one row for each of the 85 candies in the vote, and `bronze_off_products`, with all 356,001 Open Food Facts products and their 163 columns. A second notebook archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
+The job starts by downloading the Kaggle datasets into two bronze tables, with every value kept as text: `bronze_candy_ranking`, with one row for each of the 85 candies in the vote, and `bronze_off_products`, with all 356,001 Open Food Facts products and their 163 columns.
+
+A second notebook then archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
 
 From there, **dbt** builds everything in **SQL**. The silver models clean types and whitespace, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 41 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
 
@@ -96,9 +98,9 @@ Each bowl holds the 10 most popular candies whose matched labels list none of th
 
 ### Peanuts cost the most, gluten the least
 
-**Every candy in the unrestricted top 10 is chocolate, and at least five of them list peanuts outright:** four Reese's products and Peanut Butter M&M's sit in that top 10, which is exactly why the peanut-free bowl loses so much. It keeps 78% of the popularity, and the whole top of the list changes.
+**Every candy in the unrestricted top 10 is chocolate, and at least five of them directly have peanuts in them:** four Reese's products and Peanut Butter M&M's sit in that top 10, which is exactly why the peanut-free bowl loses so much. It keeps 78% of the popularity, and none of the 10 candies in the unrestricted bowl make it in.
 
-**A gluten-free bowl barely suffers:** it keeps 88% and still leads with Reese's, because Reese's Peanut Butter Cups list no wheat. A milk-free bowl drops to 75%, since milk chocolate is off the table.
+**A gluten-free bowl loses the least popularity:** it keeps 88% and still leads with Reese's, because Reese's Peanut Butter Cups list no wheat. A milk-free bowl drops to 75%, because it excludes every milk chocolate candy, which removes all 10 candies in the unrestricted bowl.
 
 > The safest bowl is a bowl of gummies and fruit candy, and it still keeps about two-thirds of the popularity.
 
@@ -118,7 +120,7 @@ Each bowl holds the 10 most popular candies whose matched labels list none of th
 
 ## Matching candy names was the hard part
 
-The ranking says "Snickers". Open Food Facts has hundreds of products with "Snickers" in the name, including ice cream bars, protein bars and almond variants. **Joining the two datasets is the riskiest step in the whole pipeline, because a wrong match silently changes an allergy verdict.**
+The ranking says "Snickers". Open Food Facts has hundreds of products with "Snickers" in the name, including ice cream bars, protein bars and almond variants. **Joining the two datasets is the riskiest step in the whole pipeline, because a wrong match can change a candy's allergy status without causing any error.**
 
 I compared two approaches. Matching on the candy's name alone found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as Almond Joy coffee creamer, Twix yogurt and Mounds ice cream bars. Hand-written matching rules, stored as a dbt seed so they are reviewed like code, found 68 candies with no non-candy matches. The rules handle spellings like "KitKat" and "Mike and Ike", and exclude variants like Snickers Almond.
 
@@ -126,17 +128,17 @@ I compared two approaches. Matching on the candy's name alone found 53 of the 83
 
 **Butterfinger is made with peanuts, yet the first version of the peanut-free bowl included it:** the 2017 data had only three Butterfinger products. One was the bar itself, with no ingredient list. The other two were a caramel apple and a box of marshmallow squares "made with" Butterfinger, and their ingredient lists never mention peanuts.
 
-The fix came in two layers. **Products "made with" a candy no longer count as evidence for that candy**, and neither do caramel apples or other derived treats. And **the ranking itself flags candies made with peanuts or almonds**, so the pipeline now keeps every flagged candy out of peanut-free and nut-free bowls, no matter what the labels say. A dbt test enforces it on every run.
+The fix has two parts. **Products "made with" a candy no longer count as evidence for that candy**, and neither do caramel apples or other derived treats. And **the ranking itself flags candies made with peanuts or almonds**, so the pipeline now keeps every flagged candy out of peanut-free and nut-free bowls, no matter what the labels say. A dbt test enforces it on every run.
 
-The change feed later confirmed the guard was right: this week's Butterfinger labels list peanuts, milk and soy.
+The change feed later confirmed that this rule was correct: this week's Butterfinger labels list peanuts, milk and soy.
 
-### Two more traps
+### Two more matching bugs
 
 **Mixed packs make one candy look like it contains another candy's allergens:** a "Reese's & Kit Kat Halloween Candy Assortment" made Kit Kat look like it contains peanuts. Assortments and variety packs are now excluded.
 
-**A couple of bad records can override dozens of good ones:** the pipeline prefers US labels because US and European recipes differ. With the threshold at two products, Snickers' only two current US records (a popcorn listing named "Snickers" and a wrapper scan of customer-service text) outweighed 25 proper labels from other countries and made Snickers look peanut-free. US labels now decide only when there are at least three.
+**A couple of bad records can override dozens of good ones:** the pipeline prefers US labels because US and European recipes differ. With the threshold at two products, Snickers' only two current US records (a popcorn listing named "Snickers" and a wrapper scan of customer-service text) decided the result over 25 complete labels from other countries and made Snickers look peanut-free. US labels now decide only when there are at least three.
 
-> Every one of these bugs made a candy look safer than it is. In an allergy dataset, that is the direction that matters.
+> Every one of these bugs made a candy look safer than it is. In allergy data, that is the dangerous kind of error.
 
 ## Is the 2017 answer still true?
 
@@ -155,7 +157,7 @@ The bowls stay on the pinned 2017 data, so the results above are reproducible. T
 
 ## What this could mean for a real candy maker
 
-For a company like Hershey or Mars, the same pipeline shape could watch how their products appear in public food databases, flag listings that show the wrong allergens, and spot when a recipe change has not reached the crowdsourced data. For a host, it is simpler: **a peanut-free or nut-free bowl built from Starburst, Skittles, Sour Patch Kids and Swedish Fish gives up about a fifth of the popularity, not most of it.**
+For a company like Hershey or Mars, the same kind of pipeline could check how their products appear in public food databases, flag listings that show the wrong allergens, and spot when a recipe change has not reached the crowdsourced data. For a host, it is simpler: **a peanut-free or nut-free bowl built from Starburst, Skittles, Sour Patch Kids and Swedish Fish gives up about a fifth of the popularity, not most of it.**
 
 This is a demo, not a safety tool. The allergen parser reads English, French and German but not every phrasing, the 2017 data is old, and 62 candies do not yet have enough current labels to compare. **Always read the package label.**
 
