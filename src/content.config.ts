@@ -17,6 +17,8 @@ const blog = defineCollection({
     coverImage: z.string().optional(),
     // Muted gray line under the cover image
     coverCaption: z.string().optional(),
+    // Links one phrase of coverCaption, e.g. the photo source
+    coverCaptionLink: z.object({ text: z.string(), href: z.string().url() }).optional(),
     // Links one phrase of the post-page h1; `title` stays plain for tabs, cards, and previews
     titleLink: z.object({ text: z.string(), href: z.string().url() }).optional(),
   }),
