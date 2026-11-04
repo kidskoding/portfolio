@@ -112,6 +112,7 @@ export const experiences: Experience[] = [
     id: '13',
     company: 'VoiceOS (YC P25)',
     companyLogo: voiceosLogoIcon.src,
+    location: 'San Francisco Bay Area',
     startDate: 'Sep 2026',
     endDate: 'Present',
     duration: calculateDuration('Sep 2026', 'Present'),
