@@ -13,29 +13,23 @@ So why does moving the work there barely help?
 
 I built [CandyOps](https://github.com/kidskoding/candyops) to answer that question for a fictional candy maker. It is a small decision model that simulates a Halloween production week day by day and compares the ways a planner could recover from a breakdown. I expected the interesting answer to be about machines, overtime against transfer, **but the model kept pointing at a roll of bag film with pumpkins printed on it.**
 
-## Why Halloween is a hard week for snack makers
+## Why Halloween is a hard week for candy makers
 
-Halloween is one of the biggest selling seasons in the United States. The National Retail Federation, the largest US retail trade group, [forecast a record $13.1 billion in Halloween spending for 2025](https://nrf.com/media-center/press-releases/nrf-consumer-survey-finds-halloween-spending-to-reach-record-13-1-billion), with $3.9 billion of it on candy.
+Halloween is one of the biggest selling seasons in the United States. The National Retail Federation, the largest US retail trade group, [forecast a record $13.1 billion in Halloween spending for 2025](https://nrf.com/media-center/press-releases/nrf-consumer-survey-finds-halloween-spending-to-reach-record-13-1-billion), with $3.9 billion of it on candy. Most of that candy comes from a few large confectioners, and each of them builds products just for the season.
 
-The big snack companies sell products made only for the season, and two of the best-known snack companies show how far that goes.
+Hershey says it [captured 36.1% of US Halloween retail dollar sales in 2025](https://www.thehersheycompany.com/en_us/home/newsroom/blog/hersheyween-returns-how-hershey-defines-the-halloween-season.html), more than a third of the market. Its [brands](https://www.thehersheycompany.com/en_us/home/brands.html) include **Hershey's**, **Reese's**, **Kit Kat** in the US, **Jolly Rancher**, and **Twizzlers**. For Halloween 2026 it planned more than 150 million pounds of candy across 160 seasonal items, and its **Reese's Pumpkins** reach shelves as early as July.
 
-### PepsiCo
+Mars makes [chocolate and candy brands](https://www.mars.com/our-brands/mars-snacking) including **M&M's**, **Snickers**, **Twix**, **Skittles**, **Starburst**, and **Milky Way**. Its [2025 Halloween lineup](https://www.convenience.org/Media/Daily/2025/May/6/5-Mars-Reveals-Halloween-Candy-Lineup_Marketing) included **Snickers Pumpkins**, **M&M's Halloween Blend** in orange and black shells, **Skittles Shriekers**, and mixed variety packs of its fun-size bars.
 
-PepsiCo makes its snacks through its Frito-Lay division, whose [brands](https://www.pepsico.com/brands) include **Lay's**, **Doritos**, **Cheetos**, **Tostitos**, **Fritos**, and **Cracker Jack**. For Halloween it has released seasonal items such as [Cheetos Bag of Bones and Quaker Chewy Halloween Minis](https://snackandbakery.com/articles/112234-pepsico-brands-launch-spooky-season-snacks).
-
-### Mondelez
-
-Mondelez International makes cookies, crackers, chocolate, and candy, and its [brands](https://www.mondelezinternational.com/our-brands/) include **Oreo**, **Cadbury**, **Milka**, **Toblerone**, **Ritz**, **Chips Ahoy!**, and **Sour Patch Kids**. Its [2025 Halloween lineup in the UK](https://www.betterretailing.com/br/product-news/mondelez-unveils-halloween-2025-line-up/) included **Oreo Spooky** and treat-size sharing packs of **Cadbury** and **Sour Patch Kids**.
-
-### Why these products are hard to plan
+Mondelez International is best known in the US for **Oreo**, and its [candy brands](https://www.mondelezinternational.com/our-brands/) include **Cadbury**, **Milka**, **Toblerone**, and **Sour Patch Kids**. Its [2025 Halloween lineup in the UK](https://www.betterretailing.com/br/product-news/mondelez-unveils-halloween-2025-line-up/) included **Oreo Spooky** and treat-size sharing packs of **Cadbury** and **Sour Patch Kids**.
 
 **These products share two traits:** each one ships in packaging printed for the season, so the wrapper can't be swapped for a regular one, and they all have to reach store shelves before a date that never moves. If a packaging line breaks in late October, the planner has days rather than weeks to decide how to recover, and a wrong call leaves orders short or leaves holiday stock unsold after October 31.
 
 ## Where the data comes from
 
-No snack maker publishes its plant schedules, line rates, or inventory, so I generated the data myself. A seeded **Python** script in the repo writes the files a real plant's systems would export: customer orders and recipes from the planning system, line rates and downtime from the factory floor, stock and supplier deliveries from the warehouse, and good bags and rejects from quality checks. The same seed always produces the same files, so every number in this post can be reproduced.
+No candy maker publishes its plant schedules, line rates, or inventory, so I generated the data myself. A seeded **Python** script in the repo writes the files a real plant's systems would export: customer orders and recipes from the planning system, line rates and downtime from the factory floor, stock and supplier deliveries from the warehouse, and good bags and rejects from quality checks. The same seed always produces the same files, so every number in this post can be reproduced.
 
-**Everything here is synthetic:** the two factories, twelve retailers, orders, and costs are made up, and the costs are modeled rather than real savings. CandyOps is not affiliated with PepsiCo, Mondelez, or any other company, and it does not reflect any of their systems or data.
+**Everything here is synthetic:** the two factories, twelve retailers, orders, and costs are made up, and the costs are modeled rather than real savings. CandyOps is not affiliated with Hershey, Mars, Mondelez, or any other company, and it does not reflect any of their systems or data.
 
 ## The setup
 
@@ -141,7 +135,7 @@ A result like that is only worth writing about if the model is not quietly cheat
 
 The same code then runs on Databricks Free Edition as a three-step serverless job that turns simulated factory exports into scenario results, and the scenario results there match the local run exactly. That match does not prove the model is right, but it does show that moving to Spark changed none of the numbers.
 
-## What this could mean for a real snack maker
+## What this could mean for a real candy maker
 
 Large manufacturers already run planning software, and I don't know how any particular company handles a breakdown in late October. What a model like this adds is a way to ask the right question before committing hours: **how many of the spare hours can actually turn into bags on time, once film and trucks are counted?**
 
