@@ -85,7 +85,18 @@ From there, **dbt** builds everything in **SQL**. The silver models will clean d
 
 ## The results
 
-Each bowl holds the 10 most popular candies whose matched labels list none of the restricted allergens. The **unrestricted bowl** is the 10 most popular candies overall, with no allergens removed, and their average win rate in the vote is 76.3%. "Popularity kept" divides each restricted bowl's average win rate by that 76.3%, so a bowl that keeps 78% is about 22% less popular than the unrestricted one.
+### How to read the results
+
+The results use four measures. Each one is defined below, with a worked example from the data.
+
+| Measure | Definition | Example |
+|---|---|---|
+| Win rate | The percentage of a candy's head-to-head matchups that voters picked it. In each matchup, FiveThirtyEight showed a voter two randomly chosen candies and asked which one they would rather receive. The value comes from the dataset's `winpercent` column, based on about 269,000 matchups in total. | Reese's Peanut Butter Cups won 84.2% of their matchups, the highest of the 83 candies. |
+| Candies allowed | The number of the 83 ranked candies that pass a restriction. A candy passes when every restricted allergen has the status `not_listed`, based on at least two matched products with an ingredient list. Peanut-free and nut-free restrictions also exclude any candy FiveThirtyEight tags as containing peanuts or almonds. | 43 candies pass the peanut-free restriction. |
+| Bowl | The 10 candies with the highest win rate among the candies allowed. The **unrestricted bowl** applies no restriction, so it is simply the 10 candies with the highest win rate overall; its average win rate is 76.3%. | The peanut-free bowl starts with Starburst, Rolo, and Skittles. |
+| Popularity kept | A restricted bowl's average win rate divided by the unrestricted bowl's average win rate. | Peanut-free: 59.5% ÷ 76.3% = 78.0%. |
+
+**"Popularity kept" compares a bowl's average win rate with the unrestricted bowl's:** a value of 78% means the candies in the peanut-free bowl win their matchups, on average, about 22% less often than the candies in the unrestricted bowl. A value of 100% would mean a restriction costs no popularity at all.
 
 | Restriction | Candies allowed | Popularity kept | The bowl, most popular first |
 |---|---|---|---|
