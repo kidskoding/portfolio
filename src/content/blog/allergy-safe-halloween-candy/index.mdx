@@ -69,7 +69,7 @@ A record like this one, lowercased the way the matcher sees it, explains why:
 almond joy, gourmet coffee creamer, milk chocolate almond || international delight,  dean foods company
 ```
 
-The fix was a set of hand-written matching rules kept as a dbt seed, an include and exclude pattern per candy, plus a list of words that mark a product as not candy (`creamer`, `ice cream`, `cereal`, `made with`). With those rules CandyOps links 68 candies to 1,234 products, and none of them is a creamer.
+The fix was a set of hand-written matching rules kept as a dbt seed, an include and exclude pattern per candy, plus a list of words that mark a product as not candy (`creamer`, `ice cream`, `cereal`, `made with`). With those rules CandyOps links 68 candies to 1,217 products, and none of them is a creamer.
 
 > Joining two datasets is not a technical step you do once. It is a set of decisions about what counts as the same thing.
 
@@ -79,7 +79,7 @@ In an earlier run, the peanut-free bowl started with Nestle Butterfinger, a bar 
 
 **A bad join did not produce a slightly wrong number, but rather a peanut candy recommended to a kid with a peanut allergy:** the fix now rejects derived products like these, and a unit test now pins both product names so the mistake cannot come back. With the lookalikes gone, Butterfinger has no matched product with an ingredient list in this snapshot, so it is marked unknown and stays out of every restricted bowl.
 
-There is now a second guard that does not depend on matching at all. FiveThirtyEight's ranking already tags each candy as peanut or almond, so the peanut-free and nut-free bowls drop every tagged candy before they look at a single label.
+There is now a second guard that does not depend on matching at all. FiveThirtyEight's ranking already tags each candy as peanut or almond, so the peanut-free and nut-free bowls drop every tagged candy before they look at a single label. Newer Open Food Facts records later confirmed the guard was right: Butterfinger's current labels list peanuts, milk, and soy.
 
 ## Lesson 3: Unknown has to mean excluded
 
@@ -110,7 +110,7 @@ For candy makers and retailers, the project shows how much depends on clean, str
 
 ## What this model does not tell you
 
-Both datasets are 2017 snapshots, and recipes have changed since then. The allergen parser reads common English, French, and German ingredient terms, not every phrasing, and the popularity numbers come from an online vote rather than sales. **This is a data project, not medical advice: always read the package label before handing candy to a kid with a food allergy.**
+Both datasets are 2017 snapshots, and recipes change. CandyOps now also loads the Open Food Facts daily change feed to check whether the 2017 answer still holds: of the 21 candies with enough current label data to compare, 12 had at least one allergen status change, so treat the bowls as a starting point and check the labels on shelves now. The allergen parser reads common English, French, and German ingredient terms, not every phrasing, and the popularity numbers come from an online vote rather than sales. **This is a data project, not medical advice: always read the package label before handing candy to a kid with a food allergy.**
 
 ## What I'm taking from this
 
