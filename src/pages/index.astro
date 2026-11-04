@@ -56,7 +56,10 @@ import anirudhProfileImg from '../assets/anirudh.jpeg';
 <script>
   const LAUNCHED_KEY = 'nvim:launched';
   const OPENED_KEY = 'nvim:opened-buffers';
-  const KEEP_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'Tab', 'Enter', ':', '?', ' ']);
+  const KEEP_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'Tab', 'Enter', ':', '?']);
+  // Leader mappings (space e, space ff) leave the intro up; timeout matches PENDING_TIMEOUT in NvimChrome.astro
+  const LEADER_TIMEOUT = 900;
+  const LEADER_PREFIXES = new Set(['f', 'b']);
 
   // nvim clears its intro on the first key; scrolling or clicking an empty buffer does nothing
   function initIntro() {
@@ -75,11 +78,20 @@ import anirudhProfileImg from '../assets/anirudh.jpeg';
         if (!opened.includes('/')) sessionStorage.setItem(OPENED_KEY, JSON.stringify([...opened, '/']));
       } catch {}
     };
+    let leaderAt = -Infinity;
     document.addEventListener(
       'keydown',
       (e) => {
         if (e.ctrlKey || e.metaKey || e.altKey || KEEP_KEYS.has(e.key)) return;
         if ((e.target as Element | null)?.closest?.('input, textarea')) return;
+        if (e.key === ' ') {
+          leaderAt = e.timeStamp;
+          return;
+        }
+        if (e.timeStamp - leaderAt < LEADER_TIMEOUT) {
+          leaderAt = LEADER_PREFIXES.has(e.key) ? e.timeStamp : -Infinity;
+          return;
+        }
         dismiss();
       },
       { signal },
