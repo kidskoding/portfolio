@@ -34,11 +34,15 @@ A lot of the candy you eat comes from **three** major corporations.
 
 candyops combines two public datasets from Kaggle that were collected separately and share no common ID, plus a third live source that keeps the results up to date.
 
+In Table 1.1, each of the three sources is listed with what it holds and its size.
+
 | Source | What it holds | Size |
 |---|---|---|
 | [FiveThirtyEight's Ultimate Halloween Candy Power Ranking](https://www.kaggle.com/datasets/fivethirtyeight/the-ultimate-halloween-candy-power-ranking) | How often each candy won a head-to-head vote | 85 entries from about 269,000 matchups |
 | [Open Food Facts (world-food-facts)](https://www.kaggle.com/datasets/openfoodfacts/world-food-facts) | Ingredients, allergens, sugar and serving size of packaged foods | 356,001 products x 163 columns, about 1 GB |
 | [Open Food Facts daily change feed](https://static.openfoodfacts.org/data/delta/index.txt) | Every product edited each day | 98,694 edits in its first two weeks |
+
+<p class="text-sm text-nvim-gray -mt-4">Table 1.1: The three data sources candyops combines, what each one holds, and its size.</p>
 
 **FiveThirtyEight** was a data journalism site, where its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again.
 
@@ -87,7 +91,7 @@ From there, **dbt** builds everything in **SQL**. The silver models will clean d
 
 ### How to read the results
 
-The results use four measures. Each one is defined below, with a worked example from the data.
+In Table 1.2, each of the four measures the results use is defined, with a worked example from the data.
 
 | Measure | Definition | Example |
 |---|---|---|
@@ -96,7 +100,11 @@ The results use four measures. Each one is defined below, with a worked example 
 | Bowl | The 10 candies with the highest win rate among the candies allowed. The **unrestricted bowl** applies no restriction, so it is simply the 10 candies with the highest win rate overall; its average win rate is 76.3%. | The peanut-free bowl starts with Starburst, Rolo, and Skittles. |
 | Popularity kept | A restricted bowl's average win rate divided by the unrestricted bowl's average win rate. | Peanut-free: 59.5% ÷ 76.3% = 78.0%. |
 
+<p class="text-sm text-nvim-gray -mt-4">Table 1.2: Definitions of the four measures used in the results, each with a worked example from the data.</p>
+
 **"Popularity kept" compares a bowl's average win rate with the unrestricted bowl's:** a value of 78% means the candies in the peanut-free bowl win their matchups, on average, about 22% less often than the candies in the unrestricted bowl. A value of 100% would mean a restriction costs no popularity at all.
+
+In Table 1.3, each allergy restriction is shown with the number of candies allowed, the popularity kept, and the resulting bowl.
 
 | Restriction | Candies allowed | Popularity kept | The bowl, most popular first |
 |---|---|---|---|
@@ -106,6 +114,8 @@ The results use four measures. Each one is defined below, with a worked example 
 | Nut-free | 41 | 77.1% | Starburst, Rolo, Skittles, Sour Patch Kids, Junior Mints, Haribo Gold-Bears, Nerds, Skittles Wild Berry, Swedish Fish, Lifesavers Big Ring Gummies |
 | Milk-free | 30 | 74.6% | Starburst, Skittles, Sour Patch Kids, Haribo Gold-Bears, Nerds, Skittles Wild Berry, Swedish Fish, Lifesavers Big Ring Gummies, Airheads, Haribo Sour Bears |
 | Free of all six | 18 | 68.7% | Skittles, Sour Patch Kids, Haribo Gold-Bears, Skittles Wild Berry, Swedish Fish, Lifesavers Big Ring Gummies, Haribo Sour Bears, Welch's Fruit Snacks, Runts, Dots |
+
+<p class="text-sm text-nvim-gray -mt-4">Table 1.3: The 10-candy bowl for each allergy restriction, with the number of candies allowed and the share of the unrestricted bowl's popularity it keeps.</p>
 
 ### Peanuts cost the most, gluten the least
 
@@ -119,6 +129,8 @@ The results use four measures. Each one is defined below, with a worked example 
 
 ### What the top candies actually contain
 
+In Table 1.4, five of the most popular candies are shown with their status for each allergen.
+
 | Candy | Win rate | Peanut | Tree nut | Milk | Gluten | Soy | Egg |
 |---|---|---|---|---|---|---|---|
 | Reese's Peanut Butter Cup | 84.2% | contains | not listed | contains | not listed | contains | not listed |
@@ -127,13 +139,15 @@ The results use four measures. Each one is defined below, with a worked example 
 | Snickers | 76.7% | contains | varies | contains | varies | contains | varies |
 | Milky Way | 73.1% | may contain | may contain | contains | contains | contains | varies |
 
+<p class="text-sm text-nvim-gray -mt-4">Table 1.4: Allergen status of five of the most popular candies, based on their matched Open Food Facts labels.</p>
+
 `varies` means some matched products list the allergen and others do not, usually because the same bar is made with different recipes in different countries.
 
 ## Matching candy names was the hard part
 
 The ranking says "Snickers". Open Food Facts has hundreds of products with "Snickers" in the name, including ice cream bars, protein bars and almond variants. **Joining the two datasets is the riskiest step in the whole pipeline, because a wrong match can change a candy's allergy status without causing any error.**
 
-I compared two approaches: matching on the candy's name alone found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as Almond Joy coffee creamer, Twix yogurt and Mounds ice cream bars. Hand-written matching rules, stored as a dbt seed so they are reviewed like code, found 68 candies with no non-candy matches. The rules handle spellings like "KitKat" and "Mike and Ike", and exclude variants like Snickers Almond.
+I compared two approaches: matching on the candy's name alone, and hand-written matching rules stored as a dbt seed so they are reviewed like code. Name matching found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as an Almond Joy coffee creamer and a Hershey's ice cream bar. The hand-written rules found 68 candies with no non-candy matches, because they handle spellings like "KitKat" and "Mike and Ike" and exclude variants like Snickers Almond.
 
 ## The data almost said Butterfinger was peanut-free
 
@@ -155,12 +169,16 @@ The change feed later confirmed that this rule was correct: this week's Butterfi
 
 Both Kaggle files are from 2017, so the obvious question is whether the labels on shelves today still agree. The daily change feed answers it. Its first two weeks held 98,694 product edits, 348 of them for ranked candies, and 21 candies had at least two current products with ingredient lists:
 
+In Table 1.5, the 83 candies are grouped by how their allergen status in the 2017 data compares with their current labels.
+
 | Each candy, 2017 vs now | Candies |
 |---|---|
 | At least one allergen status changed | 12 |
 | All compared allergens unchanged | 7 |
 | Newly covered (too little 2017 data) | 2 |
 | Not enough current data yet | 62 |
+
+<p class="text-sm text-nvim-gray -mt-4">Table 1.5: How each candy's allergen status in the 2017 data compares with its current labels from the daily change feed.</p>
 
 **Most changes add allergen warnings rather than remove them:** Snickers and Milky Way moved from `varies` to `contains` for egg, which matches their egg-white nougat. Hershey's milk chocolate now carries a tree-nut "may contain" warning that the 2017 records did not show. Butterfinger, unknown in 2017, now has labels that list peanuts, milk and soy.
 
