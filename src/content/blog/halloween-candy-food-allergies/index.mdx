@@ -10,7 +10,7 @@ coverCaptionLink: { text: "Pexels", href: "https://www.pexels.com/photo/candies-
 
 If you had gone trick-or-treating anytime during your youth, chances are you came home with a lot of **Reese's Peanut Butter Cups**. They are pretty much everywhere. An [Instacart report on its 2025 orders](https://www.chowhound.com/2299896/best-selling-halloween-candy-america-reeses/) found that Reese's was the No. 1 candy sold in 40 of the 50 states, plus Washington, D.C.
 
-**That is a real problem for a kid with a peanut allergy, because the most popular candy in the bowl is the one they cannot eat.**
+**This is a major issue for those kids who may have a peanut allergy, because the most popular candy in the bowl is the one they cannot eat.**
 
 With Halloween coming up this year, I was curious to see what the best bowl looks like when it has to be safe, and how much a host gives up on buying certain candies to make it safe for all children.
 
@@ -18,17 +18,17 @@ So I built **candyops**, a data pipeline on Databricks and dbt that answers one 
 
 ## Why this matters
 
-Food allergies are quite common in children. **The CDC found that 5.8% of US children had a diagnosed food allergy in 2021**, about 1 in 17, according to its [National Health Interview Survey data brief](https://www.cdc.gov/nchs/products/databriefs/db459.htm). Halloween is the one night of the year when those kids collect food from strangers.
+Food allergies are quite common in children. **The CDC found that 5.8% of US children had a diagnosed food allergy in 2021**, about 1 in 17, according to its [National Health Interview Survey data brief](https://www.cdc.gov/nchs/products/databriefs/db459.htm). And this is especially important, considering that halloween is the one night of the year when those kids collect food from strangers.
 
-The labels do not make it easy. US law requires packaged food to name the major allergens it contains, but **"may contain" warnings are voluntary and vary from one manufacturer to the next**, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. That works, but plenty of hosts still want to hand out candy that every kid can eat.
+The labels many of these manufacturers produce do not make it easy for kids who have such food allergies, like peanuts. The US law requires packaged food to name the major allergens it contains, but many **"may contain" warnings are voluntary and vary from one manufacturer to the next**, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. While this is a viable solution, plenty of hosts and houses would much rather want to hand out candy that every kid can eat.
 
-Three companies make most of the candy in this story.
+A lot of the candy you eat comes from **three** major corpoations.
 
-**The Hershey Company** makes **Reese's**, **Hershey's Kisses** and, in the US, **Kit Kat**. Reese's Peanut Butter Cups took first place in the vote this project uses, and they are built around peanut butter.
+**The Hershey Company** is known for their iconic chocolates and candies, including **Hershey's**, **Reese's**, **Hershey's Kisses**, **Jolly Rancher**, and **Kit Kat**. As previously discussed, Reese's Peanut Butter Cups are some of the most common type of candy kids receive during trick or treating, and they are built around peanut butter!
 
-**Mars** makes **Snickers**, **M&M's**, **Twix**, **Milky Way**, **Skittles** and **Starburst**. Its chocolate bars sit near the top of the vote; its fruit candies show up again later in this post.
+**Mars** is known for their iconic chocolates and candies, including **Snickers**, **M&M's**, **Twix**, **3 Musketeers**, **Milky Way**, **Skittles** and **Starburst**. Its chocolate bars sit near the top of the vote; its fruit candies show up again later in this post.
 
-**Ferrara**, part of Ferrero, makes **Butterfinger**, **Baby Ruth**, **100 Grand** and **Nerds**, brands [Ferrero bought from Nestlé's US candy business in 2018](https://www.ferrero.com/news/ferrero-to-acquire-nestle-s-us-confectionary-business). Butterfinger plays a central role later, because the data nearly got it wrong.
+**Ferrero** is known for their iconic confections, including **Ferrero Rocher**, **Nutella**, and **Kinder Joy**. They also own many iconic chocolates and candies that are very common during the Halloween season, like **Butterfinger**, **Baby Ruth**, **100 Grand**, and **Nerds**. Later on, we will discuss how Butterfinger plays a central role, as the data nearly labeled it peanut-free, even though it is made with peanuts.
 
 ## The data
 
