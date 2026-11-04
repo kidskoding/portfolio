@@ -28,7 +28,7 @@ A lot of the candy you eat comes from **three** major corpoations.
 
 **Mars** is known for their iconic chocolates and candies, including **Snickers**, **M&M's**, **Twix**, **3 Musketeers**, **Milky Way**, **Skittles** and **Starburst**. Its lineup covers both kinds of candy in a Halloween bowl: chocolate bars like Snickers and Twix, made with milk chocolate, and fruit candies like Skittles and Starburst, made without chocolate or nuts. That difference matters later, because the fruit candies are what remain once the common allergens are removed.
 
-**Ferrero** is known for their iconic confections, including **Ferrero Rocher**, **Nutella**, and **Kinder Joy**. They also own many iconic chocolates and candies that are very common during the Halloween season, like **Butterfinger**, **Baby Ruth**, **100 Grand**, and **Nerds**. Later on, we will see how Butterfinger exposed the biggest risk in this project, where the data nearly labeled it peanut-free, even though it is made with peanuts.
+**Ferrero** is known for their iconic chocolatey confections, including **Ferrero Rocher**, **Nutella**, and **Kinder Joy**. They also own many iconic chocolates and candies that are very common during the Halloween season, like **Butterfinger**, **Baby Ruth**, **100 Grand**, and **Nerds**. Later on, we will see how Butterfinger exposed the biggest risk in this project, where the data nearly labeled it peanut-free, even though it is made with peanuts.
 
 ## The data
 
@@ -40,7 +40,9 @@ candyops combines two public datasets from Kaggle that were collected separately
 | [Open Food Facts (world-food-facts)](https://www.kaggle.com/datasets/openfoodfacts/world-food-facts) | Ingredients, allergens, sugar and serving size of packaged foods | 356,001 products x 163 columns, about 1 GB |
 | [Open Food Facts daily change feed](https://static.openfoodfacts.org/data/delta/index.txt) | Every product edited each day | 98,694 edits in its first two weeks |
 
-**FiveThirtyEight** was a data journalism site; its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again. **Open Food Facts** is a nonprofit, crowdsourced database of food labels that anyone can edit. Both Kaggle files are 2017 snapshots, and the pipeline pins their versions so every run reads exactly the same data.
+**FiveThirtyEight** was a data journalism site, where its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again.
+
+**Open Food Facts** is a nonprofit, crowdsourced database of food labels that anyone can edit. Both Kaggle files are 2017 snapshots, and the pipeline pins their versions so every run reads exactly the same data.
 
 This is one real row from Open Food Facts, a US pack of Reese's Peanut Butter Cups:
 
@@ -73,7 +75,9 @@ flowchart TD
   G --> D["dashboard + MLflow"]
 ```
 
-A Databricks job runs every morning. A **Python** notebook downloads the Kaggle files into bronze tables unchanged, as strings. A second notebook archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
+I set up a Databricks job that runs every day and stores the data in a **medallion architecture**, which organizes it into three layers: <span class="font-bold text-nvim-orange">bronze</span> keeps the raw files exactly as downloaded, <span class="font-bold text-nvim-fg2">silver</span> holds cleaned and checked tables, and <span class="font-bold text-nvim-yellow">gold</span> holds the final tables used for the analysis and conclusions.
+
+The job starts by downloading the Kaggle datasets into two bronze tables, with every value kept as text: `bronze_candy_ranking`, with one row for each of the 85 candies in the vote, and `bronze_off_products`, with all 356,001 Open Food Facts products and their 163 columns. A second notebook archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
 
 From there, **dbt** builds everything in **SQL**. The silver models clean types and whitespace, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 41 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
 
