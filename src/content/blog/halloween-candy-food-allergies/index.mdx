@@ -75,7 +75,7 @@ flowchart TD
   G --> D["dashboard + MLflow"]
 ```
 
-I set up a Databricks job that runs every day and stores the data in a **medallion architecture**, which organizes it into three layers: <span class="font-bold text-nvim-orange">bronze</span> keeps the raw files exactly as downloaded, <span class="font-bold text-nvim-fg2">silver</span> fixes the data types, removes duplicate products, matches products to candies, and reads the allergens from each ingredient list, and <span class="font-bold text-nvim-yellow">gold</span> holds the finished results this post reports, such as each candy's allergen status and the allergy-safe bowls.
+I set up a Databricks job that runs every day and stores the data in a **medallion architecture**, which organizes it into three layers: <span class="font-bold text-nvim-orange">bronze</span> pulls in the raw data from the sources unchanged, <span class="font-bold text-nvim-fg2">silver</span> cleans it and reads the allergens from each ingredient list, and <span class="font-bold text-nvim-yellow">gold</span> turns it into the results this post reports, such as each candy's allergen status and the allergy-safe bowls.
 
 The job starts by downloading the Kaggle datasets into two bronze tables, with every value kept as text: `bronze_candy_ranking`, with one row for each of the 85 candies in the vote, and `bronze_off_products`, with all 356,001 Open Food Facts products and their 163 columns. A second notebook archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
 
