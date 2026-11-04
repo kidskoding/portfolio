@@ -53,7 +53,7 @@ For each restriction, CandyOps builds a bowl of the 10 most popular candies whos
 | Milk-free | 30 | 74.6% | Starburst, Skittles, Sour Patch Kids |
 | Free of all six | 18 | 68.7% | Skittles, Sour Patch Kids, Haribo Gold Bears |
 
-**A peanut-free bowl keeps 78% of the popularity of the best possible bowl, and a bowl safe for all six allergens (peanut, tree nut, milk, gluten, soy, and egg) still keeps 68.7%.** That surprised me, because the top of the ranking is almost all peanut butter and chocolate, yet fruity candy like Skittles and Starburst holds up well in the vote.
+**A peanut-free bowl keeps 78% of the popularity of the best possible bowl, and a bowl safe for all six allergens (peanut, tree nut, milk, gluten, soy, and egg) still keeps 68.7%:** that surprised me, because the top of the ranking is almost all peanut butter and chocolate, yet fruity candy like Skittles and Starburst holds up well in the vote.
 
 ## Lesson 1: The join is the hard part
 
@@ -73,11 +73,11 @@ The fix was a set of hand-written matching rules kept as a dbt seed, one regular
 
 In an earlier run, the peanut-free bowl started with **Nestle Butterfinger**, a bar made with peanut butter. The pipeline had not misread an ingredient list. Instead, the matching rules had linked Butterfinger to products like "crispy marshmallow squares made with Nestle Butterfinger" and a "gourmet Butterfinger caramel apple," whose labels describe the dessert rather than the bar, and none of them listed peanuts.
 
-**A bad join did not produce a slightly wrong number, but rather a peanut candy recommended to a kid with a peanut allergy.** The fix rejects derived products like these, and a unit test now pins both product names so the mistake cannot come back. With the lookalikes gone, Butterfinger has no matched product with an ingredient list in this snapshot, so it is marked unknown and stays out of every restricted bowl.
+**A bad join did not produce a slightly wrong number, but rather a peanut candy recommended to a kid with a peanut allergy:** the fix now rejects derived products like these, and a unit test now pins both product names so the mistake cannot come back. With the lookalikes gone, Butterfinger has no matched product with an ingredient list in this snapshot, so it is marked unknown and stays out of every restricted bowl.
 
 ## Lesson 3: Unknown has to mean excluded
 
-Crowdsourced data has holes, and the safe way to handle a hole depends on what the answer is used for. **CandyOps counts a candy as safe only when every restricted allergen is missing from at least two matched products with an ingredient list.** Only 59 of the 83 candies have that much evidence, so a candy like Reese's Stuffed with Pieces, which matched no products at all, never enters a restricted bowl.
+Crowdsourced data has holes, and the safe way to handle a hole depends on what the answer is used for. **CandyOps counts a candy as safe only when every restricted allergen is missing from at least two matched products with an ingredient list:** only 59 of the 83 candies have that much evidence, so a candy like Reese's Stuffed with Pieces, which matched no products at all, never enters a restricted bowl.
 
 The same caution applies to recipes. A bar sold in the US and in Europe can have different ingredients, so CandyOps uses US products whenever at least two have ingredient lists and only falls back to every country when it has to. **The pipeline gives up popularity to avoid guessing**, which is the right trade for a question about kids' health.
 
@@ -108,10 +108,10 @@ Both datasets are 2017 snapshots, and recipes have changed since then. The aller
 
 ## What I'm taking from this
 
-- **Treat the join as the riskiest step.** Matching records across datasets is where silent errors enter.
-- **Write the safety rule down as a test.** A rule that only lives in your head stops protecting anyone after the next change.
-- **Let unknown mean excluded when the stakes are high.** Missing evidence is not evidence of safety.
-- **Look at the mistakes in the bottom of the data, not only the totals.** A creamer and a caramel apple were enough to put Butterfinger in the wrong bowl.
+- **Treat the join as the riskiest step:** matching records across datasets is where silent errors enter.
+- **Write the safety rule down as a test:** a rule that only lives in your head stops protecting anyone after the next change.
+- **Let unknown mean excluded when the stakes are high:** missing evidence is not evidence of safety.
+- **Look at the mistakes in the bottom of the data, not only the totals:** a creamer and a caramel apple were enough to put Butterfinger in the wrong bowl.
 
 I started this project thinking the work would be in Spark and dbt, and it turned out to be in deciding what counts as the same candy.
 
