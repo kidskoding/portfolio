@@ -82,8 +82,8 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     <p class="line">
       <span class="verb-type">click</span>
       <span class="verb-tap">tap</span> on a row above, or pick a file from{' '}
-      <button type="button" class="tree-chip" data-nvim-cmd="NvimTreeFocus">
-        ☰ NvimTree
+      <button type="button" class="tree-chip" data-nvim-cmd="NvimTreeToggle">
+        ☰ Explorer
       </button>
     </p>
   </div>
@@ -106,7 +106,7 @@ const pad = (cmd: string) => ' '.repeat(cmdWidth - `:${cmd}<Enter>`.length);
     font: inherit;
     cursor: pointer;
   }
-  /* Same as the titlebar ☰ NvimTree button */
+  /* Same as the titlebar ☰ Explorer button */
   .tree-chip:hover {
     color: var(--color-nvim-yellow);
     border-color: var(--color-nvim-yellow);
