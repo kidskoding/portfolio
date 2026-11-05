@@ -17,6 +17,7 @@ import {
 // Where the popup points: the hovered dot, or the spot where the mouse entered a bar. It stays there until the mouse
 // moves to another mark, so the popup does not chase the cursor. top/bottom are the mark's edges for placing it.
 let anchor: { key: string; x: number; top: number; bottom: number } | null = null;
+let toggleLegend: any;
 (Tooltip.positioners as any).anchored = function (this: any, elements: any[], position: { x: number; y: number }) {
   if (!elements.length) {
     anchor = null;
@@ -93,7 +94,7 @@ const GAP = { x: null, y: null };
 
 const token = (name: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(`--color-nvim-${name}`).trim();
-const COLOR: Record<string, string> = { red: 'red', aqua: 'aqua', gray: 'fg3', fg2: 'fg2' };
+const COLOR: Record<string, string> = { red: 'orange', aqua: 'aqua', gray: 'fg3', fg2: 'fg2' };
 const color = (key: string) => token(COLOR[key] ?? key);
 
 function setDefaults() {
@@ -130,6 +131,9 @@ function setDefaults() {
     if (target) target.style.cursor = els.length ? 'pointer' : 'default';
   };
   const legend = Chart.defaults.plugins.legend;
+  // legends are static keys; only the scatter opts back into click-to-toggle
+  toggleLegend = legend.onClick;
+  legend.onClick = () => {};
   legend.position = 'top';
   legend.align = 'start';
   legend.labels.usePointStyle = true;
@@ -462,7 +466,12 @@ function scatter(data: Json, o: Json): ChartConfiguration {
       },
       plugins: {
         tooltip: { filter: (item: any) => item.dataset.label !== 'Average win rate' },
-        legend: { labels: { filter: (item: any) => item.text !== 'Average win rate' } },
+        legend: {
+          onClick: toggleLegend,
+          onHover: (e: any) => (e.native.target.style.cursor = 'pointer'),
+          onLeave: (e: any) => (e.native.target.style.cursor = 'default'),
+          labels: { filter: (item: any) => item.text !== 'Average win rate' },
+        },
         callouts: { items: o.narrow ? [] : pts.filter((p) => p.label).map((p) => ({ x: p.x, y: p.y, ...p.label })) },
       } as any,
     },
