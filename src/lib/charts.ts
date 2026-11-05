@@ -94,7 +94,7 @@ const GAP = { x: null, y: null };
 
 const token = (name: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(`--color-nvim-${name}`).trim();
-const COLOR: Record<string, string> = { red: 'orange', aqua: 'aqua', gray: 'fg3', fg2: 'fg2' };
+const COLOR: Record<string, string> = { red: 'orange', aqua: 'blue', gray: 'fg3', fg2: 'fg2' };
 const color = (key: string) => token(COLOR[key] ?? key);
 
 function setDefaults() {
