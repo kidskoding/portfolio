@@ -14,13 +14,13 @@ If you had gone trick-or-treating anytime during your youth, chances are you cam
 
 With Halloween coming up this year, I was curious to see what the best bowl looks like when it has to be safe, and how much a household gives up on buying certain candies to make it safe for all children.
 
-So I built [**candyops**](https://github.com/kidskoding/candyops), a data pipeline on Databricks and dbt that answers one question: **for each common food allergy, which 10 popular candies can you still hand out, and how much less popular is that bowl than one with no allergy restrictions?**
+So I built [**candyops**](https://github.com/kidskoding/candyops), a data pipeline that answers one question: **for each common food allergy, which 10 popular candies can you still hand out, and how much less popular is that bowl than one with no allergy restrictions?** It then goes one step further and asks what a household can actually do about it.
 
 ## Why this matters
 
 Food allergies are quite common in children. **The CDC found that 5.8% of US children had a diagnosed food allergy in 2021**, about 1 in 17, according to its [National Health Interview Survey data brief](https://www.cdc.gov/nchs/products/databriefs/db459.htm). And this is especially important, considering that Halloween is the one night of the year when those kids collect food from strangers.
 
-The labels many of these manufacturers produce do not make it easy for kids who have such food allergies, like peanuts. The US law requires packaged food to name the major allergens it contains, but many **"may contain" warnings are voluntary and vary from one manufacturer to the next**, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. While this is a viable solution, plenty of households would much rather want to hand out candy that every kid can eat.
+Candy labels do not make this easy for kids with food allergies. The US law requires packaged food to name the major allergens it contains, but many **"may contain" warnings are voluntary and vary from one manufacturer to the next**, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. While this is a viable solution, plenty of households would much rather want to hand out candy that every kid can eat.
 
 A lot of the candy you eat comes from **three** major corporations:
 
@@ -32,7 +32,7 @@ A lot of the candy you eat comes from **three** major corporations:
 
 ## The data
 
-I combined two public datasets from Kaggle that were collected separately and share no common ID, plus a third live source that keeps the results up to date.
+I combined two public datasets from Kaggle, a website where people share free datasets, that were collected separately and share no common ID, plus a third live source that keeps the results up to date.
 
 In **Table 1.1**, each of the three sources is listed with what it holds and its size.
 
@@ -44,9 +44,9 @@ In **Table 1.1**, each of the three sources is listed with what it holds and its
 
 <p class="text-sm text-nvim-gray -mt-4 text-center">Table 1.1: The three data sources candyops combines, what each one holds, and its size.</p>
 
-**FiveThirtyEight** was a data journalism site, where its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again.
+**FiveThirtyEight** was a data journalism site, where its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again. Besides each candy's win rate, the dataset tags every candy with yes-or-no traits (chocolate, fruity, caramel, peanut or almond, nougat, crisped rice or wafer, hard candy, bar, and many pieces per bag) and ranks how sugary and how expensive it is compared with the others.
 
-**Open Food Facts** is a nonprofit, crowdsourced database of food labels that anyone can edit. Both Kaggle files are 2017 snapshots, and the pipeline pins their versions so every run reads exactly the same data.
+**Open Food Facts** is a nonprofit, crowdsourced database of food labels that anyone can edit. Both Kaggle files are 2017 snapshots, and the pipeline pins their versions, which means it always downloads the same version of each file, so every run reads exactly the same data.
 
 This is one real row from Open Food Facts, a US pack of Reese's Peanut Butter Cups:
 
@@ -81,15 +81,15 @@ flowchart TD
   O --> D
 ```
 
-I set up a Databricks job that runs every day and stores the data in a **medallion architecture**, which organizes it into three layers: <span class="font-bold text-nvim-orange">bronze</span> pulls in the raw data from the sources unchanged, <span class="font-bold text-nvim-fg2">silver</span> cleans it and reads the allergens from each ingredient list, and <span class="font-bold text-nvim-yellow">gold</span> turns it into the results this post reports, such as each candy's allergen status and the allergy-safe bowls.
+The pipeline runs on **Databricks**, a cloud platform for processing large datasets with Spark and SQL. Raw files land in a **Unity Catalog volume**, which is Databricks' managed storage for files, so the downloads are kept between runs. I set up a Databricks job that runs every day and stores the data in a **medallion architecture**, which organizes it into three layers: <span class="font-bold text-nvim-orange">bronze</span> pulls in the raw data from the sources unchanged, <span class="font-bold text-nvim-fg2">silver</span> cleans it and reads the allergens from each ingredient list, and <span class="font-bold text-nvim-yellow">gold</span> turns it into the results this post reports, such as each candy's allergen status and the allergy-safe bowls.
 
 The job starts by downloading the Kaggle datasets into two bronze tables, with every value kept as text: `bronze_candy_ranking`, with one row for each of the 85 candies in the vote, and `bronze_off_products`, with all 356,001 Open Food Facts products and their 163 columns.
 
 A second notebook then archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
 
-From there, **dbt** builds everything in **SQL**. The silver models will clean data types and whitespace within the data, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 51 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
+From there, **dbt** (data build tool) builds everything in **SQL**: each table is a SQL file called a model, and dbt runs the models in the right order and checks each one with tests. The silver models will clean data types and whitespace within the data, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 51 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
 
-**The last step goes beyond cleaning and reporting:** it turns the gold tables into decisions. Two more dbt models rebuild every bowl with and without accepting "may contain" warnings, and find the most similar safe candy for each favorite. A Python step then runs a small optimization that picks the one bowl that gives the most trick-or-treaters a favorite they can eat, and logs each run's inputs and results to **MLflow** so runs can be compared over time.
+**The last step goes beyond cleaning and reporting:** it turns the gold tables into decisions. Two more dbt models rebuild every bowl with and without accepting "may contain" warnings, and find the most similar safe candy for each favorite. A Python step then runs a small optimization that picks the one bowl that gives the most trick-or-treaters a favorite they can eat, and logs each run's inputs and results to **MLflow**, a tool for recording experiments, so runs can be compared over time.
 
 ## The results
 
@@ -112,7 +112,7 @@ In **Table 1.2**, each of the four measures the results use is defined, with a w
 
 ### The most popular candies carry the most allergens
 
-The Reese's problem from the start of this post is not a one-off. In **Figure 1.1**, each of the 59 candies with at least two labeled products is plotted by how many of the six allergens its label lists and how often it won its matchups.
+The Reese's problem from the start of this post is not a one-off. In **Figure 1.1**, each of the 59 candies with at least two matched products that have an ingredient list is plotted (the other 24 candies do not have enough label data to judge) by how many of the six allergens its label lists and how often it won its matchups.
 
 <img
   src="/blog/halloween-candy-food-allergies/fig1_allergens_vs_popularity.png"
@@ -262,9 +262,11 @@ The optimization stops at one safe candy because allergic kids are a small share
 
 ## Matching candy names was the hard part
 
+Every result above depends on linking each candy in the vote to the right products in Open Food Facts, so this is where most of the work went.
+
 The ranking says "Snickers". Open Food Facts has hundreds of products with "Snickers" in the name, including ice cream bars, protein bars and almond variants. **Joining the two datasets is the riskiest step in the whole pipeline, because a wrong match can change a candy's allergy status without causing any error.**
 
-I compared two approaches: matching on the candy's name alone, and hand-written matching rules stored as a dbt seed so they are reviewed like code. Name matching found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as an Almond Joy coffee creamer and a Hershey's ice cream bar. The hand-written rules found 68 candies with no non-candy matches, because they handle spellings like "KitKat" and "Mike and Ike" and exclude variants like Snickers Almond.
+I compared two approaches: matching on the candy's name alone, and hand-written matching rules stored as a dbt seed, a small CSV file that lives in the repository, so the rules are reviewed like code. Name matching found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as an Almond Joy coffee creamer and a Hershey's ice cream bar. The hand-written rules found 68 candies with no non-candy matches, because they handle spellings like "KitKat" and "Mike and Ike" and exclude variants like Snickers Almond.
 
 In **Figure 1.8**, the two approaches are compared on how many candies they match and how many non-candy products they pull in.
 
@@ -297,7 +299,7 @@ The change feed later confirmed that this rule was correct: this week's Butterfi
 
 ## Is the 2017 answer still true?
 
-Both Kaggle files are from 2017, so the obvious question is whether the labels on shelves today still agree. The daily change feed answers it. Its first two weeks held 98,694 product edits, 348 of them for ranked candies, and 21 candies had at least two current products with ingredient lists:
+Both Kaggle files are from 2017, so the obvious question is whether the labels on shelves today still agree. The daily change feed answers it. Its first two weeks held 98,694 product edits, 348 of them for ranked candies, and 21 candies had at least two current products with ingredient lists.
 
 In **Figure 1.9**, the 83 candies are grouped by how their allergen status in the 2017 data compares with their current labels.
 
