@@ -409,7 +409,7 @@ export function mountChart(fig: HTMLElement) {
       const next = dumbbell(views.find((v) => v.key === btn.dataset.view)!.rows, options);
       chart.data = next.data;
       chart.options = next.options!;
-      chart.update();
+      chart.update('none');
     });
   }
 
@@ -427,7 +427,7 @@ export function mountChart(fig: HTMLElement) {
       const cfg = hbar({ rows: next.rows }, options);
       chart.data = cfg.data;
       chart.options = cfg.options!;
-      chart.update();
+      chart.update('none');
       stats.textContent = next.stats;
     });
   }
