@@ -237,7 +237,7 @@ For a bowl free of all six allergens, the same search finds nothing similar. Eve
 
 ### One bowl for the whole street
 
-Households don't know which kids have which allergies. So the last question is: **which single bowl gives the most trick-or-treaters a favorite they can eat?**
+Households handing out candy don't know which trick-or-treaters at their door have which allergies. So the last question is: **which single bowl gives the most trick-or-treaters a favorite they can eat?**
 
 The pipeline answers it with a small optimization. About 2.2% of US children are allergic to peanuts, 1.9% to milk and 1.2% to tree nuts, according to a [national survey of 38,408 children published in *Pediatrics*](https://pubmed.ncbi.nlm.nih.gov/30455345/). The pipeline weights each group of kids by those rates and picks, one candy at a time, the 10 candies that maximize the average win rate of the best candy each kid can eat, counting zero for a kid with nothing safe in the bowl.
 
