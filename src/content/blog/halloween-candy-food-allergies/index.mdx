@@ -100,11 +100,11 @@ In **Table 1.2**, each of the four measures the results use is defined, with a w
 | Win rate | The percentage of a candy's head-to-head matchups that voters picked it. In each matchup, FiveThirtyEight showed a voter two randomly chosen candies and asked which one they would rather receive. The value comes from the dataset's `winpercent` column, based on about 269,000 matchups in total. | Reese's Peanut Butter Cups won 84.2% of their matchups, the highest of the 83 candies. |
 | Candies allowed | The number of the 83 ranked candies that pass a restriction. A candy passes when every restricted allergen has the status `not_listed`, based on at least two matched products with an ingredient list. Peanut-free and nut-free restrictions also exclude any candy FiveThirtyEight tags as containing peanuts or almonds. | 43 candies pass the peanut-free restriction. |
 | Bowl | The 10 candies with the highest win rate among the candies allowed. The **unrestricted bowl** applies no restriction, so it is simply the 10 candies with the highest win rate overall; its average win rate is 76.3%. | The peanut-free bowl starts with Starburst, Rolo, and Skittles. |
-| Popularity kept | A restricted bowl's average win rate divided by the unrestricted bowl's average win rate. | Peanut-free: 59.5% ÷ 76.3% = 78.0%. |
+| Popularity kept (popularity score) | A restricted bowl's average win rate divided by the unrestricted bowl's average win rate. | Peanut-free: 59.5% ÷ 76.3% = 78.0%. |
 
 <p class="text-sm text-nvim-gray -mt-4 text-center">Table 1.2: Definitions of the four measures used in the results, each with a worked example from the data.</p>
 
-**"Popularity kept" compares a bowl's average win rate with the unrestricted bowl's:** a value of 78% means the candies in the peanut-free bowl win their matchups, on average, about 22% less often than the candies in the unrestricted bowl. A value of 100% would mean a restriction costs no popularity at all.
+**"Popularity kept" compares a bowl's average win rate with the unrestricted bowl's:** a popularity score of 78% means the candies in the peanut-free bowl win their matchups, on average, about 22% less often than the candies in the unrestricted bowl. A value of 100% would mean a restriction costs no popularity at all.
 
 ### The most popular candies carry the most allergens
 
@@ -114,7 +114,7 @@ The Reese's problem from the start of this post is not a one-off. In **Figure 1.
   src="/blog/halloween-candy-food-allergies/fig1_allergens_vs_popularity.png"
   alt="Scatter plot of candy win rate against the number of major allergens listed. Candies with none average a 45% win rate and candies with five or more average 66%; Reese's, Twix and Snickers sit at the top right, and Skittles is the most popular candy with none of the six"
   width="1600"
-  height="1120"
+  height="1320"
   loading="lazy"
   decoding="async"
 />
@@ -158,22 +158,22 @@ In **Figure 1.2**, the popularity each bowl keeps is shown side by side, from th
   src="/blog/halloween-candy-food-allergies/fig2_popularity_retained.png"
   alt="Bar chart of the popularity each allergy-safe bowl keeps: gluten-free 88.2%, peanut-free 78.0%, nut-free 77.1%, milk-free 74.6%, free of all six 68.7%"
   width="1600"
-  height="1000"
+  height="1200"
   loading="lazy"
   decoding="async"
 />
 
 <p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.2: The share of the unrestricted bowl's popularity that each allergy-safe bowl keeps, with the number of candies each restriction allows.</p>
 
-**Every candy in the unrestricted top 10 is chocolate, and at least five of them directly have peanuts in them:** four Reese's products and Peanut Butter M&M's sit in that top 10, which is exactly why the peanut-free bowl loses so much. It keeps 78% of the popularity, and none of the 10 candies in the unrestricted bowl make it in.
+**Every candy in the unrestricted top 10 is chocolate, and at least five of them directly have peanuts in them:** four Reese's products and Peanut Butter M&M's sit in that top 10, which is exactly why the peanut-free bowl loses so much. It keeps a **78% popularity score**, meaning its candies average 78% of the unrestricted bowl's win rate, and none of the 10 candies in the unrestricted bowl make it in.
 
-**A gluten-free bowl loses the least popularity:** it keeps 88% and still leads with Reese's, because Reese's Peanut Butter Cups list no wheat. A milk-free bowl drops to 75%, because it excludes every candy made with milk chocolate. In **Figure 1.3**, each bowl is split into chocolate and non-chocolate candies.
+**A gluten-free bowl loses the least popularity:** it keeps an **88.2% popularity score** and still leads with Reese's, because Reese's Peanut Butter Cups list no wheat. A milk-free bowl drops to a **74.6% popularity score**, because it excludes every candy made with milk chocolate. In **Figure 1.3**, each bowl is split into chocolate and non-chocolate candies.
 
 <img
   src="/blog/halloween-candy-food-allergies/fig3_chocolate_share.png"
   alt="Stacked bar chart of chocolate and non-chocolate candies in each bowl: 10 chocolate with no restriction, 6 gluten-free, 3 peanut-free, 2 nut-free, and none in the milk-free and free-of-all-six bowls"
   width="1600"
-  height="1000"
+  height="1200"
   loading="lazy"
   decoding="async"
 />
@@ -182,7 +182,7 @@ In **Figure 1.2**, the popularity each bowl keeps is shown side by side, from th
 
 > The safest bowl is a bowl of gummies and fruit candy, and it still keeps about two-thirds of the popularity.
 
-**Avoiding all six allergens leaves 18 candies and keeps 68.7%:** Skittles, Sour Patch Kids, Swedish Fish, Haribo Gold-Bears and others. That bowl still holds popular candy: Skittles and Sour Patch Kids rank in the top third of the vote.
+**Avoiding all six allergens leaves 18 candies and a 68.7% popularity score:** Skittles, Sour Patch Kids, Swedish Fish, Haribo Gold-Bears and others. That bowl still holds popular candy: Skittles and Sour Patch Kids rank in the top third of the vote.
 
 **Swapping chocolate for fruit candy also adds sugar:** the unrestricted bowl has a median of 51.7 g of sugar per 100 g, while the peanut-free and nut-free bowls reach about 69 g, as shown in **Figure 1.4**.
 
@@ -190,7 +190,7 @@ In **Figure 1.2**, the popularity each bowl keeps is shown side by side, from th
   src="/blog/halloween-candy-food-allergies/fig4_sugar_by_bowl.png"
   alt="Bar chart of median sugar per 100 grams in each bowl: 51.7 g with no restriction, 52.9 g gluten-free, about 65 g milk-free and free of all six, about 69 g peanut-free and nut-free"
   width="1600"
-  height="1000"
+  height="1200"
   loading="lazy"
   decoding="async"
 />
@@ -205,14 +205,14 @@ Some candies are not excluded for what they contain, but for what they *might* c
   src="/blog/halloween-candy-food-allergies/fig8_warning_cost.png"
   alt="Dumbbell chart of popularity kept with and without accepting may-contain warnings: peanut-free rises from 78.0% to 85.9%, nut-free from 77.1% to 81.3%, gluten-free from 88.2% to 89.6%, and milk-free and free of all six do not change"
   width="1600"
-  height="1000"
+  height="1200"
   loading="lazy"
   decoding="async"
 />
 
 <p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.5: Popularity kept by each bowl when may-contain warnings exclude a candy, and when they are accepted.</p>
 
-**"May contain" warnings cost the peanut-free bowl 7.9 points of popularity**, as shown in **Figure 1.5**. Kit Kat, Milky Way, M&M's and Nestle Crunch list no peanuts, yet each carries a peanut warning on at least one label, which keeps all four out. Accepting the warnings would lift the peanut-free bowl from 78.0% to 85.9%. The nut-free bowl loses 4.2 points the same way, and the gluten-free bowl loses 1.4 points to a single warning on Rolo.
+**"May contain" warnings cost the peanut-free bowl 7.9 points of popularity score**, as shown in **Figure 1.5**. Kit Kat, Milky Way, M&M's and Nestle Crunch list no peanuts, yet each carries a peanut warning on at least one label, which keeps all four out. Accepting the warnings would lift the peanut-free bowl's popularity score from 78.0% to 85.9%. The nut-free bowl loses 4.2 points of popularity score the same way, and the gluten-free bowl loses 1.4 points to a single warning on Rolo.
 
 This is not an argument to ignore the warnings: for a kid with a severe allergy, a shared production line is a real risk. It shows that **a meaningful share of what allergic kids give up comes from how candy makers label, not from what is in the candy.**
 
@@ -224,14 +224,14 @@ A host who wants a peanut-free bowl still needs to know what to buy instead. For
   src="/blog/halloween-candy-food-allergies/fig9_safe_swaps.png"
   alt="Dumbbell chart pairing each top-10 favorite with its closest peanut-free swap and both win rates: Twix and Butterfinger to Hershey's Special Dark, Kit Kat to Mounds, Snickers and Milky Way to Charleston Chew, Reese's Pieces and Peanut Butter M&M's to Junior Mints, and the Reese's cups to Tootsie Roll Juniors"
   width="1600"
-  height="1160"
+  height="1440"
   loading="lazy"
   decoding="async"
 />
 
 <p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.6: The most similar peanut-free candy for each favorite in the unrestricted bowl, with the win rate of each.</p>
 
-**The closest swaps are recognizable:** Twix and Butterfinger point to Hershey's Special Dark, Kit Kat to Mounds, Snickers and Milky Way to Charleston Chew, and Reese's Pieces to Junior Mints, as shown in **Figure 1.6**. The catch is popularity. The best swap, Hershey's Special Dark, wins 59.2% of its matchups, more than 20 points below Twix. And the Reese's cups have no close match at all: their nearest peanut-free candy is Tootsie Roll Juniors, at 43.1%.
+**The closest swaps are recognizable:** Twix and Butterfinger point to Hershey's Special Dark, Kit Kat to Mounds, Snickers and Milky Way to Charleston Chew, and Reese's Pieces to Junior Mints, as shown in **Figure 1.6**. The catch is popularity. The best swap, Hershey's Special Dark, has a 59.2% win rate, more than 20 points below Twix's 81.6%. And the Reese's cups have no close match at all: their nearest peanut-free candy is Tootsie Roll Juniors, with a 43.1% win rate.
 
 For a bowl free of all six allergens, the same search finds nothing similar. Every favorite maps to an unrelated gummy, because no chocolate candy passes all six restrictions.
 
@@ -245,14 +245,14 @@ The pipeline answers it with a small optimization. About 2.2% of US children are
   src="/blog/halloween-candy-food-allergies/fig10_street_bowl.png"
   alt="Bar chart of the street bowl: the regular top-10 chocolate candies with Starburst replacing Butterfinger, marked as safe for peanut, milk and tree-nut allergies"
   width="1600"
-  height="1120"
+  height="1320"
   loading="lazy"
   decoding="async"
 />
 
 <p class="text-sm text-nvim-gray -mt-4 text-center">Figure 1.7: The 10-candy bowl that gives the most kids a favorite they can eat, weighting peanut, milk and tree-nut allergies by how common they are in US children.</p>
 
-**One swap is enough:** the best bowl for a whole street is the regular top 10 with Butterfinger replaced by Starburst, as shown in **Figure 1.7**. That single change gives every kid with a peanut, milk or tree-nut allergy something to eat, and it lowers the bowl's average win rate from 76.3% to 75.9%.
+**One swap is enough:** the best bowl for a whole street is the regular top 10 with Butterfinger replaced by Starburst, as shown in **Figure 1.7**. That single change gives every kid with a peanut, milk or tree-nut allergy something to eat, and it lowers the bowl's average win rate from 76.3% to 75.9%, a 99.5% popularity score.
 
 The optimization stops at one safe candy because allergic kids are a small share of the street, so each extra safe candy adds less than the chocolate it replaces. It also treats each allergy separately, and the survey rates for egg, wheat and soy could not be confirmed, so those allergies are left out.
 
@@ -268,7 +268,7 @@ In **Figure 1.8**, the two approaches are compared on how many candies they matc
   src="/blog/halloween-candy-food-allergies/fig6_matching_methods.png"
   alt="Grouped bar chart comparing name-only matching, which matches 53 candies and 80 non-candy products, with curated rules, which match 68 candies and no non-candy products"
   width="1600"
-  height="1000"
+  height="1200"
   loading="lazy"
   decoding="async"
 />
@@ -301,7 +301,7 @@ In **Figure 1.9**, the 83 candies are grouped by how their allergen status in th
   src="/blog/halloween-candy-food-allergies/fig7_label_changes.png"
   alt="Bar chart of the 83 candies grouped by how their 2017 allergen status compares with current labels: 12 changed, 7 unchanged, 2 newly covered, 62 without enough current data"
   width="1600"
-  height="1000"
+  height="1200"
   loading="lazy"
   decoding="async"
 />
