@@ -12,7 +12,7 @@ If you had gone trick-or-treating anytime during your youth, chances are you cam
 
 **This is a major issue for those kids who may have a peanut allergy, because the most popular candy in the bowl is the one they cannot eat.**
 
-With Halloween coming up this year, I was curious to see what the best bowl looks like when it has to be safe, and how much a host gives up on buying certain candies to make it safe for all children.
+With Halloween coming up this year, I was curious to see what the best bowl looks like when it has to be safe, and how much a household gives up on buying certain candies to make it safe for all children.
 
 So I built [**candyops**](https://github.com/kidskoding/candyops), a data pipeline on Databricks and dbt that answers one question: **for each common food allergy, which 10 popular candies can you still hand out, and how much less popular is that bowl than one with no allergy restrictions?**
 
@@ -20,7 +20,7 @@ So I built [**candyops**](https://github.com/kidskoding/candyops), a data pipeli
 
 Food allergies are quite common in children. **The CDC found that 5.8% of US children had a diagnosed food allergy in 2021**, about 1 in 17, according to its [National Health Interview Survey data brief](https://www.cdc.gov/nchs/products/databriefs/db459.htm). And this is especially important, considering that Halloween is the one night of the year when those kids collect food from strangers.
 
-The labels many of these manufacturers produce do not make it easy for kids who have such food allergies, like peanuts. The US law requires packaged food to name the major allergens it contains, but many **"may contain" warnings are voluntary and vary from one manufacturer to the next**, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. While this is a viable solution, plenty of hosts and houses would much rather want to hand out candy that every kid can eat.
+The labels many of these manufacturers produce do not make it easy for kids who have such food allergies, like peanuts. The US law requires packaged food to name the major allergens it contains, but many **"may contain" warnings are voluntary and vary from one manufacturer to the next**, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. While this is a viable solution, plenty of households would much rather want to hand out candy that every kid can eat.
 
 A lot of the candy you eat comes from **three** major corporations:
 
@@ -91,7 +91,7 @@ From there, **dbt** builds everything in **SQL**. The silver models will clean d
 
 ### How to read the results
 
-Every allergy-safe bowl is compared with the same baseline, the **unrestricted bowl**: the 10 most popular candies overall, which is the bowl a host would put out without thinking about allergies. It starts with Reese's Peanut Butter Cups, Reese's Miniatures and Twix, so it is the opposite of allergen-free: almost every candy in it contains peanuts, milk or both.
+Every allergy-safe bowl is compared with the same baseline, the **unrestricted bowl**: the 10 most popular candies overall, which is the bowl a household would put out without thinking about allergies. It starts with Reese's Peanut Butter Cups, Reese's Miniatures and Twix, so it is the opposite of allergen-free: almost every candy in it contains peanuts, milk or both.
 
 In **Table 1.2**, each of the four measures the results use is defined, with a worked example from the data.
 
@@ -237,7 +237,7 @@ For a bowl free of all six allergens, the same search finds nothing similar. Eve
 
 ### One bowl for the whole street
 
-Most hosts do not know which allergies are coming to the door. So the last question is: **which single bowl gives the most trick-or-treaters a favorite they can eat?**
+Households don't know which kids have which allergies. So the last question is: **which single bowl gives the most trick-or-treaters a favorite they can eat?**
 
 The pipeline answers it with a small optimization. About 2.2% of US children are allergic to peanuts, 1.9% to milk and 1.2% to tree nuts, according to a [national survey of 38,408 children published in *Pediatrics*](https://pubmed.ncbi.nlm.nih.gov/30455345/). The pipeline weights each group of kids by those rates and picks, one candy at a time, the 10 candies that maximize the average win rate of the best candy each kid can eat, counting zero for a kid with nothing safe in the bowl.
 
