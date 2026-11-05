@@ -15,11 +15,6 @@ interface Props {
 
 const { title, subtitle, kind, data, options, height } = Astro.props;
 const views = (data.views as { key: string; label: string }[] | undefined) ?? [];
-const sliders = [
-  { key: 'peanut', label: 'Peanut', value: 2.2 },
-  { key: 'milk', label: 'Milk', value: 1.9 },
-  { key: 'tree_nut', label: 'Tree nut', value: 1.2 },
-];
 ---
 
 <figure class="cjs-chart">
@@ -39,13 +34,11 @@ const sliders = [
   {
     kind === 'simulator' && (
       <div class="chart-sliders">
-        {sliders.map((s) => (
-          <label>
-            <span>{s.label} allergy</span>
-            <input type="range" min="0" max="10" step="0.1" value={s.value} data-allergy={s.key} />
-            <output>{s.value.toFixed(1)}% of kids</output>
-          </label>
-        ))}
+        <label>
+          <span>Allergy-safe candies</span>
+          <input type="range" min="0" max="10" step="1" value="1" data-safe-count />
+          <output>1 of 10</output>
+        </label>
         <div class="chart-stats" aria-live="polite"></div>
       </div>
     )
@@ -133,5 +126,8 @@ const sliders = [
 <script>
   import { mountChart } from '../../lib/charts';
 
-  for (const fig of document.querySelectorAll<HTMLElement>('.cjs-chart')) mountChart(fig);
+  // the site uses Astro's client router, so mount on every page load, not just the first
+  document.addEventListener('astro:page-load', () => {
+    for (const fig of document.querySelectorAll<HTMLElement>('.cjs-chart')) mountChart(fig);
+  });
 </script>

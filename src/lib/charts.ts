@@ -13,12 +13,19 @@ import {
   type ChartConfiguration,
   type Plugin,
 } from 'chart.js';
-import { streetBowl, type Candy } from './streetBowl';
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, LineController, LineElement, PointElement,
   ScatterController, Tooltip, Legend);
 
+
 type Json = Record<string, any>;
+interface Candy {
+  candy: string;
+  win: number;
+  safe: string[];
+}
+// a point with no value, which Chart.js draws as a gap
+const GAP = { x: null, y: null };
 
 const token = (name: string) =>
   getComputedStyle(document.documentElement).getPropertyValue(`--color-nvim-${name}`).trim();
@@ -47,9 +54,28 @@ function setDefaults() {
   legend.align = 'start';
   legend.labels.usePointStyle = true;
   legend.labels.color = token('fg');
+  legend.labels.padding = 16;
+  legend.labels.boxWidth = 10;
+  legend.labels.boxHeight = 10;
+  Chart.defaults.layout.padding = { top: 8, left: 4 };
 }
 
-const axisTitle = (text: string) => ({ display: true, text, color: token('green'), font: { weight: 'bold' as const } });
+const axisTitle = (text: string) => ({
+  display: true, text, color: token('green'), font: { weight: 'bold' as const }, padding: { top: 14, bottom: 10 },
+});
+
+// Chart.js has no legend margin option; grow the legend box so the plot starts lower
+const legendGap: Plugin = {
+  id: 'legendGap',
+  beforeInit(chart: any) {
+    if (!chart.legend) return;
+    const fit = chart.legend.fit;
+    chart.legend.fit = function () {
+      fit.call(this);
+      this.height += 18;
+    };
+  },
+};
 
 // draws a value and note after each bar end, or a label before point a in a dumbbell
 const textPlugin: Plugin = {
@@ -88,6 +114,36 @@ const textPlugin: Plugin = {
   },
 };
 
+// a bar's own number: centered inside stacked bars, after the end of grouped bars
+const barValuePlugin: Plugin = {
+  id: 'barValues',
+  afterDatasetsDraw(chart) {
+    const { ctx } = chart;
+    const stacked = Boolean((chart.options.scales?.x as Json)?.stacked);
+    ctx.save();
+    ctx.font = `bold 12px ${Chart.defaults.font.family}`;
+    ctx.textBaseline = 'middle';
+    chart.data.datasets.forEach((ds, i) => {
+      if (!chart.isDatasetVisible(i)) return;
+      chart.getDatasetMeta(i).data.forEach((el: any, j) => {
+        const text = (ds.data[j] as Json)?.text;
+        if (!text) return;
+        if (stacked) {
+          if (el.width < 22) return;
+          ctx.textAlign = 'center';
+          ctx.fillStyle = token('bg');
+          ctx.fillText(text, el.x - el.width / 2, el.y);
+        } else {
+          ctx.textAlign = 'left';
+          ctx.fillStyle = token('fg');
+          ctx.fillText(text, el.x + 8, el.y);
+        }
+      });
+    });
+    ctx.restore();
+  },
+};
+
 // text labels with a leader line to a chosen scatter dot
 const calloutPlugin: Plugin = {
   id: 'callouts',
@@ -122,8 +178,8 @@ function hbar(data: Json, o: Json): ChartConfiguration {
   const stacked = o.mode !== 'group';
   const datasets = Array.from({ length: width }, (_, j) => ({
     label: o.legend?.[j]?.label ?? '',
-    data: rows.map((r) => (r.bars[j] ? { x: r.bars[j].value, y: r.label, tip: r.bars[j].tip } : null)),
-    backgroundColor: rows.map((r) => color(r.bars[j]?.color ?? 'gray')),
+    data: rows.map((r) => (r.bars[j] ? { x: r.bars[j].value, y: r.label, tip: r.bars[j].tip, text: r.bars[j].text } : { x: null, y: r.label })),
+    backgroundColor: o.legend ? color(o.legend[j].color) : rows.map((r) => color(r.bars[j]?.color ?? 'gray')),
     borderRadius: 3,
     barPercentage: stacked ? 0.65 : 0.8,
     categoryPercentage: stacked ? 0.9 : 0.75,
@@ -152,21 +208,21 @@ function hbar(data: Json, o: Json): ChartConfiguration {
         },
       } as any,
     },
-    plugins: [textPlugin],
+    plugins: [textPlugin, barValuePlugin],
   };
 }
 
 function dumbbell(rows: Json[], o: Json): ChartConfiguration {
-  const labels = rows.map((r) => r.label);
-  const segments = rows.flatMap((r, i) => [{ x: r.a.value, y: i }, { x: r.b.value, y: i }, null]);
+  const tickLines = rows.map((r) => (r.a.label ? [r.label, `swap: ${r.a.label}`] : r.label));
+  const segments = rows.flatMap((r, i) => [{ x: r.a.value, y: i }, { x: r.b.value, y: i }, GAP]);
   return {
     type: 'scatter',
     data: {
       datasets: [
         { label: o.aLabel, data: rows.map((r, i) => ({ x: r.a.value, y: i, tip: r.a.tip })), backgroundColor: color(o.aColor),
-          pointRadius: 7, pointHoverRadius: 9 },
+          pointRadius: 6, pointHoverRadius: 9 },
         { label: o.bLabel, data: rows.map((r, i) => ({ x: r.b.value, y: i, tip: r.b.tip })), backgroundColor: color(o.bColor),
-          pointRadius: 7, pointHoverRadius: 9 },
+          pointRadius: 6, pointHoverRadius: 9 },
         { type: 'line', label: 'link', data: segments as any, borderColor: token('fg3'), borderWidth: 2, pointRadius: 0,
           spanGaps: false, order: 3 },
       ] as any,
@@ -174,17 +230,16 @@ function dumbbell(rows: Json[], o: Json): ChartConfiguration {
     options: {
       layout: { padding: { right: 50 } },
       scales: {
-        x: { min: o.min, max: o.max, ticks: { stepSize: o.step, callback: (v) => `${v}%` }, title: axisTitle(o.xTitle) },
+        x: { min: o.min, max: o.max, ticks: { stepSize: o.step, maxRotation: 0, callback: (v) => `${v}%` }, title: axisTitle(o.xTitle) },
         y: { reverse: true, min: -0.6, max: rows.length - 0.4, grid: { display: false },
-             ticks: { stepSize: 1, color: token('fg'), callback: (v) => labels[Number(v)] ?? '' }, title: axisTitle(o.yTitle) },
+             ticks: { stepSize: 1, color: token('fg'), callback: (v) => tickLines[Number(v)] ?? '' }, title: axisTitle(o.yTitle) },
       },
       plugins: {
-        legend: { labels: { filter: (item) => item.text !== 'link' } },
-        tooltip: { filter: (item) => item.dataset.label !== 'link' },
+        legend: { labels: { filter: (item: any) => item.text !== 'link' } },
+        tooltip: { filter: (item: any) => item.dataset.label !== 'link' },
         rowText: {
           items: rows.map((r, i) => ({
             y: i,
-            before: r.a.label ? { text: r.a.label, at: Math.min(r.a.value, r.b.value) } : undefined,
             after: r.note ? { at: Math.max(r.a.value, r.b.value), note: r.note } : undefined,
           })),
         },
@@ -197,25 +252,28 @@ function dumbbell(rows: Json[], o: Json): ChartConfiguration {
 function scatter(data: Json, o: Json): ChartConfiguration {
   const pts = data.points as Json[];
   const group = (c: string) => pts.filter((p) => p.color === c).map((p) => ({ x: p.x, y: p.y, tip: p.tip }));
-  const avg = (data.averages as Json[]).flatMap((a) => [{ x: a.x - 0.32, y: a.y }, { x: a.x + 0.32, y: a.y }, null]);
+  const avg = (data.averages as Json[]).flatMap((a) => [{ x: a.x - 0.32, y: a.y }, { x: a.x + 0.32, y: a.y }, GAP]);
   return {
     type: 'scatter',
     data: {
       datasets: [
-        { label: 'Chocolate', data: group('red'), backgroundColor: color('red'), pointRadius: 6, pointHoverRadius: 8 },
-        { label: 'Not chocolate', data: group('aqua'), backgroundColor: color('aqua'), pointRadius: 6, pointHoverRadius: 8 },
+        { label: 'Chocolate', data: group('red'), backgroundColor: color('red'), pointRadius: 5, pointHoverRadius: 8 },
+        { label: 'Not chocolate', data: group('aqua'), backgroundColor: color('aqua'), pointRadius: 5, pointHoverRadius: 8 },
         { type: 'line', label: 'Average win rate', data: avg as any, borderColor: token('fg3'), borderWidth: 3,
           pointRadius: 0, spanGaps: false, order: 3 },
       ] as any,
     },
     options: {
       scales: {
-        x: { min: -0.6, max: 6.6, ticks: { stepSize: 1, callback: (v) => (Number.isInteger(v) ? `${v}` : '') },
-             grid: { display: false }, title: axisTitle(o.xTitle) },
-        y: { min: 20, max: 92, ticks: { stepSize: 10, callback: (v) => `${v}%` }, title: axisTitle(o.yTitle) },
+        x: { min: -0.6, max: 6.6, grid: { display: false }, title: axisTitle(o.xTitle),
+             afterBuildTicks: (axis: any) => { axis.ticks = [0, 1, 2, 3, 4, 5, 6].map((value) => ({ value })); } },
+        y: { min: 20, max: 92, title: axisTitle(o.yTitle),
+             afterBuildTicks: (axis: any) => { axis.ticks = [20, 30, 40, 50, 60, 70, 80, 90].map((value) => ({ value })); },
+             ticks: { callback: (v) => `${v}%` } },
       },
       plugins: {
-        tooltip: { filter: (item) => item.dataset.label !== 'Average win rate' },
+        tooltip: { filter: (item: any) => item.dataset.label !== 'Average win rate' },
+        legend: { labels: { filter: (item: any) => item.text !== 'Average win rate' } },
         callouts: { items: pts.filter((p) => p.label).map((p) => ({ x: p.x, y: p.y, ...p.label })) },
       } as any,
     },
@@ -223,21 +281,26 @@ function scatter(data: Json, o: Json): ChartConfiguration {
   };
 }
 
-function simulatorRows(candies: Candy[], rates: Record<string, number>, regular: Candy[]) {
-  const names: Record<string, string> = { peanut: 'peanut', milk: 'milk', tree_nut: 'tree nut' };
-  const bowl = streetBowl(candies, rates);
+const SAFE_FOR = ['peanut', 'milk', 'tree_nut'];
+
+// the regular top 10 with its least popular candies swapped for the most popular candies safe for all three allergies
+function simulatorRows(candies: Candy[], safeCount: number, regular: Candy[]) {
+  const safeAll = candies.filter((c) => SAFE_FOR.every((a) => c.safe.includes(a))).sort((a, b) => b.win - a.win);
+  const picked = safeAll.slice(0, safeCount);
+  const rest = candies.filter((c) => !picked.includes(c)).sort((a, b) => b.win - a.win).slice(0, 10 - picked.length);
+  const bowl = [...rest, ...picked].sort((a, b) => b.win - a.win);
   const rows = bowl.map((c) => {
-    const safe = Object.keys(rates).filter((a) => c.safe.includes(a));
+    const safe = SAFE_FOR.every((a) => c.safe.includes(a));
     const tip = `${c.candy}\n${c.win.toFixed(1)}% win rate\n${
-      safe.length ? `Safe for ${safe.map((a) => names[a]).join(', ')} allergies` : 'Not safe for any of the three'
+      safe ? 'Safe for peanut, milk and tree-nut allergies' : 'Not safe for all three allergies'
     }${regular.includes(c) ? '' : '\nNot in the regular top 10'}`;
-    return { label: c.candy, bars: [{ value: c.win, color: safe.length ? 'aqua' : 'gray', tip }], valueText: `${c.win.toFixed(1)}%` };
+    return { label: c.candy, bars: [{ value: c.win, color: safe ? 'aqua' : 'gray', tip }], valueText: `${c.win.toFixed(1)}%` };
   });
   const avg = (b: Candy[]) => b.reduce((s, c) => s + c.win, 0) / b.length;
-  const covered = Object.keys(rates).every((a) => rates[a] === 0 || bowl.some((c) => c.safe.includes(a)));
-  const stats = `Average win rate ${avg(bowl).toFixed(1)}%, a ${((100 * avg(bowl)) / avg(regular)).toFixed(1)}% ` +
-    `popularity score. ${bowl.filter((c) => !regular.includes(c)).length} candies differ from the regular top 10. ` +
-    (covered ? 'Every allergic kid has something to eat.' : 'Some allergic kids have nothing to eat.');
+  const score = (100 * avg(bowl)) / avg(regular);
+  const stats = `Average win rate ${avg(bowl).toFixed(1)}%, a ${score.toFixed(1)}% popularity score. ` +
+    (picked.length ? 'Every kid with a peanut, milk or tree-nut allergy has something to eat.'
+      : 'Kids with a peanut, milk or tree-nut allergy have nothing to eat.');
   return { rows, stats };
 }
 
@@ -268,24 +331,22 @@ export function mountChart(fig: HTMLElement) {
   if (kind === 'simulator') {
     const candies = data.candies as Candy[];
     const regular = [...candies].sort((a, b) => b.win - a.win).slice(0, 10);
-    const inputs = [...fig.querySelectorAll<HTMLInputElement>('input[data-allergy]')];
-    const rates = () => Object.fromEntries(inputs.map((i) => [i.dataset.allergy!, Number(i.value) / 100]));
-    const first = simulatorRows(candies, rates(), regular);
-    const chart = new Chart(canvas, hbar({ rows: first.rows }, options));
+    const input = fig.querySelector<HTMLInputElement>('input[data-safe-count]')!;
     const stats = fig.querySelector('.chart-stats')!;
+    const first = simulatorRows(candies, Number(input.value), regular);
+    const chart = new Chart(canvas, hbar({ rows: first.rows }, options));
     stats.textContent = first.stats;
-    for (const input of inputs) {
-      input.addEventListener('input', () => {
-        input.nextElementSibling!.textContent = `${Number(input.value).toFixed(1)}% of kids`;
-        const next = simulatorRows(candies, rates(), regular);
-        const cfg = hbar({ rows: next.rows }, options);
-        chart.data = cfg.data;
-        chart.options = cfg.options!;
-        chart.update();
-        stats.textContent = next.stats;
-      });
-    }
+    input.addEventListener('input', () => {
+      input.nextElementSibling!.textContent = `${input.value} of 10`;
+      const next = simulatorRows(candies, Number(input.value), regular);
+      const cfg = hbar({ rows: next.rows }, options);
+      chart.data = cfg.data;
+      chart.options = cfg.options!;
+      chart.update();
+      stats.textContent = next.stats;
+    });
   }
 }
 
+Chart.register(legendGap);
 setDefaults();

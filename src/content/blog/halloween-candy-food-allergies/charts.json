@@ -555,6 +555,12 @@
             "color": "red",
             "text": "10",
             "tip": "No restriction bowl\nChocolate: 10 of 10 candies\nReese's Peanut Butter cup, Reese's Miniatures, Twix, Kit Kat, Snickers, Reese's pieces, Milky Way, Reese's stuffed with pieces, Peanut butter M&M's, Nestle Butterfinger"
+          },
+          {
+            "value": 0,
+            "color": "aqua",
+            "text": "",
+            "tip": "No restriction bowl\nNot chocolate: 0 of 10 candies"
           }
         ]
       },
@@ -613,6 +619,12 @@
         "label": "Milk-free",
         "bars": [
           {
+            "value": 0,
+            "color": "red",
+            "text": "",
+            "tip": "Milk-free bowl\nChocolate: 0 of 10 candies"
+          },
+          {
             "value": 10,
             "color": "aqua",
             "text": "10",
@@ -623,6 +635,12 @@
       {
         "label": "Free of all six",
         "bars": [
+          {
+            "value": 0,
+            "color": "red",
+            "text": "",
+            "tip": "Free of all six bowl\nChocolate: 0 of 10 candies"
+          },
           {
             "value": 10,
             "color": "aqua",
