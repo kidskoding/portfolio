@@ -1,0 +1,2139 @@
+{
+  "allergensVsPopularity": {
+    "points": [
+      {
+        "x": -0.165,
+        "y": 27.3,
+        "color": "aqua",
+        "label": null,
+        "tip": "Super Bubble\n27.3% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.055,
+        "y": 29.7,
+        "color": "aqua",
+        "label": null,
+        "tip": "Root Beer Barrels\n29.7% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.055,
+        "y": 34.2,
+        "color": "aqua",
+        "label": null,
+        "tip": "Haribo Happy Cola\n34.2% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.165,
+        "y": 35.3,
+        "color": "aqua",
+        "label": null,
+        "tip": "Ring pop\n35.3% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.165,
+        "y": 36.0,
+        "color": "aqua",
+        "label": null,
+        "tip": "Chewey Lemonhead Fruit Mix\n36.0% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.055,
+        "y": 39.1,
+        "color": "aqua",
+        "label": null,
+        "tip": "Lemonhead\n39.1% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.055,
+        "y": 39.2,
+        "color": "aqua",
+        "label": null,
+        "tip": "Fun Dip\n39.2% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.165,
+        "y": 39.5,
+        "color": "aqua",
+        "label": null,
+        "tip": "Dum Dums\n39.5% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.165,
+        "y": 42.3,
+        "color": "aqua",
+        "label": null,
+        "tip": "Dots\n42.3% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.055,
+        "y": 42.8,
+        "color": "aqua",
+        "label": null,
+        "tip": "Runts\n42.8% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.055,
+        "y": 44.4,
+        "color": "aqua",
+        "label": null,
+        "tip": "Welch's Fruit Snacks\n44.4% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.165,
+        "y": 51.4,
+        "color": "aqua",
+        "label": null,
+        "tip": "Haribo Sour Bears\n51.4% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.165,
+        "y": 52.9,
+        "color": "aqua",
+        "label": null,
+        "tip": "Lifesavers big ring gummies\n52.9% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.055,
+        "y": 54.9,
+        "color": "aqua",
+        "label": null,
+        "tip": "Swedish Fish\n54.9% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.055,
+        "y": 55.1,
+        "color": "aqua",
+        "label": null,
+        "tip": "Skittles wildberry\n55.1% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.165,
+        "y": 57.1,
+        "color": "aqua",
+        "label": null,
+        "tip": "Haribo Gold Bears\n57.1% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.165,
+        "y": 59.9,
+        "color": "aqua",
+        "label": null,
+        "tip": "Sour Patch Kids\n59.9% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": -0.055,
+        "y": 63.1,
+        "color": "aqua",
+        "label": {
+          "text": "Skittles: most popular with none of the six",
+          "dx": 30,
+          "dy": -72
+        },
+        "tip": "Skittles original\n63.1% win rate\n0 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.835,
+        "y": 23.4,
+        "color": "aqua",
+        "label": null,
+        "tip": "Boston Baked Beans\n23.4% win rate\n1 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.945,
+        "y": 24.5,
+        "color": "aqua",
+        "label": null,
+        "tip": "Chiclets\n24.5% win rate\n1 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 1.055,
+        "y": 37.3,
+        "color": "aqua",
+        "label": null,
+        "tip": "Red vines\n37.3% win rate\n1 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 1.165,
+        "y": 42.2,
+        "color": "aqua",
+        "label": null,
+        "tip": "Haribo Twin Snakes\n42.2% win rate\n1 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 0.835,
+        "y": 43.1,
+        "color": "red",
+        "label": null,
+        "tip": "Tootsie Roll Juniors\n43.1% win rate\n1 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 0.945,
+        "y": 47.2,
+        "color": "aqua",
+        "label": null,
+        "tip": "Trolli Sour Bites\n47.2% win rate\n1 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 1.055,
+        "y": 67.0,
+        "color": "aqua",
+        "label": null,
+        "tip": "Starburst\n67.0% win rate\n1 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 1.835,
+        "y": 34.7,
+        "color": "red",
+        "label": null,
+        "tip": "Sixlets\n34.7% win rate\n2 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 1.945,
+        "y": 39.4,
+        "color": "aqua",
+        "label": null,
+        "tip": "Now & Later\n39.4% win rate\n2 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 2.055,
+        "y": 41.4,
+        "color": "aqua",
+        "label": null,
+        "tip": "Laffy Taffy\n41.4% win rate\n2 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 2.165,
+        "y": 43.1,
+        "color": "aqua",
+        "label": null,
+        "tip": "Fruit Chews\n43.1% win rate\n2 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 1.835,
+        "y": 45.7,
+        "color": "red",
+        "label": null,
+        "tip": "Tootsie Roll Midgies\n45.7% win rate\n2 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 1.945,
+        "y": 46.4,
+        "color": "aqua",
+        "label": null,
+        "tip": "Mike & Ike\n46.4% win rate\n2 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 2.055,
+        "y": 47.8,
+        "color": "red",
+        "label": null,
+        "tip": "Mounds\n47.8% win rate\n2 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 2.165,
+        "y": 49.0,
+        "color": "red",
+        "label": null,
+        "tip": "Tootsie Pop\n49.0% win rate\n2 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 1.835,
+        "y": 52.3,
+        "color": "aqua",
+        "label": null,
+        "tip": "Air Heads\n52.3% win rate\n2 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 1.945,
+        "y": 55.4,
+        "color": "aqua",
+        "label": null,
+        "tip": "Nerds\n55.4% win rate\n2 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 2.055,
+        "y": 57.2,
+        "color": "red",
+        "label": null,
+        "tip": "Junior Mints\n57.2% win rate\n2 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 2.835,
+        "y": 34.6,
+        "color": "aqua",
+        "label": null,
+        "tip": "Strawberry bon bons\n34.6% win rate\n3 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 2.945,
+        "y": 39.0,
+        "color": "red",
+        "label": null,
+        "tip": "Charleston Chew\n39.0% win rate\n3 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 3.055,
+        "y": 41.3,
+        "color": "aqua",
+        "label": null,
+        "tip": "Pop Rocks\n41.3% win rate\n3 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 3.165,
+        "y": 49.5,
+        "color": "red",
+        "label": null,
+        "tip": "Whoppers\n49.5% win rate\n3 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 2.835,
+        "y": 65.7,
+        "color": "red",
+        "label": null,
+        "tip": "Rolo\n65.7% win rate\n3 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 2.945,
+        "y": 73.4,
+        "color": "red",
+        "label": null,
+        "tip": "Reese's pieces\n73.4% win rate\n3 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 3.055,
+        "y": 81.9,
+        "color": "red",
+        "label": null,
+        "tip": "Reese's Miniatures\n81.9% win rate\n3 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 3.165,
+        "y": 84.2,
+        "color": "red",
+        "label": {
+          "text": "Reese's Peanut Butter Cup",
+          "dx": -46,
+          "dy": -26
+        },
+        "tip": "Reese's Peanut Butter cup\n84.2% win rate\n3 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 3.835,
+        "y": 38.0,
+        "color": "aqua",
+        "label": null,
+        "tip": "Candy Corn\n38.0% win rate\n4 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 3.945,
+        "y": 39.0,
+        "color": "aqua",
+        "label": null,
+        "tip": "Warheads\n39.0% win rate\n4 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 4.055,
+        "y": 41.9,
+        "color": "aqua",
+        "label": null,
+        "tip": "Werther's Original Caramel\n41.9% win rate\n4 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 4.165,
+        "y": 56.5,
+        "color": "red",
+        "label": null,
+        "tip": "Hershey's Milk Chocolate\n56.5% win rate\n4 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 3.835,
+        "y": 59.2,
+        "color": "red",
+        "label": null,
+        "tip": "Hershey's Special Dark\n59.2% win rate\n4 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 3.945,
+        "y": 69.5,
+        "color": "red",
+        "label": null,
+        "tip": "Peanut M&Ms\n69.5% win rate\n4 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 4.055,
+        "y": 71.5,
+        "color": "red",
+        "label": null,
+        "tip": "Peanut butter M&M's\n71.5% win rate\n4 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 4.835,
+        "y": 66.5,
+        "color": "red",
+        "label": null,
+        "tip": "Nestle Crunch\n66.5% win rate\n5 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 4.945,
+        "y": 66.6,
+        "color": "red",
+        "label": null,
+        "tip": "M&M's\n66.6% win rate\n5 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 5.055,
+        "y": 76.8,
+        "color": "red",
+        "label": null,
+        "tip": "Kit Kat\n76.8% win rate\n5 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 5.165,
+        "y": 81.6,
+        "color": "red",
+        "label": {
+          "text": "Twix",
+          "dx": -40,
+          "dy": -30
+        },
+        "tip": "Twix\n81.6% win rate\n5 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 5.835,
+        "y": 37.9,
+        "color": "red",
+        "label": null,
+        "tip": "Nestle Smarties\n37.9% win rate\n6 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 5.945,
+        "y": 46.0,
+        "color": "aqua",
+        "label": null,
+        "tip": "Smarties candy\n46.0% win rate\n6 of 6 allergens listed\nNot chocolate"
+      },
+      {
+        "x": 6.055,
+        "y": 73.1,
+        "color": "red",
+        "label": null,
+        "tip": "Milky Way\n73.1% win rate\n6 of 6 allergens listed\nChocolate"
+      },
+      {
+        "x": 6.165,
+        "y": 76.7,
+        "color": "red",
+        "label": {
+          "text": "Snickers",
+          "dx": -34,
+          "dy": -40
+        },
+        "tip": "Snickers\n76.7% win rate\n6 of 6 allergens listed\nChocolate"
+      }
+    ],
+    "averages": [
+      {
+        "x": 0,
+        "y": 44.7,
+        "tip": "0 allergens listed\nAverage win rate 44.7% across 18 candies"
+      },
+      {
+        "x": 1,
+        "y": 40.7,
+        "tip": "1 allergens listed\nAverage win rate 40.7% across 7 candies"
+      },
+      {
+        "x": 2,
+        "y": 46.6,
+        "tip": "2 allergens listed\nAverage win rate 46.6% across 11 candies"
+      },
+      {
+        "x": 3,
+        "y": 58.7,
+        "tip": "3 allergens listed\nAverage win rate 58.7% across 8 candies"
+      },
+      {
+        "x": 4,
+        "y": 53.7,
+        "tip": "4 allergens listed\nAverage win rate 53.7% across 7 candies"
+      },
+      {
+        "x": 5,
+        "y": 72.9,
+        "tip": "5 allergens listed\nAverage win rate 72.9% across 4 candies"
+      },
+      {
+        "x": 6,
+        "y": 58.4,
+        "tip": "6 allergens listed\nAverage win rate 58.4% across 4 candies"
+      }
+    ]
+  },
+  "popularity": {
+    "rows": [
+      {
+        "label": "No restriction",
+        "bars": [
+          {
+            "value": 100.0,
+            "color": "gray",
+            "tip": "No restriction bowl\n100.0% popularity score\n83 eligible candies\nBowl: Reese's Peanut Butter cup, Reese's Miniatures, Twix, Kit Kat, Snickers, Reese's pieces, Milky Way, Reese's stuffed with pieces, Peanut butter M&M's, Nestle Butterfinger"
+          }
+        ],
+        "valueText": "100.0%",
+        "note": "83 eligible candies"
+      },
+      {
+        "label": "Gluten-free",
+        "bars": [
+          {
+            "value": 88.2,
+            "color": "red",
+            "tip": "Gluten-free bowl\n88.2% popularity score\n37 eligible candies\nBowl: Reese's Peanut Butter cup, Reese's Miniatures, Reese's pieces, Peanut butter M&M's, Peanut M&Ms, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds"
+          }
+        ],
+        "valueText": "88.2%",
+        "note": "37 eligible candies"
+      },
+      {
+        "label": "Peanut-free",
+        "bars": [
+          {
+            "value": 78.0,
+            "color": "red",
+            "tip": "Peanut-free bowl\n78.0% popularity score\n43 eligible candies\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Hershey's Special Dark, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish"
+          }
+        ],
+        "valueText": "78.0%",
+        "note": "43 eligible candies"
+      },
+      {
+        "label": "Nut-free",
+        "bars": [
+          {
+            "value": 77.1,
+            "color": "red",
+            "tip": "Nut-free bowl\n77.1% popularity score\n41 eligible candies\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies"
+          }
+        ],
+        "valueText": "77.1%",
+        "note": "41 eligible candies"
+      },
+      {
+        "label": "Milk-free",
+        "bars": [
+          {
+            "value": 74.6,
+            "color": "red",
+            "tip": "Milk-free bowl\n74.6% popularity score\n30 eligible candies\nBowl: Starburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Air Heads, Haribo Sour Bears"
+          }
+        ],
+        "valueText": "74.6%",
+        "note": "30 eligible candies"
+      },
+      {
+        "label": "Free of all six",
+        "bars": [
+          {
+            "value": 68.7,
+            "color": "red",
+            "tip": "Free of all six bowl\n68.7% popularity score\n18 eligible candies\nBowl: Skittles original, Sour Patch Kids, Haribo Gold Bears, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Haribo Sour Bears, Welch's Fruit Snacks, Runts, Dots"
+          }
+        ],
+        "valueText": "68.7%",
+        "note": "18 eligible candies"
+      }
+    ]
+  },
+  "chocolate": {
+    "rows": [
+      {
+        "label": "No restriction",
+        "bars": [
+          {
+            "value": 10,
+            "color": "red",
+            "text": "10",
+            "tip": "No restriction bowl\nChocolate: 10 of 10 candies\nReese's Peanut Butter cup, Reese's Miniatures, Twix, Kit Kat, Snickers, Reese's pieces, Milky Way, Reese's stuffed with pieces, Peanut butter M&M's, Nestle Butterfinger"
+          }
+        ]
+      },
+      {
+        "label": "Gluten-free",
+        "bars": [
+          {
+            "value": 6,
+            "color": "red",
+            "text": "6",
+            "tip": "Gluten-free bowl\nChocolate: 6 of 10 candies\nReese's Peanut Butter cup, Reese's Miniatures, Reese's pieces, Peanut butter M&M's, Peanut M&Ms, Junior Mints"
+          },
+          {
+            "value": 4,
+            "color": "aqua",
+            "text": "4",
+            "tip": "Gluten-free bowl\nNot chocolate: 4 of 10 candies\nSkittles original, Sour Patch Kids, Haribo Gold Bears, Nerds"
+          }
+        ]
+      },
+      {
+        "label": "Peanut-free",
+        "bars": [
+          {
+            "value": 3,
+            "color": "red",
+            "text": "3",
+            "tip": "Peanut-free bowl\nChocolate: 3 of 10 candies\nRolo, Hershey's Special Dark, Junior Mints"
+          },
+          {
+            "value": 7,
+            "color": "aqua",
+            "text": "7",
+            "tip": "Peanut-free bowl\nNot chocolate: 7 of 10 candies\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish"
+          }
+        ]
+      },
+      {
+        "label": "Nut-free",
+        "bars": [
+          {
+            "value": 2,
+            "color": "red",
+            "text": "2",
+            "tip": "Nut-free bowl\nChocolate: 2 of 10 candies\nRolo, Junior Mints"
+          },
+          {
+            "value": 8,
+            "color": "aqua",
+            "text": "8",
+            "tip": "Nut-free bowl\nNot chocolate: 8 of 10 candies\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies"
+          }
+        ]
+      },
+      {
+        "label": "Milk-free",
+        "bars": [
+          {
+            "value": 10,
+            "color": "aqua",
+            "text": "10",
+            "tip": "Milk-free bowl\nNot chocolate: 10 of 10 candies\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Air Heads, Haribo Sour Bears"
+          }
+        ]
+      },
+      {
+        "label": "Free of all six",
+        "bars": [
+          {
+            "value": 10,
+            "color": "aqua",
+            "text": "10",
+            "tip": "Free of all six bowl\nNot chocolate: 10 of 10 candies\nSkittles original, Sour Patch Kids, Haribo Gold Bears, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Haribo Sour Bears, Welch's Fruit Snacks, Runts, Dots"
+          }
+        ]
+      }
+    ]
+  },
+  "sugar": {
+    "rows": [
+      {
+        "label": "Nut-free",
+        "bars": [
+          {
+            "value": 69.4,
+            "color": "aqua",
+            "tip": "Nut-free bowl\nMedian 69.4 g of sugar per 100 g"
+          }
+        ],
+        "valueText": "69.4 g"
+      },
+      {
+        "label": "Peanut-free",
+        "bars": [
+          {
+            "value": 69.1,
+            "color": "aqua",
+            "tip": "Peanut-free bowl\nMedian 69.1 g of sugar per 100 g"
+          }
+        ],
+        "valueText": "69.1 g"
+      },
+      {
+        "label": "Free of all six",
+        "bars": [
+          {
+            "value": 64.7,
+            "color": "aqua",
+            "tip": "Free of all six bowl\nMedian 64.7 g of sugar per 100 g"
+          }
+        ],
+        "valueText": "64.7 g"
+      },
+      {
+        "label": "Milk-free",
+        "bars": [
+          {
+            "value": 64.7,
+            "color": "aqua",
+            "tip": "Milk-free bowl\nMedian 64.7 g of sugar per 100 g"
+          }
+        ],
+        "valueText": "64.7 g"
+      },
+      {
+        "label": "Gluten-free",
+        "bars": [
+          {
+            "value": 52.9,
+            "color": "aqua",
+            "tip": "Gluten-free bowl\nMedian 52.9 g of sugar per 100 g"
+          }
+        ],
+        "valueText": "52.9 g"
+      },
+      {
+        "label": "No restriction",
+        "bars": [
+          {
+            "value": 51.7,
+            "color": "gray",
+            "tip": "No restriction bowl\nMedian 51.7 g of sugar per 100 g"
+          }
+        ],
+        "valueText": "51.7 g"
+      }
+    ]
+  },
+  "matching": {
+    "rows": [
+      {
+        "label": "Name only",
+        "bars": [
+          {
+            "value": 53,
+            "color": "aqua",
+            "text": "53",
+            "tip": "Name only\n53 of 83 candies matched\n921 products matched"
+          },
+          {
+            "value": 80,
+            "color": "red",
+            "text": "80",
+            "tip": "Name only\n80 matched products that are not candy"
+          }
+        ]
+      },
+      {
+        "label": "Curated rules",
+        "bars": [
+          {
+            "value": 68,
+            "color": "aqua",
+            "text": "68",
+            "tip": "Curated rules\n68 of 83 candies matched\n1217 products matched"
+          },
+          {
+            "value": 0,
+            "color": "red",
+            "text": "0",
+            "tip": "Curated rules\n0 matched products that are not candy"
+          }
+        ]
+      }
+    ]
+  },
+  "labelChanges": {
+    "rows": [
+      {
+        "label": "Changed",
+        "bars": [
+          {
+            "value": 12,
+            "color": "red",
+            "tip": "Changed: 12 candies\nHershey's Milk Chocolate, Kit Kat, M&M's, Milky Way, Nestle Crunch, Nestle Smarties, Peanut M&Ms, Peanut butter M&M's, Rolo, Snickers, Twix, Werther's Original Caramel"
+          }
+        ],
+        "valueText": "12"
+      },
+      {
+        "label": "Unchanged",
+        "bars": [
+          {
+            "value": 7,
+            "color": "aqua",
+            "tip": "Unchanged: 7 candies\nHaribo Gold Bears, Haribo Happy Cola, Reese's Miniatures, Reese's Peanut Butter cup, Skittles original, Sour Patch Kids, Welch's Fruit Snacks"
+          }
+        ],
+        "valueText": "7"
+      },
+      {
+        "label": "Newly covered",
+        "bars": [
+          {
+            "value": 2,
+            "color": "fg2",
+            "tip": "Newly covered: 2 candies\n3 Musketeers, Nestle Butterfinger"
+          }
+        ],
+        "valueText": "2"
+      },
+      {
+        "label": "Not enough current data",
+        "bars": [
+          {
+            "value": 62,
+            "color": "gray",
+            "tip": "Not enough current data: 62 candies"
+          }
+        ],
+        "valueText": "62"
+      }
+    ]
+  },
+  "warningCost": {
+    "rows": [
+      {
+        "label": "Gluten-free",
+        "a": {
+          "value": 88.2,
+          "tip": "Gluten-free, warnings exclude\n88.2% popularity score"
+        },
+        "b": {
+          "value": 89.6,
+          "tip": "Gluten-free, warnings accepted\n89.6% popularity score\nCandies added: Rolo"
+        },
+        "note": "+1.4"
+      },
+      {
+        "label": "Peanut-free",
+        "a": {
+          "value": 78.0,
+          "tip": "Peanut-free, warnings exclude\n78.0% popularity score"
+        },
+        "b": {
+          "value": 85.9,
+          "tip": "Peanut-free, warnings accepted\n85.9% popularity score\nCandies added: Kit Kat, Milky Way, M&M's, Nestle Crunch"
+        },
+        "note": "+7.9"
+      },
+      {
+        "label": "Nut-free",
+        "a": {
+          "value": 77.1,
+          "tip": "Nut-free, warnings exclude\n77.1% popularity score"
+        },
+        "b": {
+          "value": 81.3,
+          "tip": "Nut-free, warnings accepted\n81.3% popularity score\nCandies added: Milky Way, M&M's"
+        },
+        "note": "+4.2"
+      },
+      {
+        "label": "Milk-free",
+        "a": {
+          "value": 74.6,
+          "tip": "Milk-free, warnings exclude\n74.6% popularity score"
+        },
+        "b": {
+          "value": 74.6,
+          "tip": "Milk-free, warnings accepted\n74.6% popularity score\nCandies added: none"
+        },
+        "note": "no change"
+      },
+      {
+        "label": "Free of all six",
+        "a": {
+          "value": 68.7,
+          "tip": "Free of all six, warnings exclude\n68.7% popularity score"
+        },
+        "b": {
+          "value": 68.7,
+          "tip": "Free of all six, warnings accepted\n68.7% popularity score\nCandies added: none"
+        },
+        "note": "no change"
+      }
+    ]
+  },
+  "swaps": {
+    "views": [
+      {
+        "key": "peanut_free",
+        "label": "Peanut-free",
+        "rows": [
+          {
+            "label": "Reese's Peanut Butter cup",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 84.2,
+              "tip": "Reese's Peanut Butter cup\n84.2% win rate"
+            }
+          },
+          {
+            "label": "Reese's Miniatures",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 81.9,
+              "tip": "Reese's Miniatures\n81.9% win rate"
+            }
+          },
+          {
+            "label": "Twix",
+            "a": {
+              "value": 59.2,
+              "label": "Hershey's Special Dark",
+              "tip": "Hershey's Special Dark\n59.2% win rate\nShared traits: chocolate, bar"
+            },
+            "b": {
+              "value": 81.6,
+              "tip": "Twix\n81.6% win rate"
+            }
+          },
+          {
+            "label": "Kit Kat",
+            "a": {
+              "value": 47.8,
+              "label": "Mounds",
+              "tip": "Mounds\n47.8% win rate\nShared traits: chocolate, bar"
+            },
+            "b": {
+              "value": 76.8,
+              "tip": "Kit Kat\n76.8% win rate"
+            }
+          },
+          {
+            "label": "Snickers",
+            "a": {
+              "value": 39.0,
+              "label": "Charleston Chew",
+              "tip": "Charleston Chew\n39.0% win rate\nShared traits: chocolate, nougat, bar"
+            },
+            "b": {
+              "value": 76.7,
+              "tip": "Snickers\n76.7% win rate"
+            }
+          },
+          {
+            "label": "Reese's pieces",
+            "a": {
+              "value": 57.2,
+              "label": "Junior Mints",
+              "tip": "Junior Mints\n57.2% win rate\nShared traits: chocolate, many per bag"
+            },
+            "b": {
+              "value": 73.4,
+              "tip": "Reese's pieces\n73.4% win rate"
+            }
+          },
+          {
+            "label": "Milky Way",
+            "a": {
+              "value": 39.0,
+              "label": "Charleston Chew",
+              "tip": "Charleston Chew\n39.0% win rate\nShared traits: chocolate, nougat, bar"
+            },
+            "b": {
+              "value": 73.1,
+              "tip": "Milky Way\n73.1% win rate"
+            }
+          },
+          {
+            "label": "Reese's stuffed with pieces",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 72.9,
+              "tip": "Reese's stuffed with pieces\n72.9% win rate"
+            }
+          },
+          {
+            "label": "Peanut butter M&M's",
+            "a": {
+              "value": 57.2,
+              "label": "Junior Mints",
+              "tip": "Junior Mints\n57.2% win rate\nShared traits: chocolate, many per bag"
+            },
+            "b": {
+              "value": 71.5,
+              "tip": "Peanut butter M&M's\n71.5% win rate"
+            }
+          },
+          {
+            "label": "Nestle Butterfinger",
+            "a": {
+              "value": 59.2,
+              "label": "Hershey's Special Dark",
+              "tip": "Hershey's Special Dark\n59.2% win rate\nShared traits: chocolate, bar"
+            },
+            "b": {
+              "value": 70.7,
+              "tip": "Nestle Butterfinger\n70.7% win rate"
+            }
+          }
+        ]
+      },
+      {
+        "key": "nut_free",
+        "label": "Nut-free",
+        "rows": [
+          {
+            "label": "Reese's Peanut Butter cup",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 84.2,
+              "tip": "Reese's Peanut Butter cup\n84.2% win rate"
+            }
+          },
+          {
+            "label": "Reese's Miniatures",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 81.9,
+              "tip": "Reese's Miniatures\n81.9% win rate"
+            }
+          },
+          {
+            "label": "Twix",
+            "a": {
+              "value": 47.8,
+              "label": "Mounds",
+              "tip": "Mounds\n47.8% win rate\nShared traits: chocolate, bar"
+            },
+            "b": {
+              "value": 81.6,
+              "tip": "Twix\n81.6% win rate"
+            }
+          },
+          {
+            "label": "Kit Kat",
+            "a": {
+              "value": 47.8,
+              "label": "Mounds",
+              "tip": "Mounds\n47.8% win rate\nShared traits: chocolate, bar"
+            },
+            "b": {
+              "value": 76.8,
+              "tip": "Kit Kat\n76.8% win rate"
+            }
+          },
+          {
+            "label": "Snickers",
+            "a": {
+              "value": 39.0,
+              "label": "Charleston Chew",
+              "tip": "Charleston Chew\n39.0% win rate\nShared traits: chocolate, nougat, bar"
+            },
+            "b": {
+              "value": 76.7,
+              "tip": "Snickers\n76.7% win rate"
+            }
+          },
+          {
+            "label": "Reese's pieces",
+            "a": {
+              "value": 57.2,
+              "label": "Junior Mints",
+              "tip": "Junior Mints\n57.2% win rate\nShared traits: chocolate, many per bag"
+            },
+            "b": {
+              "value": 73.4,
+              "tip": "Reese's pieces\n73.4% win rate"
+            }
+          },
+          {
+            "label": "Milky Way",
+            "a": {
+              "value": 39.0,
+              "label": "Charleston Chew",
+              "tip": "Charleston Chew\n39.0% win rate\nShared traits: chocolate, nougat, bar"
+            },
+            "b": {
+              "value": 73.1,
+              "tip": "Milky Way\n73.1% win rate"
+            }
+          },
+          {
+            "label": "Reese's stuffed with pieces",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 72.9,
+              "tip": "Reese's stuffed with pieces\n72.9% win rate"
+            }
+          },
+          {
+            "label": "Peanut butter M&M's",
+            "a": {
+              "value": 57.2,
+              "label": "Junior Mints",
+              "tip": "Junior Mints\n57.2% win rate\nShared traits: chocolate, many per bag"
+            },
+            "b": {
+              "value": 71.5,
+              "tip": "Peanut butter M&M's\n71.5% win rate"
+            }
+          },
+          {
+            "label": "Nestle Butterfinger",
+            "a": {
+              "value": 47.8,
+              "label": "Mounds",
+              "tip": "Mounds\n47.8% win rate\nShared traits: chocolate, bar"
+            },
+            "b": {
+              "value": 70.7,
+              "tip": "Nestle Butterfinger\n70.7% win rate"
+            }
+          }
+        ]
+      },
+      {
+        "key": "milk_free",
+        "label": "Milk-free",
+        "rows": [
+          {
+            "label": "Reese's Peanut Butter cup",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 84.2,
+              "tip": "Reese's Peanut Butter cup\n84.2% win rate"
+            }
+          },
+          {
+            "label": "Reese's Miniatures",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 81.9,
+              "tip": "Reese's Miniatures\n81.9% win rate"
+            }
+          },
+          {
+            "label": "Twix",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 81.6,
+              "tip": "Twix\n81.6% win rate"
+            }
+          },
+          {
+            "label": "Kit Kat",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 76.8,
+              "tip": "Kit Kat\n76.8% win rate"
+            }
+          },
+          {
+            "label": "Snickers",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 76.7,
+              "tip": "Snickers\n76.7% win rate"
+            }
+          },
+          {
+            "label": "Reese's pieces",
+            "a": {
+              "value": 23.4,
+              "label": "Boston Baked Beans",
+              "tip": "Boston Baked Beans\n23.4% win rate\nShared traits: peanut or almond, many per bag"
+            },
+            "b": {
+              "value": 73.4,
+              "tip": "Reese's pieces\n73.4% win rate"
+            }
+          },
+          {
+            "label": "Milky Way",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 73.1,
+              "tip": "Milky Way\n73.1% win rate"
+            }
+          },
+          {
+            "label": "Reese's stuffed with pieces",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 72.9,
+              "tip": "Reese's stuffed with pieces\n72.9% win rate"
+            }
+          },
+          {
+            "label": "Peanut butter M&M's",
+            "a": {
+              "value": 23.4,
+              "label": "Boston Baked Beans",
+              "tip": "Boston Baked Beans\n23.4% win rate\nShared traits: peanut or almond, many per bag"
+            },
+            "b": {
+              "value": 71.5,
+              "tip": "Peanut butter M&M's\n71.5% win rate"
+            }
+          },
+          {
+            "label": "Nestle Butterfinger",
+            "a": {
+              "value": 43.1,
+              "label": "Tootsie Roll Juniors",
+              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+            },
+            "b": {
+              "value": 70.7,
+              "tip": "Nestle Butterfinger\n70.7% win rate"
+            }
+          }
+        ]
+      },
+      {
+        "key": "gluten_free",
+        "label": "Gluten-free",
+        "rows": [
+          {
+            "label": "Twix",
+            "a": {
+              "value": 47.8,
+              "label": "Mounds",
+              "tip": "Mounds\n47.8% win rate\nShared traits: chocolate, bar"
+            },
+            "b": {
+              "value": 81.6,
+              "tip": "Twix\n81.6% win rate"
+            }
+          },
+          {
+            "label": "Kit Kat",
+            "a": {
+              "value": 47.8,
+              "label": "Mounds",
+              "tip": "Mounds\n47.8% win rate\nShared traits: chocolate, bar"
+            },
+            "b": {
+              "value": 76.8,
+              "tip": "Kit Kat\n76.8% win rate"
+            }
+          },
+          {
+            "label": "Snickers",
+            "a": {
+              "value": 39.0,
+              "label": "Charleston Chew",
+              "tip": "Charleston Chew\n39.0% win rate\nShared traits: chocolate, nougat, bar"
+            },
+            "b": {
+              "value": 76.7,
+              "tip": "Snickers\n76.7% win rate"
+            }
+          },
+          {
+            "label": "Milky Way",
+            "a": {
+              "value": 39.0,
+              "label": "Charleston Chew",
+              "tip": "Charleston Chew\n39.0% win rate\nShared traits: chocolate, nougat, bar"
+            },
+            "b": {
+              "value": 73.1,
+              "tip": "Milky Way\n73.1% win rate"
+            }
+          },
+          {
+            "label": "Reese's stuffed with pieces",
+            "a": {
+              "value": 84.2,
+              "label": "Reese's Peanut Butter cup",
+              "tip": "Reese's Peanut Butter cup\n84.2% win rate\nShared traits: chocolate, peanut or almond"
+            },
+            "b": {
+              "value": 72.9,
+              "tip": "Reese's stuffed with pieces\n72.9% win rate"
+            }
+          },
+          {
+            "label": "Nestle Butterfinger",
+            "a": {
+              "value": 84.2,
+              "label": "Reese's Peanut Butter cup",
+              "tip": "Reese's Peanut Butter cup\n84.2% win rate\nShared traits: chocolate, peanut or almond"
+            },
+            "b": {
+              "value": 70.7,
+              "tip": "Nestle Butterfinger\n70.7% win rate"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "street": {
+    "rows": [
+      {
+        "label": "Reese's Peanut Butter cup",
+        "bars": [
+          {
+            "value": 84.18029,
+            "color": "gray",
+            "tip": "Reese's Peanut Butter cup\n84.2% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "84.2%",
+        "note": ""
+      },
+      {
+        "label": "Reese's Miniatures",
+        "bars": [
+          {
+            "value": 81.866257,
+            "color": "gray",
+            "tip": "Reese's Miniatures\n81.9% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "81.9%",
+        "note": ""
+      },
+      {
+        "label": "Twix",
+        "bars": [
+          {
+            "value": 81.642914,
+            "color": "gray",
+            "tip": "Twix\n81.6% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "81.6%",
+        "note": ""
+      },
+      {
+        "label": "Kit Kat",
+        "bars": [
+          {
+            "value": 76.7686,
+            "color": "gray",
+            "tip": "Kit Kat\n76.8% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "76.8%",
+        "note": ""
+      },
+      {
+        "label": "Snickers",
+        "bars": [
+          {
+            "value": 76.673782,
+            "color": "gray",
+            "tip": "Snickers\n76.7% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "76.7%",
+        "note": ""
+      },
+      {
+        "label": "Reese's pieces",
+        "bars": [
+          {
+            "value": 73.43499,
+            "color": "gray",
+            "tip": "Reese's pieces\n73.4% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "73.4%",
+        "note": ""
+      },
+      {
+        "label": "Milky Way",
+        "bars": [
+          {
+            "value": 73.099556,
+            "color": "gray",
+            "tip": "Milky Way\n73.1% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "73.1%",
+        "note": ""
+      },
+      {
+        "label": "Reese's stuffed with pieces",
+        "bars": [
+          {
+            "value": 72.887901,
+            "color": "gray",
+            "tip": "Reese's stuffed with pieces\n72.9% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "72.9%",
+        "note": ""
+      },
+      {
+        "label": "Peanut butter M&M's",
+        "bars": [
+          {
+            "value": 71.46505,
+            "color": "gray",
+            "tip": "Peanut butter M&M's\n71.5% win rate\nNot safe for any of the three"
+          }
+        ],
+        "valueText": "71.5%",
+        "note": ""
+      },
+      {
+        "label": "Starburst",
+        "bars": [
+          {
+            "value": 67.037628,
+            "color": "aqua",
+            "tip": "Starburst\n67.0% win rate\nSafe for peanut, milk, tree nut allergies\nReplaces Butterfinger"
+          }
+        ],
+        "valueText": "67.0%",
+        "note": "allergy-safe, replaces Butterfinger"
+      }
+    ]
+  },
+  "simulator": {
+    "candies": [
+      {
+        "candy": "Reese's Peanut Butter cup",
+        "win": 84.18,
+        "safe": [
+          "egg",
+          "gluten"
+        ]
+      },
+      {
+        "candy": "Reese's Miniatures",
+        "win": 81.87,
+        "safe": [
+          "egg",
+          "gluten"
+        ]
+      },
+      {
+        "candy": "Twix",
+        "win": 81.64,
+        "safe": [
+          "egg"
+        ]
+      },
+      {
+        "candy": "Kit Kat",
+        "win": 76.77,
+        "safe": [
+          "egg"
+        ]
+      },
+      {
+        "candy": "Snickers",
+        "win": 76.67,
+        "safe": []
+      },
+      {
+        "candy": "Reese's pieces",
+        "win": 73.43,
+        "safe": [
+          "egg",
+          "gluten"
+        ]
+      },
+      {
+        "candy": "Milky Way",
+        "win": 73.1,
+        "safe": []
+      },
+      {
+        "candy": "Reese's stuffed with pieces",
+        "win": 72.89,
+        "safe": []
+      },
+      {
+        "candy": "Peanut butter M&M's",
+        "win": 71.47,
+        "safe": [
+          "egg",
+          "gluten"
+        ]
+      },
+      {
+        "candy": "Nestle Butterfinger",
+        "win": 70.74,
+        "safe": []
+      },
+      {
+        "candy": "Peanut M&Ms",
+        "win": 69.48,
+        "safe": [
+          "egg",
+          "gluten"
+        ]
+      },
+      {
+        "candy": "3 Musketeers",
+        "win": 67.6,
+        "safe": []
+      },
+      {
+        "candy": "Starburst",
+        "win": 67.04,
+        "safe": [
+          "egg",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "100 Grand",
+        "win": 66.97,
+        "safe": []
+      },
+      {
+        "candy": "M&M's",
+        "win": 66.57,
+        "safe": [
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Nestle Crunch",
+        "win": 66.47,
+        "safe": [
+          "egg"
+        ]
+      },
+      {
+        "candy": "Rolo",
+        "win": 65.72,
+        "safe": [
+          "egg",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Milky Way Simply Caramel",
+        "win": 64.35,
+        "safe": []
+      },
+      {
+        "candy": "Skittles original",
+        "win": 63.09,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Hershey's Krackel",
+        "win": 62.28,
+        "safe": []
+      },
+      {
+        "candy": "Milky Way Midnight",
+        "win": 60.8,
+        "safe": []
+      },
+      {
+        "candy": "Sour Patch Kids",
+        "win": 59.86,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Snickers Crisper",
+        "win": 59.53,
+        "safe": []
+      },
+      {
+        "candy": "Hershey's Special Dark",
+        "win": 59.24,
+        "safe": [
+          "egg",
+          "peanut"
+        ]
+      },
+      {
+        "candy": "Junior Mints",
+        "win": 57.22,
+        "safe": [
+          "egg",
+          "gluten",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Haribo Gold Bears",
+        "win": 57.12,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Baby Ruth",
+        "win": 56.91,
+        "safe": []
+      },
+      {
+        "candy": "Hershey's Milk Chocolate",
+        "win": 56.49,
+        "safe": [
+          "egg",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Hershey's Kisses",
+        "win": 55.38,
+        "safe": []
+      },
+      {
+        "candy": "Nerds",
+        "win": 55.35,
+        "safe": [
+          "gluten",
+          "milk",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Skittles wildberry",
+        "win": 55.1,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Milk Duds",
+        "win": 55.06,
+        "safe": []
+      },
+      {
+        "candy": "Swedish Fish",
+        "win": 54.86,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Mr Good Bar",
+        "win": 54.53,
+        "safe": []
+      },
+      {
+        "candy": "Lifesavers big ring gummies",
+        "win": 52.91,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Sour Patch Tricksters",
+        "win": 52.83,
+        "safe": []
+      },
+      {
+        "candy": "Air Heads",
+        "win": 52.34,
+        "safe": [
+          "egg",
+          "milk",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Haribo Sour Bears",
+        "win": 51.41,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Almond Joy",
+        "win": 50.35,
+        "safe": []
+      },
+      {
+        "candy": "Tootsie Roll Snack Bars",
+        "win": 49.65,
+        "safe": []
+      },
+      {
+        "candy": "Whoppers",
+        "win": 49.52,
+        "safe": [
+          "egg",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Tootsie Pop",
+        "win": 48.98,
+        "safe": [
+          "egg",
+          "gluten",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Mounds",
+        "win": 47.83,
+        "safe": [
+          "egg",
+          "gluten",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Trolli Sour Bites",
+        "win": 47.17,
+        "safe": [
+          "egg",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Gobstopper",
+        "win": 46.78,
+        "safe": []
+      },
+      {
+        "candy": "Mike & Ike",
+        "win": 46.41,
+        "safe": [
+          "egg",
+          "milk",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Payday",
+        "win": 46.3,
+        "safe": []
+      },
+      {
+        "candy": "Smarties candy",
+        "win": 46.0,
+        "safe": []
+      },
+      {
+        "candy": "Tootsie Roll Midgies",
+        "win": 45.74,
+        "safe": [
+          "egg",
+          "gluten",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Twizzlers",
+        "win": 45.47,
+        "safe": []
+      },
+      {
+        "candy": "Welch's Fruit Snacks",
+        "win": 44.38,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Fruit Chews",
+        "win": 43.09,
+        "safe": [
+          "egg",
+          "gluten",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Tootsie Roll Juniors",
+        "win": 43.07,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Runts",
+        "win": 42.85,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Dots",
+        "win": 42.27,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Haribo Twin Snakes",
+        "win": 42.18,
+        "safe": [
+          "egg",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Werther's Original Caramel",
+        "win": 41.9,
+        "safe": [
+          "egg",
+          "peanut"
+        ]
+      },
+      {
+        "candy": "Laffy Taffy",
+        "win": 41.39,
+        "safe": [
+          "gluten",
+          "milk",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Pop Rocks",
+        "win": 41.27,
+        "safe": [
+          "egg",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Dum Dums",
+        "win": 39.46,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Now & Later",
+        "win": 39.45,
+        "safe": [
+          "gluten",
+          "milk",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Fun Dip",
+        "win": 39.19,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Lemonhead",
+        "win": 39.14,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Warheads",
+        "win": 39.01,
+        "safe": [
+          "egg",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Charleston Chew",
+        "win": 38.98,
+        "safe": [
+          "gluten",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Candy Corn",
+        "win": 38.01,
+        "safe": [
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Nestle Smarties",
+        "win": 37.89,
+        "safe": []
+      },
+      {
+        "candy": "Pixie Sticks",
+        "win": 37.72,
+        "safe": []
+      },
+      {
+        "candy": "Red vines",
+        "win": 37.35,
+        "safe": [
+          "egg",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Chewey Lemonhead Fruit Mix",
+        "win": 36.02,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Ring pop",
+        "win": 35.29,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Sixlets",
+        "win": 34.72,
+        "safe": [
+          "egg",
+          "gluten",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Strawberry bon bons",
+        "win": 34.58,
+        "safe": [
+          "gluten",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Caramel Apple Pops",
+        "win": 34.52,
+        "safe": []
+      },
+      {
+        "candy": "Haribo Happy Cola",
+        "win": 34.16,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Sugar Babies",
+        "win": 33.44,
+        "safe": []
+      },
+      {
+        "candy": "Sugar Daddy",
+        "win": 32.23,
+        "safe": []
+      },
+      {
+        "candy": "Root Beer Barrels",
+        "win": 29.7,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Jawbusters",
+        "win": 28.13,
+        "safe": []
+      },
+      {
+        "candy": "Super Bubble",
+        "win": 27.3,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "soy",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Chiclets",
+        "win": 24.52,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "peanut",
+          "tree_nut"
+        ]
+      },
+      {
+        "candy": "Boston Baked Beans",
+        "win": 23.42,
+        "safe": [
+          "egg",
+          "gluten",
+          "milk",
+          "soy"
+        ]
+      },
+      {
+        "candy": "Nik L Nip",
+        "win": 22.45,
+        "safe": []
+      }
+    ]
+  }
+}
