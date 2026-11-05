@@ -20,29 +20,25 @@ const views = (data.views as { key: string; label: string }[] | undefined) ?? []
 <figure class="cjs-chart">
   <div class="chart-title">{title}</div>
   {subtitle && <div class="chart-sub">{subtitle}</div>}
-  {
-    views.length > 1 && (
-      <div class="chart-views" role="tablist">
-        {views.map((v, i) => (
-          <button type="button" role="tab" data-view={v.key} aria-selected={i === 0 ? 'true' : 'false'}>
-            {v.label}
-          </button>
-        ))}
-      </div>
-    )
-  }
-  {
-    kind === 'simulator' && (
-      <div class="chart-sliders">
-        <label>
-          <span>Allergy-safe candies</span>
-          <input type="range" min="0" max="10" step="1" value="1" data-safe-count />
-          <output>1 of 10</output>
-        </label>
-        <div class="chart-stats" aria-live="polite"></div>
-      </div>
-    )
-  }
+  {views.length > 1 && (
+    <div class="chart-views" role="tablist">
+      {views.map((v, i) => (
+        <button type="button" role="tab" data-view={v.key} aria-selected={i === 0 ? 'true' : 'false'}>
+          {v.label}
+        </button>
+      ))}
+    </div>
+  )}
+  {kind === 'simulator' && (
+    <div class="chart-sliders">
+      <label>
+        <span>Allergy-safe candies</span>
+        <input type="range" min="0" max="10" step="1" value="1" data-safe-count />
+        <output>1 of 10</output>
+      </label>
+      <div class="chart-stats" aria-live="polite"></div>
+    </div>
+  )}
   <div class="chart-canvas" style={`height: ${height}px`}>
     <canvas role="img" aria-label={title}></canvas>
   </div>
@@ -131,7 +127,9 @@ const views = (data.views as { key: string; label: string }[] | undefined) ?? []
     pointer-events: none;
     opacity: 0;
     transform: translateY(4px);
-    transition: opacity 120ms ease-out, transform 120ms ease-out;
+    transition:
+      opacity 120ms ease-out,
+      transform 120ms ease-out;
   }
   .cjs-chart .cjs-tip.show {
     opacity: 1;
