@@ -161,20 +161,13 @@
       },
       {
         "x": 0.835,
-        "y": 43.1,
-        "color": "red",
-        "label": null,
-        "tip": "Tootsie Roll Juniors\n43.1% win rate\n1 of 6 allergens listed\nChocolate"
-      },
-      {
-        "x": 0.945,
         "y": 47.2,
         "color": "aqua",
         "label": null,
         "tip": "Trolli Sour Bites\n47.2% win rate\n1 of 6 allergens listed\nNot chocolate"
       },
       {
-        "x": 1.055,
+        "x": 0.945,
         "y": 67.0,
         "color": "aqua",
         "label": null,
@@ -439,8 +432,8 @@
       },
       {
         "x": 1,
-        "y": 40.7,
-        "tip": "1 allergens listed\nAverage win rate 40.7% across 7 candies"
+        "y": 40.3,
+        "tip": "1 allergens listed\nAverage win rate 40.3% across 6 candies"
       },
       {
         "x": 2,
@@ -489,11 +482,11 @@
           {
             "value": 88.2,
             "color": "red",
-            "tip": "Gluten-free bowl\n88.2% popularity score\n37 eligible candies\n\nBowl: Reese's Peanut Butter cup, Reese's Miniatures, Reese's pieces, Peanut butter M&M's, Peanut M&Ms, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds"
+            "tip": "Gluten-free bowl\n88.2% popularity score\n36 eligible candies\n\nBowl: Reese's Peanut Butter cup, Reese's Miniatures, Reese's pieces, Peanut butter M&M's, Peanut M&Ms, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds"
           }
         ],
         "valueText": "88.2%",
-        "note": "37 eligible candies"
+        "note": "36 eligible candies"
       },
       {
         "label": "Peanut-free",
@@ -501,11 +494,11 @@
           {
             "value": 78.0,
             "color": "red",
-            "tip": "Peanut-free bowl\n78.0% popularity score\n43 eligible candies\n\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Hershey's Special Dark, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish"
+            "tip": "Peanut-free bowl\n78.0% popularity score\n42 eligible candies\n\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Hershey's Special Dark, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish"
           }
         ],
         "valueText": "78.0%",
-        "note": "43 eligible candies"
+        "note": "42 eligible candies"
       },
       {
         "label": "Nut-free",
@@ -513,11 +506,11 @@
           {
             "value": 77.1,
             "color": "red",
-            "tip": "Nut-free bowl\n77.1% popularity score\n41 eligible candies\n\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies"
+            "tip": "Nut-free bowl\n77.1% popularity score\n40 eligible candies\n\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies"
           }
         ],
         "valueText": "77.1%",
-        "note": "41 eligible candies"
+        "note": "40 eligible candies"
       },
       {
         "label": "Milk-free",
@@ -525,11 +518,11 @@
           {
             "value": 74.6,
             "color": "red",
-            "tip": "Milk-free bowl\n74.6% popularity score\n30 eligible candies\n\nBowl: Starburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Air Heads, Haribo Sour Bears"
+            "tip": "Milk-free bowl\n74.6% popularity score\n29 eligible candies\n\nBowl: Starburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Air Heads, Haribo Sour Bears"
           }
         ],
         "valueText": "74.6%",
-        "note": "30 eligible candies"
+        "note": "29 eligible candies"
       },
       {
         "label": "Free of all six",
@@ -744,10 +737,10 @@
         "label": "Curated rules",
         "bars": [
           {
-            "value": 68,
+            "value": 67,
             "color": "aqua",
-            "text": "68",
-            "tip": "Curated rules\n68 of 83 candies matched\n1217 products matched"
+            "text": "67",
+            "tip": "Curated rules\n67 of 83 candies matched\n1217 products matched"
           },
           {
             "value": 0,
@@ -880,9 +873,9 @@
           {
             "label": "Reese's Peanut Butter cup",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 59.2,
+              "label": "Hershey's Special Dark",
+              "tip": "Hershey's Special Dark\n59.2% win rate\nShared traits: chocolate"
             },
             "b": {
               "value": 84.2,
@@ -892,9 +885,9 @@
           {
             "label": "Reese's Miniatures",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 34.7,
+              "label": "Sixlets",
+              "tip": "Sixlets\n34.7% win rate\nShared traits: chocolate"
             },
             "b": {
               "value": 81.9,
@@ -964,9 +957,9 @@
           {
             "label": "Reese's stuffed with pieces",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 59.2,
+              "label": "Hershey's Special Dark",
+              "tip": "Hershey's Special Dark\n59.2% win rate\nShared traits: chocolate"
             },
             "b": {
               "value": 72.9,
@@ -1006,9 +999,9 @@
           {
             "label": "Reese's Peanut Butter cup",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 47.8,
+              "label": "Mounds",
+              "tip": "Mounds\n47.8% win rate\nShared traits: chocolate"
             },
             "b": {
               "value": 84.2,
@@ -1018,9 +1011,9 @@
           {
             "label": "Reese's Miniatures",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 34.7,
+              "label": "Sixlets",
+              "tip": "Sixlets\n34.7% win rate\nShared traits: chocolate"
             },
             "b": {
               "value": 81.9,
@@ -1090,9 +1083,9 @@
           {
             "label": "Reese's stuffed with pieces",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 47.8,
+              "label": "Mounds",
+              "tip": "Mounds\n47.8% win rate\nShared traits: chocolate"
             },
             "b": {
               "value": 72.9,
@@ -1132,9 +1125,9 @@
           {
             "label": "Reese's Peanut Butter cup",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 23.4,
+              "label": "Boston Baked Beans",
+              "tip": "Boston Baked Beans\n23.4% win rate\nShared traits: peanut or almond"
             },
             "b": {
               "value": 84.2,
@@ -1144,9 +1137,9 @@
           {
             "label": "Reese's Miniatures",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 23.4,
+              "label": "Boston Baked Beans",
+              "tip": "Boston Baked Beans\n23.4% win rate\nShared traits: peanut or almond"
             },
             "b": {
               "value": 81.9,
@@ -1156,9 +1149,9 @@
           {
             "label": "Twix",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 34.2,
+              "label": "Haribo Happy Cola",
+              "tip": "Haribo Happy Cola\n34.2% win rate\nShared traits: none"
             },
             "b": {
               "value": 81.6,
@@ -1168,9 +1161,9 @@
           {
             "label": "Kit Kat",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 34.2,
+              "label": "Haribo Happy Cola",
+              "tip": "Haribo Happy Cola\n34.2% win rate\nShared traits: none"
             },
             "b": {
               "value": 76.8,
@@ -1180,9 +1173,9 @@
           {
             "label": "Snickers",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 23.4,
+              "label": "Boston Baked Beans",
+              "tip": "Boston Baked Beans\n23.4% win rate\nShared traits: peanut or almond"
             },
             "b": {
               "value": 76.7,
@@ -1204,9 +1197,9 @@
           {
             "label": "Milky Way",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 34.2,
+              "label": "Haribo Happy Cola",
+              "tip": "Haribo Happy Cola\n34.2% win rate\nShared traits: none"
             },
             "b": {
               "value": 73.1,
@@ -1216,9 +1209,9 @@
           {
             "label": "Reese's stuffed with pieces",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 23.4,
+              "label": "Boston Baked Beans",
+              "tip": "Boston Baked Beans\n23.4% win rate\nShared traits: peanut or almond"
             },
             "b": {
               "value": 72.9,
@@ -1240,9 +1233,9 @@
           {
             "label": "Nestle Butterfinger",
             "a": {
-              "value": 43.1,
-              "label": "Tootsie Roll Juniors",
-              "tip": "Tootsie Roll Juniors\n43.1% win rate\nShared traits: chocolate"
+              "value": 23.4,
+              "label": "Boston Baked Beans",
+              "tip": "Boston Baked Beans\n23.4% win rate\nShared traits: peanut or almond"
             },
             "b": {
               "value": 70.7,
@@ -1865,13 +1858,7 @@
       {
         "candy": "Tootsie Roll Juniors",
         "win": 43.07,
-        "safe": [
-          "egg",
-          "gluten",
-          "milk",
-          "peanut",
-          "tree_nut"
-        ]
+        "safe": []
       },
       {
         "candy": "Runts",
