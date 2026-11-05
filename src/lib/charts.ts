@@ -14,8 +14,20 @@ import {
   type Plugin,
 } from 'chart.js';
 
-// the popup sits next to the mouse with its arrow pointing at it, instead of at the end of a long bar
-(Tooltip.positioners as any).cursor = (_elements: unknown, position: { x: number; y: number }) => position;
+// Pin the popup instead of letting it follow the mouse: on a dot, at the dot; on a bar, where the mouse entered it,
+// centered on the bar, until the mouse moves to another mark. (Chart.js's default pins to the far end of a bar.)
+let anchor: { key: string; x: number; y: number } | null = null;
+(Tooltip.positioners as any).anchored = function (this: any, elements: any[], position: { x: number; y: number }) {
+  if (!elements.length) {
+    anchor = null;
+    return false;
+  }
+  const { element, datasetIndex, index } = elements[0];
+  if (!(element instanceof BarElement)) return { x: element.x, y: element.y };
+  const key = `${this.chart.id}:${datasetIndex}:${index}`;
+  if (anchor?.key !== key) anchor = { key, x: position.x, y: element.y };
+  return { x: anchor.x, y: anchor.y };
+};
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, LineController, LineElement, PointElement,
   ScatterController, Tooltip, Legend);
@@ -56,7 +68,7 @@ function setDefaults() {
   tip.titleFont = { size: 12, weight: 'bold' };
   tip.caretPadding = 8;
   tip.caretSize = 6;
-  tip.position = 'cursor' as any;
+  tip.position = 'anchored' as any;
   Chart.defaults.interaction = { mode: 'nearest', intersect: true, axis: 'xy' } as any;
   Chart.defaults.onHover = (e, els) => {
     const target = e.native?.target as HTMLElement | undefined;
@@ -77,6 +89,7 @@ function setDefaults() {
 
 // tooltips size to their longest line, so long lines (a bowl's candy list) wrap to keep the popup small
 function wrap(line: string, width = 34): string[] {
+  if (!line) return [''];
   const out: string[] = [];
   let cur = '';
   for (const word of line.split(' ')) {
