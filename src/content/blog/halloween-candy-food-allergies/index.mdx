@@ -1,7 +1,7 @@
 ---
 title: "Which Halloween Candy Can Kids With Food Allergies Eat?"
 description: "I combined an online candy vote with real ingredient labels on Databricks to find the most popular candies kids with food allergies can still eat, then checked the answer against this year's labels"
-pubDate: 2026-10-31
+pubDate: 2026-11-04
 draft: false
 coverImage: "/blog/halloween-candy-food-allergies-cover.jpg"
 coverCaption: "Fun-size Halloween candy, allergen warnings and all (photo from Pexels)"
@@ -15,7 +15,7 @@ If you had gone trick-or-treating anytime during your youth, chances are you cam
 
 **This is a major issue for those kids who may have a peanut allergy, because the most popular candy in the bowl is the one they cannot eat.**
 
-With Halloween coming up this year, I was curious to see what the best bowl looks like when it has to be safe, and how much a household gives up on buying certain candies to make it safe for all children.
+I was curious to see what the best Halloween bowl looks like when it has to be safe, and how much a household gives up on buying certain candies to make it safe for all children.
 
 So I built [**candyops**](https://github.com/kidskoding/candyops), a data pipeline that answers one question: **for each common food allergy, which 10 popular candies can you still hand out, and how much less popular is that bowl than one with no allergy restrictions?** It then goes one step further and asks what a household can actually do about it.
 
@@ -27,7 +27,7 @@ Candy labels do not make this easy for kids with food allergies. The US law requ
 
 A lot of the candy you eat comes from **three** major corporations:
 
-**The Hershey Company** is known for their iconic chocolates and candies, including **Hershey's**, **Reese's**, **Hershey's Kisses**, **Jolly Rancher**, and **Kit Kat**. As previously discussed, Reese's Peanut Butter Cups are some of the most common type of candy kids receive during trick or treating, and they are built around peanut butter!
+**The Hershey Company** is known for their iconic chocolates and candies, including **Hershey's**, **Reese's**, **Hershey's Kisses**, **Jolly Rancher**, and **Kit Kat**. As previously discussed, Reese's Peanut Butter Cups are some of the most common type of candy kids receive during trick-or-treating, and they are built around peanut butter!
 
 **Mars** is known for their iconic chocolates and candies, including **Snickers**, **M&M's**, **Twix**, **3 Musketeers**, **Milky Way**, **Skittles** and **Starburst**. Its lineup covers both kinds of candy in a Halloween bowl: chocolate bars like Snickers and Twix, made with milk chocolate, and fruit candies like Skittles and Starburst, made without chocolate or nuts. That difference matters later, because the fruit candies are what remain once the common allergens are removed.
 
@@ -81,7 +81,6 @@ flowchart TD
   S --> G["gold<br/>candy profiles, bowls,<br/>warning cost, safe swaps,<br/>2017 vs now"]
   G --> O["street bowl optimizer<br/>Python, logged to MLflow"]
   G --> D["dashboard"]
-  O --> D
 ```
 
 The pipeline runs on **Databricks**, a cloud platform for processing large datasets with Spark and SQL. Raw files land in a **Unity Catalog volume**, which is Databricks' managed storage for files, so the downloads are kept between runs. I set up a Databricks job that runs every day and stores the data in a **medallion architecture**, which organizes it into three layers: <span class="font-bold text-nvim-orange">bronze</span> pulls in the raw data from the sources unchanged, <span class="font-bold text-nvim-fg2">silver</span> cleans it and reads the allergens from each ingredient list, and <span class="font-bold text-nvim-yellow">gold</span> turns it into the results this post reports, such as each candy's allergen status and the allergy-safe bowls.
@@ -141,7 +140,7 @@ The Reese's problem from the start of this post is not a one-off. In **Figure 1.
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Figure 1.1:</strong> Win rate against the number of major allergens each candy's label lists, including may-contain warnings. Chocolate candies are red and other candies are green; lines show the average win rate for each count.</p>
 
-**Candies with none of the six allergens average a 45% win rate, while candies with five or more average 66%.** Most of that gap comes from chocolate, which almost always contains milk and soy, so the candies voters like best are also the hardest for allergic kids to eat.
+**Candies with none of the six allergens average a 45% win rate, while candies with five or more average 66%:** most of that gap comes from chocolate, which almost always contains milk and soy, so the candies voters like best are also the hardest for allergic kids to eat.
 
 **Chocolate is not the whole story, though:** among the 22 chocolate candies alone, those listing four or more allergens average a 66.9% win rate, compared with 57.1% for those listing three or fewer. Among the 36 non-chocolate candies, the number of allergens makes almost no difference (a 41.2% win rate with four or more, 43.7% with three or fewer). The best-loved chocolate bars are the ones with more allergens on the label, such as peanuts, nougat or a wafer.
 
@@ -305,7 +304,7 @@ In **Figure 1.8**, the two approaches are compared on how many candies they matc
 
 The fix has two parts. **Products "made with" a candy no longer count as evidence for that candy**, and neither do caramel apples or other derived treats. And **the ranking itself flags candies made with peanuts or almonds**, so the pipeline now keeps every flagged candy out of peanut-free and nut-free bowls, no matter what the labels say. A dbt test enforces it on every run.
 
-The change feed later confirmed that this rule was correct: this week's Butterfinger labels list peanuts, milk and soy.
+The change feed later confirmed that this rule was correct: the current Butterfinger labels list peanuts, milk and soy.
 
 ### Three more matching bugs
 
@@ -342,10 +341,10 @@ The bowls stay on the pinned 2017 data, so the results above are reproducible. T
 
 Here is what the results mean the next time you buy candy for trick-or-treaters:
 
-- **Keep the bowl you were going to buy and swap one candy for Starburst** so that every kid with a peanut, milk or tree-nut allergy has something to eat. It barely changes how popular the bowl is.
-- **If you know a peanut-allergic kid is coming, build the bowl around Starburst, Rolo, Skittles and Sour Patch Kids.** That bowl keeps a 78% popularity score, so it gives up about a fifth of the popularity, not most of it.
+- **Keep the bowl you were going to buy and swap one candy for Starburst:** that way, every kid with a peanut, milk or tree-nut allergy has something to eat. It barely changes how popular the bowl is.
+- **If you know a peanut-allergic kid is coming, build the bowl around Starburst, Rolo, Skittles and Sour Patch Kids:** that bowl keeps a 78% popularity score, so it gives up about a fifth of the popularity, not most of it.
 - **Swap favorites one for one:** Hershey's Special Dark for Twix, Mounds for Kit Kat, Charleston Chew for Snickers, and Junior Mints for Reese's Pieces.
-- **Check the "may contain" line, not just the ingredients.** These warnings vary from one candy maker to the next, and they are why Kit Kat and M&M's drop out of a peanut-free bowl even though neither lists peanuts.
+- **Check the "may contain" line, not just the ingredients:** these warnings vary from one candy maker to the next, and they are why Kit Kat and M&M's drop out of a peanut-free bowl even though neither lists peanuts.
 
 ## References
 <a name="references"></a>
