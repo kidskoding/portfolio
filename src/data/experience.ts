@@ -89,26 +89,6 @@ export const experiences: Experience[] = [
     ],
   },
   {
-    id: '9',
-    company: 'Databricks',
-    companyLogo: databricksLogoIcon.src,
-    startDate: 'May 2026',
-    endDate: 'Present',
-    duration: calculateDuration('May 2026', 'Present'),
-    roles: [
-      {
-        title: 'student fellowship',
-        startDate: 'May 2026',
-        endDate: 'Present',
-        duration: calculateDuration('May 2026', 'Present'),
-        description: [
-          'creating a launchpad into driving and fostering databricks, data, and ai adoption via tech talks, workshops, and hackathons!!',
-        ],
-        skills: ['Azure Databricks', 'Databricks', 'Business Intelligence (BI)', 'Data Engineering'],
-      },
-    ],
-  },
-  {
     id: '13',
     company: 'VoiceOS (YC P25)',
     companyLogo: voiceosLogoIcon.src,
@@ -128,6 +108,26 @@ export const experiences: Experience[] = [
           'aligning with an engineering team on product requirements and product design regarding various MCP integrations for VoiceOS (i.e Doordash, TikTok, GitHub, Microsoft Suite, Salesforce etc.)',
         ],
         skills: [],
+      },
+    ],
+  },
+  {
+    id: '9',
+    company: 'Databricks',
+    companyLogo: databricksLogoIcon.src,
+    startDate: 'May 2026',
+    endDate: 'Present',
+    duration: calculateDuration('May 2026', 'Present'),
+    roles: [
+      {
+        title: 'student fellowship',
+        startDate: 'May 2026',
+        endDate: 'Present',
+        duration: calculateDuration('May 2026', 'Present'),
+        description: [
+          'creating a launchpad into driving and fostering databricks, data, and ai adoption via tech talks, workshops, and hackathons!!',
+        ],
+        skills: ['Azure Databricks', 'Databricks', 'Business Intelligence (BI)', 'Data Engineering'],
       },
     ],
   },
