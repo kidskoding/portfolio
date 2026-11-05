@@ -296,6 +296,8 @@ function hbar(data: Json, o: Json): ChartConfiguration {
 function dumbbell(rows: Json[], o: Json): ChartConfiguration {
   const name = (s: string) => (o.narrow ? short(s, 13) : s);
   const tickLines = rows.map((r) => (r.a.label ? [name(r.label), `→ ${name(r.a.label)}`] : name(r.label)));
+  // start the axis below the lowest value in this view, so no dot falls off the left edge
+  const lowest = Math.floor((Math.min(...rows.flatMap((r) => [r.a.value, r.b.value])) - 5) / 10) * 10;
   const segments = rows.flatMap((r, i) => [{ x: r.a.value, y: i }, { x: r.b.value, y: i }, GAP]);
   return {
     type: 'scatter',
@@ -312,7 +314,8 @@ function dumbbell(rows: Json[], o: Json): ChartConfiguration {
     options: {
       layout: { padding: { right: 50 } },
       scales: {
-        x: { min: o.min, max: o.max, ticks: { stepSize: o.step, maxRotation: 0, callback: (v) => `${v}%` }, title: axisTitle(o.xTitle, true, o.narrow) },
+        x: { min: Math.min(o.min, lowest), max: o.max, ticks: { stepSize: o.step, maxRotation: 0, callback: (v) => `${v}%` },
+             title: axisTitle(o.xTitle, true, o.narrow) },
         y: { reverse: true, min: -0.6, max: rows.length - 0.4, grid: { display: false },
              ticks: { stepSize: 1, color: token('fg'), font: { size: o.narrow ? 10 : 12 }, callback: (v) => tickLines[Number(v)] ?? '' },
              title: axisTitle(o.yTitle, !o.narrow) },
