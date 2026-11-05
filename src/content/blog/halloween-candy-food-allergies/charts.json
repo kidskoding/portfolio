@@ -477,7 +477,7 @@
           {
             "value": 100.0,
             "color": "gray",
-            "tip": "No restriction bowl\n100.0% popularity score\n83 eligible candies\nBowl: Reese's Peanut Butter cup, Reese's Miniatures, Twix, Kit Kat, Snickers, Reese's pieces, Milky Way, Reese's stuffed with pieces, Peanut butter M&M's, Nestle Butterfinger"
+            "tip": "No restriction bowl\n100.0% popularity score\n83 eligible candies\n\nBowl: Reese's Peanut Butter cup, Reese's Miniatures, Twix, Kit Kat, Snickers, Reese's pieces, Milky Way, Reese's stuffed with pieces, Peanut butter M&M's, Nestle Butterfinger"
           }
         ],
         "valueText": "100.0%",
@@ -489,7 +489,7 @@
           {
             "value": 88.2,
             "color": "red",
-            "tip": "Gluten-free bowl\n88.2% popularity score\n37 eligible candies\nBowl: Reese's Peanut Butter cup, Reese's Miniatures, Reese's pieces, Peanut butter M&M's, Peanut M&Ms, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds"
+            "tip": "Gluten-free bowl\n88.2% popularity score\n37 eligible candies\n\nBowl: Reese's Peanut Butter cup, Reese's Miniatures, Reese's pieces, Peanut butter M&M's, Peanut M&Ms, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds"
           }
         ],
         "valueText": "88.2%",
@@ -501,7 +501,7 @@
           {
             "value": 78.0,
             "color": "red",
-            "tip": "Peanut-free bowl\n78.0% popularity score\n43 eligible candies\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Hershey's Special Dark, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish"
+            "tip": "Peanut-free bowl\n78.0% popularity score\n43 eligible candies\n\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Hershey's Special Dark, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish"
           }
         ],
         "valueText": "78.0%",
@@ -513,7 +513,7 @@
           {
             "value": 77.1,
             "color": "red",
-            "tip": "Nut-free bowl\n77.1% popularity score\n41 eligible candies\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies"
+            "tip": "Nut-free bowl\n77.1% popularity score\n41 eligible candies\n\nBowl: Starburst, Rolo, Skittles original, Sour Patch Kids, Junior Mints, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies"
           }
         ],
         "valueText": "77.1%",
@@ -525,7 +525,7 @@
           {
             "value": 74.6,
             "color": "red",
-            "tip": "Milk-free bowl\n74.6% popularity score\n30 eligible candies\nBowl: Starburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Air Heads, Haribo Sour Bears"
+            "tip": "Milk-free bowl\n74.6% popularity score\n30 eligible candies\n\nBowl: Starburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Air Heads, Haribo Sour Bears"
           }
         ],
         "valueText": "74.6%",
@@ -537,7 +537,7 @@
           {
             "value": 68.7,
             "color": "red",
-            "tip": "Free of all six bowl\n68.7% popularity score\n18 eligible candies\nBowl: Skittles original, Sour Patch Kids, Haribo Gold Bears, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Haribo Sour Bears, Welch's Fruit Snacks, Runts, Dots"
+            "tip": "Free of all six bowl\n68.7% popularity score\n18 eligible candies\n\nBowl: Skittles original, Sour Patch Kids, Haribo Gold Bears, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Haribo Sour Bears, Welch's Fruit Snacks, Runts, Dots"
           }
         ],
         "valueText": "68.7%",
@@ -554,7 +554,7 @@
             "value": 10,
             "color": "red",
             "text": "10",
-            "tip": "No restriction bowl\nChocolate: 10 of 10 candies\nReese's Peanut Butter cup, Reese's Miniatures, Twix, Kit Kat, Snickers, Reese's pieces, Milky Way, Reese's stuffed with pieces, Peanut butter M&M's, Nestle Butterfinger"
+            "tip": "No restriction bowl\nChocolate: 10 of 10 candies\n\nReese's Peanut Butter cup, Reese's Miniatures, Twix, Kit Kat, Snickers, Reese's pieces, Milky Way, Reese's stuffed with pieces, Peanut butter M&M's, Nestle Butterfinger"
           },
           {
             "value": 0,
@@ -571,13 +571,13 @@
             "value": 6,
             "color": "red",
             "text": "6",
-            "tip": "Gluten-free bowl\nChocolate: 6 of 10 candies\nReese's Peanut Butter cup, Reese's Miniatures, Reese's pieces, Peanut butter M&M's, Peanut M&Ms, Junior Mints"
+            "tip": "Gluten-free bowl\nChocolate: 6 of 10 candies\n\nReese's Peanut Butter cup, Reese's Miniatures, Reese's pieces, Peanut butter M&M's, Peanut M&Ms, Junior Mints"
           },
           {
             "value": 4,
             "color": "aqua",
             "text": "4",
-            "tip": "Gluten-free bowl\nNot chocolate: 4 of 10 candies\nSkittles original, Sour Patch Kids, Haribo Gold Bears, Nerds"
+            "tip": "Gluten-free bowl\nNot chocolate: 4 of 10 candies\n\nSkittles original, Sour Patch Kids, Haribo Gold Bears, Nerds"
           }
         ]
       },
@@ -588,13 +588,13 @@
             "value": 3,
             "color": "red",
             "text": "3",
-            "tip": "Peanut-free bowl\nChocolate: 3 of 10 candies\nRolo, Hershey's Special Dark, Junior Mints"
+            "tip": "Peanut-free bowl\nChocolate: 3 of 10 candies\n\nRolo, Hershey's Special Dark, Junior Mints"
           },
           {
             "value": 7,
             "color": "aqua",
             "text": "7",
-            "tip": "Peanut-free bowl\nNot chocolate: 7 of 10 candies\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish"
+            "tip": "Peanut-free bowl\nNot chocolate: 7 of 10 candies\n\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish"
           }
         ]
       },
@@ -605,13 +605,13 @@
             "value": 2,
             "color": "red",
             "text": "2",
-            "tip": "Nut-free bowl\nChocolate: 2 of 10 candies\nRolo, Junior Mints"
+            "tip": "Nut-free bowl\nChocolate: 2 of 10 candies\n\nRolo, Junior Mints"
           },
           {
             "value": 8,
             "color": "aqua",
             "text": "8",
-            "tip": "Nut-free bowl\nNot chocolate: 8 of 10 candies\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies"
+            "tip": "Nut-free bowl\nNot chocolate: 8 of 10 candies\n\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies"
           }
         ]
       },
@@ -628,7 +628,7 @@
             "value": 10,
             "color": "aqua",
             "text": "10",
-            "tip": "Milk-free bowl\nNot chocolate: 10 of 10 candies\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Air Heads, Haribo Sour Bears"
+            "tip": "Milk-free bowl\nNot chocolate: 10 of 10 candies\n\nStarburst, Skittles original, Sour Patch Kids, Haribo Gold Bears, Nerds, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Air Heads, Haribo Sour Bears"
           }
         ]
       },
@@ -645,7 +645,7 @@
             "value": 10,
             "color": "aqua",
             "text": "10",
-            "tip": "Free of all six bowl\nNot chocolate: 10 of 10 candies\nSkittles original, Sour Patch Kids, Haribo Gold Bears, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Haribo Sour Bears, Welch's Fruit Snacks, Runts, Dots"
+            "tip": "Free of all six bowl\nNot chocolate: 10 of 10 candies\n\nSkittles original, Sour Patch Kids, Haribo Gold Bears, Skittles wildberry, Swedish Fish, Lifesavers big ring gummies, Haribo Sour Bears, Welch's Fruit Snacks, Runts, Dots"
           }
         ]
       }
@@ -767,7 +767,7 @@
           {
             "value": 12,
             "color": "red",
-            "tip": "Changed: 12 candies\nHershey's Milk Chocolate, Kit Kat, M&M's, Milky Way, Nestle Crunch, Nestle Smarties, Peanut M&Ms, Peanut butter M&M's, Rolo, Snickers, Twix, Werther's Original Caramel"
+            "tip": "Changed: 12 candies\n\nHershey's Milk Chocolate, Kit Kat, M&M's, Milky Way, Nestle Crunch, Nestle Smarties, Peanut M&Ms, Peanut butter M&M's, Rolo, Snickers, Twix, Werther's Original Caramel"
           }
         ],
         "valueText": "12"
@@ -778,7 +778,7 @@
           {
             "value": 7,
             "color": "aqua",
-            "tip": "Unchanged: 7 candies\nHaribo Gold Bears, Haribo Happy Cola, Reese's Miniatures, Reese's Peanut Butter cup, Skittles original, Sour Patch Kids, Welch's Fruit Snacks"
+            "tip": "Unchanged: 7 candies\n\nHaribo Gold Bears, Haribo Happy Cola, Reese's Miniatures, Reese's Peanut Butter cup, Skittles original, Sour Patch Kids, Welch's Fruit Snacks"
           }
         ],
         "valueText": "7"
@@ -789,7 +789,7 @@
           {
             "value": 2,
             "color": "fg2",
-            "tip": "Newly covered: 2 candies\n3 Musketeers, Nestle Butterfinger"
+            "tip": "Newly covered: 2 candies\n\n3 Musketeers, Nestle Butterfinger"
           }
         ],
         "valueText": "2"
@@ -817,7 +817,7 @@
         },
         "b": {
           "value": 89.6,
-          "tip": "Gluten-free, warnings accepted\n89.6% popularity score\nCandies added: Rolo"
+          "tip": "Gluten-free, warnings accepted\n89.6% popularity score\n\nCandies added: Rolo"
         },
         "note": "+1.4"
       },
@@ -829,7 +829,7 @@
         },
         "b": {
           "value": 85.9,
-          "tip": "Peanut-free, warnings accepted\n85.9% popularity score\nCandies added: Kit Kat, Milky Way, M&M's, Nestle Crunch"
+          "tip": "Peanut-free, warnings accepted\n85.9% popularity score\n\nCandies added: Kit Kat, Milky Way, M&M's, Nestle Crunch"
         },
         "note": "+7.9"
       },
@@ -841,7 +841,7 @@
         },
         "b": {
           "value": 81.3,
-          "tip": "Nut-free, warnings accepted\n81.3% popularity score\nCandies added: Milky Way, M&M's"
+          "tip": "Nut-free, warnings accepted\n81.3% popularity score\n\nCandies added: Milky Way, M&M's"
         },
         "note": "+4.2"
       },
@@ -853,7 +853,7 @@
         },
         "b": {
           "value": 74.6,
-          "tip": "Milk-free, warnings accepted\n74.6% popularity score\nCandies added: none"
+          "tip": "Milk-free, warnings accepted\n74.6% popularity score\n\nCandies added: none"
         },
         "note": "no change"
       },
@@ -865,7 +865,7 @@
         },
         "b": {
           "value": 68.7,
-          "tip": "Free of all six, warnings accepted\n68.7% popularity score\nCandies added: none"
+          "tip": "Free of all six, warnings accepted\n68.7% popularity score\n\nCandies added: none"
         },
         "note": "no change"
       }
