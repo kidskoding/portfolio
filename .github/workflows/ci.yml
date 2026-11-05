@@ -25,7 +25,7 @@ jobs:
 
       - name: alejandra
         run: |
-          curl -fsSL -o "$RUNNER_TEMP/alejandra" \
+          curl -fsSL --retry 5 --retry-delay 5 -o "$RUNNER_TEMP/alejandra" \
             https://github.com/kamadorueda/alejandra/releases/download/4.0.0/alejandra-x86_64-unknown-linux-musl
           chmod +x "$RUNNER_TEMP/alejandra"
           "$RUNNER_TEMP/alejandra" --check .
