@@ -75,8 +75,10 @@ flowchart TD
   F["Open Food Facts<br/>daily change feed"] --> V
   V --> B["bronze<br/>raw strings"]
   B --> S["silver<br/>cleaned products,<br/>candy matches, allergen flags"]
-  S --> G["gold<br/>candy profiles, bowls,<br/>2017 vs now"]
-  G --> D["dashboard + MLflow"]
+  S --> G["gold<br/>candy profiles, bowls,<br/>warning cost, safe swaps,<br/>2017 vs now"]
+  G --> O["street bowl optimizer<br/>Python, logged to MLflow"]
+  G --> D["dashboard"]
+  O --> D
 ```
 
 I set up a Databricks job that runs every day and stores the data in a **medallion architecture**, which organizes it into three layers: <span class="font-bold text-nvim-orange">bronze</span> pulls in the raw data from the sources unchanged, <span class="font-bold text-nvim-fg2">silver</span> cleans it and reads the allergens from each ingredient list, and <span class="font-bold text-nvim-yellow">gold</span> turns it into the results this post reports, such as each candy's allergen status and the allergy-safe bowls.
@@ -86,6 +88,8 @@ The job starts by downloading the Kaggle datasets into two bronze tables, with e
 A second notebook then archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
 
 From there, **dbt** builds everything in **SQL**. The silver models will clean data types and whitespace within the data, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 51 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
+
+**The last step goes beyond cleaning and reporting:** it turns the gold tables into decisions. Two more dbt models rebuild every bowl with and without accepting "may contain" warnings, and find the most similar safe candy for each favorite. A Python step then runs a small optimization that picks the one bowl that gives the most trick-or-treaters a favorite they can eat, and logs each run's inputs and results to **MLflow** so runs can be compared over time.
 
 ## The results
 
