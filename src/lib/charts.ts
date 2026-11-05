@@ -14,20 +14,53 @@ import {
   type Plugin,
 } from 'chart.js';
 
-// Pin the popup instead of letting it follow the mouse: on a dot, at the dot; on a bar, where the mouse entered it,
-// centered on the bar, until the mouse moves to another mark. (Chart.js's default pins to the far end of a bar.)
-let anchor: { key: string; x: number; y: number } | null = null;
+// Where the popup points: the hovered dot, or the spot where the mouse entered a bar. It stays there until the mouse
+// moves to another mark, so the popup does not chase the cursor. top/bottom are the mark's edges for placing it.
+let anchor: { key: string; x: number; top: number; bottom: number } | null = null;
 (Tooltip.positioners as any).anchored = function (this: any, elements: any[], position: { x: number; y: number }) {
   if (!elements.length) {
     anchor = null;
     return false;
   }
   const { element, datasetIndex, index } = elements[0];
-  if (!(element instanceof BarElement)) return { x: element.x, y: element.y };
   const key = `${this.chart.id}:${datasetIndex}:${index}`;
-  if (anchor?.key !== key) anchor = { key, x: position.x, y: element.y };
-  return { x: anchor.x, y: anchor.y };
+  if (anchor?.key !== key) {
+    const half = element instanceof BarElement ? ((element as any).height as number) / 2 : 8;
+    anchor = { key, x: element instanceof BarElement ? position.x : element.x, top: element.y - half, bottom: element.y + half };
+  }
+  return { x: anchor.x, y: anchor.top };
 };
+
+const escapeHtml = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+// The popup is a page element, not canvas paint: it can sit above the chart's edge, wraps with CSS, and fades in.
+function htmlTooltip({ chart, tooltip }: { chart: Chart; tooltip: any }) {
+  const box = chart.canvas.parentElement as HTMLElement;
+  let el = box.querySelector<HTMLDivElement>('.cjs-tip');
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'cjs-tip';
+    el.setAttribute('role', 'tooltip');
+    box.appendChild(el);
+  }
+  if (tooltip.opacity === 0 || !anchor) {
+    el.classList.remove('show');
+    return;
+  }
+  const [title, ...lines] = String(tooltip.dataPoints?.[0]?.raw?.tip ?? '').split('\n');
+  el.innerHTML = `<div class="cjs-tip-title">${escapeHtml(title)}</div>` +
+    lines.map((l) => (l ? `<div>${escapeHtml(l)}</div>` : '<div class="cjs-tip-gap"></div>')).join('');
+  const w = el.offsetWidth;
+  const h = el.offsetHeight;
+  const left = Math.min(Math.max(anchor.x - w / 2, 0), box.clientWidth - w);
+  const roomAbove = chart.canvas.getBoundingClientRect().top + anchor.top - h - 12;
+  const above = roomAbove > 0;
+  el.style.left = `${left}px`;
+  el.style.top = `${above ? anchor.top - h - 10 : anchor.bottom + 10}px`;
+  el.style.setProperty('--arrow-x', `${anchor.x - left}px`);
+  el.classList.toggle('below', !above);
+  el.classList.add('show');
+}
 
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, LineController, LineElement, PointElement,
   ScatterController, Tooltip, Legend);
@@ -69,13 +102,13 @@ function setDefaults() {
   tip.caretPadding = 8;
   tip.caretSize = 6;
   tip.position = 'anchored' as any;
+  tip.enabled = false;
+  tip.external = htmlTooltip as any;
   Chart.defaults.interaction = { mode: 'nearest', intersect: true, axis: 'xy' } as any;
   Chart.defaults.onHover = (e, els) => {
     const target = e.native?.target as HTMLElement | undefined;
     if (target) target.style.cursor = els.length ? 'pointer' : 'default';
   };
-  Chart.defaults.elements.bar.hoverBorderColor = token('fg');
-  Chart.defaults.elements.bar.hoverBorderWidth = 2;
   const legend = Chart.defaults.plugins.legend;
   legend.position = 'top';
   legend.align = 'start';
@@ -221,10 +254,12 @@ function hbar(data: Json, o: Json): ChartConfiguration {
   const cat = (label: string) => (o.narrow ? short(label, 13) : label);
   const width = Math.max(...rows.map((r) => r.bars.length));
   const stacked = o.mode !== 'group';
+  const fill = (j: number) => (o.legend ? color(o.legend[j].color) : rows.map((r) => color(r.bars[j]?.color ?? 'gray')));
   const datasets = Array.from({ length: width }, (_, j) => ({
     label: o.legend?.[j]?.label ?? '',
     data: rows.map((r) => (r.bars[j] ? { x: r.bars[j].value, y: cat(r.label), tip: r.bars[j].tip, text: r.bars[j].text } : { x: null, y: cat(r.label) })),
-    backgroundColor: o.legend ? color(o.legend[j].color) : rows.map((r) => color(r.bars[j]?.color ?? 'gray')),
+    backgroundColor: fill(j),
+    hoverBackgroundColor: fill(j),
     borderRadius: 3,
     barPercentage: stacked ? 0.65 : 0.8,
     categoryPercentage: stacked ? 0.9 : 0.75,
