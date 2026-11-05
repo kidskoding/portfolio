@@ -14,6 +14,9 @@ import {
   type Plugin,
 } from 'chart.js';
 
+// the popup sits next to the mouse with its arrow pointing at it, instead of at the end of a long bar
+(Tooltip.positioners as any).cursor = (_elements: unknown, position: { x: number; y: number }) => position;
+
 Chart.register(BarController, BarElement, CategoryScale, LinearScale, LineController, LineElement, PointElement,
   ScatterController, Tooltip, Legend);
 
@@ -48,7 +51,19 @@ function setDefaults() {
   tip.padding = 10;
   tip.displayColors = false;
   tip.callbacks.title = (items) => String((items[0]?.raw as Json)?.tip ?? '').split('\n')[0];
-  tip.callbacks.label = (item) => String((item.raw as Json)?.tip ?? '').split('\n').slice(1);
+  tip.callbacks.label = (item) => String((item.raw as Json)?.tip ?? '').split('\n').slice(1).flatMap((l) => wrap(l));
+  tip.bodyFont = { size: 12 };
+  tip.titleFont = { size: 12, weight: 'bold' };
+  tip.caretPadding = 8;
+  tip.caretSize = 6;
+  tip.position = 'cursor' as any;
+  Chart.defaults.interaction = { mode: 'nearest', intersect: true, axis: 'xy' } as any;
+  Chart.defaults.onHover = (e, els) => {
+    const target = e.native?.target as HTMLElement | undefined;
+    if (target) target.style.cursor = els.length ? 'pointer' : 'default';
+  };
+  Chart.defaults.elements.bar.hoverBorderColor = token('fg');
+  Chart.defaults.elements.bar.hoverBorderWidth = 2;
   const legend = Chart.defaults.plugins.legend;
   legend.position = 'top';
   legend.align = 'start';
@@ -60,8 +75,24 @@ function setDefaults() {
   Chart.defaults.layout.padding = { top: 8, left: 4 };
 }
 
-const axisTitle = (text: string) => ({
-  display: true, text, color: token('green'), font: { weight: 'bold' as const }, padding: { top: 14, bottom: 10 },
+// tooltips size to their longest line, so long lines (a bowl's candy list) wrap to keep the popup small
+function wrap(line: string, width = 34): string[] {
+  const out: string[] = [];
+  let cur = '';
+  for (const word of line.split(' ')) {
+    if (cur && (cur + ' ' + word).length > width) {
+      out.push(cur);
+      cur = word;
+    } else cur = cur ? `${cur} ${word}` : word;
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+
+const short = (s: string, n = 16) => (s.length > n ? `${s.slice(0, n - 1)}…` : s);
+
+const axisTitle = (text: string, show = true, narrow = false) => ({
+  display: show, text: narrow ? wrap(text, 30) : text, color: token('green'), font: { weight: 'bold' as const }, padding: { top: 14, bottom: 10 },
 });
 
 // Chart.js has no legend margin option; grow the legend box so the plot starts lower
@@ -174,11 +205,12 @@ const calloutPlugin: Plugin = {
 
 function hbar(data: Json, o: Json): ChartConfiguration {
   const rows = data.rows as Json[];
+  const cat = (label: string) => (o.narrow ? short(label, 13) : label);
   const width = Math.max(...rows.map((r) => r.bars.length));
   const stacked = o.mode !== 'group';
   const datasets = Array.from({ length: width }, (_, j) => ({
     label: o.legend?.[j]?.label ?? '',
-    data: rows.map((r) => (r.bars[j] ? { x: r.bars[j].value, y: r.label, tip: r.bars[j].tip, text: r.bars[j].text } : { x: null, y: r.label })),
+    data: rows.map((r) => (r.bars[j] ? { x: r.bars[j].value, y: cat(r.label), tip: r.bars[j].tip, text: r.bars[j].text } : { x: null, y: cat(r.label) })),
     backgroundColor: o.legend ? color(o.legend[j].color) : rows.map((r) => color(r.bars[j]?.color ?? 'gray')),
     borderRadius: 3,
     barPercentage: stacked ? 0.65 : 0.8,
@@ -186,23 +218,24 @@ function hbar(data: Json, o: Json): ChartConfiguration {
   }));
   return {
     type: 'bar',
-    data: { labels: rows.map((r) => r.label), datasets: datasets as any },
+    data: { labels: rows.map((r) => cat(r.label)), datasets: datasets as any },
     options: {
       indexAxis: 'y',
-      layout: { padding: { right: o.rightPad ?? 150 } },
+      layout: { padding: { right: o.narrow ? Math.min(o.rightPad ?? 150, 56) : (o.rightPad ?? 150) } },
       scales: {
-        x: { stacked, min: 0, max: o.max, ticks: { stepSize: o.step, callback: (v) => `${v}${o.suffix ?? ''}` },
-             title: axisTitle(o.xTitle) },
-        y: { stacked, grid: { display: false }, ticks: { color: token('fg') }, title: axisTitle(o.yTitle) },
+        x: { stacked, min: 0, max: o.max, ticks: { stepSize: o.step, maxRotation: 0, autoSkipPadding: 8, callback: (v) => `${v}${o.suffix ?? ''}` },
+             title: axisTitle(o.xTitle, true, o.narrow) },
+        y: { stacked, grid: { display: false }, ticks: { color: token('fg'), font: { size: o.narrow ? 10 : 12 } },
+             title: axisTitle(o.yTitle, !o.narrow) },
       },
       plugins: {
         legend: { display: Boolean(o.legend) },
         rowText: {
           items: rows.map((r) => ({
-            y: r.label,
+            y: cat(r.label),
             after: r.valueText || r.note
               ? { at: stacked ? r.bars.reduce((s: number, b: Json) => s + b.value, 0) : Math.max(...r.bars.map((b: Json) => b.value)),
-                  value: r.valueText, note: r.note }
+                  value: r.valueText, note: o.narrow ? undefined : r.note }
               : undefined,
           })),
         },
@@ -213,7 +246,8 @@ function hbar(data: Json, o: Json): ChartConfiguration {
 }
 
 function dumbbell(rows: Json[], o: Json): ChartConfiguration {
-  const tickLines = rows.map((r) => (r.a.label ? [r.label, `swap: ${r.a.label}`] : r.label));
+  const name = (s: string) => (o.narrow ? short(s, 13) : s);
+  const tickLines = rows.map((r) => (r.a.label ? [name(r.label), `→ ${name(r.a.label)}`] : name(r.label)));
   const segments = rows.flatMap((r, i) => [{ x: r.a.value, y: i }, { x: r.b.value, y: i }, GAP]);
   return {
     type: 'scatter',
@@ -230,9 +264,10 @@ function dumbbell(rows: Json[], o: Json): ChartConfiguration {
     options: {
       layout: { padding: { right: 50 } },
       scales: {
-        x: { min: o.min, max: o.max, ticks: { stepSize: o.step, maxRotation: 0, callback: (v) => `${v}%` }, title: axisTitle(o.xTitle) },
+        x: { min: o.min, max: o.max, ticks: { stepSize: o.step, maxRotation: 0, callback: (v) => `${v}%` }, title: axisTitle(o.xTitle, true, o.narrow) },
         y: { reverse: true, min: -0.6, max: rows.length - 0.4, grid: { display: false },
-             ticks: { stepSize: 1, color: token('fg'), callback: (v) => tickLines[Number(v)] ?? '' }, title: axisTitle(o.yTitle) },
+             ticks: { stepSize: 1, color: token('fg'), font: { size: o.narrow ? 10 : 12 }, callback: (v) => tickLines[Number(v)] ?? '' },
+             title: axisTitle(o.yTitle, !o.narrow) },
       },
       plugins: {
         legend: { labels: { filter: (item: any) => item.text !== 'link' } },
@@ -265,7 +300,7 @@ function scatter(data: Json, o: Json): ChartConfiguration {
     },
     options: {
       scales: {
-        x: { min: -0.6, max: 6.6, grid: { display: false }, title: axisTitle(o.xTitle),
+        x: { min: -0.6, max: 6.6, grid: { display: false }, title: axisTitle(o.xTitle, true, o.narrow),
              afterBuildTicks: (axis: any) => { axis.ticks = [0, 1, 2, 3, 4, 5, 6].map((value) => ({ value })); } },
         y: { min: 20, max: 92, title: axisTitle(o.yTitle),
              afterBuildTicks: (axis: any) => { axis.ticks = [20, 30, 40, 50, 60, 70, 80, 90].map((value) => ({ value })); },
@@ -274,7 +309,7 @@ function scatter(data: Json, o: Json): ChartConfiguration {
       plugins: {
         tooltip: { filter: (item: any) => item.dataset.label !== 'Average win rate' },
         legend: { labels: { filter: (item: any) => item.text !== 'Average win rate' } },
-        callouts: { items: pts.filter((p) => p.label).map((p) => ({ x: p.x, y: p.y, ...p.label })) },
+        callouts: { items: o.narrow ? [] : pts.filter((p) => p.label).map((p) => ({ x: p.x, y: p.y, ...p.label })) },
       } as any,
     },
     plugins: [calloutPlugin],
@@ -309,7 +344,9 @@ export function mountChart(fig: HTMLElement) {
   fig.dataset.mounted = 'true';
   const spec = JSON.parse(fig.querySelector('script[type="application/json"]')!.textContent!) as Json;
   const canvas = fig.querySelector('canvas')!;
-  const { kind, data, options } = spec;
+  const { kind, data } = spec;
+  // shortcut: width is read once at mount; rotating a phone keeps the first layout until reload
+  const options = { ...spec.options, narrow: fig.clientWidth < 560 };
 
   if (kind === 'hbar') new Chart(canvas, hbar(data, options));
   if (kind === 'scatter') new Chart(canvas, scatter(data, options));
