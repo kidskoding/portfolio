@@ -116,13 +116,16 @@ Review the draft and report findings before changing anything large. Check for:
 - run-on or abstract-noun sentences ("The reason is that...", stacked "that ... and that ..." clauses) and figurative wording; rewrite them as subject + verb + because (see Plain Grammar in `style-guide.md`)
 - in tutorials: keys, commands, or syntax used before they're explained, dense key lists, slogan headings, taglines under headings, or repeated label scaffolds (see Tutorials and Guides in `style-guide.md`)
 - sections that don't serve the central argument
+- too few headings or a wall of text: a section doing two jobs that should split into `###` subsections, numbers buried in prose that belong in a stat table, no pull quote where a line deserves one (Structure and Skimmability in `style-guide.md`)
+- people, creators or companies the reader may not know, used without an introduction (Introduce People in `style-guide.md`)
+- first-person anecdotes or commitments you wrote for the user, listed back for them to confirm
 - overly long paragraphs: over ~75 words or doing two jobs (see Paragraph Breaks in `style-guide.md`)
 - weak transitions
 - technical details without purpose
 - unsupported claims
 - accidental disclosure of proprietary information (confidentiality check in `style-guide.md`)
 - an ending that does not resolve the opening
-- bold that is missing, decorative, or on tool names (see Bold in `style-guide.md`): read only the bold text and check it still tells the argument
+- bold that is missing, decorative, or on tool names (see Bold in `style-guide.md`): read only the bold text and check it still tells the argument, and that every section, including the closing reflection, has its key line bolded
 
 Recommend deleting entire sections when they don't earn their place.
 
