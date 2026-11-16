@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@catppuccin/tailwindcss/macchiato.css';
 
 /* keyboard cursor (hjkl) gets the exact same styling as mouse hover */
 @custom-variant hover (&:hover, &.vim-cursor);
@@ -132,54 +133,54 @@
   --text-4xl: 34px;
   --text-5xl: 42px;
 
-  /* Gruvbox Dark */
-  --color-bg-primary: #282828;
-  --color-bg-secondary: #1d2021;
-  --color-bg-card: #32302f;
-  --color-bg-card-hover: #3c3836;
+  /* Catppuccin Macchiato semantic tokens */
+  --color-bg-primary: var(--catppuccin-color-base);
+  --color-bg-secondary: var(--catppuccin-color-mantle);
+  --color-bg-card: var(--catppuccin-color-surface0);
+  --color-bg-card-hover: var(--catppuccin-color-surface1);
 
-  --color-border-subtle: #3c3836;
-  --color-border-default: #504945;
-  --color-border-accent: #665c54;
+  --color-border-subtle: var(--catppuccin-color-surface1);
+  --color-border-default: var(--catppuccin-color-surface2);
+  --color-border-accent: var(--catppuccin-color-overlay0);
 
-  --color-text-primary: #ebdbb2;
-  --color-text-secondary: #bdae93;
-  --color-text-muted: #a89984;
+  --color-text-primary: var(--catppuccin-color-text);
+  --color-text-secondary: var(--catppuccin-color-subtext1);
+  --color-text-muted: var(--catppuccin-color-subtext0);
 
-  --color-accent: #fabd2f;
-  --color-accent-hover: #d79921;
-  --color-accent-glow: rgba(250, 189, 47, 0.15);
-  --color-accent-subtle: rgba(250, 189, 47, 0.08);
+  --color-accent: var(--catppuccin-color-lavender);
+  --color-accent-hover: var(--catppuccin-color-mauve);
+  --color-accent-glow: color-mix(in srgb, var(--catppuccin-color-lavender) 15%, transparent);
+  --color-accent-subtle: color-mix(in srgb, var(--catppuccin-color-lavender) 8%, transparent);
 
-  --color-accent-secondary: #fe8019;
+  --color-accent-secondary: var(--catppuccin-color-peach);
 
-  --color-timeline-line: #504945;
-  --color-timeline-dot: #fabd2f;
-  --color-timeline-dot-glow: rgba(250, 189, 47, 0.4);
+  --color-timeline-line: var(--catppuccin-color-surface2);
+  --color-timeline-dot: var(--catppuccin-color-lavender);
+  --color-timeline-dot-glow: color-mix(in srgb, var(--catppuccin-color-lavender) 40%, transparent);
 
-  --color-tag-bg: rgba(250, 189, 47, 0.1);
-  --color-tag-text: #fabd2f;
-  --color-tag-border: rgba(250, 189, 47, 0.2);
+  --color-tag-bg: color-mix(in srgb, var(--catppuccin-color-yellow) 10%, transparent);
+  --color-tag-text: var(--catppuccin-color-yellow);
+  --color-tag-border: color-mix(in srgb, var(--catppuccin-color-yellow) 20%, transparent);
 
-  /* Gruvbox chrome tokens */
-  --color-nvim-bg-hard: #1d2021;
-  --color-nvim-bg: #282828;
-  --color-nvim-bg1: #32302f;
-  --color-nvim-bg2: #3c3836;
-  --color-nvim-bg3: #504945;
-  --color-nvim-fg: #ebdbb2;
-  --color-nvim-fg2: #a89984;
-  --color-nvim-fg3: #7c6f64;
-  --color-nvim-yellow: #fabd2f;
-  --color-nvim-yellow-dim: #d79921;
-  --color-nvim-orange: #fe8019;
-  --color-nvim-blue: #83a598;
-  --color-nvim-aqua: #8ec07c;
-  --color-nvim-gray: #928374;
-  --color-nvim-green: #b8bb26;
-  --color-nvim-purple: #d3869b;
-  --color-nvim-red: #fb4934;
-  /* nvim-web-devicons defaults; fixed like brand colors, not gruvboxed */
+  /* Neovim chrome roles, backed by the official Macchiato palette */
+  --color-nvim-bg-hard: var(--catppuccin-color-mantle);
+  --color-nvim-bg: var(--catppuccin-color-base);
+  --color-nvim-bg1: var(--catppuccin-color-surface0);
+  --color-nvim-bg2: var(--catppuccin-color-surface1);
+  --color-nvim-bg3: var(--catppuccin-color-surface2);
+  --color-nvim-fg: var(--catppuccin-color-text);
+  --color-nvim-fg2: var(--catppuccin-color-subtext0);
+  --color-nvim-fg3: var(--catppuccin-color-overlay0);
+  --color-nvim-yellow: var(--catppuccin-color-yellow);
+  --color-nvim-yellow-dim: var(--catppuccin-color-peach);
+  --color-nvim-orange: var(--catppuccin-color-peach);
+  --color-nvim-blue: var(--catppuccin-color-blue);
+  --color-nvim-aqua: var(--catppuccin-color-teal);
+  --color-nvim-gray: var(--catppuccin-color-overlay2);
+  --color-nvim-green: var(--catppuccin-color-green);
+  --color-nvim-purple: var(--catppuccin-color-mauve);
+  --color-nvim-red: var(--catppuccin-color-red);
+  /* nvim-web-devicons defaults; fixed like brand colors, not themed */
   --color-devicon-astro: #e23f67;
   --color-devicon-mdx: #519aba;
   --color-devicon-default: #6d8086;
@@ -238,7 +239,7 @@ body::before {
 
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(135deg, #fabd2f 0%, #fe8019 100%);
+  background: linear-gradient(135deg, var(--catppuccin-color-lavender) 0%, var(--catppuccin-color-peach) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -260,7 +261,12 @@ body::before {
   inset: 0;
   border-radius: inherit;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(250, 189, 47, 0.15), rgba(254, 128, 25, 0.06), transparent 50%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--catppuccin-color-lavender) 15%, transparent),
+    color-mix(in srgb, var(--catppuccin-color-peach) 6%, transparent),
+    transparent 50%
+  );
   -webkit-mask:
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
@@ -275,7 +281,12 @@ body::before {
 
 .glow-card:hover::before,
 .glow-card.vim-cursor::before {
-  background: linear-gradient(135deg, rgba(250, 189, 47, 0.4), rgba(254, 128, 25, 0.15), transparent 70%);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--catppuccin-color-lavender) 40%, transparent),
+    color-mix(in srgb, var(--catppuccin-color-peach) 15%, transparent),
+    transparent 70%
+  );
 }
 
 .glow-card::after {
@@ -286,7 +297,7 @@ body::before {
   opacity: 0;
   background: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(250, 189, 47, 0.06),
+    color-mix(in srgb, var(--catppuccin-color-lavender) 6%, transparent),
     transparent 40%
   );
   pointer-events: none;
@@ -336,7 +347,11 @@ body::before {
 .orb-1 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(250, 189, 47, 0.08) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--catppuccin-color-lavender) 8%, transparent) 0%,
+    transparent 70%
+  );
   top: -100px;
   right: -100px;
   animation: float-orb 12s ease-in-out infinite;
@@ -345,7 +360,11 @@ body::before {
 .orb-2 {
   width: 350px;
   height: 350px;
-  background: radial-gradient(circle, rgba(254, 128, 25, 0.05) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--catppuccin-color-peach) 5%, transparent) 0%,
+    transparent 70%
+  );
   bottom: 10%;
   left: -80px;
   animation: float-orb-reverse 15s ease-in-out infinite;
@@ -354,7 +373,11 @@ body::before {
 .orb-3 {
   width: 250px;
   height: 250px;
-  background: radial-gradient(circle, rgba(250, 189, 47, 0.04) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--catppuccin-color-lavender) 4%, transparent) 0%,
+    transparent 70%
+  );
   top: 40%;
   right: -50px;
   animation: float-orb 18s ease-in-out infinite;
@@ -364,10 +387,10 @@ body::before {
 @keyframes pulse-dot {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(250, 189, 47, 0.4);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--catppuccin-color-lavender) 40%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(250, 189, 47, 0);
+    box-shadow: 0 0 0 6px transparent;
   }
 }
 
@@ -478,7 +501,7 @@ html[data-entering] [data-animate] {
   font-family: var(--font-mono);
 }
 
-/* Gruvbox roles: subgraph titles green like section titles, edge labels yellow like tags, node borders yellow-dim */
+/* Catppuccin roles: subgraph titles green like section titles, edge labels yellow like tags, node borders peach-dim */
 .blog-content .mermaid-diagram .subgraph text {
   fill: var(--color-nvim-green);
 }

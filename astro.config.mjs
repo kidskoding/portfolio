@@ -2,15 +2,15 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
-import gruvboxDarkMedium from '@shikijs/themes/gruvbox-dark-medium';
+import catppuccinMacchiato from '@shikijs/themes/catppuccin-macchiato';
 import { satteri } from '@astrojs/markdown-satteri';
 import { mermaidPlugin } from './src/lib/mermaid.mjs';
 
-// Upstream maps markup.deleted to orange (#d65d0e); use gruvbox bright red like git gutters.
-const gruvboxDarkMediumDiff = {
-  ...gruvboxDarkMedium,
-  tokenColors: gruvboxDarkMedium.tokenColors?.map((rule) =>
-    rule.scope === 'markup.deleted' ? { ...rule, settings: { ...rule.settings, foreground: '#fb4934' } } : rule,
+// Upstream maps markup.deleted to orange; use Catppuccin red like git gutters.
+const catppuccinMacchiatoDiff = {
+  ...catppuccinMacchiato,
+  tokenColors: catppuccinMacchiato.tokenColors?.map((rule) =>
+    rule.scope === 'markup.deleted' ? { ...rule, settings: { ...rule.settings, foreground: '#ed8796' } } : rule,
   ),
 };
 
@@ -20,7 +20,7 @@ export default defineConfig({
   integrations: [mdx()],
   markdown: {
     processor: satteri({ mdastPlugins: [mermaidPlugin] }),
-    shikiConfig: { theme: gruvboxDarkMediumDiff },
+    shikiConfig: { theme: catppuccinMacchiatoDiff },
   },
   vite: {
     plugins: [tailwindcss()],

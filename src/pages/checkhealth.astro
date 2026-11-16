@@ -53,11 +53,11 @@ const sections: Section[] = [
     name: 'portfolio.colorscheme',
     checks: [
       {
-        heading: 'gruvbox',
+        heading: 'catppuccin/macchiato',
         lines: [
-          { level: 'ok', text: `${gh('ellisonleao/gruvbox.nvim')}, dark background, medium contrast` },
+          { level: 'ok', text: `${gh('catppuccin/catppuccin')}, dark background, Macchiato flavor` },
           { level: 'info', text: 'Colors are assigned by role, the way the colorscheme highlights code' },
-          { level: 'info', text: `Code blocks use the Shiki theme ${code('gruvbox-dark-medium')}` },
+          { level: 'info', text: `Code blocks use the Shiki theme ${code('catppuccin-macchiato')}` },
         ],
       },
     ],
@@ -129,7 +129,7 @@ const sections: Section[] = [
               {section.name === 'portfolio.colorscheme' && (
                 <p class="health-line">
                   <span class="health-dash">-</span>
-                  <span class="swatches" aria-label="gruvbox palette">
+                  <span class="swatches" aria-label="Catppuccin Macchiato palette">
                     {swatches.map((name) => (
                       <span class="swatch" title={name} style={`background: var(--color-nvim-${name})`} />
                     ))}
@@ -203,7 +203,7 @@ const sections: Section[] = [
     margin-top: 1.7em;
   }
 
-  /* `Heading ~` is helpHeader, which gruvbox links to PreProc (aqua); the trailing ~ is concealed in nvim */
+  /* `Heading ~` is helpHeader; the trailing ~ is concealed in nvim */
   .health-heading {
     margin: 0;
     font-size: inherit;
