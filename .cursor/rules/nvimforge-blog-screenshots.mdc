@@ -5,7 +5,7 @@ alwaysApply: true
 
 # nvimforge ↔ blog screenshots
 
-The `vscode-to-neovim` post shows real nvimforge UI. Any change to chrome that appears in those shots (lualine modes — Terminal is purple `#d3869b`, Claude Code panel colors, heirline winbar, lazygit/Snacks theme, splash, debugger, statusline spacing) must be followed by recapturing the matching PNGs.
+The `vscode-to-neovim` post shows real nvimforge UI. Any change to chrome that appears in those shots (lualine modes — Terminal is pink `#f5bde6` (catppuccin macchiato), Claude Code panel colors, heirline winbar, lazygit/Snacks theme, splash, debugger, statusline spacing) must be followed by recapturing the matching PNGs.
 
 Update **both** trees so they stay identical:
 
