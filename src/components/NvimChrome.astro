@@ -655,16 +655,17 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
     flex-shrink: 0;
     overflow: hidden;
     background: var(--color-nvim-bg2);
-    --sl-mode: var(--color-nvim-yellow-dim);
-  }
-  .nvim-statusline[data-mode='INSERT'] {
+    /* catppuccin lualine: normal blue, insert green, visual mauve, command peach */
     --sl-mode: var(--color-nvim-blue);
   }
+  .nvim-statusline[data-mode='INSERT'] {
+    --sl-mode: var(--color-nvim-green);
+  }
   .nvim-statusline[data-mode='VISUAL'] {
-    --sl-mode: var(--color-nvim-orange);
+    --sl-mode: var(--color-nvim-purple);
   }
   .nvim-statusline[data-mode='COMMAND'] {
-    --sl-mode: var(--color-nvim-green);
+    --sl-mode: var(--color-nvim-orange);
   }
 
   /* lualine layout: a/z take the mode color, b/y bg3, c/x bg2 */
