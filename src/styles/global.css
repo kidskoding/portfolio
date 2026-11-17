@@ -180,6 +180,8 @@
   --color-nvim-green: var(--catppuccin-color-green);
   --color-nvim-purple: var(--catppuccin-color-mauve);
   --color-nvim-red: var(--catppuccin-color-red);
+  --color-nvim-pink: var(--catppuccin-color-pink);
+  --color-nvim-flamingo: var(--catppuccin-color-flamingo);
   /* nvim-web-devicons defaults; fixed like brand colors, not themed */
   --color-devicon-astro: #e23f67;
   --color-devicon-mdx: #519aba;
