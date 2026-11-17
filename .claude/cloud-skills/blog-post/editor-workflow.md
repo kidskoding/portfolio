@@ -26,6 +26,7 @@ Gather raw material, then list what is there.
 - mistakes or changed assumptions
 - things learned
 - possible broader themes
+- for project posts: the real-world problem it models (with public sources to cite), where the data comes from (verified in the repo), and who the work would help (Project Posts Need Context in `style-guide.md`)
 
 ## Stage 2 — Find the Throughline
 
@@ -62,6 +63,8 @@ Structure the chosen thesis as a progression, usually small to large:
 ```text
 Hook
   ↓
+The real problem and why it matters (project posts: sourced facts, then where the data comes from)
+  ↓
 Concrete experience
   ↓
 Technical explanation (only what the thesis needs)
@@ -89,7 +92,7 @@ INFRASTRUCTURE  Cloudflare Workers   "What assumptions should production make?"
 PRINCIPLE       Good engineering makes assumptions explicit.
 ```
 
-**Output:** the outline with one line per section saying what it argues, plus 2–3 title options and a subtitle (see Titles in `style-guide.md`), plus the proposed opening lines.
+**Output:** the outline with one line per section saying what it argues, plus 2–3 title options and a subtitle (see Titles in `style-guide.md`), plus the proposed opening lines. Read each title cold: if a stranger scrolling the blog index couldn't tell what the post is about, rewrite it before showing it.
 
 ## Stage 4 — Visual Plan
 
@@ -108,21 +111,29 @@ Write the file for the output target (see "Output Target" in `SKILL.md`), follow
 
 Review the draft and report findings before changing anything large. Check for:
 - weak hook
+- a title that only makes sense after reading the post (punchline, metaphor or slogan; see Titles in `style-guide.md`)
+- project data or results cited before the section that introduces the data
+- a metric, column, or baseline used in the results without a formal definition (source, formula, worked example) in a `How to read the results` table
+- project posts missing the real-world problem, the data source, a description of the data (entities, table with row counts, sample row) before the pipeline, who it would help, or a closing `## References` list; facts about real companies without a linked public source; companies from the wrong industry, company context split into subheadings instead of paragraphs, brands not in bold (Project Posts Need Context in `style-guide.md`)
+- any bold text followed by more text that ends in a period instead of a colon, including takeaway bullets (Bold in `style-guide.md`)
 - unnecessary explanation
 - résumé language
 - repetitive thesis statements
 - generic AI wording
 - choppy fragment runs outside the opening hook and closing beat (see Flowing Sentences in `style-guide.md`); merge them
-- run-on or abstract-noun sentences ("The reason is that...", stacked "that ... and that ..." clauses) and figurative wording; rewrite them as subject + verb + because (see Plain Grammar in `style-guide.md`)
+- run-on or abstract-noun sentences ("The reason is that...", stacked "that ... and that ..." clauses) and figurative wording, idioms or similes ("never meant to meet", "and friends"); rewrite them as subject + verb + because (see Plain Grammar in `style-guide.md`)
 - in tutorials: keys, commands, or syntax used before they're explained, dense key lists, slogan headings, taglines under headings, or repeated label scaffolds (see Tutorials and Guides in `style-guide.md`)
 - sections that don't serve the central argument
+- too few headings or a wall of text: a section doing two jobs that should split into `###` subsections, numbers buried in prose that belong in a stat table, no pull quote where a line deserves one (Structure and Skimmability in `style-guide.md`)
+- people, creators or companies the reader may not know, used without an introduction (Introduce People in `style-guide.md`)
+- first-person anecdotes or commitments you wrote for the user, listed back for them to confirm
 - overly long paragraphs: over ~75 words or doing two jobs (see Paragraph Breaks in `style-guide.md`)
 - weak transitions
 - technical details without purpose
 - unsupported claims
 - accidental disclosure of proprietary information (confidentiality check in `style-guide.md`)
 - an ending that does not resolve the opening
-- bold that is missing, decorative, or on tool names (see Bold in `style-guide.md`): read only the bold text and check it still tells the argument
+- bold that is missing, decorative, or on tool names (see Bold in `style-guide.md`): read only the bold text and check it still tells the argument, and that every section, including the closing reflection, has its key line bolded
 
 Recommend deleting entire sections when they don't earn their place.
 

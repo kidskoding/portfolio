@@ -27,8 +27,9 @@ If nothing is given, ask what the post is about: an experience, a project, somet
 | An existing draft | **Critique** | "Critique Mode" in `editor-workflow.md` |
 | A `dev.to` URL or pasted DEV.to article | **Import** | Mode A below |
 | News, a launch, or an industry move they did not work on | **News analysis** | `news-analysis.md` |
+| A stream, game, sports run or viral moment they want to turn into workplace / career lessons, usually for LinkedIn | **Career reflection** | `career-reflection.md` + `style-guide.md` |
 
-If unsure between Editor and News analysis, ask.
+If unsure between Editor, News analysis and Career reflection, ask.
 
 ## The Core Idea
 
@@ -73,13 +74,22 @@ Decide where the post goes before Stage 5:
 
 ## Gotchas
 
-- **Inline code vs bold is strict.** Backticks = paths, keys, commands, identifiers, plugin/package ids. Bold = skim-path argument turns plus language/format names (**Lua**, **JSON**, …). Never backtick a language name; never bold a file path. See Bold and Inline code in `style-guide.md`.
+- **Titles must read plainly to a stranger.** No punchline or metaphor titles ("The Halloween Bottleneck Was Printed Plastic"); the user finds them choppy and meaningless. Use "What X taught me about Y" or a plain statement of the topic (Titles in `style-guide.md`).
+- **Project posts start from the real problem, not the project.** Before the details, explain why the problem matters outside the repo (linked public facts), where the data comes from (checked in the repo, never guessed), and later who it would help. Name companies from the exact industry modeled, one short paragraph each with brands in bold, no subheadings (Project Posts Need Context in `style-guide.md`).
+- **Label every number and end with the reader who acts:** "a 68.7% popularity score", never a bare "68.7%"; no meta lead-ins ("You do not need a pipeline to use these results"); project posts close with advice for the people who use the result (hosts), not companies (Plain Grammar and Project Posts Need Context in `style-guide.md`).
+- **Plain words, no idioms:** no figurative phrases or similes ("never meant to meet", "and friends", "fails loudly", "a minefield"); write the literal meaning (Plain Grammar in `style-guide.md`).
+- **Bold followed by more text ends with a colon, never a period:** "**These products share two traits:** each one…", including takeaway bullets ("**Treat the join as the riskiest step:** matching…"). The user rejects "**Bold.** Next sentence" (Bold in `style-guide.md`).
+
+- **Inline code vs bold is strict.** Backticks = paths, keys, commands, identifiers, plugin/package ids. Bold = key points, standout lines, and argument turns, generously (1–3 per section, every section), plus language/format names (**Lua**, **JSON**, …). Never backtick a language name; never bold a file path. See Bold and Inline code in `style-guide.md`.
+- **Posts should skim.** Generous headings (`##` per idea, `###` to split a section's two halves), numbered lesson headings when the post teaches takeaways (the user may ask for a plain post instead), project posts show their actual results, a stat table for the key numbers, 1–3 pull quotes, and the real tweet or screenshot embedded (Structure and Skimmability in `style-guide.md`). Headings stay plain sentences, not slogans.
 - **Punchy fragments read as choppy to this user.** Default to flowing, connected sentences; keep staccato for the opening hook and the closing beat only (Flowing Sentences in `style-guide.md`).
 - **Flowing does not mean one long paragraph.** Break at each turn (context → action, explanation → bold conclusion) and keep paragraphs near 2–4 sentences (Paragraph Breaks in `style-guide.md`).
 - **Flowing does not mean run-on.** "The usual reasons not to switch are that X and that Y" is grammatical but clunky; write "Many people are hesitant to switch because X." Lead with a subject and a plain verb, and avoid stacked "that ... and that ..." clauses (Plain Grammar in `style-guide.md`).
 - **Tutorials must introduce notation gradually and read as plain English.** Don't open with a wall of keybindings or commands, don't use slogan headings, taglines, or *Verdict:*-style label scaffolds, and teach each key where it's first used (Tutorials and Guides in `style-guide.md`).
 - **The first answer is almost never a full draft.** The user wants an editor. Generating 2,000 words before the thesis is agreed wastes the most valuable step.
 - **Never invent numbers, quotes, error messages, or events.** If a detail is missing, ask for it or leave it out.
+- **Introduce every person, creator or group on first mention.** Not every reader follows streaming, sports or the industry; give a sentence or two on who they are and what they're known for (Introduce People in `style-guide.md`).
+- **Never write the user's experiences for them.** First-person anecdotes, opinions and commitments you draft get listed back for the user to confirm before publishing.
 - **Internship posts carry disclosure risk.** Run the confidentiality check in `style-guide.md` on every draft about professional work, and never quote employer code into a post.
 - **Check what the target renders before planning visuals.** Mermaid, numbered lists, and embeds depend on the site. Planning a Mermaid diagram for a site that can't render it wastes Stage 4.
 - **A post about several technologies drifts into documentation.** If a section starts with "X is a...", rewrite it to start from the situation where X mattered.

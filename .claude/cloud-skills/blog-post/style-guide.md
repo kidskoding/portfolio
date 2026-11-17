@@ -89,6 +89,32 @@ manual machine state       declared environment
 
 Diagrams communicate an idea, never decorate. No giant diagrams. Readable in a few seconds.
 
+## Structure and Skimmability
+
+The user wants posts that are engaging to skim, not essays. A reader scrolling on a phone should be able to follow the post from the headings, the bold lines and the pull quotes alone.
+
+- **Headings generously.** Give every major idea its own `##`, and split a section that does two jobs into `###` subsections (the backstory and the turn, or "On the stream" and "At work"). A full post usually has 8–15 headings. Headings stay plain and descriptive (Tutorials and Guides below), never slogans.
+- **Numbered lessons.** When a post teaches several takeaways, give each its own heading: `## Lesson 1: Great leaders design the win around someone else`, or `### 1. Give away the final hit` under a parent section. The heading states the lesson as a plain sentence.
+- **Pair the story with the meaning.** When a section has an event and a lesson, split it into `### On the [stream / job / project]` and `### At work` (or `### What it taught me`) so the reader sees both halves.
+- **Project posts lead with the actual results.** Show the real output (the result table, the measured numbers, the surprising rows) and the insight each one gives, taken from the repo's generated results file or tables, never estimated. The results are the payoff; the pipeline explains how they were reached.
+- **Stat tables for the numbers.** When a story has 3–5 numbers that matter (hours, attempts, deaths, users, latency), put them in a small table near the top instead of a sentence full of figures. Always give the table a header row; an empty one renders as a blank bordered row.
+- **Pull quotes.** Use 1–3 blockquotes (`>`) for the lines someone would screenshot, usually after the section that earns them. Not one under every heading.
+- **Show the real moment.** Embed the actual tweet, clip or screenshot (`<TweetEmbed>` on the portfolio) where the post describes it, as a visual rather than a citation.
+- **Introduce the cast early.** When the story depends on people or companies the reader may not know, a short `## Meet the team` section (one `###` each) comes before the events (Introduce People below).
+- **End on a takeaway list when it fits.** Reflection and career posts close with a short bulleted list where each bullet opens with a bold commitment ("**Set other people up to win:** …", colon, never a period), then the closing reflection and the echo of the hook.
+
+Example skeleton (from "What a 73-Hour Minecraft Stream Taught Me About Great Teams"):
+
+```text
+three-line hook → why it matters to me
+## Meet the team            ### Jynxzi  ### StableRonaldo (Ron)  ### LosPollos (Los)
+## The run in 60 seconds    stat table + embedded tweet
+## Lesson 1: ...            ### On the stream  ### At work  > pull quote
+## Lesson 2–4: ...
+## What I'm taking into my career   bold-led bullets
+## The kind of teammate I want to be   reflection + echo
+```
+
 ## Voice
 
 Thoughtful, conversational, technically competent. A developer thinking through something they actually encountered.
@@ -104,7 +130,7 @@ Not personal branding. The technical idea is the interesting part.
 
 **Prefer:** short paragraphs, clear sentences that flow into each other (the user's voice: connected, conversational sentences joined with "but rather", "so", "because", not stacks of two-word fragments), specific language, natural first-person reflection, confidence without pretending to know everything, sections that flow into each other, rhetorical questions when useful, code and diagrams between prose.
 
-**Avoid:** choppy runs of fragments ("Nothing wrong with it. It works.", "Same query, same builder.", "Checkmark."), which the user reads as choppy; keep staccato lines for the closing beat only. Also avoid corporate marketing language, fake enthusiasm, piles of adjectives, motivational LinkedIn tone, "I'm thrilled to announce", "In today's rapidly evolving technological landscape", generic AI introductions, constant bullet lists, unnecessary headings, the thesis repeated word for word in every section, excessive em dashes, a motivational line closing every section.
+**Avoid:** choppy runs of fragments ("Nothing wrong with it. It works.", "Same query, same builder.", "Checkmark."), which the user reads as choppy; keep staccato lines for the closing beat only. Also avoid corporate marketing language, fake enthusiasm, piles of adjectives, motivational LinkedIn tone, "I'm thrilled to announce", "In today's rapidly evolving technological landscape", generic AI introductions, constant bullet lists, walls of text with no headings, the thesis repeated word for word in every section, excessive em dashes, a motivational line closing every section.
 
 ## Flowing Sentences
 
@@ -133,6 +159,10 @@ Flowing is not the same as long. A sentence that hangs everything off an abstrac
 - No stacked "that ... and that ..." clauses. If a sentence needs two, use "because" or split it into two full sentences.
 - One idea per sentence, two at most when joined by a connector. Flowing means connected, not chained.
 - Use words literally ("a long list of keys", not "a wiki of keys"). A figurative noun makes the reader translate before they can follow.
+- **No idioms or figurative phrases, even common ones.** The user reads them as weird and vague. Say the literal thing: "never meant to meet" → "collected separately and share no common ID"; "and friends" → "and others"; "fails loudly" → "fails with an error"; "leak allergens into" → "make one candy look like it contains"; "outvote" → "override"; "tighten the warnings" → "add allergen warnings"; "a minefield" → "a problem"; "the way a parent reads a wrapper" → "to find allergens". Similes ("a bit like Wikipedia for…") count too; cut them when the plain description already says it.
+- **Label every number with what it measures.** A bare "keeps 68.7%" makes the reader guess; write "a 68.7% popularity score", "a 59.2% win rate", "7.9 points of popularity score". Use the measure's name from the post's definitions table every time, including in comparisons ("from 78.0% to 85.9%" names the measure once in the same sentence).
+- **Explain a loaded word the first time it carries an argument,** with "which means that": "'May contain' warnings are voluntary, which means that no US law requires them or sets rules for when to use them". Never swap a defined term for a plainer one that changes its meaning (the "unrestricted bowl" is full of allergens, so it can never be called "allergen-free").
+- **No meta lead-ins.** "You do not need a data pipeline to use these results:" makes the reader wonder why they would. Lead into a list with what it gives them: "Here is what the results mean the next time you buy candy for trick-or-treaters:".
 - Read the sentence aloud. If you would not say it that way to a friend, rewrite it.
 
 ## Paragraph Breaks
@@ -162,16 +192,18 @@ Tutorial-style posts (a tool switch, a setup walkthrough, "from X to Y") should 
 
 Bold is a skim path, not decoration. A reader who reads only the bold text should still follow the argument, so each bold phrase is one step of it.
 
-- About one per section, roughly 5–8 in a full post for argument turns.
-- Bold the sentence or clause where a section turns: the realization, the reframe, the line that connects one example to the next. Always bold the thesis sentence when it finally lands.
+- Bold generously: the user wants the key points and the lines that stand out to pop. Expect 1–3 per section and roughly 15–25 in a full post, and treat a section with no bold, including the reflection paragraphs near the end, as a miss.
+- Bold the sentence or clause where a section turns: the realization, the reframe, the line that connects one example to the next, and any line a reader would quote or remember. Always bold the thesis sentence when it finally lands.
 - Prefer a clause over a single word. "**the database stopped being something the function grabs from a module and became something it asks for**" beats "**dependency**".
 - Also bold **language and format names** when they matter in prose (**Lua**, **JSON**, **Python**, **TypeScript**, **Rust**). That is emphasis, not code.
+- Bold **consumer brand names** when a post introduces the companies behind a real-world problem (**Lay's**, **Doritos**, **Oreo**, **Cadbury**), so the reader recognizes the products at a glance.
+- **A bold sentence followed by more text in the same paragraph or bullet ends with a colon, inside the bold, never a period:** "**These products share two traits:** each one ships in…", "**Count usable capacity, not idle capacity:** check materials…". Continue in lowercase. This covers takeaway bullets and bold turns mid-paragraph. A period is only for a bold line that stands alone with nothing after it.
 
 Do not bold:
 - tool or company names used as résumé tokens (Effect, Nix, Cloudflare as a list) — different from language names above
 - pull quotes (the blockquote already sets them apart)
 - text that repeats a heading
-- the closing lines (the ending should land through white space, not weight)
+- the final echo lines (the last two or three short lines that mirror the opening hook land through white space, not weight); the reflection paragraphs before them still get bold
 - UI labels that are not code (Find Word, Marketplace, Settings Sync): leave plain
 
 ## Inline code (backticks)
@@ -179,11 +211,11 @@ Do not bold:
 Use backticks only for things that are code or point at code. Everything else stays plain or bold per the rules above.
 
 **Backtick:**
-- file and directory paths: `settings.json`, `lua/plugins/gruvbox.lua`, `~/.config/nvim`
+- file and directory paths: `settings.json`, `lua/plugins/catppuccin.lua`, `~/.config/nvim`
 - commands and keys: `nvim`, `:Lazy`, `:Mason`, `ciw`, `<Leader>ff`, `F7`, `Esc`
 - identifiers, options, and code tokens: `opts`, `nil`, `priority`, `SignColumn`, `owner/repo`, `pack.python`
-- plugin / package / binary ids when naming the installable: `lualine`, `bufferline`, `lazygit`, `claudecode.nvim`, `ty`, `ruff`, `lua_ls`, `gruvbox` (as a colorscheme id), `which-key`
-- short inline snippets: `opts = { ... }`, `"ellisonleao/gruvbox.nvim"`
+- plugin / package / binary ids when naming the installable: `lualine`, `bufferline`, `lazygit`, `claudecode.nvim`, `ty`, `ruff`, `lua_ls`, `catppuccin` (as a colorscheme id), `which-key`
+- short inline snippets: `opts = { ... }`, `"catppuccin/nvim"`
 
 **Do not backtick:**
 - language or format names in running prose: write **Lua** / **JSON**, not `Lua` / `JSON`
@@ -195,7 +227,7 @@ Right: **Lua** files, a **JSON** blob, open the Marketplace; edit `settings.json
 
 ### Vim / Neovim mode names (portfolio)
 
-When a post names editor modes in prose (not inside a code fence), use the `VimMode` chip so they match the gruvbox statusline: yellow Normal, blue Insert, orange Visual, green Command, purple Terminal.
+When a post names editor modes in prose (not inside a code fence), use the `VimMode` chip so they match the catppuccin statusline: blue Normal, green Insert, mauve Visual, peach Command, pink Terminal.
 
 ```mdx
 import VimMode from '../../../components/VimMode.astro';
@@ -247,13 +279,37 @@ Discover the assumptions you didn't know you were making.
 Learn it again.
 ```
 
+## Project Posts Need Context
+
+A post about a personal project (a simulation, a demo, a tool) must stand on its own for a reader who has never heard of it. After the hook and before the details, cover:
+- **The real problem.** Why it matters outside the project, with sourced facts (a trade-group stat, a company's public launch) linked inline. Name real companies only for what their public sources say, and introduce them (what they make).
+- **The companies it matters to, highlighted.** Pick the companies in the exact industry the project models (a candy simulation → candy makers like Hershey, Mars, Mondelez, not chip makers like PepsiCo). Fold them into the problem section as one short paragraph each, no subheadings: what it makes, its best-known brands in bold (linked to the company's official brand page), and its public product tied to the problem (a seasonal launch, a recall). No size or rank claims ("the largest", "its closest rival") unless a source says so; quote the sourced number instead.
+- **Where the data comes from.** Real dataset (name and link it), generated, or scraped. Check the repo even when the user names a source, and flag any mismatch instead of writing it.
+- **Nothing from the data before the data section.** The problem and company paragraphs use only outside sources and general facts (what a company makes, what a product contains). Do not cite ranks, votes, bowls, or results there ("Twix places 3rd in the vote", "Starburst tops the peanut-free bowl") because the reader hasn't met the dataset yet; save them for the results.
+- **What the data looks like, before any pipeline or model.** Its own `##` section right after the problem: who or what is in it (the named factories, products, customers), a small table of the sources or tables with what each holds and its row count (from the repo's actual output files), one real sample row in a fenced block, and the validation it passes before modeling. A reader should understand the data before reading about bronze/silver/gold or the simulation.
+- **A `## References` section at the end.** Every project or research post closes with a bulleted list (`-`, not numbers, unless the post cites inline with `<sup>[N]`) of every outside source it cites: datasets (with license), statistics, legal or company facts, the project repo, and the cover photo's credit. Format each as `[Title, Publisher](url)` with commas, no em dashes, and `<a name="references"></a>` under the heading (`portfolio.md`). Inline links stay where the fact is used; the list is the one place a reader can audit them all.
+- **Define every measure before the results, like a formal analysis report or datathon write-up.** Put a `### How to read the results` subsection right before the first results table: a `Measure | Definition | Example` table covering each metric, column, and named baseline the results use (e.g. win rate, candies allowed, bowl, the unrestricted bowl, popularity kept). Each definition says where the number comes from (source column, sample size), how it is computed (the formula, thresholds, exclusions), and each example works one real value through it ("59.5% ÷ 76.3% = 78.0%"). Then one bold line telling the reader how to interpret the headline measure. Never use a term in a table that the post has not defined.
+- **Number, caption and reference every table, like a formal report.** Number tables in order (`Table 1.1`, `Table 1.2`, …). Introduce each one in the sentence before it, with the table name in bold ("In **Table 1.3**, each allergy restriction is shown with…"); bold every in-text mention of a table, bold the caption label too (`<strong>Table 1.1:</strong>`, which renders green), and put a caption that describes what the table shows directly under it. On the portfolio, the caption is `<p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.1:</strong> …</p>` with blank lines around it (`portfolio.md`). The stat table near the top of a narrative post counts too when the post is a data analysis.
+- **End with advice for the person who acts on the result.** The closing section speaks to the reader who would use it (for the candy post, the hosts buying and handing out candy), as bold-led bullets with concrete actions taken from the results. Companies belong in the problem section, not the ending, unless the post is written for them.
+- **Results can go past reporting.** When the data allows it, add one or two analyses that change a decision: a scenario comparison (with and without a rule), a closest-alternative search, or a small optimization. Each gets its own `###`, a figure, and a bold line saying what it means for the reader.
+- **Number and caption every figure like the tables.** `Figure 1.1`, `Figure 1.2`, … in order of appearance, introduced in the sentence before with the name in bold ("In **Figure 1.5**, …"), captioned underneath with the same centered caption style as tables. Every chart titles both axes; numbers drawn on the chart need an axis or legend that says what they are.
+
 ## Titles
 
 Idea-driven, not employer-driven. The job goes in the subtitle.
 
-Weak: "My First Month at Brunswick", "What I Learned During My First Month", "My Software Engineering Internship Experience".
+**A title must make sense to someone who has not read the post.** Read it cold, as a stranger scrolling a blog index: they should know what the post is about and why they might care. The user reads cryptic twist titles as choppy and meaningless. Avoid:
+- punchline titles that only make sense after the ending ("The Halloween Bottleneck Was Printed Plastic", "The Patch Window Went Negative")
+- metaphors and abstract nouns ("Learning Happens at the Seams")
+- slogans in title case ("Reproducibility Is a Team Feature")
 
-Better: "Learn It Again", "One Month In: Learn It Again", "The Things Your Development Environment Isn't Telling You", "Reproducibility Is a Team Feature", "Learning Happens at the Seams", "Making Assumptions Explicit".
+Prefer the "What X taught me about Y" or "Why X didn't Y" shape: name the concrete thing that happened, then the topic of the lesson in plain words. The twist belongs in the post, not the title.
+
+Weak: "My First Month at Brunswick", "What I Learned During My First Month", "My Software Engineering Internship Experience" (résumé titles), and "The Halloween Bottleneck Was Printed Plastic" (cryptic).
+
+Better: "What a 73-Hour Minecraft Stream Taught Me About Great Teams", "What a Halloween Factory Simulation Taught Me About Spare Capacity", "Learn It Again", "The Things Your Development Environment Isn't Telling You".
+
+Offer 2–3 options at Stage 3 and recommend the plainest one.
 
 Example pair:
 - title: `Learn It Again`
@@ -266,6 +322,12 @@ Example pair:
 - "Reproducibility is not a developer convenience. It's a team feature."
 - "The interesting engineering happens at the boundaries between systems."
 - "You haven't necessarily learned a technology just because you've used it before."
+
+## Introduce People
+
+Assume the reader doesn't know who anyone is. On first mention of a person, creator, team or company the post depends on, give one to three sentences: who they are, what they're known for, and why that matters to the story (Jynxzi: "became one of the biggest streamers on Twitch playing Rainbow Six Siege on an Xbox controller"). When several people carry the story, give them their own short section (`## Meet the team`, one `###` each) before the events.
+
+Keep introductions LinkedIn-safe and relevant: skip bans, gambling, lawsuits or drama unless the post is about them, and don't pad with follower counts that aren't part of the point.
 
 ## Company Context and Confidentiality
 
