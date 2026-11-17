@@ -1,6 +1,6 @@
 import { renderMermaidSVG } from 'beautiful-mermaid';
 
-// Gruvbox tokens from global.css, passed as CSS variables so the diagram tracks the palette.
+// Catppuccin Macchiato tokens from global.css, passed as CSS variables so the diagram tracks the palette.
 const colors = {
   bg: 'var(--color-nvim-bg-hard)',
   fg: 'var(--color-nvim-fg)',

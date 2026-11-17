@@ -1,4 +1,4 @@
-// GitHub's linguist colors. Fixed colors stay fixed; do not map these to gruvbox.
+// GitHub's linguist colors. Fixed colors stay fixed; do not map these to the catppuccin palette.
 export const languageColors: Record<string, string> = {
   TypeScript: '#3178c6',
   JavaScript: '#f1e05a',
