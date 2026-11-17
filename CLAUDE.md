@@ -32,6 +32,8 @@ src/
 │   ├── ProjectCard.astro       # Gallery tile linking to /projects/<slug>
 │   ├── CertCard.astro          # Certificate card, uses IssuerLogo.astro
 │   ├── TweetEmbed.astro        # Twitter/X embed for blog posts
+│   ├── VimMode.astro           # Inline lualine-style mode chip for blog prose (<VimMode mode="normal" />)
+│   ├── charts/Chart.astro      # Chart.js figure for blog posts (kind: hbar | dumbbell | scatter | simulator), drawn by lib/charts.ts
 │   ├── Navigation.astro        # Top nav + sidebar
 │   └── SkillCard.astro
 ├── content/
@@ -46,6 +48,7 @@ src/
 │   ├── certificates.ts # Certificates; PDF paths come from PUBLIC_CERTIFICATE_PDFS env var
 │   └── milestones.ts   # Career milestones shown by GitLog.astro
 ├── lib/
+│   ├── charts.ts     # Chart.js setup + per-kind renderers; colors are names resolved from --color-nvim-* at runtime, so charts follow the theme
 │   └── mermaid.mjs   # Sätteri mdast plugin: ```mermaid fences → inline SVG at build time (beautiful-mermaid)
 ├── layouts/
 │   ├── Layout.astro  # Root HTML shell, global GSAP animation
