@@ -7,11 +7,15 @@ import { satteri } from '@astrojs/markdown-satteri';
 import { mermaidPlugin } from './src/lib/mermaid.mjs';
 
 // Upstream maps markup.deleted to orange; use Catppuccin red like git gutters.
+// Upstream also italicizes comments, keywords and parameters; code blocks stay upright.
 const catppuccinMacchiatoDiff = {
   ...catppuccinMacchiato,
-  tokenColors: catppuccinMacchiato.tokenColors?.map((rule) =>
-    rule.scope === 'markup.deleted' ? { ...rule, settings: { ...rule.settings, foreground: '#ed8796' } } : rule,
-  ),
+  tokenColors: catppuccinMacchiato.tokenColors?.map((rule) => {
+    const settings = { ...rule.settings };
+    if (rule.scope === 'markup.deleted') settings.foreground = '#ed8796';
+    if (settings.fontStyle?.includes('italic')) settings.fontStyle = settings.fontStyle.replace('italic', '').trim();
+    return { ...rule, settings };
+  }),
 };
 
 // https://astro.build/config
