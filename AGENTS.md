@@ -1,17 +1,17 @@
 # Agent instructions – Portfolio
 
-This repo is a **personal portfolio site** built with **Astro 5**, **Tailwind CSS 4**, and **TypeScript**. Use it as the main reference for how to work in this codebase.
+This repo is a **personal portfolio site** built with **Astro 7**, **Tailwind CSS 4**, **MDX**, and **TypeScript**, themed with **Catppuccin Macchiato**. `CLAUDE.md` is the full reference for structure and conventions; this file is the short version.
 
 ## Stack
 
 - **Astro** – Pages and components (`.astro`), minimal client JS where needed.
-- **Tailwind** – Styling via utilities; theme is in `src/styles/global.css` (`@theme` and CSS variables).
+- **Tailwind** – Styling via utilities; theme is in `src/styles/global.css`: the palette comes from `@catppuccin/tailwindcss` and maps onto role tokens (`--color-nvim-*`, `text-nvim-*` utilities).
 - **Data** – Content lives in `src/data/*.ts` (e.g. `experience.ts`). Export interfaces and arrays; use optional fields where a value can be missing.
 - **Assets** – Images under `src/assets/`; import in data or components and use `.src` for URLs.
 
 ## Conventions
 
-- **Styling**: Use only the existing design tokens (e.g. `bg-bg-primary`, `text-accent`, `border-border-default`). No new hex colors or arbitrary values.
+- **Styling**: Use only the existing design tokens (e.g. `text-nvim-green`, `bg-bg-primary`, `border-border-default`). No new hex colors or arbitrary values.
 - **Components**: Astro components with a TypeScript `Props` interface and `const { ... } = Astro.props`.
 - **Accessibility**: Meaningful `alt` on images; semantic HTML; omit optional UI (e.g. location block) when the data is missing.
 
