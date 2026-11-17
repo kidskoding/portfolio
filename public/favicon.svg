@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Neovim portfolio favicon">
-  <rect width="128" height="128" rx="18" fill="#1d2021"/>
-  <path d="M20 24 43 13v102L20 104V24Z" fill="#b8bb26"/>
-  <path d="M45 13 102 100 83 115 26 28 45 13Z" fill="#83a598"/>
-  <path d="M85 24 108 13v91l-23 11V24Z" fill="#458588"/>
-  <path d="M43 13 102 100 89 110 30 23 43 13Z" fill="#ebdbb2" opacity="0.18"/>
+  <rect width="128" height="128" rx="18" fill="#181926"/>
+  <path d="M20 24 43 13v102L20 104V24Z" fill="#a6da95"/>
+  <path d="M45 13 102 100 83 115 26 28 45 13Z" fill="#8aadf4"/>
+  <path d="M85 24 108 13v91l-23 11V24Z" fill="#7dc4e4"/>
+  <path d="M43 13 102 100 89 110 30 23 43 13Z" fill="#cad3f5" opacity="0.18"/>
 </svg>
