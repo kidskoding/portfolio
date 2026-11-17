@@ -6,8 +6,6 @@ dist/
 
 # dependencies
 node_modules/
-
-# bun owns the lockfile (bun.lock); keep npm from adding its own
 package-lock.json
 
 # logs
