@@ -2,7 +2,7 @@
 title: "From VS Code to Neovim"
 description: "A complete AstroNvim setup in a handful of files, Claude Code included, and only the keys you need to start living in it"
 pubDate: 2026-10-11
-updatedDate: 2026-10-23
+updatedDate: 2026-11-17
 draft: false
 coverImage: "/blog/vscode-to-neovim-cover.png"
 ---
@@ -61,14 +61,14 @@ The costs are real: a slower first week, a config you own, and big Java or Kotli
 
 Neovim calls its add-ons **plugins**, and they map to VS Code **extensions**: same jobs (a theme, a file tree, a side panel), different packaging.
 
-VS Code installs extensions from the Marketplace as `publisher.name` and configures them in Settings. A Neovim plugin is usually a GitHub repo written as `owner/repo`, such as `ellisonleao/gruvbox.nvim`, with its options in a small **Lua** file. You'll meet Lazy, the plugin manager, on first launch, and Mason, a second installer, once you turn on language packs.
+VS Code installs extensions from the Marketplace as `publisher.name` and configures them in Settings. A Neovim plugin is usually a GitHub repo written as `owner/repo`, such as `catppuccin/nvim`, with its options in a small **Lua** file. You'll meet Lazy, the plugin manager, on first launch, and Mason, a second installer, once you turn on language packs.
 
 For comparison, VS Code keeps its settings in `~/.config/Code/User/` on Linux, `~/Library/Application Support/Code/User/` on macOS, and `%APPDATA%\Code\User\` on Windows. The two files you touch most are `settings.json` and, if you pin extensions per project, `extensions.json`:
 
 ```json
 // ~/.config/Code/User/settings.json (trimmed)
 {
-  "workbench.colorTheme": "Gruvbox Dark Medium",
+  "workbench.colorTheme": "Catppuccin Macchiato",
   "editor.fontFamily": "JetBrains Mono",
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "charliermarsh.ruff",
@@ -82,7 +82,7 @@ For comparison, VS Code keeps its settings in `~/.config/Code/User/` on Linux, `
 // .vscode/extensions.json in a project (optional)
 {
   "recommendations": [
-    "jdinhlife.gruvbox",
+    "catppuccin.catppuccin-vsc",
     "anthropic.claude-code",
     "charliermarsh.ruff",
     "ms-python.python"
@@ -101,7 +101,7 @@ Here's where familiar VS Code pieces live in this build. Each row gets a proper 
 | Marketplace + Extensions view | lines in `lua/community.lua` + small files under `lua/plugins/` + `:Lazy` |
 | Extension Pack / recommended extensions | one AstroCommunity `import` line |
 | `settings.json` | `lua/plugins/astrocore.lua` (`opt`, keymaps) |
-| Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `gruvbox.lua` |
+| Color Theme picker | `lua/plugins/astroui.lua` + a theme file like `catppuccin.lua` |
 | Extension-specific settings | `opts = { ... }` in that plugin's **Lua** file |
 | Language servers / formatters (often bundled in an extension) | `:Mason` installs the binaries those plugins call |
 | Status bar / tabs | `lualine` + `bufferline` (two small files) |
@@ -152,40 +152,35 @@ The rest of this section builds the editor one piece at a time: the theme, the d
 
 A theme is the easiest start, because you see the result on the next restart. Like VS Code's theme extension plus `"workbench.colorTheme"`, it takes two steps: install a **theme plugin**, then select it.
 
-This build uses [gruvbox.nvim](https://github.com/ellisonleao/gruvbox.nvim), a port of the retro [gruvbox](https://github.com/morhetz/gruvbox) color scheme (the same palette this site uses, so you're already looking at it). Create `lua/plugins/gruvbox.lua`. Every plugin file here has the same shape, a **Lua** table that names a plugin and lists its settings, so this first one is worth reading line by line.
+This build uses [catppuccin/nvim](https://github.com/catppuccin/nvim), the Neovim port of the pastel [Catppuccin](https://catppuccin.com) color scheme, in its Macchiato flavour (the same palette this site uses, so you're already looking at it). Create `lua/plugins/catppuccin.lua`. Every plugin file here has the same shape, a **Lua** table that names a plugin and lists its settings, so this first one is worth reading line by line.
 
-`"ellisonleao/gruvbox.nvim"` is the plugin's `owner/repo` id, which Lazy clones from GitHub. `priority = 1000` loads the theme before every other plugin, so everything draws with the right colors. `opts` holds gruvbox's settings, and its two `overrides` link the `SignColumn` and `FoldColumn` gutters to the normal background, clearing the gray band AstroNvim otherwise leaves beside your code.
+`"catppuccin/nvim"` is the plugin's `owner/repo` id, which Lazy clones from GitHub. Because the repo is just called `nvim`, `name = "catppuccin"` gives it a readable name in Lazy. `priority = 1000` loads the theme before every other plugin, so everything draws with the right colors.
 
-You'll come back here later for which-key's colors, but for now the file needs only this:
+There's no `opts` this time. Catppuccin already leaves the gutters on the editor background, and it spots other installed plugins, like which-key and Snacks, and colors them too, so the defaults need no fixing:
 
 ```lua
--- lua/plugins/gruvbox.lua
--- Gruvbox theme: gutters match the editor background.
+-- lua/plugins/catppuccin.lua
+-- Catppuccin theme. It colors the gutters and which-key on its own, so it needs no overrides.
 return {
-  "ellisonleao/gruvbox.nvim",
+  "catppuccin/nvim",
+  name = "catppuccin",
   priority = 1000,
-  opts = {
-    overrides = {
-      SignColumn = { link = "Normal" },
-      FoldColumn = { link = "Normal" },
-    },
-  },
 }
 ```
 
-Installing a theme doesn't select it. In AstroNvim, that choice lives in astroui (`AstroNvim/astroui`), the plugin for UI settings like the colorscheme and icons. Open `lua/plugins/astroui.lua`, delete the guard line, and set `colorscheme` to `"gruvbox"`:
+Installing a theme doesn't select it. In AstroNvim, that choice lives in astroui (`AstroNvim/astroui`), the plugin for UI settings like the colorscheme and icons. Open `lua/plugins/astroui.lua`, delete the guard line, and set `colorscheme` to `"catppuccin-macchiato"`. Spell out the flavour: recent Neovim versions ship a built-in colorscheme that's also called `catppuccin`, and plain `"catppuccin"` can load that one instead of the plugin.
 
 ```lua
 -- lua/plugins/astroui.lua (template, trimmed)
 return {
   "AstroNvim/astroui",
   opts = {
-    colorscheme = "gruvbox",
+    colorscheme = "catppuccin-macchiato",
   },
 }
 ```
 
-Save both and restart `nvim`, and the same dashboard comes back in gruvbox's colors:
+Save both and restart `nvim`, and the same dashboard comes back in Catppuccin's colors:
 
 <img
   src="/blog/vscode-to-neovim/dashboard-gruvbox.png"
@@ -311,7 +306,7 @@ Lazy also has a window for seeing what's installed. Press `Esc` to make sure you
 
 Each row is a plugin, or a pack that expands into several, named by the same `owner/repo` strings you've been writing. Loaded plugins have already started, while not-loaded ones wait until you use them, which is where Lazy gets its name and why startup stays fast. Sync and Update refresh plugins from GitHub.
 
-Check for what you just added: gruvbox, lualine, bufferline, claudecode, and the Python packs. If something's missing after a clean restart, look for a typo in `community.lua` or a leftover guard line. If Lazy offers a Sync, press `S`, then `q` to close.
+Check for what you just added: catppuccin, lualine, bufferline, claudecode, and the Python packs. If something's missing after a clean restart, look for a typo in `community.lua` or a leftover guard line. If Lazy offers a Sync, press `S`, then `q` to close.
 
 **You won't find `ruff` or `ty` here, because Lazy only manages editor plugins.** Those are programs on disk, handled on the next screen.
 
@@ -342,7 +337,7 @@ If jump-to-definition or format-on-save breaks later, check `:Mason` before rewr
 | `ty`, `ruff`, `lua_ls`, `debugpy` | `:Mason` (programs those packs call) |
 | `lazygit` or the `claude` CLI | your OS package manager / their docs |
 
-From here on, you're restyling plugins that are already installed, with the same pattern as gruvbox and Snacks: a small file under `lua/plugins/` that names the `owner/repo` again and puts your changes in `opts`.
+From here on, you're restyling plugins that are already installed, with the same pattern as Catppuccin and Snacks: a small file under `lua/plugins/` that names the `owner/repo` again and puts your changes in `opts`.
 
 ### Status bar and tabs
 
@@ -350,27 +345,21 @@ The packs you imported already give you a working status bar and tabs, so these 
 
 lualine (`nvim-lualine/lualine.nvim`) draws the bar along the bottom, showing the mode, Git branch, and file details, like VS Code's status bar.
 
-The snippet starts from lualine's gruvbox theme, paints the <VimMode mode="normal" /> badge yellow, and brightens the middle section's text, since the theme's muted gray is hard to read on the bar. It gives <VimMode mode="terminal" /> mode a copy of the insert colors with a purple badge, so terminal panels like `F7` and the Claude panel don't stay yellow.
+Catppuccin ships a lualine theme for each flavour, and it already reads well: a blue <VimMode mode="normal" /> badge and bright text in the middle section. The one change is <VimMode mode="terminal" /> mode, which the theme paints the same green as insert. The snippet gives it a pink badge instead, so terminal panels like `F7` and the Claude panel stand apart. It pulls that pink from Catppuccin's palette by name, so no hex codes land in your config.
 
-The loop gives every mode normal mode's middle section, so only the badge changes color, and `globalstatus = true` draws one bar across the whole screen instead of one per split. Create `lua/plugins/lualine.lua`:
+`globalstatus = true` draws one bar across the whole screen instead of one per split. Create `lua/plugins/lualine.lua`:
 
 ```lua
 -- lua/plugins/lualine.lua
--- Status bar on the gruvbox theme: one bar for the whole screen, a purple badge for terminal panels.
+-- Status bar on catppuccin macchiato: one bar for the whole screen, a pink badge for terminal panels.
 return {
   "nvim-lualine/lualine.nvim",
   opts = function()
-    local theme = require "lualine.themes.gruvbox_dark"
+    local C = require("catppuccin.palettes").get_palette "macchiato"
+    local theme = require "lualine.themes.catppuccin-macchiato"
 
-    theme.normal.a.bg = "#fabd2f"
-    theme.normal.c.fg = "#d5c4a1"
-
-    theme.terminal = vim.deepcopy(theme.insert)
-    theme.terminal.a.bg = "#d3869b"
-
-    for _, mode in pairs(theme) do
-      mode.c = theme.normal.c
-    end
+    theme.terminal.a.bg = C.pink
+    theme.terminal.b.fg = C.pink
 
     return { options = { theme = theme, globalstatus = true } }
   end,
@@ -379,7 +368,7 @@ return {
 
 bufferline (`akinsho/bufferline.nvim`) draws a tab for each open buffer along the top, like VS Code's editor tabs.
 
-The snippet calms its defaults with the minimal and no-italic presets and drops the extra padding. Instead of a colored marker, the active tab works the way it does in VS Code and Zed: it sits on a raised background (`#3c3836`, the same gray as the status bar) with a bright, bold name, while inactive tabs stay flat and thin gray dividers separate them, drawn flush against the raised tab so no dark sliver shows beside it. The loops apply that raised background to every piece of the active tab, such as its close button and diagnostics, so it reads as one block. The empty part of the bar keeps the editor background, so the dashboard doesn't get a black strip across the top.
+The snippet calms its defaults with the minimal and no-italic presets and drops the extra padding. Instead of a colored marker, the active tab works the way it does in VS Code and Zed: it sits on a raised background (Catppuccin's `surface0`, the same gray as the status bar's branch section) with a bright, bold name, while inactive tabs stay flat and thin gray dividers separate them, drawn flush against the raised tab so no dark sliver shows beside it. The loops apply that raised background to every piece of the active tab, such as its close button and diagnostics, so it reads as one block. The empty part of the bar keeps the editor background, so the dashboard doesn't get a black strip across the top.
 
 The `offsets` reserve space for Neo-tree and Snacks' side panels, so tabs don't draw over them. Create `lua/plugins/bufferline.lua`:
 
@@ -390,8 +379,9 @@ return {
   "akinsho/bufferline.nvim",
   opts = function(_, opts)
     local bufferline = require "bufferline"
-    local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg or "#282828"
-    local active_bg = "#3c3836"
+    local C = require("catppuccin.palettes").get_palette "macchiato"
+    local normal_bg = vim.api.nvim_get_hl(0, { name = "Normal", link = false }).bg or C.base
+    local active_bg = C.surface0
 
     opts.options = vim.tbl_deep_extend("force", opts.options or {}, {
       style_preset = {
@@ -419,9 +409,9 @@ return {
     local highlights = {
       fill = { bg = normal_bg },
       background = { bg = normal_bg },
-      separator = { fg = "#504945", bg = normal_bg },
-      separator_visible = { fg = "#504945", bg = normal_bg },
-      separator_selected = { fg = "#504945", bg = normal_bg },
+      separator = { fg = C.surface1, bg = normal_bg },
+      separator_visible = { fg = C.surface1, bg = normal_bg },
+      separator_selected = { fg = C.surface1, bg = normal_bg },
       offset_separator = { bg = normal_bg },
     }
 
@@ -433,7 +423,7 @@ return {
       highlights[level .. "_selected"] = { bg = active_bg }
       highlights[level .. "_diagnostic_selected"] = { bg = active_bg }
     end
-    highlights.buffer_selected = { fg = "#ebdbb2", bg = active_bg, bold = true }
+    highlights.buffer_selected = { fg = C.text, bg = active_bg, bold = true }
 
     opts.highlights = vim.tbl_deep_extend("force", opts.highlights or {}, highlights)
 
@@ -523,33 +513,7 @@ Restart, and the panel docks cleanly beside your code:
 
 Last comes polish. [which-key](https://github.com/folke/which-key.nvim), the menu that appears when you press Space, already ships with AstroNvim, so there's no new import.
 
-Under gruvbox, though, the popup can look blank, because which-key's highlight groups aren't linked to any theme colors. Back in `lua/plugins/gruvbox.lua`, each new `overrides` line links one which-key group to an existing gruvbox group, so the popup borrows the theme's colors:
-
-```lua
--- lua/plugins/gruvbox.lua
--- Gruvbox theme: gutters match the editor background, and which-key borrows the theme's colors.
-return {
-  "ellisonleao/gruvbox.nvim",
-  priority = 1000,
-  opts = {
-    overrides = {
-      SignColumn = { link = "Normal" },
-      FoldColumn = { link = "Normal" },
-
-      -- which key overrides
-      WhichKey = { link = "Function" },
-      WhichKeyNormal = { link = "NormalFloat" },
-      WhichKeyBorder = { link = "FloatBorder" },
-      WhichKeyDesc = { link = "Identifier" },
-      WhichKeyGroup = { link = "Keyword" },
-      WhichKeySeparator = { link = "Comment" },
-      WhichKeyValue = { link = "Comment" },
-    },
-  },
-}
-```
-
-Restart and press Space, and you get a readable key list instead of a blank popup:
+There's nothing to write here either. Some themes leave which-key's highlight groups unset, so the popup looks blank until you link each group to a theme color by hand. Catppuccin sees which-key among your Lazy plugins and colors it for you: blue group names, pink descriptions, on the same dark panel as other floating windows. Press Space and you get a readable key list:
 
 <img
   src="/blog/vscode-to-neovim/which-key.png"
