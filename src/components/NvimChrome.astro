@@ -16,10 +16,12 @@ const buffers = [
   { path: '/projects', file: 'projects.astro', icon: 'astro' },
   { path: '/skills', file: 'skills.astro', icon: 'astro' },
   { path: '/certificates', file: 'certificates.astro', icon: 'astro' },
-  { path: '/blog', file: 'blog.astro', icon: 'astro' },
+  { path: '/blog', file: 'index.mdx', icon: 'mdx', dir: 'blog-posts' },
   { path: '/contact', file: 'contact.astro', icon: 'astro' },
 ];
-const treeFiles = buffers;
+// buffers with a dir live in that explorer folder, not at the top of src/
+const treeFiles = buffers.filter((b) => !b.dir);
+const blogIndex = buffers.find((b) => b.path === '/blog');
 type TabIcon = 'astro' | 'mdx' | 'json' | 'checkhealth';
 interface Tab {
   path: string;
@@ -32,7 +34,7 @@ let activeIcon: TabIcon = 'astro';
 const blogSlug = currentPath.match(/^\/blog\/(.+)$/);
 const projectSlug = currentPath.match(/^\/projects\/(.+)$/);
 if (blogSlug) {
-  activeFile = `blog/${blogSlug[1]}.mdx`;
+  activeFile = `blog-posts/${blogSlug[1]}.mdx`;
   activeIcon = 'mdx';
 } else if (projectSlug) {
   activeFile = `projects/${projectSlug[1]}.mdx`;
@@ -46,7 +48,7 @@ if (blogSlug) {
 } else {
   const match = buffers.find((b) => b.path === currentPath);
   if (match) {
-    activeFile = match.file;
+    activeFile = match.dir ? `${match.dir}/${match.file}` : match.file;
     activeIcon = match.icon as TabIcon;
   }
 }
@@ -126,6 +128,10 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
             <span>blog-posts</span>
           </button>
           <div data-tree-group="blog-posts">
+            <a href="/blog" class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === '/blog' }]}>
+              <span class="tree-icon icon-mdx">{devicons.mdx}</span>
+              <span>{blogIndex?.file}</span>
+            </a>
             {posts.map((post) => (
               <a
                 href={`/blog/${post.id}`}
@@ -178,6 +184,7 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
           <div
             class:list={['nvim-buffer', { active: currentPath === tab.path }]}
             data-path={tab.path}
+            data-file={tab.path === '/blog' ? `${blogIndex?.dir}/${blogIndex?.file}` : undefined}
             hidden={currentPath !== tab.path}
           >
             <a href={tab.path} class="buf-link">
@@ -1442,7 +1449,12 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
       }
       const scored = [...document.querySelectorAll<HTMLElement>('.nvim-buffer[data-path]')]
         .map((tab) => {
-          const file = (tab.querySelector('.buf-link span:last-child')?.textContent || '').toLowerCase();
+          // data-file keeps :e index on index.astro rather than blog-posts/index.mdx
+          const file = (
+            tab.dataset.file ||
+            tab.querySelector('.buf-link span:last-child')?.textContent ||
+            ''
+          ).toLowerCase();
           const path = (tab.dataset.path || '').toLowerCase();
           const stem = file.replace(/\.[a-z]+$/, '');
           let score = 0;

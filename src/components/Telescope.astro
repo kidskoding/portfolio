@@ -31,8 +31,9 @@ const pages = [
     desc: 'contact me if you want to stay in touch! collaboration, questions, or just simply saying hi :)',
   },
   {
-    label: 'blog.astro',
+    label: 'blog-posts/index.mdx',
     path: '/blog',
+    icon: 'mdx',
     desc: 'my blog posts covering various tech news! takes on AI, startups, and where the industry is headed.',
   },
   {
@@ -297,7 +298,7 @@ const easterEggs = [
     label: string;
     path: string;
     desc: string;
-    icon?: 'astro' | 'checkhealth';
+    icon?: 'astro' | 'mdx' | 'checkhealth';
   }
   interface PostItem {
     id: string;
@@ -485,7 +486,7 @@ const easterEggs = [
         html += `<div class="telescope-item${sel ? ' selected' : ''}" data-index="${idx}">
           <span class="item-icon icon-mdx">${devicons.mdx}</span>
           <span class="item-label">${escapeHtml(p.title)}</span>
-          <span class="item-sub">blog/</span>
+          <span class="item-sub">blog-posts/</span>
           ${sel ? '<span class="item-enter">enter</span>' : ''}
         </div>`;
       });
