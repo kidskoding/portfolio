@@ -1,7 +1,7 @@
 ---
 /**
  * Inline vim/lualine mode chip for blog prose (Catppuccin mode colors).
- * Normal yellow, Insert blue, Visual orange, Command green, Terminal purple.
+ * Normal blue, Insert green, Visual mauve, Command peach, Terminal pink (the post's lualine override).
  */
 interface Props {
   mode: 'normal' | 'insert' | 'visual' | 'command' | 'terminal';
@@ -34,22 +34,22 @@ const labels = {
   }
 
   .blog-content .vim-mode-normal {
-    background: var(--color-nvim-yellow);
-  }
-
-  .blog-content .vim-mode-insert {
     background: var(--color-nvim-blue);
   }
 
-  .blog-content .vim-mode-visual {
-    background: var(--color-nvim-orange);
-  }
-
-  .blog-content .vim-mode-command {
+  .blog-content .vim-mode-insert {
     background: var(--color-nvim-green);
   }
 
-  .blog-content .vim-mode-terminal {
+  .blog-content .vim-mode-visual {
     background: var(--color-nvim-purple);
+  }
+
+  .blog-content .vim-mode-command {
+    background: var(--color-nvim-orange);
+  }
+
+  .blog-content .vim-mode-terminal {
+    background: var(--color-nvim-pink);
   }
 </style>
