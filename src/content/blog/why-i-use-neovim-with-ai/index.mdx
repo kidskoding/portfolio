@@ -19,7 +19,7 @@ I've used [**Neovim**](https://neovim.io/) on and off since 2022, but for a long
 
 During that time, I held back from Neovim for the same reason many people do: **making the UI and UX feel like a graphical editor such as VSCode, IntelliJ, or Zed took a lot of hands-on configuration**.
 
-However, after a year or so, Neovim finally stuck for me when I stopped trying to build a configuration from scratch and started from a complete batteries included configuration that already included everything I needed. Later in this post, I will show you how you can get the exact same thing that kickstarted my Neovim journey: **a ready-made starter setup you can install, use right away, and change as you learn**. **Figure 1.1** shows the finished result, [nvimforge](https://github.com/kidskoding/nvimforge), in about half a minute:
+However, after a year or so, Neovim finally stuck for me when I stopped trying to build a configuration from scratch and started from a complete batteries included configuration that already included everything I needed. Later in this post, I will show you how you can get the exact same thing that kickstarted my Neovim journey: **a ready-made starter setup you can install, use right away, and change as you learn**. **Figure 1.1** shows the finished result, [nvimforge](https://codeberg.org/kidskoding/nvimforge), in about half a minute:
 
 <video
   src="/blog/why-i-use-neovim-with-ai/tour.mp4"
@@ -610,7 +610,7 @@ With the packs in place, let's bring in the agent. The `claudecode-nvim` import 
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.3:</strong> every AI key in nvimforge, grouped under <code>&lt;Leader&gt;a</code></p>
 
-Copy [`claudecode.lua`](https://github.com/kidskoding/nvimforge/blob/master/nvim/lua/plugins/claudecode.lua) and [`sidekick.lua`](https://github.com/kidskoding/nvimforge/blob/master/nvim/lua/plugins/sidekick.lua) from nvimforge into your `lua/plugins/` folder. The sidekick file stays short, because each key is one line in its `keys` list:
+Copy [`claudecode.lua`](https://codeberg.org/kidskoding/nvimforge/src/branch/master/nvim/lua/plugins/claudecode.lua) and [`sidekick.lua`](https://codeberg.org/kidskoding/nvimforge/src/branch/master/nvim/lua/plugins/sidekick.lua) from nvimforge into your `lua/plugins/` folder. The sidekick file stays short, because each key is one line in its `keys` list:
 
 ```lua
 -- lua/plugins/sidekick.lua (trimmed)
@@ -780,7 +780,7 @@ Pressing `F5` again runs the program to the end, and the debugger's panels close
 
 ### 6. Finish the look
 
-Finally, let's finish the look. The packs from step 2 also added lualine, the status bar along the bottom, and bufferline, which shows a tab for each open buffer along the top. nvimforge restyles both in [`lualine.lua`](https://github.com/kidskoding/nvimforge/blob/master/nvim/lua/plugins/lualine.lua) and [`bufferline.lua`](https://github.com/kidskoding/nvimforge/blob/master/nvim/lua/plugins/bufferline.lua), with one bar across the whole screen, a pink badge for <VimMode mode="terminal" /> mode so the AI panels stand out, and the active tab on a raised background. Copy those two files if you like the look:
+Finally, let's finish the look. The packs from step 2 also added lualine, the status bar along the bottom, and bufferline, which shows a tab for each open buffer along the top. nvimforge restyles both in [`lualine.lua`](https://codeberg.org/kidskoding/nvimforge/src/branch/master/nvim/lua/plugins/lualine.lua) and [`bufferline.lua`](https://codeberg.org/kidskoding/nvimforge/src/branch/master/nvim/lua/plugins/bufferline.lua), with one bar across the whole screen, a pink badge for <VimMode mode="terminal" /> mode so the AI panels stand out, and the active tab on a raised background. Copy those two files if you like the look:
 
 <img
   src="/blog/why-i-use-neovim-with-ai/statusline-normal.png"
