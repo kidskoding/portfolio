@@ -119,7 +119,7 @@ python3 report.py && python3 -c "from models import *; assert total_value([])==0
 
 **I never asked for that check:** the agent reached for the same tools a developer would, running the script and then asserting on the result, because the terminal is where all of its tools already are.
 
-### So the editor should live there too
+### So your editor should live there too
 
 An editor that runs in the same terminal as the agent shares everything with it: the folder, the files, the Git state, and the shell. In Neovim the agent sits in a split next to your code, so reading its change, opening a file it mentioned, and running its test are all keys in one window instead of trips between an IDE and a terminal.
 
@@ -865,7 +865,7 @@ Vim is still famous for being hard to quit.
 
 With an agent running in the terminal beside it, it's also the fastest place I know to read, check, and fix what that agent wrote.
 
-The agent writes the code. Your editor is where you decide what ships.
+**P.S.** Funnily enough, this whole website is built to look like Neovim, with a tab bar of open files along the top, a status bar along the bottom, and even a [`:checkhealth`](/checkhealth) page. Now that you know the motions, try them right here: `j` and `k` scroll this post, and `:q` closes it just like a buffer. If you'd rather not, your mouse works exactly like it does on any other website.
 
 ---
 
