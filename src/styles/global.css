@@ -472,7 +472,7 @@ html[data-entering] [data-animate] {
 
 /* Mermaid fences, rendered to SVG at build time by src/lib/mermaid.mjs */
 .blog-content .mermaid-diagram {
-  margin: 1rem 0;
+  margin: 1rem 0 1.5rem;
   padding: 0.75rem;
   overflow-x: auto;
   border-radius: 0.5rem;
