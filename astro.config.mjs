@@ -21,6 +21,7 @@ const catppuccinMacchiatoDiff = {
 // https://astro.build/config
 export default defineConfig({
   site: 'https://anirudh-konidala.vercel.app',
+  redirects: { '/blog/vscode-to-neovim': '/blog/why-i-use-neovim-with-ai' },
   integrations: [mdx()],
   markdown: {
     processor: satteri({ mdastPlugins: [mermaidPlugin] }),
