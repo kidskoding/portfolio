@@ -1,6 +1,7 @@
 import astralLogoIcon from '../assets/astral.jpg';
 import brunswickLogoIcon from '../assets/brunswick.jpg';
 import databricksLogoIcon from '../assets/databricks-logo.jpeg';
+import ericssonLogoIcon from '../assets/ericsson.jpg';
 import sapienceLogoIcon from '../assets/sapience-logo.jpeg';
 import agenticAiUiucLogoIcon from '../assets/agentic-ai-uiuc.jpg';
 import ivrLogoIcon from '../assets/ivr-logo.jpeg';
@@ -45,6 +46,26 @@ export interface Experience {
 }
 
 export const experiences: Experience[] = [
+  {
+    id: '14',
+    company: 'Ericsson',
+    companyLogo: ericssonLogoIcon.src,
+    location: 'Plano, Texas',
+    startDate: 'May 2027',
+    endDate: 'Aug 2027',
+    duration: calculateDuration('May 2027', 'Aug 2027'),
+    roles: [
+      {
+        title: 'cloud and integration engineering intern',
+        employmentType: 'Internship',
+        startDate: 'May 2027',
+        endDate: 'Aug 2027',
+        duration: calculateDuration('May 2027', 'Aug 2027'),
+        description: ['summer 2027 | core networks infrastructure 🗼📶'],
+        skills: ['Kubernetes', 'Linux', 'Amazon Web Services', 'EKS', 'TCP/IP'],
+      },
+    ],
+  },
   {
     id: '11',
     company: 'Brunswick Corporation',
