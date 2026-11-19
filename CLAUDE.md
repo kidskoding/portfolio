@@ -63,6 +63,7 @@ src/
 │   ├── certificates.astro
 │   ├── contact.astro
 │   ├── package-json.astro # Renders the real package.json (imported at build time) as a JSON buffer (/package-json)
+│   ├── rss.xml.ts         # RSS feed of non-draft blog posts; full post HTML rendered with the container API, root-relative src/href made absolute
 │   ├── checkhealth.astro  # Colophon (font, theme, inspiration, stack) styled as nvim's :checkhealth report; opens as the health:// scratch buffer, not in the explorer; versions read from package.json
 │   └── blog/
 └── styles/

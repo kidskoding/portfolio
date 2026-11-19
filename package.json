@@ -18,6 +18,7 @@
   "dependencies": {
     "@astrojs/markdown-satteri": "^0.4.10",
     "@astrojs/mdx": "^8.1.6",
+    "@astrojs/rss": "^4.0.19",
     "@iconify-json/ph": "^1.2.2",
     "@iconify-json/simple-icons": "^1.2.103",
     "@iconify/utils": "^3.1.7",

@@ -51,6 +51,7 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="alternate" type="application/rss+xml" title="Anirudh Konidala" href={new URL('rss.xml', Astro.site)} />
     {description && <meta name="description" content={description} />}
     <meta property="og:site_name" content="Anirudh Konidala" />
     <meta property="og:type" content={type} />
