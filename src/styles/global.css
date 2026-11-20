@@ -192,6 +192,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-variant-ligatures: none;
 }
 
 @media (min-width: 1536px) {
