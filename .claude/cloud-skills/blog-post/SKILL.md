@@ -19,6 +19,16 @@ $ARGUMENTS
 
 If nothing is given, ask what the post is about: an experience, a project, something being learned, a draft, or a news topic.
 
+## Before You Hand Back Any Draft (required)
+
+Every time you write or rewrite post prose (a full draft, a rewrite, a restructure, a new section), finish with these three steps in order, even when the user says "just write it" or "fix it fast":
+
+1. **Formatting Pass** from `style-guide.md`.
+2. **Invoke the `humanizer` skill with the Skill tool** on the post file. Writing with its rules in mind does not count, and neither does running it on an earlier version.
+3. **Run the target's build** (`bun run build` on the portfolio). The build skips `draft: true` posts, so also load a draft in the dev server and confirm it returns HTTP 200.
+
+Then tell the user that all three ran. Only DEV.to Import skips step 2.
+
 ## Pick the Mode
 
 | The user brings | Mode | Follow |
@@ -86,6 +96,11 @@ Decide where the post goes before Stage 5:
 - **Flowing does not mean one long paragraph.** Break at each turn (context → action, explanation → bold conclusion) and keep paragraphs near 2–4 sentences (Paragraph Breaks in `style-guide.md`).
 - **Flowing does not mean run-on.** "The usual reasons not to switch are that X and that Y" is grammatical but clunky; write "Many people are hesitant to switch because X." Lead with a subject and a plain verb, and avoid stacked "that ... and that ..." clauses (Plain Grammar in `style-guide.md`).
 - **Tutorials must introduce notation gradually and read as plain English.** Don't open with a wall of keybindings or commands, don't use slogan headings, taglines, or *Verdict:*-style label scaffolds, and teach each key where it's first used (Tutorials and Guides in `style-guide.md`).
+- **Every finished draft goes through the `humanizer` skill:** in all modes except DEV.to Import, invoke it on the prose before handing the post back. `style-guide.md` wins on conflicts, and humanizer must not change facts, numbers, bold, inline code, or structure (end of Stage 6 in `editor-workflow.md`).
+- **A rewrite means fresh prose.** Moving and trimming sections while keeping the old sentences is a restructure, not a rewrite; when the user asks for a rewrite, write every paragraph new and keep only the facts, code, figures, and verified numbers.
+- **Every finished post gets the Formatting Pass** in `style-guide.md` (paragraph length, bold per section including the opening's thesis, pull quotes, figure numbering), not only the humanizer.
+- **Technical arguments need evidence, not adjectives:** real commands, measured numbers, and source-checked facts, with every "all/only/every" claim verified (Making a technical case in `style-guide.md`).
+- **When the user wants a story and has none, use a true moment from the work itself** (a mistake caught while drafting, a check that failed) instead of inventing one, and list it back for them to confirm.
 - **The first answer is almost never a full draft.** The user wants an editor. Generating 2,000 words before the thesis is agreed wastes the most valuable step.
 - **Never invent numbers, quotes, error messages, or events.** If a detail is missing, ask for it or leave it out.
 - **Introduce every person, creator or group on first mention.** Not every reader follows streaming, sports or the industry; give a sentence or two on who they are and what they're known for (Introduce People in `style-guide.md`).

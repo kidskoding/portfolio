@@ -70,7 +70,28 @@ Do not dumb down the engineering. Another developer should learn something. Good
 
 Every technical element must answer: **why does this matter to the thesis?** Cut details that only prove the author knows them.
 
+### Making a technical case
+
+An argument post ("why X in the age of Y") is convincing when every reason rests on something real, not on opinion:
+
+- **Quote real artifacts:** the exact command a tool ran, a number read off a real screen or log ("loaded 10 of 52 plugins in about 88 ms"), a pipe that works (`git diff | claude -p "…"`).
+- **Read the source before explaining how a tool works:** protocol details, file locations, and API names come from the code or official docs, never from memory.
+- **Check every absolute word:** "all", "every", "only", "never" claims are the ones readers catch. "All of the review happens in an editor" was false, because the agent's CLI shows diffs itself; the accurate claim was "as soon as a change needs more than yes or no, you're editing."
+- **Order the reasons so each answers the question the last one raised,** and give them unnumbered `###` headings under one `##`; the `##` heading already says how many there are.
+
 Snippets: 5–30 lines, trimmed with `// ...`, language tag on every fence, explained after the code. Use `diff` fences for before/after.
+
+Terminal commands start with a prompt so readers know they run in a shell: `$ ` in `sh`/`bash` fences (`PS> ` in `powershell` fences), on every command line. Comment lines, `\` continuation lines and printed output get no prompt, and inline commands in prose stay bare (`` `cargo build` ``). File contents that list commands, such as a `CLAUDE.md` or a `Makefile`, are not terminal samples and get no prompt:
+
+```sh
+# macOS
+$ brew install neovim ripgrep \
+  fd lazygit
+$ nvim --version
+NVIM v0.11.5
+```
+
+Command output must be what the command really printed: run the exact snippet the post shows (same file, same line numbers, comments included), capture it in full with `--color=always` into an ```` ```ansi ```` fence, and start the block with the `$ ` command line. Never trim it: keep the `Compiling`/`Checking` line, every `note`/`help` line, and the closing `error: could not compile ...` line. If the output would print a private path (a home directory, a scratch folder), change where the command runs, not the output: mount the project at a neutral path such as `/home/you/<crate>` with `bwrap --dev-bind / / --tmpfs /home --bind <project> /home/you/<crate> --setenv HOME /home/you --chdir /home/you/<crate> cargo build --color=always`.
 
 ## Diagrams
 
@@ -128,6 +149,18 @@ The author:
 
 Not personal branding. The technical idea is the interesting part.
 
+**Warmly introduce every new thing where it first appears:** this is what makes Vimjoyer's and No Boilerplate's technical videos easy to follow. Every tool, term, key, or concept gets a short, friendly introduction the first time it shows up, before the post uses it ("Before we install it, let's meet AstroNvim. AstroNvim is a Neovim distribution, a complete configuration that…", "Meet the leader key: it's a key you press before a shortcut, and in this setup it's Space"). Check by first use, not by whether a definition exists somewhere later in the post, and turn later definitions into back-references ("the leader key from earlier"). Only do this for things the reader needs to follow the post's main path; a side detail (how the clips were recorded, an API or a socket in an aside) can stay unexplained.
+
+**Match the author's writing sample:** the user's own prose is in `~/uiuc/go-mama-27/portfolio/src/content/blog/halloween-candy-food-allergies/index.mdx`. Read its opening and one results section before drafting, and match it, including when running the `humanizer` skill (a writing sample overrides its default patterns). Its habits:
+- opens on a relatable second-person scene ("If you had gone trick-or-treating anytime during your youth, chances are…")
+- curious first person that leads into the work ("I was curious to see…", then "So I built…")
+- "we" when walking the reader through what comes next ("Later on, we will see…")
+- every tool or term explained inline in plain words ("Kaggle, a website where people share free datasets")
+- casual, warm word choices and the occasional exclamation ("pretty much everywhere", "quite common", "built around peanut butter!") instead of neutral, clipped phrasing
+- bold claims that open with a colon, and every number labeled
+
+**Write as the author, in first person:** the writer names and guides, not the document. Write "I'll refer to this as **the review loop**, as shown in **Figure 1.3**" and "For the rest of this post, I'll build the editor with you step by step", not "this post calls it the review loop" or "the rest of this post builds the editor". Using "this post" as a place is fine ("later in this post"); using it as the one doing something is not.
+
 **Prefer:** short paragraphs, clear sentences that flow into each other (the user's voice: connected, conversational sentences joined with "but rather", "so", "because", not stacks of two-word fragments), specific language, natural first-person reflection, confidence without pretending to know everything, sections that flow into each other, rhetorical questions when useful, code and diagrams between prose.
 
 **Avoid:** choppy runs of fragments ("Nothing wrong with it. It works.", "Same query, same builder.", "Checkmark."), which the user reads as choppy; keep staccato lines for the closing beat only. Also avoid corporate marketing language, fake enthusiasm, piles of adjectives, motivational LinkedIn tone, "I'm thrilled to announce", "In today's rapidly evolving technological landscape", generic AI introductions, constant bullet lists, walls of text with no headings, the thesis repeated word for word in every section, excessive em dashes, a motivational line closing every section.
@@ -175,6 +208,20 @@ Flowing sentences still need white space. Break a paragraph when it changes jobs
 - Split before a sentence that starts a new idea with "And because…", "I think that's what…", or "I assumed…".
 - Don't split one thought across paragraphs to look airy; a lone sentence is reserved for the opening and closing beats (Flowing Sentences).
 
+## Formatting Pass
+
+Run this on every finished post, whatever its mode, before the humanizer pass:
+
+- **Paragraphs:** none over about 75 words or 4 sentences; split at the turn (Paragraph Breaks).
+- **Bold:** every `##`, `###`, and section intro has 1–3 bold key lines; reading only the bold tells the argument; bold followed by more text ends with a colon, otherwise the bold line gets its own paragraph (Bold).
+- **Language names:** **Python**, **Lua**, **JSON** bold in prose, never in backticks.
+- **Pull quotes:** 1–3 blockquotes, each at the end of the section that earns it.
+- **Figures and tables:** numbered in order, introduced in bold in the sentence before ("In **Figure 1.2**, …"), captioned underneath.
+- **Punctuation:** no em or en dashes in prose.
+- **Build:** run the target's build check last.
+
+A quick way to find gaps: list each section's bold lines longer than about 20 characters (skipping language names and defined terms) and flag any section with none.
+
 ## Tutorials and Guides
 
 Tutorial-style posts (a tool switch, a setup walkthrough, "from X to Y") should read like regular English prose, not a video script or a reference card. Being inspired by fast technical creators (Vimjoyer, No Boilerplate) means leading with demos and keeping density high; it does not mean adopting a punchy delivery.
@@ -187,6 +234,8 @@ Tutorial-style posts (a tool switch, a setup walkthrough, "from X to Y") should 
 - **Don't list every key or flag.** Give the two or three you need to start, then point to the tool's own discovery mechanism (a which-key menu, `--help`, a picker) for the rest. Dense key lists read as a manual and lose the reader.
 - **Address the reader as you.** Conversion and setup posts are persuading the person reading, not narrating about "beginners," "newcomers," or "people who switch." Prefer "five rows you will actually use" over "five rows beginners use."
 - Install steps, platform variants, and troubleshooting go in an appendix, linked from one line, so they don't interrupt the story.
+- **Explain how the pieces fit before the first install command.** Before any `git clone` or config file, say in plain words what each moving part is and why it exists (for Neovim: the config folder, what a plugin is, what the plugin manager does and why it's named that, the distribution, the external tools), ideally with a small diagram of how they load. Jumping straight into a tool's UI ("now run `:Lazy`") loses beginners.
+- **Show each claim working right after you state it,** the way fast technical creators do: a short muted, looping clip with the keys visible on screen, or a screenshot, directly under the sentence it proves.
 
 ## Bold
 
@@ -194,6 +243,8 @@ Bold is a skim path, not decoration. A reader who reads only the bold text shoul
 
 - Bold generously: the user wants the key points and the lines that stand out to pop. Expect 1–3 per section and roughly 15–25 in a full post, and treat a section with no bold, including the reflection paragraphs near the end, as a miss.
 - Bold the sentence or clause where a section turns: the realization, the reframe, the line that connects one example to the next, and any line a reader would quote or remember. Always bold the thesis sentence when it finally lands.
+- Bold the thesis in the opening paragraph too. The hook's setup (a joke, a scene, a question) stays plain, and the clause that states the post's claim is bold, so a reader skimming only the bold gets the argument from the first paragraph: "Vim is famous for one joke: nobody can figure out how to quit it. … **the editor's job is reading, checking, and fixing that draft, and an editor that lives in the terminal is the one built for it.**"
+- Section intros count as sections. The paragraph under a `##` before its first `###`, and short setup sections (a sample project, a prerequisites list), each get a bold key line.
 - Prefer a clause over a single word. "**the database stopped being something the function grabs from a module and became something it asks for**" beats "**dependency**".
 - Also bold **language and format names** when they matter in prose (**Lua**, **JSON**, **Python**, **TypeScript**, **Rust**). That is emphasis, not code.
 - Bold **consumer brand names** when a post introduces the companies behind a real-world problem (**Lay's**, **Doritos**, **Oreo**, **Cadbury**), so the reader recognizes the products at a glance.
@@ -205,6 +256,9 @@ Do not bold:
 - text that repeats a heading
 - the final echo lines (the last two or three short lines that mirror the opening hook land through white space, not weight); the reflection paragraphs before them still get bold
 - UI labels that are not code (Find Word, Marketplace, Settings Sync): leave plain
+- the setup line of a hook (the joke, the scene); bold the claim it leads to instead
+
+Bolding in bulk is error-prone in MDX: never add bold inside inline code, link text, or a sentence that is already bold (nested `**` renders as literal asterisks). After any bolding pass, grep for `****` and run the build.
 
 ## Inline code (backticks)
 
@@ -287,7 +341,7 @@ A post about a personal project (a simulation, a demo, a tool) must stand on its
 - **Where the data comes from.** Real dataset (name and link it), generated, or scraped. Check the repo even when the user names a source, and flag any mismatch instead of writing it.
 - **Nothing from the data before the data section.** The problem and company paragraphs use only outside sources and general facts (what a company makes, what a product contains). Do not cite ranks, votes, bowls, or results there ("Twix places 3rd in the vote", "Starburst tops the peanut-free bowl") because the reader hasn't met the dataset yet; save them for the results.
 - **What the data looks like, before any pipeline or model.** Its own `##` section right after the problem: who or what is in it (the named factories, products, customers), a small table of the sources or tables with what each holds and its row count (from the repo's actual output files), one real sample row in a fenced block, and the validation it passes before modeling. A reader should understand the data before reading about bronze/silver/gold or the simulation.
-- **A `## References` section at the end.** Every project or research post closes with a bulleted list (`-`, not numbers, unless the post cites inline with `<sup>[N]`) of every outside source it cites: datasets (with license), statistics, legal or company facts, the project repo, and the cover photo's credit. Format each as `[Title, Publisher](url)` with commas, no em dashes, and `<a name="references"></a>` under the heading (`portfolio.md`). Inline links stay where the fact is used; the list is the one place a reader can audit them all.
+- **A `## References` section at the end.** Every project or research post closes with a bulleted list (`-`, never numbers, even when the post cites inline with `<sup>[N]`) of every outside source it cites: datasets (with license), statistics, legal or company facts, the project repo, and the cover photo's credit. Format each as `[Title, Publisher](url)` with commas, no em dashes, and `<a name="references"></a>` under the heading (`portfolio.md`). Inline links stay where the fact is used; the list is the one place a reader can audit them all.
 - **Define every measure before the results, like a formal analysis report or datathon write-up.** Put a `### How to read the results` subsection right before the first results table: a `Measure | Definition | Example` table covering each metric, column, and named baseline the results use (e.g. win rate, candies allowed, bowl, the unrestricted bowl, popularity kept). Each definition says where the number comes from (source column, sample size), how it is computed (the formula, thresholds, exclusions), and each example works one real value through it ("59.5% ÷ 76.3% = 78.0%"). Then one bold line telling the reader how to interpret the headline measure. Never use a term in a table that the post has not defined.
 - **Number, caption and reference every table, like a formal report.** Number tables in order (`Table 1.1`, `Table 1.2`, …). Introduce each one in the sentence before it, with the table name in bold ("In **Table 1.3**, each allergy restriction is shown with…"); bold every in-text mention of a table, bold the caption label too (`<strong>Table 1.1:</strong>`, which renders green), and put a caption that describes what the table shows directly under it. On the portfolio, the caption is `<p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.1:</strong> …</p>` with blank lines around it (`portfolio.md`). The stat table near the top of a narrative post counts too when the post is a data analysis.
 - **End with advice for the person who acts on the result.** The closing section speaks to the reader who would use it (for the candy post, the hosts buying and handing out candy), as bold-led bullets with concrete actions taken from the results. Companies belong in the problem section, not the ending, unless the post is written for them.

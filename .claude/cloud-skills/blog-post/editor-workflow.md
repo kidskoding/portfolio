@@ -105,7 +105,7 @@ Cut any visual that only decorates. A reader should understand each diagram with
 
 ## Stage 5 — Draft
 
-Write the file for the output target (see "Output Target" in `SKILL.md`), following the approved outline and `style-guide.md`. Keep one voice throughout. Length follows the idea; do not pad to a word count. Place the bold skim path (Bold in `style-guide.md`) while drafting, not as an afterthought. Draft in flowing, connected sentences from the start (Flowing Sentences in `style-guide.md`); smoothing choppy prose later costs a full extra pass.
+Write the file for the output target (see "Output Target" in `SKILL.md`), following the approved outline and `style-guide.md`. A draft is not finished until it has been through the required finish steps in `SKILL.md` (Formatting Pass, then the `humanizer` skill invoked with the Skill tool, then the build), even when the user asked to skip the earlier stages. Keep one voice throughout. Length follows the idea; do not pad to a word count. Place the bold skim path (Bold in `style-guide.md`) while drafting, not as an afterthought. Draft in flowing, connected sentences from the start (Flowing Sentences in `style-guide.md`); smoothing choppy prose later costs a full extra pass.
 
 ## Stage 6 — Edit
 
@@ -133,13 +133,15 @@ Review the draft and report findings before changing anything large. Check for:
 - unsupported claims
 - accidental disclosure of proprietary information (confidentiality check in `style-guide.md`)
 - an ending that does not resolve the opening
-- bold that is missing, decorative, or on tool names (see Bold in `style-guide.md`): read only the bold text and check it still tells the argument, and that every section, including the closing reflection, has its key line bolded
+- bold that is missing, decorative, or on tool names (see Bold in `style-guide.md`): read only the bold text and check it still tells the argument, and that every section, including the opening paragraph's thesis, each section intro, and the closing reflection, has its key line bolded
+- absolute claims ("all", "every", "only") that the tools' real behavior contradicts
+- a tutorial that runs a tool's command before explaining what the tool is
 
 Recommend deleting entire sections when they don't earn their place.
 
 For a harder second opinion, dispatch a fresh subagent with only the draft path, `style-guide.md`, and this checklist. A reviewer that did not write the draft is less forgiving of it.
 
-Apply the edits the user agrees to, then run the target's build check if it has one.
+Apply the edits the user agrees to. Then run the Formatting Pass from `style-guide.md`. Then invoke the `humanizer` skill on the post's prose to strip remaining AI tells. `style-guide.md` wins where the two disagree: keep the bold skim path, inline code, headings, tables, embeds, numbers, and every fact unchanged. Finally run the target's build check if it has one.
 
 ## Critique Mode
 
