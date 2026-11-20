@@ -546,6 +546,21 @@ html[data-entering] [data-animate] {
   min-height: 1.5em;
 }
 
+.blog-content :not(pre) > code {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.blog-content td:first-child a {
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .blog-content td:last-child code {
+    white-space: nowrap;
+  }
+}
+
 .blog-content pre .sh-prompt,
 .blog-content pre .sh-opt,
 .blog-content pre .sh-quote {
