@@ -102,7 +102,7 @@ Claude Code, OpenAI's Codex, Google's Gemini CLI, and OpenCode (an open-source a
 **Because these agents are terminal programs, each one works like any other Unix tool:** `claude -p` (print mode) runs a single prompt and prints the answer, and it reads anything you pipe into it, so it combines with every other command you already use:
 
 ```sh
-git diff | claude -p "review this diff for bugs and missing tests"
+$ git diff | claude -p "review this diff for bugs and missing tests"
 ```
 
 Since all it needs is text in and text out, the same agent you chat with in a panel can also run inside a script or a CI job (the checks that run automatically every time you push code).
@@ -114,7 +114,7 @@ An agent doesn't need a graphical interface, because most of what it does is run
 While I recorded **Figure 1.2**, Claude read two files and then tested its own change from the shell before proposing anything. In one of the runs, this is the command it chose:
 
 ```sh
-python3 report.py && python3 -c "from models import *; assert total_value([])==0; assert total_value([Item('a',10,1)])==10.8; print('ok')"
+$ python3 report.py && python3 -c "from models import *; assert total_value([])==0; assert total_value([Item('a',10,1)])==10.8; print('ok')"
 ```
 
 **I never asked for that check:** the agent reached for the same tools a developer would, running the script and then asserting on the result, because the terminal is where all of its tools already are.
@@ -297,9 +297,9 @@ Before we install it, let's talk about AstroNvim. [AstroNvim](https://astronvim.
 Now let's get Neovim running. If you already have an existing Neovim config, [move it aside](#if-you-already-have-a-neovim-config) and then clone AstroNvim's template into the config folder and start Neovim once so it can download everything the template lists:
 
 ```sh
-git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
-rm -rf ~/.config/nvim/.git
-nvim   # wait for the download UI to finish
+$ git clone --depth 1 https://github.com/AstroNvim/template ~/.config/nvim
+$ rm -rf ~/.config/nvim/.git
+$ nvim   # wait for the download UI to finish
 ```
 
 That first start is **Lazy** downloading AstroNvim's plugins, so you will give it a minute to let it finish while leaving the terminal open. When it finishes, you'll land on AstroNvim's **dashboard**, its start screen. Any file you open from there is called a **buffer**, the same idea as a file you open in a tab.
@@ -498,7 +498,7 @@ print(f"Inventory value: {total_value(items):.2f}")
 Commit it so lazygit, a terminal app for Git that you'll use in step 4, has some history to show, then open Neovim inside the folder (on a Mac, Neovim's shortcuts use Ctrl, not Cmd):
 
 ```sh
-cd inventory && git init && git add . && git commit -m "Initial inventory" && nvim
+$ cd inventory && git init && git add . && git commit -m "Initial inventory" && nvim
 ```
 
 ### Your first five minutes with the motions
@@ -902,26 +902,26 @@ These steps follow Neovim's [install guide](https://github.com/neovim/neovim/blo
 
 ```sh
 # macOS
-xcode-select --install
-brew install neovim git node ripgrep fd lazygit
-brew install --cask font-jetbrains-mono-nerd-font
+$ xcode-select --install
+$ brew install neovim git node ripgrep fd lazygit
+$ brew install --cask font-jetbrains-mono-nerd-font
 
 # Windows (PowerShell)
-winget install Neovim.Neovim Git.Git OpenJS.NodeJS.LTS \
+PS> winget install Neovim.Neovim Git.Git OpenJS.NodeJS.LTS `
   BurntSushi.ripgrep.MSVC sharkdp.fd JesseDuffield.lazygit
 
 # Arch
-sudo pacman -S neovim git nodejs npm base-devel \
+$ sudo pacman -S neovim git nodejs npm base-devel \
   ripgrep fd tree-sitter-cli lazygit
 
 # Debian / Ubuntu (Neovim from tarball below)
-sudo apt install git nodejs npm build-essential ripgrep fd-find unzip
+$ sudo apt install git nodejs npm build-essential ripgrep fd-find unzip
 
 # Other Linux x86_64
-curl -LO \
+$ curl -LO \
   https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
-sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
-export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+$ sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz
+$ export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 ```
 
 If `nvim --version` reports anything older than 0.11, install from the tarball and add the `export` line to your shell's startup file.
@@ -941,9 +941,9 @@ Icons need a [Nerd Font](https://www.nerdfonts.com/font-downloads) set as your t
 On Windows the config lives under `%LOCALAPPDATA%`, but the steps don't change: clone the template, start Neovim once, quit, and then edit the files.
 
 ```powershell
-git clone --depth 1 https://github.com/AstroNvim/template $env:LOCALAPPDATA\nvim
-Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
-nvim   # wait for plugins, then :qa
+PS> git clone --depth 1 https://github.com/AstroNvim/template $env:LOCALAPPDATA\nvim
+PS> Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
+PS> nvim   # wait for plugins, then :qa
 ```
 
 ### When it doesn't work
@@ -964,10 +964,10 @@ Most problems come down to a missing program or a guard line you forgot to delet
 Move your existing config and data folders out of the way so the template starts clean:
 
 ```sh
-mv ~/.config/nvim ~/.config/nvim.bak
-mv ~/.local/share/nvim ~/.local/share/nvim.bak
-mv ~/.local/state/nvim ~/.local/state/nvim.bak
-mv ~/.cache/nvim ~/.cache/nvim.bak
+$ mv ~/.config/nvim ~/.config/nvim.bak
+$ mv ~/.local/share/nvim ~/.local/share/nvim.bak
+$ mv ~/.local/state/nvim ~/.local/state/nvim.bak
+$ mv ~/.cache/nvim ~/.cache/nvim.bak
 ```
 
 On Windows, move `%LOCALAPPDATA%\nvim` and `%LOCALAPPDATA%\nvim-data` instead.
@@ -977,14 +977,14 @@ On Windows, move `%LOCALAPPDATA%\nvim` and `%LOCALAPPDATA%\nvim-data` instead.
 To go back to your old setup, delete the new folders and restore the backups:
 
 ```sh
-rm -rf ~/.config/nvim \
+$ rm -rf ~/.config/nvim \
   ~/.local/share/nvim \
   ~/.local/state/nvim \
   ~/.cache/nvim
-mv ~/.config/nvim.bak ~/.config/nvim
-mv ~/.local/share/nvim.bak ~/.local/share/nvim
-mv ~/.local/state/nvim.bak ~/.local/state/nvim
-mv ~/.cache/nvim.bak ~/.cache/nvim
+$ mv ~/.config/nvim.bak ~/.config/nvim
+$ mv ~/.local/share/nvim.bak ~/.local/share/nvim
+$ mv ~/.local/state/nvim.bak ~/.local/state/nvim
+$ mv ~/.cache/nvim.bak ~/.cache/nvim
 ```
 
 ### Nix
