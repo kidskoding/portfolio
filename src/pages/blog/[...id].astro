@@ -4,7 +4,7 @@ import { getCollection, render } from 'astro:content';
 import profileImg from '../../assets/anirudh.jpeg';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
+  const posts = await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft);
   return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
 }
 

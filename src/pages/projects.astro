@@ -4,7 +4,7 @@ import ProjectCard from '../components/ProjectCard.astro';
 import Layout from '../layouts/Layout.astro';
 import { byProjectOrderThenDate } from '../data/project-sort';
 
-const projects = await getCollection('projects', ({ data }) => !data.draft);
+const projects = await getCollection('projects', ({ data }) => import.meta.env.DEV || !data.draft);
 const tabs = [
   { key: 'projects', label: 'projects', category: 'project' },
   { key: 'hackathons', label: 'hackathons', category: 'hackathon' },

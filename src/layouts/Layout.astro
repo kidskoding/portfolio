@@ -19,14 +19,14 @@ const currentPath = Astro.url.pathname;
 const canonicalUrl = new URL(currentPath, Astro.site);
 const imageUrl = image ? new URL(image, Astro.site) : undefined;
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
+const posts = (await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .map((p) => ({
     id: p.id,
     title: p.data.title,
     description: p.data.description ?? '',
   }));
-const projects = (await getCollection('projects', ({ data }) => !data.draft))
+const projects = (await getCollection('projects', ({ data }) => import.meta.env.DEV || !data.draft))
   .sort((a, b) => a.id.localeCompare(b.id))
   .map((project) => ({
     id: project.id,

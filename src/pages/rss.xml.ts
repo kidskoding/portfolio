@@ -8,7 +8,7 @@ import { getContainerRenderer } from '@astrojs/mdx/container-renderer';
 export async function GET(context: APIContext) {
   const site = context.site ?? new URL('/', context.url);
   const container = await AstroContainer.create({ renderers: await loadRenderers([getContainerRenderer()]) });
-  const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  const posts = (await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft)).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
   );
 

@@ -13,7 +13,9 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-  const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(byProjectOrderThenDate);
+  const projects = (await getCollection('projects', ({ data }) => import.meta.env.DEV || !data.draft)).sort(
+    byProjectOrderThenDate,
+  );
   return projects.map((project) => {
     const siblings = projects.filter((candidate) => candidate.data.category === project.data.category);
     const index = siblings.findIndex((candidate) => candidate.id === project.id);
