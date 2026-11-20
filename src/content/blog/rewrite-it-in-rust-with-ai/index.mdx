@@ -1,0 +1,407 @@
+---
+title: "Why AI Finally Makes \"Rewrite It in Rust\" Worth It"
+description: "Rust's strict compiler used to slow people down. When an AI agent writes the code, that compiler does the first review instead. Here's what Rust is, why it suits AI, where that breaks, and how to set up a project so an agent runs the checks."
+pubDate: 2026-11-19
+draft: true
+coverImage: "/blog/rewrite-it-in-rust-with-ai-cover.webp"
+---
+
+"Rewrite it in Rust" has been a running joke for years. Someone opens an issue on a project written in **C**, **Python** or **Go**, and the only suggestion is to throw it all away and start over in **Rust**. There's even a [satirical GitHub repo](https://github.com/ansuz/RIIR) dedicated to it.
+
+The joke worked because rewrites are expensive, and Rust made them more expensive. You had to learn the borrow checker, fight lifetimes, and wait for the compiler to agree with you before anything ran.
+
+Then AI agents started writing most of the code, and the joke started turning into a plan.
+
+**When an agent writes the code, Rust's strict compiler stops being the thing that slows you down and becomes the first reviewer of everything the agent writes.**
+
+In this post, I'll explain what Rust is and why developers like it so much, show you what the compiler loop looks like with real compiler output, go through where the idea falls apart, and finish with a project setup that makes an agent run those checks every time.
+
+---
+
+## What Rust is and why developers like it
+
+**Rust** is a programming language for the same kind of work as **C** and **C++**: operating systems, browsers, databases, command-line tools and anything else where speed and memory use matter. Graydon Hoare started it as a side project, Mozilla later sponsored it, and version 1.0 came out in May 2015.<sup>[1](#references)</sup>
+
+What makes Rust different is how it handles memory. C and C++ make you free memory yourself, which leads to bugs like reading memory after it was already freed. **Python**, **Java** and **Go** use a garbage collector instead, a background process that frees memory for you but costs extra work while the program runs.
+
+**Rust does neither: every value has exactly one owner, and the compiler frees the value as soon as its owner goes away.**
+
+On top of that, Rust has the **borrow checker**, the part of the compiler that tracks references (pointers to a value that don't own it). It enforces one rule: at any moment, a value can have many references that only read it, or one reference that changes it, but never both.
+
+Breaking that rule is a compile error rather than a crash in production, so **Rust runs about as fast as C++ while ruling out most memory bugs before the program ever runs.**
+
+Rust also comes with **Cargo**, one tool that builds your code, runs your tests, and downloads packages (Rust calls them crates) from crates.io, Rust's package registry. Every Rust project uses it, so `cargo build` works the same way in every repository, and a few well-made crates like `tokio`, `axum` and `reqwest` cover most of what an application needs.
+
+The compiler is also known for unusually helpful error messages, which I'll come back to, because an AI agent reads them too.
+
+Developers who try Rust tend to stay with it: it was the most admired language in Stack Overflow's 2025 Developer Survey, with **72% of developers who used it wanting to keep using it**.<sup>[2](#references)</sup> In December 2025, Linux kernel maintainers agreed that Rust in the kernel "is no longer experimental" and is now "a core part of the kernel."<sup>[3](#references)</sup>
+
+## What changed
+
+In December 2025, Galen Hunt, a Distinguished Engineer at Microsoft, posted a job listing on LinkedIn with a big goal: **"My goal is to eliminate every line of C and C++ from Microsoft by 2030,"** using a mix of AI and traditional program analysis to translate code into Rust. His team's target was "1 engineer, 1 month, 1 million lines of code."<sup>[4](#references)</sup>
+
+After the post spread, he clarified that "Windows is *NOT* being rewritten in Rust with AI" and that "My team's project is a research project."<sup>[5](#references)</sup> Even as a research goal, a million lines per engineer per month only makes sense if writing code has become far cheaper than it used to be.
+
+The US government is working on the same idea. **DARPA**, the US military's research agency, runs a program called TRACTOR (Translating All C to Rust) that uses large language models alongside static and dynamic analysis to translate old C code into Rust.<sup>[6](#references)</sup>
+
+Two months after Hunt's post, two large AI-written Rust projects were published:
+
+- **Ladybird**, an independent web browser built from scratch, ported the front half of its JavaScript engine (the lexer, parser, syntax tree and bytecode generator) to Rust. Its founder, Andreas Kling, used Claude Code and Codex, and the port came to **about 25,000 lines of Rust in about two weeks**, work he says "would have taken me multiple months to do by hand." It had **zero regressions across 52,898 test262 tests** (the official JavaScript conformance suite).<sup>[7](#references)</sup>
+- **Anthropic** had 16 Claude agents write a C compiler in Rust from scratch. Over nearly 2,000 Claude Code sessions and about $20,000 in API costs, they produced **a 100,000-line compiler that can build Linux 6.9 on x86, ARM, and RISC-V**.<sup>[8](#references)</sup>
+
+Kling says the port was "human-directed, not autonomous code generation," with "hundreds of small prompts" and a rule that both engines produce "byte-for-byte identical output."<sup>[7](#references)</sup> Nicholas Carlini, the Anthropic researcher behind the compiler, wrote that most of his effort "went into designing the environment around Claude": the tests, the environment and the feedback.<sup>[8](#references)</sup>
+
+**Neither project trusted the AI to be right, so both built something that checks its work automatically:** in Rust, the language itself does a big piece of that checking for you.
+
+## Writing code got cheap, checking it didn't
+
+If you've used an AI coding agent, you know the loop: you describe a change, the agent writes it, and then somebody has to check that the code actually does what you asked. The agent is fast at the first step, so **the speed of the whole loop depends on how quickly mistakes get caught**.
+
+In a language like Python, a lot of mistakes only show up when the code runs, and only if a test or a user happens to hit that exact path. In Rust, a large group of mistakes can't make it past `cargo check`, the command that compiles your project without building the final program.
+
+Here's a small example. Say you ask an agent to add a `Cancelled` state to an order status type. The agent adds the new variant to the enum (a type that can be exactly one of a fixed list of options), but it forgets a function somewhere else that turns each status into a label:
+
+```rust
+enum OrderStatus {
+    Pending,
+    Shipped { tracking: String },
+    Delivered,
+    Cancelled { reason: String }, // the agent added this
+}
+
+fn label(status: &OrderStatus) -> String {
+    match status {
+        OrderStatus::Pending => "waiting to ship".to_string(),
+        OrderStatus::Shipped { tracking } => format!("on the way ({tracking})"),
+        OrderStatus::Delivered => "delivered".to_string(),
+    }
+}
+```
+
+This is what `cargo build` printed when I ran it:
+
+```ansi
+$ cargo build
+[1m[92m   Compiling[0m orders v0.1.0 (/home/you/orders)
+[1m[91merror[E0004][0m[1m: non-exhaustive patterns: `&OrderStatus::Cancelled { .. }` not covered[0m
+  [1m[94m--> [0msrc/main.rs:9:11
+   [1m[94m|[0m
+[1m[94m 9[0m [1m[94m|[0m     match status {
+   [1m[94m|[0m           [1m[91m^^^^^^[0m [1m[91mpattern `&OrderStatus::Cancelled { .. }` not covered[0m
+   [1m[94m|[0m
+[1m[92mnote[0m: `OrderStatus` defined here
+  [1m[94m--> [0msrc/main.rs:1:6
+   [1m[94m|[0m
+[1m[94m 1[0m [1m[94m|[0m enum OrderStatus {
+   [1m[94m|[0m      [1m[92m^^^^^^^^^^^[0m
+[1m[94m...[0m
+[1m[94m 5[0m [1m[94m|[0m     Cancelled { reason: String }, // the agent added this
+   [1m[94m|[0m     [1m[94m---------[0m [1m[94mnot covered[0m
+   [1m[94m= [0m[1mnote[0m: the matched value is of type `&OrderStatus`
+[1m[96mhelp[0m: ensure that all possible cases are being handled by adding a match arm with a wildcard pattern or an explicit pattern as shown
+   [1m[94m|[0m
+[1m[94m12[0m [92m~ [0m        OrderStatus::Delivered => "delivered".to_string()[92m,[0m
+[1m[94m13[0m [92m~         &OrderStatus::Cancelled { .. } => todo!()[0m,
+   [1m[94m|[0m
+
+[1mFor more information about this error, try `rustc --explain E0004`.[0m
+[1m[91merror[0m: could not compile `orders` (bin "orders") due to 1 previous error
+```
+
+**The compiler found the exact function the agent forgot, pointed at the variant that caused it, and suggested the fix.**
+
+In a real project with fifty `match` statements over that enum, it would list every single one. The agent reads this, adds the missing arms, and runs `cargo check` again, all before you look at anything.
+
+I'll call this **the compiler loop**, and it's shown in **Figure 1.1**:
+
+```mermaid
+flowchart TD
+  A["Agent edits the code"] --> B["cargo check / cargo clippy"]
+  B -->|errors| C["Agent reads the diagnostics"]
+  C --> A
+  B -->|clean| D["cargo test"]
+  D -->|failures| C
+  D -->|passing| E["You review the diff"]
+```
+
+<p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Figure 1.1:</strong> the compiler loop, where the compiler and tests reject wrong code before a person reviews it</p>
+
+**By the time a diff reaches you, a whole category of mistakes is already gone**, so your review can focus on whether the code does what you asked.
+
+## Four reasons Rust's compiler makes a good reviewer
+
+Every typed language has a compiler loop to some degree. **Rust's compiler checks more than most and explains clearly what it found:** here are the four reasons I think matter most, in order.
+
+### The errors are written for whoever tries next
+
+Rust's error messages are this detailed on purpose. In 2016, the Rust team redesigned them around the idea that **"errors should focus on the code you wrote,"** and borrowed from Elm, a language famous for friendly errors, for the longer explanations that `rustc --explain` prints.<sup>[9](#references)</sup>
+
+Look back at the E0004 error: it names the missing case, shows where the type is defined, and prints a patch. If the agent still doesn't understand it, `rustc --explain E0004` prints a full explanation with examples. `cargo check --message-format=json` gives the same diagnostics as **JSON**, which tools can read without parsing text.
+
+**Clear, specific errors are exactly what an AI agent needs, because the agent's next attempt is only as good as the feedback it gets.**
+
+A GoDaddy engineering post on porting services to Rust with agents puts it this way: "the compiler's diagnostics are structured, precise, and closely tied to correctness guarantees."<sup>[10](#references)</sup>
+
+This also holds up in research. Back in 2023, Microsoft Research built **RustAssistant**, a tool that feeds Rust compile errors to GPT-4 and asks it for a fix. On real compile errors taken from commits in popular open-source Rust crates, it fixed **73.63% of them**.<sup>[11](#references)</sup> That was with GPT-4, a model that is now more than three years old.
+
+### The borrow checker catches what a reviewer misses
+
+Here's a mistake that looks completely harmless. The code takes a reference to the first item in a list, then adds another item, then uses the reference:
+
+```rust
+let mut queue = vec![String::from("first")];
+let head = &queue[0];
+queue.push(String::from("second"));
+println!("{head}");
+```
+
+```ansi
+$ cargo build
+[1m[92m   Compiling[0m orders v0.1.0 (/home/you/orders)
+[1m[91merror[E0502][0m[1m: cannot borrow `queue` as mutable because it is also borrowed as immutable[0m
+ [1m[94m--> [0msrc/main.rs:4:5
+  [1m[94m|[0m
+[1m[94m3[0m [1m[94m|[0m     let head = &queue[0];
+  [1m[94m|[0m                 [1m[94m-----[0m [1m[94mimmutable borrow occurs here[0m
+[1m[94m4[0m [1m[94m|[0m     queue.push(String::from("second"));
+  [1m[94m|[0m     [1m[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m [1m[91mmutable borrow occurs here[0m
+[1m[94m5[0m [1m[94m|[0m     println!("{head}");
+  [1m[94m|[0m                [1m[94m----[0m [1m[94mimmutable borrow later used here[0m
+
+[1mFor more information about this error, try `rustc --explain E0502`.[0m
+[1m[91merror[0m: could not compile `orders` (bin "orders") due to 1 previous error
+```
+
+When a list grows past its capacity, it moves to a bigger block of memory, so `head` could end up pointing at memory that was freed. **In C++, the same code compiles without a single warning, and it might even work for a while before it crashes or corrupts data, while Rust refuses to build it at all.**
+
+This is the kind of bug that is hardest to catch in review, because the code reads correctly. Google has measured what removing it is worth. In November 2025, the Android team reported these results from Rust code in Android, shown in **Table 1.1**:<sup>[12](#references)</sup>
+
+| Measure | Rust compared to Android's C and C++ |
+|---|---|
+| Memory safety vulnerability density | about 1000x lower |
+| Rollback rate for medium and large changes | about 4x lower |
+| Time spent in code review | about 25% less |
+
+<p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.1:</strong> Google's comparison of Rust and C/C++ changes in Android, from its November 2025 security blog</p>
+
+The 1000x figure comes with a caveat that Google states itself: it's an estimate based on **one** potential memory safety vulnerability found in roughly 5 million lines of Rust, compared to about 1,000 per million lines in C and C++.<sup>[12](#references)</sup> **Still, fewer rollbacks and faster reviews are the two numbers I care about most when an agent is the one writing the changes.**
+
+### Failure shows up in the function's signature
+
+In most languages, a function can throw an exception that its signature never mentions. In Rust, a function that can fail returns a `Result<T, E>`, which is either a value or an error, and the caller has to deal with both.
+
+That matters for agents more than I expected. Armin Ronacher, the creator of the **Python** web framework Flask, has been writing about how languages work with agents, and he noticed that "Agents struggle with exceptions, they are afraid of them."<sup>[13](#references)</sup> **When errors are ordinary return values, the agent can see every way a function can fail just by reading its type**, and the compiler complains when it ignores one.
+
+### One toolchain that every agent already knows
+
+Cargo, the build tool from earlier, builds, tests, formats and lints your project with the same commands everywhere: `cargo build`, `cargo test`, `cargo fmt` and `cargo clippy`. You don't have to pick a build tool or work out which virtual environment is active. Ronacher put it plainly: "What makes agents fail or succeed in many languages is just how good the build tools are."<sup>[13](#references)</sup>
+
+AI companies have noticed this too, because **many of the tools agents run on are already written in Rust**:
+
+- OpenAI rewrote its Codex CLI agent from **TypeScript** to Rust in 2025, listing a "Zero-dependency Install," "Native Security Bindings" for sandboxing on Linux, and "no runtime garbage collection, resulting in lower memory consumption" as reasons.<sup>[14](#references)</sup>
+- Claude Code's search is built on ripgrep, a fast search tool written in Rust, and ships with its own copy of it.<sup>[15](#references)</sup>
+- In March 2026, OpenAI announced it would acquire Astral, the company behind uv, Ruff and ty, which are Python tools written in Rust, and bring the team into Codex.<sup>[16](#references)</sup>
+
+> Rust's compiler used to be the price you paid before your code ran. With an agent writing the code, it's the review you get before you read it.
+
+## Where the argument breaks
+
+**The evidence doesn't support calling Rust the perfect language for AI, and I think the weak spots are just as useful to understand as the strong ones.**
+
+### AI writes more broken Rust than anything else
+
+In August 2026, researchers at the University of Coimbra published a study of 86,726 code samples with compile or runtime errors, generated by seven language models in four compiled languages.<sup>[17](#references)</sup> In **Table 1.2**, I've listed how many samples failed to compile in each language:
+
+| Language | Samples that failed to compile |
+|---|---|
+| **Rust** | 23,416 |
+| **C** | 12,304 |
+| **C++** | 9,953 |
+| **Java** | 6,996 |
+
+<p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.2:</strong> compile failures by language across seven models, from "Unreliable in Practice? A Comprehensive Study of Errors in LLM-Generated Code"</p>
+
+Rust had **almost twice as many compile failures as C**, and 16.7% of its compile errors were about ownership and lifetimes, a kind of error the other three languages can't have. The authors' explanation is that "Rust enforces stricter compile-time checks, resulting in more frequent compilation errors."<sup>[17](#references)</sup>
+
+One way to read this is that Rust moves errors from runtime to compile time, which is the whole point of the compiler loop. But the models in the study fixed only **12.9% of ownership and lifetime errors** within two retries that included test feedback.<sup>[17](#references)</sup> **Catching a mistake is only useful if the agent can then fix it, and the borrow checker is still where agents struggle the most.**
+
+### Translating old code is still hard
+
+CRUST-Bench, a benchmark from UT Austin and NYU, asks models to translate 100 C repositories into safe Rust that passes the original tests. Models translated **13% to 22% of the projects in a single attempt**, and the best setup, OpenAI's o3 repairing its work using both compiler errors and test failures, reached **48%**.<sup>[18](#references)</sup>
+
+**Ladybird and Anthropic got much better results because a person directed every step or a nearly perfect test suite checked every change:** both still say the resulting Rust code isn't great. Kling writes "We know the result isn't idiomatic Rust,"<sup>[7](#references)</sup> and Carlini says the compiler's code "is nowhere near the quality of what an expert Rust programmer might produce."<sup>[8](#references)</sup>
+
+### The compiler can't check your logic
+
+On November 18, 2025, Cloudflare had what it called its "worst outage since 2019." A database permissions change made a configuration file for its bot detection system double in size. Its new proxy, written in Rust, had a limit of 200 entries for that file (it normally used about 60), and when the bigger file arrived, the code panicked with this message:<sup>[19](#references)</sup>
+
+```text
+thread fl2_worker_thread panicked: called Result::unwrap() on an Err value
+```
+
+`unwrap()` means "give me the value, and crash if this is an error." **The compiler made the failure case visible, since the code had to say `unwrap()` out loud, but it can't decide for you whether crashing is acceptable.**
+
+That's a judgment call, and an agent will make it wrong if nothing stops it. Later in this post, I'll show you how to make Clippy reject `unwrap()` in your own projects.
+
+### Go might be simpler for agents
+
+Ronacher, the same person I quoted earlier, recommends **Go** over Rust. In his June 2025 post on agentic coding, he wrote "I strongly recommend Go for new backend projects," noting that "In Rust, agents sometimes fail because they misunderstand `cargo test`'s invocation syntax," and that "Simple code significantly outperforms complex code in agentic contexts."<sup>[20](#references)</sup>
+
+More recently, he argued that "LLMs make language choice much less consequential than it used to be," while also noticing people shipping Rust "who previously might not have chosen it."<sup>[21](#references)</sup>
+
+I think he's right that Go is easier for an agent to get compiling. **But Go's compiler also accepts more wrong programs**, so more of the checking falls back to tests and to you.
+
+### When I'd pick something else
+
+**Rust is the language I want agents writing when the code has to keep running for a long time:** services, CLI tools, anything that handles untrusted input, and anything I'll have to maintain after the agent is gone. For training models or exploring data in a notebook, Python's libraries are still where that work happens, and I'd use them.
+
+For a quick internal script or prototype, the compiler loop is more checking than the job needs.
+
+## Setting up a Rust project an agent can work in
+
+**The compiler loop only works if the agent actually runs the checks and the checks are strict enough to matter:** here's the setup I'd start from.
+
+### The toolchain
+
+Rust is installed with [rustup](https://rustup.rs/), the official installer and version manager. It gives you `rustc` (the compiler) and Cargo. Add the formatter and the linter with one command:
+
+```sh
+$ rustup component add rustfmt clippy
+```
+
+Clippy is Rust's official linter, a tool that flags code that compiles but is probably a mistake or could be simpler. **For an agent, Clippy is the second reviewer in the loop**, after the compiler.
+
+### Make Clippy reject the risky shortcuts
+
+Clippy's lints can be set right in `Cargo.toml`, so every agent and every teammate gets the same rules. This is the setting that would have flagged Cloudflare's `unwrap()`:
+
+```toml
+[lints.clippy]
+unwrap_used = "deny"
+```
+
+With that in place, `cargo clippy` turns an `unwrap()` into an error instead of letting it through:
+
+```ansi
+$ cargo clippy
+[1m[92m    Checking[0m orders v0.1.0 (/home/you/orders)
+[1m[91merror[0m[1m: used `unwrap()` on a `Result` value[0m
+ [1m[94m--> [0msrc/main.rs:2:5
+  [1m[94m|[0m
+[1m[94m2[0m [1m[94m|[0m     raw.trim().parse().unwrap()
+  [1m[94m|[0m     [1m[91m^^^^^^^^^^^^^^^^^^^^^^^^^^^[0m
+  [1m[94m|[0m
+  [1m[94m= [0m[1mnote[0m: if this value is an `Err`, it will panic
+  [1m[94m= [0m[1mhelp[0m: consider using `expect()` to provide a better panic message
+  [1m[94m= [0m[1mhelp[0m: for further information visit https://rust-lang.github.io/rust-clippy/main/index.html#unwrap_used
+  [1m[94m= [0m[1mnote[0m: requested on the command line with `-D clippy::unwrap-used`
+
+[1m[91merror[0m: could not compile `orders` (bin "orders") due to 1 previous error
+```
+
+**Now the agent has to handle the error or explain the crash with `expect()`**, and you'll see that choice in the diff.
+
+### Tell the agent to run the loop
+
+Agents read a project instructions file before they start (`CLAUDE.md` for Claude Code, `AGENTS.md` for Codex and others). **A few lines there make the compiler loop automatic:**
+
+```markdown
+## Checks
+Run after every change, and fix every error and warning before finishing:
+- cargo fmt
+- cargo clippy --all-targets -- -D warnings
+- cargo nextest run
+```
+
+`-D warnings` turns every Clippy warning into an error, so the agent can't leave them behind. [cargo-nextest](https://nexte.st/) is "a next-generation test runner for Rust" that runs tests faster than `cargo test` and gives clearer output. It doesn't run doctests (the examples inside your documentation comments), so add `cargo test --doc` if your project has them.
+
+### The crates worth knowing
+
+Crates are Rust's packages, and you add them with `cargo add <name>`. **A small set of well-known crates covers most applications, and sticking to them helps the agent, because these are the crates it has seen the most.**
+
+In **Table 1.3**, I've listed the ones I'd reach for first:
+
+| Crate | What it does |
+|---|---|
+| [`serde`](https://serde.rs/) | Turns Rust types into **JSON**, **TOML** and other formats, and back |
+| [`tokio`](https://tokio.rs/) | The async runtime most networked Rust code runs on |
+| [`anyhow`](https://docs.rs/anyhow) / [`thiserror`](https://docs.rs/thiserror) | Error handling: `anyhow` for applications, `thiserror` for defining errors in libraries |
+| [`clap`](https://docs.rs/clap) | Parses command-line arguments from a struct |
+| [`tracing`](https://docs.rs/tracing) | Structured logging |
+| [`reqwest`](https://docs.rs/reqwest) | HTTP client |
+| [`axum`](https://docs.rs/axum) | Web server framework built on `tokio` |
+| [`sqlx`](https://docs.rs/sqlx) | Database access whose `query!` macros check your SQL against the database at compile time |
+| [`insta`](https://insta.rs/) | Snapshot tests, which save the expected output to a file and show a diff when it changes |
+
+<p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.3:</strong> general-purpose crates for Rust applications</p>
+
+`sqlx` is a good example of the compiler loop reaching further than usual: a typo in a column name becomes a compile error instead of a runtime error.
+
+### Cargo tools worth installing
+
+Cargo can also install command-line tools with `cargo install <name>`, and many of them add new `cargo` subcommands. **Several of these are especially useful when an agent writes the code, because they check things the compiler doesn't**, like whether a dependency the agent added has a known vulnerability. In **Table 1.4**, I've listed the ones I'd install:
+
+| Tool | What it does | Run it with |
+|---|---|---|
+| [bacon](https://github.com/Canop/bacon) | "a background code checker" that reruns the check every time a file changes, so you see errors as the agent saves files | `bacon clippy` |
+| [cargo-audit](https://github.com/rustsec/rustsec/tree/main/cargo-audit) | Checks your dependencies against the RustSec Advisory Database of crates with reported security vulnerabilities | `cargo audit` |
+| [cargo-machete](https://github.com/bnjbvr/cargo-machete) | Finds dependencies your code no longer uses, which can pile up after an agent refactors code (fast, but its README calls it imprecise) | `cargo machete` |
+| [cargo-expand](https://github.com/dtolnay/cargo-expand) | Shows the code a macro actually generates, which helps when an agent writes or calls a macro you don't understand | `cargo expand` |
+| [cargo-generate](https://github.com/cargo-generate/cargo-generate) | "cargo, make me a project": starts a new project from a template on GitHub | `cargo generate <template>` |
+| [cargo-chef](https://github.com/LukeMathWalker/cargo-chef) | Speeds up Rust Docker builds by caching your dependencies in their own layer (meant for Dockerfiles, not your laptop) | `cargo chef prepare` |
+| [cargo-binstall](https://github.com/cargo-bins/cargo-binstall) | Downloads prebuilt binaries instead of compiling every tool from source | `cargo binstall <name>` |
+| [rusty-man](https://crates.io/crates/rusty-man) | A "command-line viewer for rustdoc documentation," so you can read crate docs in the terminal after running `cargo doc` (its last release was in 2021) | `rusty-man <item>` |
+
+<p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.4:</strong> Cargo tools for checking, starting and shipping Rust projects</p>
+
+`cargo audit` and `cargo machete` fit well in the agent's checks list from earlier, since both catch dependency problems that the compiler is happy to accept.
+
+### Crates for building AI applications
+
+If you're building something that uses AI itself, rather than only having AI write it, these are the crates to look at:
+
+- [`rmcp`](https://github.com/modelcontextprotocol/rust-sdk) is "The official Rust SDK for the Model Context Protocol." MCP is the protocol agents like Claude Code use to call outside tools, so this crate lets you write those tools in Rust.
+- [`rig`](https://github.com/0xPlaygrounds/rig) is "a Rust library for building applications on large language models," with one interface over many model providers.
+- [`async-openai`](https://github.com/64bit/async-openai) is "an unofficial Rust library for OpenAI," generated from OpenAI's API spec.
+- [`candle`](https://github.com/huggingface/candle) is Hugging Face's "Minimalist ML framework for Rust," for running models directly in Rust.
+
+## Wrapping up
+
+"Rewrite it in Rust" was funny because rewrites cost months and Rust made them cost more. **AI made the writing cheap, and that left checking as the expensive part, which is exactly the part Rust's compiler is good at.**
+
+It won't make an agent's code correct, and the research says agents still struggle with the borrow checker, but it rejects a whole category of mistakes before you spend any time reading.
+
+So set up the loop: Clippy that denies `unwrap()`, and an instructions file that tells the agent to run every check before it hands you a diff.
+
+The rewrite used to be the joke.
+
+Now the agent writes it,
+the compiler reviews it,
+and you read what's left.
+
+---
+
+## References
+<a name="references"></a>
+
+- [Announcing Rust 1.0, The Rust Blog](https://blog.rust-lang.org/2015/05/15/Rust-1.0.html)
+- [Stack Overflow Developer Survey 2025: Technology, Stack Overflow](https://survey.stackoverflow.co/2025/technology/)
+- [The (successful) end of the kernel Rust experiment, LWN](https://lwn.net/Articles/1049831/)
+- [Microsoft wants to replace its entire C and C++ codebase, perhaps by 2030, The Register](https://www.theregister.com/2025/12/24/microsoft_rust_codebase_migration)
+- [Microsoft is not rewriting Windows in Rust, InfoWorld](https://www.infoworld.com/article/4111553/microsoft-is-not-rewriting-windows-in-rust.html)
+- [Translating All C to Rust (TRACTOR), DARPA](https://www.darpa.mil/research/programs/translating-all-c-to-rust)
+- [Ladybird adopts Rust, with help from AI, Ladybird](https://ladybird.org/posts/adopting-rust/)
+- [Building a C compiler with a team of parallel Claudes, Anthropic](https://www.anthropic.com/engineering/building-c-compiler)
+- [Shape of errors to come, The Rust Blog](https://blog.rust-lang.org/2016/08/10/Shape-of-errors-to-come/)
+- [Rust Is the Native Language of Agentic Development, GoDaddy](https://www.godaddy.com/resources/news/rust-is-the-native-language-of-agentic-development)
+- [Fixing Rust Compilation Errors using LLMs, Microsoft Research (arXiv)](https://arxiv.org/abs/2308.05177)
+- [Rust in Android: move fast and fix things, Google](https://blog.google/security/rust-in-android-move-fast-fix-things/)
+- [A Language For Agents, Armin Ronacher](https://lucumr.pocoo.org/2026/2/9/a-language-for-agents/)
+- [Codex CLI is Going Native, OpenAI (GitHub)](https://github.com/openai/codex/discussions/1174)
+- [Troubleshooting: search and discovery issues, Claude Code docs](https://code.claude.com/docs/en/troubleshooting)
+- [OpenAI acquiring Astral, Simon Willison](https://simonwillison.net/2026/Mar/19/openai-acquiring-astral/)
+- [Unreliable in Practice? A Comprehensive Study of Errors in LLM-Generated Code, University of Coimbra (arXiv)](https://arxiv.org/abs/2608.00661)
+- [CRUST-Bench: A Comprehensive Benchmark for C-to-safe-Rust Transpilation, UT Austin and NYU (arXiv)](https://arxiv.org/abs/2504.15254)
+- [Cloudflare outage on November 18, 2025, Cloudflare](https://blog.cloudflare.com/18-november-2025-outage/)
+- [Agentic Coding Recommendations, Armin Ronacher](https://lucumr.pocoo.org/2025/6/12/agentic-coding/)
+- [Fast and Hard Code, Armin Ronacher](https://lucumr.pocoo.org/2026/8/22/fast-hard-code/)
