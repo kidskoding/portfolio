@@ -545,3 +545,33 @@ html[data-entering] [data-animate] {
   display: block;
   min-height: 1.5em;
 }
+
+.blog-content pre .sh-prompt,
+.blog-content pre .sh-opt,
+.blog-content pre .sh-quote {
+  color: var(--color-nvim-green);
+}
+
+.blog-content pre .sh-prompt {
+  font-weight: 700;
+}
+
+.blog-content pre .sh-cmd {
+  color: var(--color-nvim-blue);
+}
+
+.blog-content pre .sh-param {
+  color: var(--color-nvim-flamingo);
+}
+
+.blog-content pre .sh-op {
+  color: var(--color-nvim-pink);
+}
+
+.blog-content pre .sh-end {
+  color: var(--color-nvim-orange);
+}
+
+.blog-content pre .sh-comment {
+  color: var(--catppuccin-color-overlay1);
+}

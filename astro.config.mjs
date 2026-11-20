@@ -5,6 +5,7 @@ import tailwindcss from '@tailwindcss/vite';
 import catppuccinMacchiato from '@shikijs/themes/catppuccin-macchiato';
 import { satteri } from '@astrojs/markdown-satteri';
 import { mermaidPlugin } from './src/lib/mermaid.mjs';
+import { shellPrompt } from './src/lib/shell-prompt.mjs';
 
 // Upstream maps markup.deleted to orange; use Catppuccin red like git gutters.
 // Upstream also italicizes comments, keywords and parameters; code blocks stay upright.
@@ -25,7 +26,7 @@ export default defineConfig({
   integrations: [mdx()],
   markdown: {
     processor: satteri({ mdastPlugins: [mermaidPlugin] }),
-    shikiConfig: { theme: catppuccinMacchiatoDiff },
+    shikiConfig: { theme: catppuccinMacchiatoDiff, transformers: [shellPrompt()] },
   },
   vite: {
     plugins: [tailwindcss()],
