@@ -4,11 +4,11 @@
 /* keyboard cursor (hjkl) gets the exact same styling as mouse hover */
 @custom-variant hover (&:hover, &.vim-cursor);
 
-/* Google Sans Code (OFL, public/fonts/GoogleSansCode-OFL.txt): variable wght 300-800, Fontsource subsets loaded per unicode-range */
+/* JetBrains Mono 2.304 (OFL, public/fonts/JetBrainsMono-OFL.txt): variable wght 100-800, subset with pyftsubset to these unicode-ranges */
 @font-face {
-  font-family: 'Google Sans Code';
-  src: url('/fonts/google-sans-code-latin-wght-normal.woff2') format('woff2');
-  font-weight: 300 800;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-latin-wght-normal.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: normal;
   font-display: swap;
   unicode-range:
@@ -16,9 +16,9 @@
     U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Google Sans Code';
-  src: url('/fonts/google-sans-code-latin-wght-italic.woff2') format('woff2');
-  font-weight: 300 800;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-latin-wght-italic.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: italic;
   font-display: swap;
   unicode-range:
@@ -26,9 +26,9 @@
     U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: 'Google Sans Code';
-  src: url('/fonts/google-sans-code-latin-ext-wght-normal.woff2') format('woff2');
-  font-weight: 300 800;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-latin-ext-wght-normal.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: normal;
   font-display: swap;
   unicode-range:
@@ -36,9 +36,9 @@
     U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Google Sans Code';
-  src: url('/fonts/google-sans-code-latin-ext-wght-italic.woff2') format('woff2');
-  font-weight: 300 800;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-latin-ext-wght-italic.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: italic;
   font-display: swap;
   unicode-range:
@@ -46,9 +46,9 @@
     U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
-  font-family: 'Google Sans Code';
-  src: url('/fonts/google-sans-code-symbols-wght-normal.woff2') format('woff2');
-  font-weight: 300 800;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-symbols-wght-normal.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: normal;
   font-display: swap;
   unicode-range:
@@ -68,9 +68,9 @@
     U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FAC6, U+1FAC8, U+1FACC-1FADD, U+1FADF-1FAEB, U+1FAEF-1FAFA, U+1FB00-1FBFF;
 }
 @font-face {
-  font-family: 'Google Sans Code';
-  src: url('/fonts/google-sans-code-symbols-wght-italic.woff2') format('woff2');
-  font-weight: 300 800;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-symbols-wght-italic.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: italic;
   font-display: swap;
   unicode-range:
@@ -90,17 +90,17 @@
     U+1FA00-1FA6F, U+1FA70-1FA7C, U+1FA80-1FAC6, U+1FAC8, U+1FACC-1FADD, U+1FADF-1FAEB, U+1FAEF-1FAFA, U+1FB00-1FBFF;
 }
 @font-face {
-  font-family: 'Google Sans Code';
-  src: url('/fonts/google-sans-code-symbols2-wght-normal.woff2') format('woff2');
-  font-weight: 300 800;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-symbols2-wght-normal.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: normal;
   font-display: swap;
   unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
 }
 @font-face {
-  font-family: 'Google Sans Code';
-  src: url('/fonts/google-sans-code-symbols2-wght-italic.woff2') format('woff2');
-  font-weight: 300 800;
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-symbols2-wght-italic.woff2') format('woff2');
+  font-weight: 100 800;
   font-style: italic;
   font-display: swap;
   unicode-range: U+2000-2001, U+2004-2008, U+200A, U+23B8-23BD, U+2500-259F;
@@ -113,11 +113,11 @@
 }
 
 @theme {
-  --font-sans: 'Google Sans Code', ui-monospace, monospace;
-  --font-mono: 'Google Sans Code', ui-monospace, monospace;
+  --font-sans: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   /*
-   * Google Sans Code type scale.
+   * JetBrains Mono type scale.
    * Large x-height → body at 16px (comfortable reading); chrome/UI at --text-sm (14px)
    * so the shell stays denser than page copy. Steps ~1.125–1.2 from base, rounded to px.
    * Roles: xs meta/tags · sm chrome+secondary · base body · lg section titles ·
