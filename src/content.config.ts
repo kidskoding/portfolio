@@ -14,6 +14,8 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     draft: z.boolean().optional().default(false),
+    // Pinned posts sort to the top of /blog, newest pinned first
+    pinned: z.boolean().optional().default(false),
     coverImage: z.string().optional(),
     // Muted gray line under the cover image
     coverCaption: z.string().optional(),

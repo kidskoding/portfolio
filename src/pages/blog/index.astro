@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import profileImg from '../../assets/anirudh.jpeg';
 
 const posts = (await getCollection('blog', ({ data }) => import.meta.env.DEV || !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  (a, b) => Number(b.data.pinned) - Number(a.data.pinned) || b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
@@ -52,6 +52,28 @@ const posts = (await getCollection('blog', ({ data }) => import.meta.env.DEV || 
                     timeZone: 'UTC',
                   })}
                 </time>
+                {post.data.pinned && (
+                  <>
+                    <span class="opacity-60" aria-hidden="true">
+                      ·
+                    </span>
+                    <span class="inline-flex items-center gap-1 text-nvim-yellow">
+                      <svg
+                        class="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path d="M8 3h8M10 3v6l-4 5h12l-4-5V3M12 14v7" />
+                      </svg>
+                      pinned
+                    </span>
+                  </>
+                )}
               </p>
             </div>
           </a>
