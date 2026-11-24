@@ -25,31 +25,19 @@ const credits = [
   {
     group: 'Libraries',
     rows: [
-      [
-        gh('withastro/astro', 'Astro'),
-        'Builds the site and runs page transitions',
-        ghLicense('withastro/astro', 'MIT'),
-      ],
+      [gh('withastro/astro', 'Astro'), 'Builds the site and runs page transitions', ''],
       [
         a('https://gsap.com/', 'GSAP'),
         'Page-entry animations',
         `${a('https://gsap.com/standard-license', 'GSAP Standard License')} (free, not open source)`,
       ],
-      [
-        gh('chartjs/Chart.js', 'Chart.js'),
-        'Charts in blog posts',
-        ghLicense('chartjs/Chart.js', 'MIT', 'blob/master/LICENSE.md'),
-      ],
-      [gh('tailwindlabs/tailwindcss', 'Tailwind CSS'), 'Stylesheet', ghLicense('tailwindlabs/tailwindcss', 'MIT')],
-      [
-        gh('shikijs/shiki', 'Shiki'),
-        'Code highlighting, with diff deletions recolored and italics removed',
-        ghLicense('shikijs/shiki', 'MIT'),
-      ],
+      [gh('chartjs/Chart.js', 'Chart.js'), 'Charts in blog posts', ''],
+      [gh('tailwindlabs/tailwindcss', 'Tailwind CSS'), 'Stylesheet', ''],
+      [gh('shikijs/shiki', 'Shiki'), 'Code highlighting, with diff deletions recolored and italics removed', ''],
       [
         gh('lukilabs/beautiful-mermaid', 'beautiful-mermaid'),
         'Diagram SVGs, patched to size labels for a monospace font',
-        'MIT',
+        '',
       ],
     ],
   },
@@ -59,7 +47,7 @@ const credits = [
       [
         gh('catppuccin/catppuccin', 'Catppuccin'),
         `Macchiato palette and code theme, through ${gh('catppuccin/tailwindcss', '@catppuccin/tailwindcss')}`,
-        ghLicense('catppuccin/catppuccin', 'MIT'),
+        '',
       ],
       [
         gh('JetBrains/JetBrainsMono', 'JetBrains Mono 2.304'),
@@ -71,16 +59,8 @@ const credits = [
         `The four file icons. Nerd Fonts takes them from Seti-UI, Devicons and Octicons (MIT) and Material Design Icons (Apache 2.0), per ${ghLicense('ryanoasis/nerd-fonts', 'its license', 'blob/master/LICENSE')}`,
         OFL('jetbrains-nerd-OFL.txt'),
       ],
-      [
-        gh('nvim-tree/nvim-web-devicons', 'nvim-web-devicons'),
-        'Which icon and color each file type gets',
-        ghLicense('nvim-tree/nvim-web-devicons', 'MIT', 'blob/master/LICENSE'),
-      ],
-      [
-        gh('phosphor-icons/core', 'Phosphor Icons'),
-        'Icons on the skills page',
-        ghLicense('phosphor-icons/core', 'MIT'),
-      ],
+      [gh('nvim-tree/nvim-web-devicons', 'nvim-web-devicons'), 'Which icon and color each file type gets', ''],
+      [gh('phosphor-icons/core', 'Phosphor Icons'), 'Icons on the skills page', ''],
       [
         gh('simple-icons/simple-icons', 'Simple Icons'),
         'Brand logos on the skills and certificates pages',
@@ -108,8 +88,8 @@ const credits = [
       ],
       [
         `${gh('akinsho/bufferline.nvim', 'bufferline.nvim')}, ${gh('folke/snacks.nvim', 'snacks.nvim')}, ${gh('nvim-lualine/lualine.nvim', 'lualine.nvim')}, ${gh('nvim-telescope/telescope.nvim', 'telescope.nvim')}`,
-        "Reference for the tabs, file tree, statusline and finder, redrawn in this site's own HTML and CSS",
-        'No code used',
+        "Reference for the tabs, file tree, statusline and finder, redrawn in this site's own HTML and CSS without their code",
+        '',
       ],
     ],
   },
@@ -149,6 +129,9 @@ const credits = [
 
       <section>
         <h2 class="text-lg font-semibold text-nvim-green">Credits</h2>
+        <p class="text-text-secondary mt-3 leading-relaxed">
+          Everything below is MIT-licensed unless another license is named under it.
+        </p>
         {credits.map((group) => (
           <>
             <h3 class="mt-6 font-semibold text-nvim-yellow">{group.group}</h3>
@@ -157,15 +140,16 @@ const credits = [
                 <tr>
                   <th scope="col">Name</th>
                   <th scope="col">Used for</th>
-                  <th scope="col">License</th>
                 </tr>
               </thead>
               <tbody>
                 {group.rows.map(([name, use, license]) => (
                   <tr>
-                    <td set:html={name} />
+                    <td>
+                      <Fragment set:html={name} />
+                      {license && <span class="lic" set:html={license} />}
+                    </td>
                     <td set:html={use} />
-                    <td set:html={license} />
                   </tr>
                 ))}
               </tbody>
@@ -215,6 +199,11 @@ const credits = [
   }
   .credits-doc tbody td:first-child {
     color: var(--color-text-primary);
+    width: 35%;
+  }
+  .lic {
+    display: block;
+    color: var(--color-nvim-fg3);
   }
   .credits-doc :global(code) {
     color: var(--color-nvim-green);
