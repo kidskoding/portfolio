@@ -76,19 +76,3 @@ const extra = stack.length - shownStack.length;
     outline-color: var(--color-nvim-yellow);
   }
 </style>
-
-<script>
-  function initGlow() {
-    document.querySelectorAll<HTMLElement>('.glow-card').forEach((card) => {
-      if (card.dataset.glowBound === 'true') return;
-      card.dataset.glowBound = 'true';
-      card.addEventListener('mousemove', (event) => {
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty('--mouse-x', `${event.clientX - rect.left}px`);
-        card.style.setProperty('--mouse-y', `${event.clientY - rect.top}px`);
-      });
-    });
-  }
-  initGlow();
-  document.addEventListener('astro:page-load', initGlow);
-</script>

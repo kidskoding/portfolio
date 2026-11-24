@@ -4,6 +4,7 @@ import { ClientRouter } from 'astro:transitions';
 import { getCollection } from 'astro:content';
 import NvimChrome from '../components/NvimChrome.astro';
 import Telescope from '../components/Telescope.astro';
+import GlowCards from '../components/islands/GlowCards';
 
 interface Props {
   title?: string;
@@ -70,6 +71,7 @@ const projects = (await getCollection('projects', ({ data }) => import.meta.env.
     </NvimChrome>
 
     <Telescope posts={posts} projects={projects} />
+    <GlowCards client:load />
 
     <script>
       import { gsap } from 'gsap';
