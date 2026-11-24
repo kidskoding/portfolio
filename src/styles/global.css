@@ -242,10 +242,7 @@ body::before {
 
 /* Gradient text utility */
 .gradient-text {
-  background: linear-gradient(135deg, var(--catppuccin-color-lavender) 0%, var(--catppuccin-color-peach) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--catppuccin-color-lavender);
   padding-bottom: 0.15em;
   line-height: 1.25;
 }
