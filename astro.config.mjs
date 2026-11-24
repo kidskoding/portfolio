@@ -7,6 +7,8 @@ import { satteri } from '@astrojs/markdown-satteri';
 import { mermaidPlugin } from './src/lib/mermaid.mjs';
 import { shellPrompt } from './src/lib/shell-prompt.mjs';
 
+import solidJs from '@astrojs/solid-js';
+
 // Upstream maps markup.deleted to orange; use Catppuccin red like git gutters.
 // Upstream also italicizes comments, keywords and parameters; code blocks stay upright.
 const catppuccinMacchiatoDiff = {
@@ -23,7 +25,7 @@ const catppuccinMacchiatoDiff = {
 export default defineConfig({
   site: 'https://anirudh-konidala.vercel.app',
   redirects: { '/blog/vscode-to-neovim': '/blog/why-i-use-neovim-with-ai' },
-  integrations: [mdx()],
+  integrations: [mdx(), solidJs()],
   markdown: {
     processor: satteri({ mdastPlugins: [mermaidPlugin] }),
     shikiConfig: { theme: catppuccinMacchiatoDiff, transformers: [shellPrompt()] },

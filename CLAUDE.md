@@ -1,6 +1,6 @@
 # CLAUDE.md — Portfolio
 
-Personal portfolio site for Anirudh Konidala. Built with Astro, Tailwind CSS v4, GSAP, and MDX. Font: self-hosted JetBrains Mono.
+Personal portfolio site for Anirudh Konidala. Built with Astro, Tailwind CSS v4, GSAP, MDX, and SolidJS (islands). Font: self-hosted JetBrains Mono.
 
 ## Commands
 
@@ -112,6 +112,9 @@ The whole site uses JetBrains Mono 2.304, self-hosted in `public/fonts/` as vari
 
 ### Formatting and CI
 Prettier (`.prettierrc.json`, with `prettier-plugin-astro`): 2-space indent, single quotes, 120 columns. `src/content/` and Markdown files are ignored so prose stays as written. Nix files use alejandra. CI on GitHub Actions (`.github/workflows/ci.yml`) fails on unformatted code, `astro check` errors or a broken build; run `bun run format` and `bun run check` before pushing.
+
+### SolidJS islands
+`@astrojs/solid-js` is the only UI framework (`integrations: [mdx(), solidJs()]`; `tsconfig.json` sets `jsxImportSource: "solid-js"`, so all `.tsx` is Solid). Components render static unless given `client:load`/`client:idle`/`client:visible`. Soft navigation remounts islands, so don't keep cross-page state in one. `astro add` installs with npm: run `bun install` afterwards and delete `package-lock.json`, or CI's `bun install --frozen-lockfile` fails.
 
 ### Styling
 Tailwind CSS v4. Design tokens (colors, spacing) are defined as CSS variables in `global.css`. Use semantic token names like `text-text-primary`, `bg-bg-card`, `border-border-default`, `text-accent`.
