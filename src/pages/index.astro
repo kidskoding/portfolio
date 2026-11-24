@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import GitLog from '../components/GitLog.astro';
 import NvimIntro from '../components/NvimIntro.astro';
+import IntroGate from '../components/islands/IntroGate';
 import anirudhProfileImg from '../assets/anirudh.jpeg';
 ---
 
@@ -19,6 +20,7 @@ import anirudhProfileImg from '../assets/anirudh.jpeg';
       } catch {}
     </script>
     <NvimIntro />
+    <IntroGate client:load />
 
     <div data-intro-content>
       <div
@@ -52,53 +54,3 @@ import anirudhProfileImg from '../assets/anirudh.jpeg';
     display: none;
   }
 </style>
-
-<script>
-  const LAUNCHED_KEY = 'nvim:launched';
-  const OPENED_KEY = 'nvim:opened-buffers';
-  const KEEP_KEYS = new Set(['Shift', 'Control', 'Alt', 'Meta', 'Tab', 'Enter', ':', '?']);
-  // Leader mappings (space e, space ff) leave the intro up; timeout matches PENDING_TIMEOUT in NvimChrome.astro
-  const LEADER_TIMEOUT = 900;
-  const LEADER_PREFIXES = new Set(['f', 'b']);
-
-  // nvim clears its intro on the first key; scrolling or clicking an empty buffer does nothing
-  function initIntro() {
-    const main = document.getElementById('main-content');
-    if (!main || document.documentElement.dataset.intro !== 'on' || main.dataset.introBound === 'true') return;
-    main.dataset.introBound = 'true';
-    const controller = new AbortController();
-    const { signal } = controller;
-    const dismiss = () => {
-      controller.abort();
-      delete document.documentElement.dataset.intro;
-      try {
-        sessionStorage.setItem(LAUNCHED_KEY, 'true');
-        // Clearing the intro turns [No Name] into the index.astro buffer, so it now stays open beside later files
-        const opened: string[] = JSON.parse(sessionStorage.getItem(OPENED_KEY) || '[]');
-        if (!opened.includes('/')) sessionStorage.setItem(OPENED_KEY, JSON.stringify([...opened, '/']));
-      } catch {}
-    };
-    let leaderAt = -Infinity;
-    document.addEventListener(
-      'keydown',
-      (e) => {
-        if (e.ctrlKey || e.metaKey || e.altKey || KEEP_KEYS.has(e.key)) return;
-        if ((e.target as Element | null)?.closest?.('input, textarea')) return;
-        if (e.key === ' ') {
-          leaderAt = e.timeStamp;
-          return;
-        }
-        if (e.timeStamp - leaderAt < LEADER_TIMEOUT) {
-          leaderAt = LEADER_PREFIXES.has(e.key) ? e.timeStamp : -Infinity;
-          return;
-        }
-        dismiss();
-      },
-      { signal },
-    );
-    document.addEventListener('astro:before-swap', () => controller.abort(), { signal, once: true });
-  }
-
-  initIntro();
-  document.addEventListener('astro:page-load', initIntro);
-</script>
