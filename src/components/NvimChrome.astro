@@ -1,6 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
-import { devicons } from '../data/devicons';
+import type { Tab } from '../lib/nvim-actions';
+import Bufferline from './nvim/Bufferline';
+import Cmdline from './nvim/Cmdline';
+import Explorer from './nvim/Explorer';
+import Help from './nvim/Help';
+import Statusline from './nvim/Statusline';
+import TreeTrigger from './nvim/TreeTrigger';
+import VimLayer from './nvim/VimLayer';
 
 interface Props {
   currentPath: string;
@@ -9,7 +16,7 @@ interface Props {
 const { currentPath: rawPath } = Astro.props;
 const currentPath = rawPath === '/' ? '/' : rawPath.replace(/\/$/, '');
 
-const buffers = [
+const buffers: Tab[] = [
   { path: '/', file: 'index.astro', icon: 'astro' },
   { path: '/about', file: 'about.astro', icon: 'astro' },
   { path: '/experience', file: 'experience.astro', icon: 'astro' },
@@ -22,13 +29,8 @@ const buffers = [
 ];
 // buffers with a dir live in that explorer folder, not at the top of src/
 const treeFiles = buffers.filter((b) => !b.dir);
-const blogIndex = buffers.find((b) => b.path === '/blog');
-type TabIcon = 'astro' | 'mdx' | 'json' | 'checkhealth';
-interface Tab {
-  path: string;
-  file: string;
-  icon: TabIcon;
-}
+const blogIndex = buffers.find((b) => b.path === '/blog') as Tab;
+type TabIcon = Tab['icon'];
 
 let activeFile = 'index.astro';
 let activeIcon: TabIcon = 'astro';
@@ -50,7 +52,7 @@ if (blogSlug) {
   const match = buffers.find((b) => b.path === currentPath);
   if (match) {
     activeFile = match.dir ? `${match.dir}/${match.file}` : match.file;
-    activeIcon = match.icon as TabIcon;
+    activeIcon = match.icon;
   }
 }
 
@@ -62,7 +64,7 @@ const projects = (await getCollection('projects', ({ data }) => import.meta.env.
 );
 
 const tabs: Tab[] = [
-  ...(buffers as Tab[]),
+  ...buffers,
   { path: '/package-json', file: 'package.json', icon: 'json' },
   { path: '/checkhealth', file: 'health://', icon: 'checkhealth' },
   ...posts.map((post): Tab => ({ path: `/blog/${post.id}`, file: `${post.id}.mdx`, icon: 'mdx' })),
@@ -74,17 +76,7 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
 
 <div class="nvim-shell">
   <div class="nvim-titlebar">
-    <button
-      class="nvim-tree-trigger"
-      type="button"
-      aria-controls="nvimtree"
-      aria-expanded="false"
-      aria-label="Open file explorer"
-      data-tree-drawer-toggle
-    >
-      <span aria-hidden="true">☰</span>
-      <span>Explorer</span>
-    </button>
+    <TreeTrigger client:load />
     <span>
       nvim -{' '}
       <span class:list={{ 'file-label': currentPath === '/' }}>
@@ -95,122 +87,17 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
   </div>
 
   <div class="nvim-main">
-    <button class="nvimtree-backdrop" type="button" aria-label="Close file explorer" data-tree-drawer-close></button>
-    <nav class="nvimtree" id="nvimtree" aria-label="File explorer">
-      <div class="nvimtree-body">
-        <div class="tree-folder">
-          <span class="tree-caret" aria-hidden="true">
-            v
-          </span>
-          <span>portfolio</span>
-        </div>
-        <a
-          href="/package-json"
-          class:list={['tree-file tree-indent-1', { 'tree-active': currentPath === '/package-json' }]}
-        >
-          <span class="tree-icon icon-json">{devicons.json}</span>
-          <span>package.json</span>
-        </a>
-        <div class="tree-folder tree-indent-1">
-          <span class="tree-caret" aria-hidden="true">
-            v
-          </span>
-          <span>src</span>
-        </div>
-        <div>
-          {treeFiles.map((buf) => (
-            <a href={buf.path} class:list={['tree-file tree-indent-2', { 'tree-active': currentPath === buf.path }]}>
-              <span class:list={['tree-icon', `icon-${buf.icon}`]}>{devicons[buf.icon as TabIcon]}</span>
-              <span>{buf.file}</span>
-            </a>
-          ))}
-          <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="blog-posts" aria-expanded="true">
-            <span class="tree-caret" aria-hidden="true">
-              v
-            </span>
-            <span>blog-posts</span>
-          </button>
-          <div data-tree-group="blog-posts">
-            <a href="/blog" class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === '/blog' }]}>
-              <span class="tree-icon icon-mdx">{devicons.mdx}</span>
-              <span>{blogIndex?.file}</span>
-            </a>
-            {posts.map((post) => (
-              <a
-                href={`/blog/${post.id}`}
-                class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/blog/${post.id}` }]}
-              >
-                <span class="tree-icon icon-mdx">{devicons.mdx}</span>
-                <span>{post.id}.mdx</span>
-              </a>
-            ))}
-          </div>
-          <button class="tree-folder tree-indent-2" type="button" data-tree-toggle="projects" aria-expanded="false">
-            <span class="tree-caret" aria-hidden="true">
-              &gt;
-            </span>
-            <span>projects</span>
-          </button>
-          <div data-tree-group="projects" hidden>
-            {projects.map((project) => (
-              <a
-                href={`/projects/${project.id}`}
-                class:list={['tree-file tree-indent-3', { 'tree-active': currentPath === `/projects/${project.id}` }]}
-              >
-                <span class="tree-icon icon-mdx">{devicons.mdx}</span>
-                <span>{project.id}.mdx</span>
-              </a>
-            ))}
-          </div>
-          <div class="tree-folder tree-indent-2">
-            &gt; <span>data</span>
-          </div>
-          <div class="tree-folder tree-indent-2">
-            &gt; <span>components</span>
-          </div>
-          <div class="tree-folder tree-indent-2">
-            &gt; <span>layouts</span>
-          </div>
-        </div>
-        <div class="tree-folder tree-indent-1">
-          &gt; <span>public</span>
-        </div>
-        <div class="tree-folder tree-indent-1">
-          &gt; <span>node_modules</span>
-        </div>
-      </div>
-    </nav>
+    <Explorer
+      client:load
+      files={treeFiles}
+      blogIndex={blogIndex}
+      posts={posts.map((post) => post.id)}
+      projects={projects.map((project) => project.id)}
+      currentPath={currentPath}
+    />
 
     <div class="nvim-editor-wrap">
-      <div class="nvim-bufferline">
-        {tabs.map((tab) => (
-          <div
-            class:list={['nvim-buffer', { active: currentPath === tab.path }]}
-            data-path={tab.path}
-            data-file={tab.path === '/blog' ? `${blogIndex?.dir}/${blogIndex?.file}` : undefined}
-            hidden={currentPath !== tab.path}
-          >
-            <a href={tab.path} class="buf-link">
-              <span class:list={['buf-icon', `icon-${tab.icon}`, { 'file-label': tab.path === '/' }]}>
-                {devicons[tab.icon]}
-              </span>
-              {tab.path === '/' && (
-                <span class="noname-label">
-                  <svg class="noname-icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M3.5 1.5h6l3 3v10h-9z" stroke="currentColor" />
-                    <path d="M9.5 1.5v3h3M5.5 8h5M5.5 10.5h5M5.5 13h3" stroke="currentColor" />
-                  </svg>
-                  [No Name]
-                </span>
-              )}
-              <span class:list={['buf-name', { 'file-label': tab.path === '/' }]}>{tab.file}</span>
-            </a>
-            <button type="button" class="buf-close" data-buf-close aria-label={`Close ${tab.file}`}>
-              ×
-            </button>
-          </div>
-        ))}
-      </div>
+      <Bufferline client:load tabs={tabs} currentPath={currentPath} />
 
       <div class="nvim-winbar">
         <span class="winbar-root">portfolio</span>
@@ -226,108 +113,20 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
     </div>
   </div>
 
-  <div class="nvim-statusline">
-    <div class="sl-a">NORMAL</div>
-    <div class="sl-b">
-      <span class="branch-icon" aria-hidden="true">
-        {'\ue0a0'}
-      </span>
-      master
-    </div>
-    <div class="sl-c">
-      <span class:list={{ 'file-label': currentPath === '/' }}>
-        {activeIcon === 'checkhealth' ? activeFile : activeFile.split('/').pop()}
-      </span>
-      {currentPath === '/' && <span class="noname-label">[No Name]</span>}
-    </div>
-    <div class="sl-spacer"></div>
-    <div class="sl-x sl-showcmd" id="sl-showcmd" aria-hidden="true"></div>
-    <button class="sl-x sl-help" type="button" data-vim-help aria-label="Show key bindings" title="keys (?)">
-      ?
-    </button>
-    <span class="sl-x-div sl-file-info" aria-hidden="true">
-      |
-    </span>
-    <div class="sl-x sl-enc sl-file-info">utf-8</div>
-    <span class="sl-x-div sl-file-info" aria-hidden="true">
-      |
-    </span>
-    <div class:list={['sl-x sl-filetype sl-file-info', `ft-${activeIcon}`]}>
-      <span class:list={['sl-ft-icon', `icon-${activeIcon}`]}>{devicons[activeIcon]}</span>
-      <span>{activeIcon}</span>
-    </div>
-    <div class="sl-y sl-file-info" id="sl-pct">
-      Top
-    </div>
-    <div class="sl-z" id="sl-pos">
-      1:1
-    </div>
-  </div>
+  <Statusline
+    client:load
+    file={activeIcon === 'checkhealth' ? activeFile : (activeFile.split('/').pop() ?? activeFile)}
+    icon={activeIcon}
+    isIndex={currentPath === '/'}
+  />
 
-  <div class="nvim-cmdline-row">
-    <div class="nvim-cmdline" id="nvim-cmdline" hidden>
-      <span class="cmd-prompt" id="nvim-cmdline-prompt" aria-hidden="true">
-        :
-      </span>
-      <input
-        id="nvim-cmdline-input"
-        class="cmd-input"
-        type="text"
-        autocomplete="off"
-        spellcheck="false"
-        aria-label="Command line"
-      />
-      <span class="cmd-msg" id="nvim-cmdline-msg" hidden></span>
-      <ul class="cmd-pum" id="nvim-cmd-pum" role="listbox" aria-label="Command completion" hidden></ul>
-    </div>
-  </div>
+  <Cmdline client:load />
 </div>
 
-<div id="nvim-help" class="nvim-help" hidden role="dialog" aria-modal="true" aria-label="Key bindings">
-  <button class="nvim-help-backdrop" type="button" aria-label="Close key bindings" data-help-close></button>
-  <div class="nvim-help-panel">
-    <div class="nvim-help-title">:help keys</div>
-    <dl>
-      <dt>j / k, &darr; / &uarr;</dt>
-      <dd>scroll</dd>
-      <dt>ctrl+d / ctrl+u</dt>
-      <dd>half page down / up</dd>
-      <dt>gg / G</dt>
-      <dd>top / bottom</dd>
-      <dt>]b / [b</dt>
-      <dd>next / previous buffer</dd>
-      <dt>space e</dt>
-      <dd>toggle explorer</dd>
-      <dt>space space, space ff, ctrl+k</dt>
-      <dd>telescope</dd>
-      <dt>space bd</dt>
-      <dd>close buffer</dd>
-      <dt>:</dt>
-      <dd>command line &mdash; tab completes; :q :e file :bn :bp :help :checkhealth :intro</dd>
-      <dt>?</dt>
-      <dd>this help</dd>
-    </dl>
-    <div class="nvim-help-sub">cards &amp; lists</div>
-    <dl>
-      <dt>h j k l</dt>
-      <dd>move cursor between cards, enter opens</dd>
-      <dt>gg / G</dt>
-      <dd>first / last card</dd>
-    </dl>
-    <div class="nvim-help-sub">projects</div>
-    <dl>
-      <dt>1 2 3</dt>
-      <dd>switch tab</dd>
-      <dt>/</dt>
-      <dd>filter tiles</dd>
-      <dt>[[ / ]]</dt>
-      <dd>previous / next project on a project page</dd>
-    </dl>
-    <div class="nvim-help-hint">everything works with the mouse too. esc closes this.</div>
-  </div>
-</div>
+<Help client:load />
+<VimLayer client:load />
 
-<style>
+<style is:global>
   .nvim-shell {
     display: flex;
     flex-direction: column;
@@ -586,24 +385,24 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
   .noname-text {
     display: none;
   }
-  :global(html[data-intro='on']) .noname-text {
+  html[data-intro='on'] .noname-text {
     display: inline;
   }
-  :global(html[data-intro='on']) .nvim-buffer[data-path='/'] .buf-close,
-  :global(html[data-intro='on']) .file-label,
-  :global(html[data-intro='on']) .nvim-winbar,
-  :global(html[data-intro='on']) .sl-file-info {
+  html[data-intro='on'] .nvim-buffer[data-path='/'] .buf-close,
+  html[data-intro='on'] .file-label,
+  html[data-intro='on'] .nvim-winbar,
+  html[data-intro='on'] .sl-file-info {
     display: none;
   }
-  :global(html[data-intro='on']) .nvim-buffer[data-path='/'] .buf-link {
+  html[data-intro='on'] .nvim-buffer[data-path='/'] .buf-link {
     padding-right: 14px;
   }
-  :global(html[data-intro='on']) .noname-label {
+  html[data-intro='on'] .noname-label {
     display: inline-flex;
     align-items: center;
     gap: 6px;
   }
-  :global(html[data-intro='on']) .tree-file.tree-active:not(:hover) {
+  html[data-intro='on'] .tree-file.tree-active:not(:hover) {
     background: transparent;
     color: var(--color-nvim-fg2);
   }
@@ -994,7 +793,7 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
       padding: 14px;
     }
 
-    :global(.nvim-editor main) {
+    .nvim-editor main {
       padding-left: 0;
       padding-right: 0;
     }
@@ -1010,907 +809,3 @@ const inSrc = activeIcon !== 'json' && activeIcon !== 'checkhealth';
     }
   }
 </style>
-
-<script>
-  import { navigate } from 'astro:transitions/client';
-
-  function initNvimTreeDrawer() {
-    const shell = document.querySelector<HTMLElement>('.nvim-shell');
-    const trigger = document.querySelector<HTMLButtonElement>('[data-tree-drawer-toggle]');
-    const closeButton = document.querySelector<HTMLButtonElement>('[data-tree-drawer-close]');
-    const tree = document.getElementById('nvimtree');
-    if (!shell || !trigger || !closeButton || !tree) return;
-    if (trigger.dataset.bound === 'true') return;
-    trigger.dataset.bound = 'true';
-
-    const setOpen = (isOpen: boolean) => {
-      shell.classList.toggle('tree-drawer-open', isOpen);
-      trigger.setAttribute('aria-expanded', String(isOpen));
-      trigger.setAttribute('aria-label', isOpen ? 'Close file explorer' : 'Open file explorer');
-    };
-
-    // Narrow screens slide the tree in as a drawer; wide screens show or hide the sidebar column
-    trigger.addEventListener('click', () => {
-      if (window.matchMedia(DRAWER_QUERY).matches) {
-        setOpen(!shell.classList.contains('tree-drawer-open'));
-        return;
-      }
-      const hidden = !shell.classList.contains('tree-hidden');
-      shell.classList.toggle('tree-hidden', hidden);
-      sessionStorage.setItem(TREE_HIDDEN_KEY, String(hidden));
-      syncTreeTrigger();
-    });
-
-    closeButton.addEventListener('click', () => setOpen(false));
-
-    tree.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        if (window.matchMedia(DRAWER_QUERY).matches) setOpen(false);
-      });
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && shell.classList.contains('tree-drawer-open')) {
-        setOpen(false);
-      }
-    });
-  }
-
-  function applyTreeState(toggle: HTMLButtonElement, expanded: boolean) {
-    const key = toggle.dataset.treeToggle;
-    if (!key) return;
-    const group = document.querySelector<HTMLElement>(`[data-tree-group="${key}"]`);
-    if (!group) return;
-    toggle.setAttribute('aria-expanded', String(expanded));
-    group.hidden = !expanded;
-    const caret = toggle.querySelector<HTMLElement>('.tree-caret');
-    if (caret) caret.textContent = expanded ? 'v' : '>';
-  }
-
-  function initNvimTree() {
-    document.querySelectorAll<HTMLButtonElement>('[data-tree-toggle]').forEach((toggle) => {
-      const key = toggle.dataset.treeToggle;
-      if (!key) return;
-
-      const stored = sessionStorage.getItem(`tree:${key}`);
-      const expanded = stored === null ? toggle.getAttribute('aria-expanded') !== 'false' : stored === 'true';
-      applyTreeState(toggle, expanded);
-
-      if (toggle.dataset.bound === 'true') return;
-      toggle.dataset.bound = 'true';
-
-      toggle.addEventListener('click', () => {
-        const isExpanded = toggle.getAttribute('aria-expanded') !== 'false';
-        applyTreeState(toggle, !isExpanded);
-        sessionStorage.setItem(`tree:${key}`, String(!isExpanded));
-      });
-    });
-  }
-
-  function initStatusline() {
-    const editor = document.querySelector<HTMLElement>('.nvim-editor');
-    const pctEl = document.getElementById('sl-pct');
-    const posEl = document.getElementById('sl-pos');
-    if (!editor || !pctEl || !posEl) return;
-
-    const update = () => {
-      const scrollTop = editor.scrollTop;
-      const scrollHeight = editor.scrollHeight - editor.clientHeight;
-      const line = Math.max(1, Math.round(scrollTop / 20) + 1);
-      posEl.textContent = `${line}:1`;
-      if (scrollHeight <= 0 || scrollTop === 0) {
-        pctEl.textContent = 'Top';
-      } else if (scrollTop >= scrollHeight - 1) {
-        pctEl.textContent = 'Bot';
-      } else {
-        pctEl.textContent = `${Math.round((scrollTop / scrollHeight) * 100)}%`;
-      }
-    };
-
-    editor.removeEventListener('scroll', update);
-    editor.addEventListener('scroll', update, { passive: true });
-    update();
-  }
-
-  const OPENED_KEY = 'nvim:opened-buffers';
-  const LAUNCHED_KEY = 'nvim:launched';
-  const RELAUNCH_KEY = 'nvim:relaunch';
-
-  function getOpened(): string[] {
-    try {
-      return JSON.parse(sessionStorage.getItem(OPENED_KEY) || '[]');
-    } catch {
-      return [];
-    }
-  }
-
-  function setOpened(paths: string[]) {
-    sessionStorage.setItem(OPENED_KEY, JSON.stringify(paths));
-  }
-
-  // Any page load marks the session launched; the intro returns only on a fresh load, :qa or closing the last buffer
-  function markLaunched() {
-    sessionStorage.setItem(LAUNCHED_KEY, 'true');
-  }
-
-  function initBuffers() {
-    const bufferline = document.querySelector<HTMLElement>('.nvim-bufferline');
-    if (!bufferline) return;
-
-    // Visiting a page opens its buffer (like editing a file in vim).
-    const current = bufferline.querySelector<HTMLElement>('.nvim-buffer.active');
-    const currentPath = current?.dataset.path;
-    let opened = getOpened();
-    // The [No Name] intro is not a buffer yet: opening a file replaces it, like :e from an untouched nvim launch.
-    // index.astro is recorded once a key clears the intro (pages/index.astro).
-    if (currentPath === '/' && document.documentElement.dataset.intro === 'on') {
-      opened = opened.filter((p) => p !== '/');
-      setOpened(opened);
-    } else if (currentPath && current && !opened.includes(currentPath)) {
-      opened.push(currentPath);
-      setOpened(opened);
-    }
-
-    opened.forEach((path) => {
-      const tab = bufferline.querySelector<HTMLElement>(`.nvim-buffer[data-path="${CSS.escape(path)}"]`);
-      if (tab) bufferline.appendChild(tab);
-    });
-
-    bufferline.querySelectorAll<HTMLElement>('.nvim-buffer').forEach((tab) => {
-      const path = tab.dataset.path;
-      tab.hidden = !(path && opened.includes(path)) && !tab.classList.contains('active');
-    });
-
-    current?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-
-    if (bufferline.dataset.bound === 'true') return;
-    bufferline.dataset.bound = 'true';
-
-    bufferline.addEventListener(
-      'wheel',
-      (e) => {
-        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-        if (bufferline.scrollWidth <= bufferline.clientWidth) return;
-        e.preventDefault();
-        bufferline.scrollLeft += e.deltaY;
-      },
-      { passive: false },
-    );
-
-    bufferline.addEventListener('click', (e) => {
-      const btn = (e.target as HTMLElement).closest<HTMLElement>('[data-buf-close]');
-      if (!btn) return;
-      e.preventDefault();
-      const tab = btn.closest<HTMLElement>('.nvim-buffer');
-      const path = tab?.dataset.path;
-      if (!tab || !path || (path === '/' && document.documentElement.dataset.intro === 'on')) return;
-
-      setOpened(getOpened().filter((p) => p !== path));
-
-      const wasActive = tab.classList.contains('active');
-      const all = [...bufferline.querySelectorAll<HTMLElement>('.nvim-buffer')];
-      const idx = all.indexOf(tab);
-      const neighbor =
-        all.slice(idx + 1).find((t) => !t.hidden) ||
-        all
-          .slice(0, idx)
-          .reverse()
-          .find((t) => !t.hidden);
-
-      if (!neighbor) {
-        // Closing the last buffer relaunches: back to / with the intro. The tab stays until the swap
-        // replaces it with [No Name], so the bufferline never empties and the page does not jump.
-        sessionStorage.setItem(RELAUNCH_KEY, 'true');
-        navigate('/');
-        return;
-      }
-
-      tab.hidden = true;
-      const target = neighbor.querySelector<HTMLAnchorElement>('.buf-link');
-      if (wasActive && target) navigate(target.href);
-    });
-  }
-
-  // A hard reload / fresh document load starts with a clean bufferline (only the
-  // current tab). Soft navigations (clicking a link) run via astro:page-load and
-  // keep accumulating tabs. This top-level code runs once per real document load.
-  const navType = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
-  if (navType?.type === 'reload') {
-    sessionStorage.removeItem(OPENED_KEY);
-  }
-
-  const TREE_HIDDEN_KEY = 'nvim:tree-hidden';
-  const DRAWER_QUERY = '(max-width: 760px)';
-  const PENDING_TIMEOUT = 900;
-  const MESSAGE_TIMEOUT = 4000;
-  const LINE_STEP = 60;
-
-  function applyTreeHidden() {
-    const shell = document.querySelector<HTMLElement>('.nvim-shell');
-    if (shell) shell.classList.toggle('tree-hidden', sessionStorage.getItem(TREE_HIDDEN_KEY) === 'true');
-    syncTreeTrigger();
-  }
-
-  function syncTreeTrigger() {
-    const shell = document.querySelector<HTMLElement>('.nvim-shell');
-    const trigger = document.querySelector<HTMLButtonElement>('[data-tree-drawer-toggle]');
-    if (!shell || !trigger || window.matchMedia(DRAWER_QUERY).matches) return;
-    const visible = !shell.classList.contains('tree-hidden');
-    trigger.setAttribute('aria-expanded', String(visible));
-    trigger.setAttribute('aria-label', visible ? 'Hide file explorer' : 'Show file explorer');
-  }
-
-  // Site-wide vim layer: scroll keys, buffer switching, command line, help.
-  // Bound once per document; elements are looked up lazily because the chrome
-  // is re-rendered on every view transition.
-  function initVim() {
-    if (document.documentElement.dataset.vimBound === 'true') return;
-    document.documentElement.dataset.vimBound = 'true';
-
-    const q = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel);
-    const editor = () => q('.nvim-editor');
-    const cmdline = () => q('#nvim-cmdline');
-    const cmdInput = () => q<HTMLInputElement>('#nvim-cmdline-input');
-    const cmdPrompt = () => q('#nvim-cmdline-prompt');
-    const cmdMsg = () => q('#nvim-cmdline-msg');
-    const cmdPum = () => q<HTMLUListElement>('#nvim-cmd-pum');
-    const help = () => q('#nvim-help');
-    const telescopeOpen = () => document.getElementById('telescope')?.classList.contains('open') ?? false;
-    const cmdOpen = () => {
-      const c = cmdline();
-      return !!c && !c.hidden;
-    };
-    const isTyping = (el: Element | null) =>
-      !!el && (el.matches('input, textarea, select') || (el as HTMLElement).isContentEditable);
-
-    let pending = '';
-    let pendingTimer: number | undefined;
-    let msgTimer: number | undefined;
-
-    function setMode(mode: 'NORMAL' | 'INSERT' | 'VISUAL' | 'COMMAND') {
-      const el = q('.sl-a');
-      if (el) el.textContent = ` ${mode}`;
-      const bar = q('.nvim-statusline');
-      if (bar) bar.dataset.mode = mode;
-    }
-    function refreshMode() {
-      const input = cmdInput();
-      if (cmdOpen() && input && !input.hidden) return setMode('COMMAND');
-      if (isTyping(document.activeElement)) return setMode('INSERT');
-      const sel = window.getSelection();
-      if (sel && !sel.isCollapsed && sel.toString().trim()) return setMode('VISUAL');
-      setMode('NORMAL');
-    }
-    function setPending(keys: string) {
-      pending = keys;
-      const sc = q('#sl-showcmd');
-      if (sc) sc.textContent = keys.replace(/ /g, '\u2423');
-      window.clearTimeout(pendingTimer);
-      if (keys) pendingTimer = window.setTimeout(() => setPending(''), PENDING_TIMEOUT);
-    }
-
-    const scrollBy = (top: number) => editor()?.scrollBy({ top, behavior: 'auto' });
-    const scrollTo = (top: number) => editor()?.scrollTo({ top, behavior: 'auto' });
-
-    const visibleTabs = () => [...document.querySelectorAll<HTMLElement>('.nvim-buffer:not([hidden])')];
-    function switchBuffer(dir: 1 | -1) {
-      const tabs = visibleTabs();
-      if (tabs.length < 2) return;
-      const i = tabs.findIndex((tab) => tab.classList.contains('active'));
-      const link = tabs[(i + dir + tabs.length) % tabs.length].querySelector<HTMLAnchorElement>('.buf-link');
-      if (link) navigate(link.getAttribute('href') || '/');
-    }
-    function closeBuffer() {
-      const tab = q('.nvim-buffer.active');
-      // The [No Name] intro buffer is what nvim falls back to, so there is nothing to close
-      if (!tab || document.documentElement.dataset.intro === 'on') return;
-      tab.querySelector<HTMLButtonElement>('[data-buf-close]')?.click();
-    }
-    function toggleTree() {
-      q<HTMLButtonElement>('[data-tree-drawer-toggle]')?.click();
-    }
-    // :NvimTreeFocus opens the tree when it is closed (never hides it) and moves focus into it
-    function focusTree() {
-      const shell = q('.nvim-shell');
-      const open = window.matchMedia(DRAWER_QUERY).matches
-        ? shell?.classList.contains('tree-drawer-open')
-        : !shell?.classList.contains('tree-hidden');
-      if (!open) toggleTree();
-      (q<HTMLAnchorElement>('.tree-file.tree-active') ?? q<HTMLAnchorElement>('.tree-file'))?.focus();
-    }
-    function openTelescope() {
-      if (telescopeOpen()) return;
-      document.dispatchEvent(
-        new KeyboardEvent('keydown', { key: 'k', ctrlKey: true, bubbles: true, cancelable: true }),
-      );
-    }
-    function toggleHelp(force?: boolean) {
-      const h = help();
-      if (!h) return;
-      h.hidden = force === undefined ? !h.hidden : !force;
-    }
-
-    // Ex commands the completion popup offers: built-ins first, then plugin user commands, the order nvim lists them.
-    // takesArg ones fill the line and wait for an argument instead of running on click.
-    const COMMANDS: { name: string; takesArg?: boolean }[] = [
-      { name: 'bdelete' },
-      { name: 'bnext' },
-      { name: 'bprevious' },
-      { name: 'checkhealth' },
-      { name: 'edit', takesArg: true },
-      { name: 'help' },
-      { name: 'intro' },
-      { name: 'nohlsearch' },
-      { name: 'qall' },
-      { name: 'quit' },
-      { name: 'write' },
-      { name: 'Telescope' },
-    ];
-    // wildmenu state: what was typed before Tab, and which match is selected (-1 = the typed text itself)
-    let pumTyped = '';
-    let pumIndex = -1;
-    let pumMatches: typeof COMMANDS = [];
-
-    function hidePum() {
-      const pum = cmdPum();
-      if (pum) pum.hidden = true;
-      pumIndex = -1;
-      pumMatches = [];
-    }
-    // Completes the command name only; once an argument starts (a space), nvim stops offering commands
-    function renderPum() {
-      const pum = cmdPum(),
-        input = cmdInput();
-      if (!pum || !input) return;
-      pumTyped = input.value;
-      pumIndex = -1;
-      const needle = pumTyped.toLowerCase();
-      pumMatches = /\s/.test(pumTyped) ? [] : COMMANDS.filter(({ name }) => name.toLowerCase().startsWith(needle));
-      if (!pumMatches.length) return hidePum();
-      pum.replaceChildren(
-        ...pumMatches.map(({ name }, i) => {
-          const li = document.createElement('li');
-          li.role = 'option';
-          li.dataset.pumIndex = String(i);
-          li.textContent = name;
-          return li;
-        }),
-      );
-      pum.hidden = false;
-    }
-    function selectPum(next: number) {
-      const pum = cmdPum(),
-        input = cmdInput();
-      if (!pum || !input || pum.hidden || !pumMatches.length) return;
-      // Cycling past either end lands back on the typed text, like <Tab> in nvim's wildmenu
-      const span = pumMatches.length + 1;
-      pumIndex = ((((next + 1) % span) + span) % span) - 1;
-      input.value = pumIndex === -1 ? pumTyped : pumMatches[pumIndex].name;
-      pum.querySelectorAll('li').forEach((li, i) => li.setAttribute('aria-selected', String(i === pumIndex)));
-      pum.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
-    }
-    function pickPum(i: number) {
-      const input = cmdInput(),
-        match = pumMatches[i];
-      if (!input || !match) return;
-      if (!match.takesArg) return runCommand(match.name);
-      input.value = `${match.name} `;
-      input.focus();
-      hidePum();
-    }
-
-    function showMessage(text: string, error = false) {
-      const c = cmdline(),
-        input = cmdInput(),
-        m = cmdMsg(),
-        prompt = cmdPrompt();
-      if (!c || !input || !m) return;
-      hidePum();
-      c.hidden = false;
-      input.hidden = true;
-      if (prompt) prompt.hidden = true;
-      if (document.activeElement === input) input.blur();
-      m.textContent = text;
-      m.classList.toggle('error', error);
-      m.hidden = false;
-      window.clearTimeout(msgTimer);
-      msgTimer = window.setTimeout(hideCmdline, MESSAGE_TIMEOUT);
-      refreshMode();
-    }
-    function openCmdline() {
-      const c = cmdline(),
-        input = cmdInput(),
-        m = cmdMsg(),
-        prompt = cmdPrompt();
-      if (!c || !input || !m) return;
-      window.clearTimeout(msgTimer);
-      c.hidden = false;
-      m.hidden = true;
-      m.textContent = '';
-      if (prompt) prompt.hidden = false;
-      input.hidden = false;
-      input.value = '';
-      input.focus();
-      setMode('COMMAND');
-      renderPum();
-    }
-    function hideCmdline() {
-      const c = cmdline(),
-        input = cmdInput();
-      window.clearTimeout(msgTimer);
-      hidePum();
-      if (!c) return;
-      c.hidden = true;
-      if (input && document.activeElement === input) input.blur();
-      refreshMode();
-    }
-
-    function fuzzyOpen(query: string) {
-      const needle = query.trim().toLowerCase();
-      if (!needle) {
-        showMessage('E471: Argument required', true);
-        return;
-      }
-      const scored = [...document.querySelectorAll<HTMLElement>('.nvim-buffer[data-path]')]
-        .map((tab) => {
-          // data-file keeps :e index on index.astro rather than blog-posts/index.mdx
-          const file = (
-            tab.dataset.file ||
-            tab.querySelector('.buf-link span:last-child')?.textContent ||
-            ''
-          ).toLowerCase();
-          const path = (tab.dataset.path || '').toLowerCase();
-          const stem = file.replace(/\.[a-z]+$/, '');
-          let score = 0;
-          if (stem === needle) score = 5;
-          else if (file.startsWith(needle)) score = 4;
-          else if (path.startsWith(`/${needle}`)) score = 3;
-          else if (file.includes(needle) || path.includes(needle)) score = 2;
-          else {
-            let i = 0;
-            for (const ch of file) if (ch === needle[i]) i += 1;
-            if (i === needle.length) score = 1;
-          }
-          return { tab, score, length: file.length };
-        })
-        .filter((s) => s.score > 0)
-        .sort((a, b) => b.score - a.score || a.length - b.length);
-      const best = scored[0]?.tab;
-      if (!best) {
-        showMessage(`E345: Can't find file "${query.trim()}" in path`, true);
-        return;
-      }
-      hideCmdline();
-      navigate(best.dataset.path || '/');
-    }
-
-    function runCommand(raw: string) {
-      const line = raw.trim();
-      const [cmd = '', ...rest] = line.split(/\s+/);
-      const arg = rest.join(' ');
-      switch (cmd) {
-        case '':
-          hideCmdline();
-          break;
-        case 'q':
-        case 'quit':
-        case 'q!':
-        case 'wq':
-        case 'x':
-        case 'bd':
-        case 'bdelete':
-          hideCmdline();
-          closeBuffer();
-          break;
-        case 'qa':
-        case 'qa!':
-        case 'qall':
-        case 'wqa':
-          sessionStorage.removeItem(OPENED_KEY);
-          sessionStorage.setItem(RELAUNCH_KEY, 'true');
-          sessionStorage.setItem(TREE_HIDDEN_KEY, 'true');
-          if (q('.nvim-shell')?.classList.contains('tree-drawer-open')) {
-            q<HTMLButtonElement>('[data-tree-drawer-close]')?.click();
-          }
-          hideCmdline();
-          navigate('/');
-          break;
-        case 'w':
-        case 'write':
-          showMessage("E45: 'readonly' option is set (add ! to override)", true);
-          break;
-        case 'w!':
-          showMessage('"portfolio" is read-only, nothing written', true);
-          break;
-        case 'e':
-        case 'edit':
-        case 'find':
-          fuzzyOpen(arg);
-          break;
-        case 'bn':
-        case 'bnext':
-          hideCmdline();
-          switchBuffer(1);
-          break;
-        case 'bp':
-        case 'bprev':
-        case 'bprevious':
-          hideCmdline();
-          switchBuffer(-1);
-          break;
-        case 'h':
-        case 'help':
-          hideCmdline();
-          toggleHelp(true);
-          break;
-        case 'Telescope':
-        case 'Tel':
-          hideCmdline();
-          openTelescope();
-          break;
-        case 'NvimTreeToggle':
-        case 'Ex':
-        case 'Explore':
-          hideCmdline();
-          toggleTree();
-          break;
-        case 'NvimTreeOpen':
-        case 'NvimTreeFocus':
-          hideCmdline();
-          focusTree();
-          break;
-        case 'che':
-        case 'checkh':
-        case 'checkhealth':
-          hideCmdline();
-          navigate('/checkhealth');
-          break;
-        // :intro shows the splash again without closing buffers; the next key clears it (pages/index.astro)
-        case 'int':
-        case 'intro':
-          sessionStorage.setItem(RELAUNCH_KEY, 'true');
-          hideCmdline();
-          navigate('/');
-          break;
-        case 'noh':
-        case 'nohlsearch':
-          hideCmdline();
-          break;
-        default:
-          showMessage(`E492: Not an editor command: ${line}`, true);
-      }
-    }
-
-    // Item cursor: pages mark navigable cards with data-vim-item so hjkl step
-    // between them instead of scrolling by line. Projects keeps its own grid.
-    const items = () =>
-      [...document.querySelectorAll<HTMLElement>('[data-vim-item]')].filter(
-        (el) => !el.hidden && el.offsetParent !== null,
-      );
-    let cursor = 0;
-
-    function paint() {
-      const list = items();
-      document.querySelectorAll('.vim-cursor').forEach((el) => el.classList.remove('vim-cursor'));
-      if (!list.length) return;
-      cursor = Math.max(0, Math.min(cursor, list.length - 1));
-      list[cursor].classList.add('vim-cursor');
-    }
-    function reveal() {
-      items()[cursor]?.scrollIntoView({ block: 'nearest' });
-    }
-    function moveItem(delta: number) {
-      const list = items();
-      if (!list.length) return;
-      cursor = Math.max(0, Math.min(list.length - 1, cursor + delta));
-      paint();
-      reveal();
-    }
-    // Rows are detected from layout so a 2-column grid and a 1-column list both
-    // feel right: j/k go to the nearest card in the row below/above.
-    function moveRow(dir: 1 | -1) {
-      const list = items();
-      if (!list.length) return;
-      const cur = list[cursor].getBoundingClientRect();
-      const cx = cur.left + cur.width / 2;
-      const candidates = list
-        .map((el, i) => ({ i, r: el.getBoundingClientRect() }))
-        .filter(({ r }) => (dir === 1 ? r.top > cur.top + 1 : r.top < cur.top - 1));
-      if (!candidates.length) return;
-      const edge =
-        dir === 1 ? Math.min(...candidates.map((c) => c.r.top)) : Math.max(...candidates.map((c) => c.r.top));
-      const row = candidates.filter((c) => Math.abs(c.r.top - edge) < 1);
-      row.sort((a, b) => Math.abs(a.r.left + a.r.width / 2 - cx) - Math.abs(b.r.left + b.r.width / 2 - cx));
-      cursor = row[0].i;
-      paint();
-      reveal();
-    }
-    function jumpItem(index: number) {
-      cursor = index;
-      paint();
-      reveal();
-    }
-    function activateItem() {
-      const el = items()[cursor];
-      if (!el) return;
-      const target = el.matches('a[href], button, summary')
-        ? el
-        : el.querySelector<HTMLElement>('a[href], button, summary');
-      target?.click();
-    }
-    function syncCursor(event: Event) {
-      const el = (event.target as HTMLElement).closest<HTMLElement>('[data-vim-item]');
-      const index = el ? items().indexOf(el) : -1;
-      if (index >= 0 && index !== cursor) {
-        cursor = index;
-        paint();
-      }
-    }
-
-    function runSequence(seq: string): boolean {
-      switch (seq) {
-        case 'gg':
-          if (items().length) jumpItem(0);
-          else scrollTo(0);
-          return true;
-        case ']b':
-          switchBuffer(1);
-          return true;
-        case '[b':
-          switchBuffer(-1);
-          return true;
-        case ' e':
-          toggleTree();
-          return true;
-        case ' q':
-        case ' bd':
-          closeBuffer();
-          return true;
-        case ' ?':
-          toggleHelp(true);
-          return true;
-        case ' f':
-        case ' b':
-          setPending(seq);
-          return true;
-        case ' ff':
-        case '  ':
-          openTelescope();
-          return true;
-        case ' bn':
-          switchBuffer(1);
-          return true;
-        case ' bp':
-          switchBuffer(-1);
-          return true;
-      }
-      return false;
-    }
-
-    const GRID_KEYS = [
-      'h',
-      'j',
-      'k',
-      'l',
-      'ArrowUp',
-      'ArrowDown',
-      'ArrowLeft',
-      'ArrowRight',
-      'Enter',
-      'g',
-      'G',
-      '/',
-      'Escape',
-      '1',
-      '2',
-      '3',
-    ];
-
-    document.addEventListener('keydown', (event) => {
-      const target = event.target as HTMLElement;
-      const input = cmdInput();
-
-      if (input && target === input) {
-        const next = event.key === 'Tab' || event.key === 'ArrowDown' || (event.ctrlKey && event.key === 'n');
-        const prev =
-          (event.key === 'Tab' && event.shiftKey) || event.key === 'ArrowUp' || (event.ctrlKey && event.key === 'p');
-        if (prev || next) {
-          event.preventDefault();
-          // <Tab> with the popup closed (after an edited argument, say) reopens it for the current text
-          if (cmdPum()?.hidden) renderPum();
-          selectPum(pumIndex + (prev ? -1 : 1));
-          return;
-        }
-        if (event.key === 'Enter') {
-          event.preventDefault();
-          runCommand(input.value);
-        } else if (event.key === 'Escape') {
-          event.preventDefault();
-          hideCmdline();
-        }
-        return;
-      }
-      if (cmdOpen() && input?.hidden) {
-        hideCmdline();
-        if (event.key === 'Escape') {
-          event.preventDefault();
-          return;
-        }
-      }
-      if (telescopeOpen()) return;
-      if (isTyping(target)) {
-        if (event.key === 'Escape') target.blur();
-        return;
-      }
-      const h = help();
-      if (h && !h.hidden) {
-        if (event.key === 'Escape' || event.key === '?') {
-          event.preventDefault();
-          toggleHelp(false);
-        }
-        return;
-      }
-      if (event.altKey || event.metaKey) return;
-
-      const editorEl = editor();
-      const half = editorEl ? Math.round(editorEl.clientHeight / 2) : 300;
-      const pageStep = editorEl ? Math.round(editorEl.clientHeight * 0.9) : 500;
-
-      if (event.ctrlKey) {
-        if (event.key === 'd') {
-          event.preventDefault();
-          scrollBy(half);
-        } else if (event.key === 'u') {
-          event.preventDefault();
-          scrollBy(-half);
-        }
-        return;
-      }
-
-      const layer = document.querySelector<HTMLElement>('[data-vim-layer]')?.dataset.vimLayer;
-      if (layer === 'grid' && GRID_KEYS.includes(event.key)) return;
-
-      if (pending) {
-        const seq = pending + event.key;
-        setPending('');
-        if (runSequence(seq)) {
-          event.preventDefault();
-          return;
-        }
-      }
-
-      const list = items();
-      if (list.length) {
-        // Enter on a focused link/button keeps its native behaviour.
-        const nativeEnter = event.key === 'Enter' && Boolean(target.closest('a, button, summary'));
-        switch (event.key) {
-          case 'j':
-          case 'ArrowDown':
-            event.preventDefault();
-            moveRow(1);
-            return;
-          case 'k':
-          case 'ArrowUp':
-            event.preventDefault();
-            moveRow(-1);
-            return;
-          case 'h':
-          case 'ArrowLeft':
-            event.preventDefault();
-            moveItem(-1);
-            return;
-          case 'l':
-          case 'ArrowRight':
-            event.preventDefault();
-            moveItem(1);
-            return;
-          case 'G':
-            event.preventDefault();
-            jumpItem(list.length - 1);
-            return;
-          case 'Enter':
-            if (!nativeEnter) {
-              event.preventDefault();
-              activateItem();
-            }
-            return;
-        }
-      }
-
-      switch (event.key) {
-        case 'j':
-        case 'ArrowDown':
-          event.preventDefault();
-          scrollBy(LINE_STEP);
-          break;
-        case 'k':
-        case 'ArrowUp':
-          event.preventDefault();
-          scrollBy(-LINE_STEP);
-          break;
-        case 'PageDown':
-          event.preventDefault();
-          scrollBy(pageStep);
-          break;
-        case 'PageUp':
-          event.preventDefault();
-          scrollBy(-pageStep);
-          break;
-        case 'G':
-          event.preventDefault();
-          scrollTo(editorEl ? editorEl.scrollHeight : 0);
-          break;
-        case 'g':
-        case ']':
-        case '[':
-          event.preventDefault();
-          setPending(event.key);
-          break;
-        case ' ':
-          if (!target.closest('a, button')) {
-            event.preventDefault();
-            setPending(' ');
-          }
-          break;
-        case ':':
-          event.preventDefault();
-          openCmdline();
-          break;
-        case '?':
-          event.preventDefault();
-          toggleHelp();
-          break;
-        case 'Escape':
-          setPending('');
-          break;
-      }
-    });
-
-    document.addEventListener('input', (event) => {
-      if (event.target === cmdInput()) renderPum();
-    });
-    // Keep focus in the command line while clicking a completion item
-    document.addEventListener('mousedown', (event) => {
-      if ((event.target as HTMLElement).closest('#nvim-cmd-pum')) event.preventDefault();
-    });
-    document.addEventListener('click', (event) => {
-      const target = event.target as HTMLElement;
-      const command = target.closest<HTMLElement>('[data-nvim-cmd]')?.dataset.nvimCmd;
-      const pumItem = target.closest<HTMLElement>('#nvim-cmd-pum [data-pum-index]');
-      const row = target.closest<HTMLElement>('.nvim-cmdline-row');
-      if (pumItem) pickPum(Number(pumItem.dataset.pumIndex));
-      // The empty command-line row (or a message in it) opens : on click, the mouse equivalent of typing it
-      else if (row && (cmdline()?.hidden || cmdInput()?.hidden)) openCmdline();
-      else if (command) runCommand(command);
-      else if (target.closest('[data-vim-help]')) toggleHelp();
-      else if (target.closest('[data-help-close]')) toggleHelp(false);
-    });
-    document.addEventListener('mouseover', syncCursor);
-    document.addEventListener('focusin', syncCursor);
-    document.addEventListener('focusin', refreshMode);
-    document.addEventListener('focusout', () => window.setTimeout(refreshMode, 0));
-    document.addEventListener('selectionchange', refreshMode);
-    document.addEventListener('astro:page-load', () => {
-      setPending('');
-      refreshMode();
-      cursor = 0;
-      paint();
-    });
-    paint();
-  }
-
-  initNvimTreeDrawer();
-  initNvimTree();
-  initStatusline();
-  initBuffers();
-  applyTreeHidden();
-  initVim();
-  markLaunched();
-  document.addEventListener('astro:page-load', markLaunched);
-  document.addEventListener('astro:page-load', initNvimTreeDrawer);
-  document.addEventListener('astro:page-load', initNvimTree);
-  document.addEventListener('astro:page-load', initStatusline);
-  document.addEventListener('astro:page-load', initBuffers);
-  document.addEventListener('astro:after-swap', applyTreeHidden);
-  document.addEventListener('astro:page-load', applyTreeHidden);
-</script>
