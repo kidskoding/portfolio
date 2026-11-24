@@ -11,33 +11,33 @@ coverCaptionLink: { text: "Pexels", href: "https://www.pexels.com/photo/candies-
 import charts from './charts.json';
 import Chart from '../../../components/charts/Chart.astro';
 
-If you had gone trick-or-treating anytime during your youth, chances are you came home with a lot of **Reese's Peanut Butter Cups**. They are pretty much everywhere. An [Instacart report on its 2025 orders](https://www.chowhound.com/2299896/best-selling-halloween-candy-america-reeses/) found that Reese's was the No. 1 candy sold in 40 of the 50 states, plus Washington, D.C.
+If you went trick-or-treating as a kid, chances are you came home with a lot of Reese's Peanut Butter Cups. They are pretty much everywhere. An [Instacart report on its 2025 orders](https://www.chowhound.com/2299896/best-selling-halloween-candy-america-reeses/) found that Reese's was the **No. 1 candy sold in 40 of the 50 states**, plus Washington, D.C.
 
-**This is a major issue for those kids who may have a peanut allergy, because the most popular candy in the bowl is the one they cannot eat.**
+That is a problem for kids with a peanut allergy, because the most popular candy in the bowl is the one they cannot eat.
 
-I was curious to see what the best Halloween bowl looks like when it has to be safe, and how much a household gives up on buying certain candies to make it safe for all children.
+I was curious what the best Halloween bowl looks like when it has to be safe for every kid, and how much popularity a household gives up by skipping certain candies.
 
-So I built [**candyops**](https://github.com/kidskoding/candyops), a data pipeline that answers one question: **for each common food allergy, which 10 popular candies can you still hand out, and how much less popular is that bowl than one with no allergy restrictions?** It then goes one step further and asks what a household can actually do about it.
+So I built [candyops](https://github.com/kidskoding/candyops), a data pipeline that answers one question: for each common food allergy, which 10 popular candies can you still hand out, and how much less popular is that bowl than one with no allergy restrictions? It also asks what a household can do about it.
 
 ## Why this matters
 
-Food allergies are quite common in children. **The CDC found that 5.8% of US children had a diagnosed food allergy in 2021**, about 1 in 17, according to its [National Health Interview Survey data brief](https://www.cdc.gov/nchs/products/databriefs/db459.htm). And this is especially important, considering that Halloween is the one night of the year when those kids collect food from strangers.
+Food allergies are common in children. The CDC found that **5.8% of US children** had a diagnosed food allergy in 2021, **about 1 in 17**, according to its [National Health Interview Survey data brief](https://www.cdc.gov/nchs/products/databriefs/db459.htm). Halloween is the one night of the year when those kids collect food from strangers.
 
-Candy labels do not make this easy for kids with food allergies. The US law requires packaged food to name the major allergens it contains, but many **"may contain" warnings are voluntary and vary from one manufacturer to the next**, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. While this is a viable solution, plenty of households would much rather want to hand out candy that every kid can eat.
+Candy labels do not make this easy. US law requires packaged food to name the major allergens it contains, but many "may contain" warnings are voluntary and vary from one manufacturer to the next, as the [National Agricultural Law Center explains](https://nationalaglawcenter.org/food-labeling-the-regulation-of-food-allergen-labels/). The nonprofit Food Allergy Research & Education (FARE) runs the [Teal Pumpkin Project](https://www.foodallergy.org/media-room/bring-magic-halloween-teal-pumpkin-project) so families can signal that they offer non-food treats instead. That works, but plenty of households would rather hand out candy every kid can eat.
 
-A lot of the candy you eat comes from **three** major corporations:
+A lot of the candy you eat comes from three big companies.
 
-**The Hershey Company** is known for their iconic chocolates and candies, including **Hershey's**, **Reese's**, **Hershey's Kisses**, **Jolly Rancher**, and **Kit Kat**. As previously discussed, Reese's Peanut Butter Cups are some of the most common type of candy kids receive during trick-or-treating, and they are built around peanut butter!
+The Hershey Company makes Hershey's, Reese's, Hershey's Kisses, Jolly Rancher and Kit Kat. Reese's Peanut Butter Cups, the bestseller from the start of this post, are built around peanut butter.
 
-**Mars** is known for their iconic chocolates and candies, including **Snickers**, **M&M's**, **Twix**, **3 Musketeers**, **Milky Way**, **Skittles** and **Starburst**. Its lineup covers both kinds of candy in a Halloween bowl: chocolate bars like Snickers and Twix, made with milk chocolate, and fruit candies like Skittles and Starburst, made without chocolate or nuts. That difference matters later, because the fruit candies are what remain once the common allergens are removed.
+Mars makes Snickers, M&M's, Twix, 3 Musketeers, Milky Way, Skittles and Starburst. Its lineup covers both kinds of candy in a Halloween bowl: chocolate bars like Snickers and Twix, made with milk chocolate, and fruit candies like Skittles and Starburst, made without chocolate or nuts. The fruit candies come up again later, because they are what remains once the common allergens are removed.
 
-**Ferrero** is known for their iconic chocolatey confections, including **Ferrero Rocher**, **Nutella**, and **Kinder Joy**. They also own many iconic chocolates and candies that are very common during the Halloween season, like **Butterfinger**, **Baby Ruth**, **100 Grand**, and **Nerds**, which came with [Nestlé's US candy business when Ferrero bought it in 2018](https://www.ferrero.com/news/ferrero-to-acquire-nestle-s-us-confectionary-business). Later on, we will see how Butterfinger exposed the biggest risk in this project, where the data nearly labeled it peanut-free, even though it is made with peanuts.
+Ferrero makes Ferrero Rocher, Nutella and Kinder Joy. It also owns Halloween staples like Butterfinger, Baby Ruth, 100 Grand and Nerds, which came with [Nestlé's US candy business when Ferrero bought it in 2018](https://www.ferrero.com/news/ferrero-to-acquire-nestle-s-us-confectionary-business). Butterfinger turned out to be the biggest risk in this project: the data nearly labeled it peanut-free, even though it is made with peanuts.
 
 ## The data
 
-I combined two public datasets from Kaggle, a website where people share free datasets, that were collected separately and share no common ID, plus a third live source that keeps the results up to date.
+I combined two public datasets from Kaggle, a website where people share free datasets. They were collected separately and share no common ID. A third, live source keeps the results up to date.
 
-In **Table 1.1**, each of the three sources is listed with what it holds and its size.
+**Table 1.1** lists the three sources, what each one holds, and its size.
 
 | Source | What it holds | Size |
 |---|---|---|
@@ -47,9 +47,9 @@ In **Table 1.1**, each of the three sources is listed with what it holds and its
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.1:</strong> The three data sources candyops combines, what each one holds, and its size.</p>
 
-**FiveThirtyEight** was a data journalism site, where its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again. Besides each candy's win rate, the dataset tags every candy with yes-or-no traits (chocolate, fruity, caramel, peanut or almond, nougat, crisped rice or wafer, hard candy, bar, and many pieces per bag) and ranks how sugary and how expensive it is compared with the others.
+FiveThirtyEight was a data journalism site. Its writer Walt Hickey built the ranking in 2017 by asking readers to pick between two random candies, again and again. Besides each candy's win rate, the dataset tags every candy with yes-or-no traits (chocolate, fruity, caramel, peanut or almond, nougat, crisped rice or wafer, hard candy, bar, and many pieces per bag) and ranks how sugary and how expensive it is compared with the others.
 
-**Open Food Facts** is a nonprofit, crowdsourced database of food labels that anyone can edit. Both Kaggle files are 2017 snapshots, and the pipeline pins their versions, which means it always downloads the same version of each file, so every run reads exactly the same data.
+Open Food Facts is a nonprofit, crowdsourced database of food labels that anyone can edit. Both Kaggle files are 2017 snapshots, and the pipeline pins their versions, so every run downloads and reads exactly the same data.
 
 This is one real row from Open Food Facts, a US pack of Reese's Peanut Butter Cups:
 
@@ -66,7 +66,7 @@ serving_size     42 g (1 PACKAGE)
 sugars_100g      50
 ```
 
-**The allergen field is empty, even though the ingredients list milk, soy and peanuts:** only 37,177 of the 356,001 products fill it in. Most of the allergen information is only in the ingredient text, so the pipeline has to read each ingredient list to find allergens.
+The allergen field is empty, even though the ingredients list milk, soy and peanuts. Only **37,177 of the 356,001** products fill it in. Most of the allergen information is only in the ingredient text, so the pipeline has to read each ingredient list to find allergens.
 
 The raw files are messier than they look. The candy ranking stores apostrophes as `HersheyÕs` and includes two coins (a dime and a quarter) as joke entries. The Open Food Facts file has 26 rows with a stray carriage return inside a field; pandas and most CSV readers treat it as a line break and report 356,027 rows instead of 356,001. A test pins the correct count, so a reader that splits on the wrong character fails with an error instead of producing extra rows.
 
@@ -89,9 +89,9 @@ The job starts by downloading the Kaggle datasets into two bronze tables, with e
 
 A second notebook then archives each new change-feed file and loads it with Auto Loader, which remembers which files it has already read, so each day's edits are loaded exactly once. Open Food Facts keeps only about two weeks of those files, so the archive is the only copy once they expire.
 
-From there, **dbt** (data build tool) builds everything in **SQL**: each table is a SQL file called a model, and dbt runs the models in the right order and checks each one with tests. The silver models will clean data types and whitespace within the data, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. **dbt runs 51 tests on every build**, including one that fails if any candy in a peanut-free bowl is not peanut-free.
+From there, **dbt** (data build tool) builds everything in SQL: each table is a SQL file called a model, and dbt runs the models in the right order and checks each one with tests. The silver models clean data types and whitespace, parse serving sizes like `1.55 oz` into grams, match products to candies, and turn ingredient text into allergen flags for peanut, tree nut, milk, gluten, soy and egg. The parser splits "may contain" warnings away from real ingredients and ignores lookalikes such as "cocoa butter" (not dairy) and "peanut-free". The gold models give each candy a status per allergen (`contains`, `varies`, `may_contain`, `not_listed` or `unknown`) and pick the bowls. dbt runs **51 tests** on every build, including one that fails if any candy in a peanut-free bowl is not peanut-free.
 
-**The last step goes beyond cleaning and reporting:** it turns the gold tables into decisions. Two more dbt models rebuild every bowl with and without accepting "may contain" warnings, and find the most similar safe candy for each favorite. A Python step then runs a small optimization that picks the one bowl that gives the most trick-or-treaters a favorite they can eat, and logs each run's inputs and results to **MLflow**, a tool for recording experiments, so runs can be compared over time.
+The last step turns the gold tables into decisions. Two more dbt models rebuild every bowl with and without accepting "may contain" warnings, and find the most similar safe candy for each favorite. A Python step then runs a small optimization that picks the one bowl that gives the most trick-or-treaters a favorite they can eat, and logs each run's inputs and results to **MLflow**, a tool for recording experiments, so runs can be compared over time.
 
 ## The results
 
@@ -99,20 +99,20 @@ From there, **dbt** (data build tool) builds everything in **SQL**: each table i
 
 Every allergy-safe bowl is compared with the same baseline, the **unrestricted bowl**: the 10 most popular candies overall, which is the bowl a household would put out without thinking about allergies. It starts with Reese's Peanut Butter Cups, Reese's Miniatures and Twix, so it is the opposite of allergen-free: almost every candy in it contains peanuts, milk or both.
 
-In **Table 1.2**, each of the four measures the results use is defined, with a worked example from the data.
+**Table 1.2** defines the four measures the results use, each with a worked example from the data.
 
 | Measure | Definition | Example |
 |---|---|---|
-| Win rate | The percentage of a candy's head-to-head matchups that voters picked it. In each matchup, FiveThirtyEight showed a voter two randomly chosen candies and asked which one they would rather receive. The value comes from the dataset's `winpercent` column, based on about 269,000 matchups in total. | Reese's Peanut Butter Cups won 84.2% of their matchups, the highest of the 83 candies. |
+| Win rate | The percentage of a candy's head-to-head matchups in which voters picked it. In each matchup, FiveThirtyEight showed a voter two randomly chosen candies and asked which one they would rather receive. The value comes from the dataset's `winpercent` column, based on about 269,000 matchups in total. | Reese's Peanut Butter Cups won 84.2% of their matchups, the highest of the 83 candies. |
 | Candies allowed | The number of the 83 ranked candies that pass a restriction. A candy passes when every restricted allergen has the status `not_listed`, based on at least two matched products with an ingredient list. Peanut-free and nut-free restrictions also exclude any candy FiveThirtyEight tags as containing peanuts or almonds. | 42 candies pass the peanut-free restriction. |
 | Bowl | The 10 candies with the highest win rate among the candies allowed. The **unrestricted bowl** applies no restriction, so it is simply the 10 candies with the highest win rate overall; its average win rate is 76.3%. | The peanut-free bowl starts with Starburst, Rolo, and Skittles. |
 | Popularity kept (popularity score) | A restricted bowl's average win rate divided by the unrestricted bowl's average win rate. | Peanut-free: 59.5% ÷ 76.3% = 78.0%. |
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.2:</strong> Definitions of the four measures used in the results, each with a worked example from the data.</p>
 
-**"Popularity kept" compares a bowl's average win rate with the unrestricted bowl's:** a popularity score of 78% means the candies in the peanut-free bowl win their matchups, on average, about 22% less often than the candies in the unrestricted bowl. A value of 100% would mean a restriction costs no popularity at all.
+A popularity score of 78% means the candies in the peanut-free bowl win their matchups, on average, about 22% less often than the candies in the unrestricted bowl. A score of 100% would mean a restriction costs no popularity at all.
 
-In **Table 1.3**, the main results are summarized before each one is explained below.
+**Table 1.3** sums up the main results, and the sections below explain each one.
 
 | Question | Result |
 |---|---|
@@ -127,7 +127,7 @@ In **Table 1.3**, the main results are summarized before each one is explained b
 
 ### The most popular candies carry the most allergens
 
-The Reese's problem from the start of this post is not a one-off. In **Figure 1.1**, each of the 58 candies with at least two matched products that have an ingredient list is plotted (the other 25 candies do not have enough label data to judge) by how many of the six allergens its label lists and how often it won its matchups.
+The Reese's problem from the start of this post is not a one-off. **Figure 1.1** plots each of the 58 candies with at least two matched products that have an ingredient list (the other 25 candies lack enough label data to judge) by how many of the six allergens its label lists and how often it won its matchups.
 
 <Chart
   kind="scatter"
@@ -140,11 +140,11 @@ The Reese's problem from the start of this post is not a one-off. In **Figure 1.
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Figure 1.1:</strong> Win rate against the number of major allergens each candy's label lists, including may-contain warnings. Chocolate candies are orange and other candies are blue; lines show the average win rate for each count.</p>
 
-**Candies with none of the six allergens average a 45% win rate, while candies with five or more average 66%:** most of that gap comes from chocolate, which almost always contains milk and soy, so the candies voters like best are also the hardest for allergic kids to eat.
+Candies with none of the six allergens average a **45% win rate**, while candies with five or more average **66%**. Most of that gap comes from chocolate, which almost always contains milk and soy, so the candies voters like best are also the hardest for allergic kids to eat.
 
-**Chocolate is not the whole story, though:** among the 22 chocolate candies alone, those listing four or more allergens average a 66.9% win rate, compared with 57.1% for those listing three or fewer. Among the 36 non-chocolate candies, the number of allergens makes almost no difference (a 41.2% win rate with four or more, 43.7% with three or fewer). The best-loved chocolate bars are the ones with more allergens on the label, such as peanuts, nougat or a wafer.
+Chocolate is not the whole story, though. Among the 22 chocolate candies alone, those listing four or more allergens average a **66.9%** win rate, compared with **57.1%** for those listing three or fewer. Among the 36 non-chocolate candies, the number of allergens makes almost no difference (a 41.2% win rate with four or more, 43.7% with three or fewer). The best-loved chocolate bars are the ones whose fillings, such as peanuts, nougat or a wafer, put more allergens on the label.
 
-In **Table 1.4**, five of the most popular candies are shown with their status for each allergen.
+**Table 1.4** shows five of the most popular candies and their status for each allergen.
 
 | Candy | Win rate | Peanut | Tree nut | Milk | Gluten | Soy | Egg |
 |---|---|---|---|---|---|---|---|
@@ -160,7 +160,7 @@ In **Table 1.4**, five of the most popular candies are shown with their status f
 
 ### What each allergy costs a bowl
 
-In **Table 1.5**, each allergy restriction is shown with the number of candies allowed, the popularity kept, and the resulting bowl.
+**Table 1.5** lists the number of candies each allergy restriction allows, the popularity it keeps, and the resulting bowl.
 
 | Restriction | Candies allowed | Popularity kept | The bowl, most popular first |
 |---|---|---|---|
@@ -173,7 +173,7 @@ In **Table 1.5**, each allergy restriction is shown with the number of candies a
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Table 1.5:</strong> The 10-candy bowl for each allergy restriction, with the number of candies allowed and the share of the unrestricted bowl's popularity it keeps.</p>
 
-In **Figure 1.2**, the popularity each bowl keeps is shown side by side, from the unrestricted bowl down to a bowl free of all six allergens.
+**Figure 1.2** puts the popularity each bowl keeps side by side, from the unrestricted bowl down to a bowl free of all six allergens.
 
 <Chart
   kind="hbar"
@@ -186,9 +186,9 @@ In **Figure 1.2**, the popularity each bowl keeps is shown side by side, from th
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Figure 1.2:</strong> The share of the unrestricted bowl's popularity that each allergy-safe bowl keeps, with the number of candies each restriction allows.</p>
 
-**Every candy in the unrestricted top 10 is chocolate, and at least five of them directly have peanuts in them:** four Reese's products and Peanut Butter M&M's sit in that top 10, which is exactly why the peanut-free bowl loses so much. It keeps a **78% popularity score**, meaning its candies average 78% of the unrestricted bowl's win rate, and none of the 10 candies in the unrestricted bowl make it in.
+Every candy in the unrestricted top 10 is chocolate, and at least five of them are made with peanuts: four Reese's products and Peanut Butter M&M's. That is why the peanut-free bowl loses so much. It keeps a **78% popularity score**, and none of the 10 candies in the unrestricted bowl make it in.
 
-**A gluten-free bowl loses the least popularity:** it keeps an **88.2% popularity score** and still leads with Reese's, because Reese's Peanut Butter Cups list no wheat. A milk-free bowl drops to a **74.6% popularity score**, because it excludes every candy made with milk chocolate. In **Figure 1.3**, each bowl is split into chocolate and non-chocolate candies.
+A gluten-free bowl loses the least popularity. It keeps an **88.2% popularity score** and still leads with Reese's, because Reese's Peanut Butter Cups list no wheat. A milk-free bowl drops to a **74.6% popularity score**, because it excludes every candy made with milk chocolate. **Figure 1.3** splits each bowl into chocolate and non-chocolate candies.
 
 <Chart
   kind="hbar"
@@ -203,9 +203,9 @@ In **Figure 1.2**, the popularity each bowl keeps is shown side by side, from th
 
 > The safest bowl is a bowl of gummies and fruit candy, and it still keeps about two-thirds of the popularity.
 
-**Avoiding all six allergens leaves 18 candies and a 68.7% popularity score:** Skittles, Sour Patch Kids, Swedish Fish, Haribo Gold-Bears and others. That bowl still holds popular candy: Skittles and Sour Patch Kids rank in the top third of the vote.
+Avoiding all six allergens leaves **18 candies** and a **68.7% popularity score**: Skittles, Sour Patch Kids, Swedish Fish, Haribo Gold-Bears and others. Skittles and Sour Patch Kids still rank in the top third of the vote.
 
-**Swapping chocolate for fruit candy also adds sugar:** the unrestricted bowl has a median of 51.7 g of sugar per 100 g, while the peanut-free and nut-free bowls reach about 69 g, as shown in **Figure 1.4**.
+Swapping chocolate for fruit candy also adds sugar. The unrestricted bowl has a median of **51.7 g** of sugar per 100 g, while the peanut-free and nut-free bowls reach **about 69 g**, as shown in **Figure 1.4**.
 
 <Chart
   kind="hbar"
@@ -220,7 +220,7 @@ In **Figure 1.2**, the popularity each bowl keeps is shown side by side, from th
 
 ### Part of that cost is a labeling choice
 
-Some candies are not excluded for what they contain, but for what they *might* contain. "May contain" warnings are voluntary, which means that no US law requires them or sets rules for when to use them: each candy maker decides on its own whether to print one, so two candies made on similar production lines can carry different warnings. So I rebuilt every bowl a second time, accepting candies whose only problem is a precautionary warning, to see how much of each cost those warnings cause.
+Some candies are excluded only for what they *might* contain. No US law requires "may contain" warnings or sets rules for when to use them: each candy maker decides on its own whether to print one, so two candies made on similar production lines can carry different warnings. So I rebuilt every bowl a second time, accepting candies whose only problem is a precautionary warning, to see how much of each cost those warnings cause.
 
 <Chart
   kind="dumbbell"
@@ -233,9 +233,9 @@ Some candies are not excluded for what they contain, but for what they *might* c
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Figure 1.5:</strong> Popularity kept by each bowl when may-contain warnings exclude a candy, and when they are accepted.</p>
 
-**"May contain" warnings cost the peanut-free bowl 7.9 points of popularity score**, as shown in **Figure 1.5**. Kit Kat, Milky Way, M&M's and Nestle Crunch list no peanuts, yet each carries a peanut warning on at least one label, which keeps all four out. Accepting the warnings would lift the peanut-free bowl's popularity score from 78.0% to 85.9%. The nut-free bowl loses 4.2 points of popularity score the same way, and the gluten-free bowl loses 1.4 points to a single warning on Rolo.
+"May contain" warnings cost the peanut-free bowl **7.9 points** of popularity score, as shown in **Figure 1.5**. Kit Kat, Milky Way, M&M's and Nestle Crunch list no peanuts, yet each carries a peanut warning on at least one label, which keeps all four out. Accepting the warnings would lift the peanut-free bowl's popularity score from **78.0% to 85.9%**. The nut-free bowl loses **4.2 points** of popularity score the same way, and the gluten-free bowl loses **1.4 points** to a single warning on Rolo.
 
-This is not an argument to ignore the warnings: for a kid with a severe allergy, a shared production line is a real risk. It shows that **a meaningful share of what allergic kids give up comes from how candy makers label, not from what is in the candy.**
+Families should still take the warnings seriously: for a kid with a severe allergy, a shared production line is a real risk. But a meaningful share of what allergic kids give up comes from how candy makers label, rather than from what is in the candy.
 
 ### The closest safe swap for each favorite
 
@@ -252,15 +252,15 @@ A household that wants a peanut-free bowl still needs to know what to buy instea
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Figure 1.6:</strong> The most similar safe candy for each favorite in the unrestricted bowl, with the win rate of each. Peanut-free is shown first; the buttons switch to the other allergies.</p>
 
-**The closest swaps are recognizable:** Twix, Butterfinger and Reese's Peanut Butter Cups point to Hershey's Special Dark, Kit Kat to Mounds, Snickers and Milky Way to Charleston Chew, and Reese's Pieces to Junior Mints, as shown in **Figure 1.6**. The catch is popularity. The best swap, Hershey's Special Dark, has a 59.2% win rate, more than 20 points below Twix's 81.6% and 25 points below Reese's Peanut Butter Cups' 84.2%.
+The closest swaps are familiar candies. Twix, Butterfinger and Reese's Peanut Butter Cups point to Hershey's Special Dark, Kit Kat to Mounds, Snickers and Milky Way to Charleston Chew, and Reese's Pieces to Junior Mints, as shown in **Figure 1.6**. The catch is popularity. The best swap, Hershey's Special Dark, has a **59.2% win rate**, more than 20 points below Twix's **81.6%** and 25 points below Reese's Peanut Butter Cups' **84.2%**.
 
 For a bowl free of all six allergens, the same search finds nothing similar. Every favorite maps to an unrelated gummy, because no chocolate candy passes all six restrictions.
 
 ### One bowl for the whole street
 
-Households handing out candy don't know which trick-or-treaters at their door have which allergies. So the last question is: **which single bowl gives the most trick-or-treaters a favorite they can eat?**
+Households handing out candy don't know which trick-or-treaters at their door have which allergies. So the last question is: which single bowl gives the most trick-or-treaters a favorite they can eat?
 
-The pipeline answers it with a small optimization. About 2.2% of US children are allergic to peanuts, 1.9% to milk and 1.2% to tree nuts, according to a [national survey of 38,408 children published in *Pediatrics*](https://pubmed.ncbi.nlm.nih.gov/30455345/). The pipeline weights each group of kids by those rates and picks, one candy at a time, the 10 candies that maximize the average win rate of the best candy each kid can eat, counting zero for a kid with nothing safe in the bowl.
+The pipeline answers it with a small optimization. About **2.2%** of US children are allergic to peanuts, **1.9%** to milk and **1.2%** to tree nuts, according to a [national survey of **38,408 children** published in *Pediatrics*](https://pubmed.ncbi.nlm.nih.gov/30455345/). The pipeline weights each group of kids by those rates and picks, one candy at a time, the 10 candies that maximize the average win rate of the best candy each kid can eat, counting zero for a kid with nothing safe in the bowl.
 
 <Chart
   kind="simulator"
@@ -273,19 +273,19 @@ The pipeline answers it with a small optimization. About 2.2% of US children are
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Figure 1.7:</strong> The bowl with a chosen number of candies that are safe for peanut, milk and tree-nut allergies. The optimization picks one, Starburst; the slider shows what each extra safe candy costs.</p>
 
-**One swap is enough:** the best bowl for a whole street is the regular top 10 with Butterfinger replaced by Starburst, as shown in **Figure 1.7**. Starburst is the most popular candy that is safe for all three allergies, so it covers every allergic kid no matter how common each allergy is. That single change gives every kid with a peanut, milk or tree-nut allergy something to eat, and it lowers the bowl's average win rate from 76.3% to 75.9%, a 99.5% popularity score.
+One swap is enough. The best bowl for a whole street is the regular top 10 with Butterfinger replaced by Starburst, as shown in **Figure 1.7**. Starburst is the most popular candy that is safe for all three allergies, so that single change gives every kid with a peanut, milk or tree-nut allergy something to eat, no matter how common each allergy is. The bowl's average win rate drops only from **76.3% to 75.9%**, a **99.5% popularity score**.
 
-Each safe candy after the first costs more than the one before it: two safe candies keep a 98.4% popularity score, three keep 96.7%, five keep 92.2%, and a bowl of ten keeps 74.6%. The optimization stops at one safe candy because allergic kids are a small share of the street, so each extra safe candy adds less than the chocolate it replaces. It also treats each allergy separately, and the survey rates for egg, wheat and soy could not be confirmed, so those allergies are left out.
+Each safe candy after the first costs more than the one before it: two safe candies keep a **98.4%** popularity score, three keep **96.7%**, five keep **92.2%**, and a bowl of ten keeps **74.6%**. The optimization stops at one safe candy because allergic kids are a small share of the street, so each extra safe candy adds less than the chocolate it replaces. It also treats each allergy separately, and I could not confirm the survey rates for egg, wheat and soy, so those allergies are left out.
 
-## Matching candy names was the hard part
+## Matching candy names to products
 
 Every result above depends on linking each candy in the vote to the right products in Open Food Facts, so this is where most of the work went.
 
-The ranking says "Snickers". Open Food Facts has hundreds of products with "Snickers" in the name, including ice cream bars, protein bars and almond variants. **Joining the two datasets is the riskiest step in the whole pipeline, because a wrong match can change a candy's allergy status without causing any error.**
+The ranking says "Snickers". Open Food Facts has hundreds of products with "Snickers" in the name, including ice cream bars, protein bars and almond variants. Joining the two datasets is the riskiest step in the whole pipeline, because a wrong match can change a candy's allergy status without causing any error.
 
-I compared two approaches: matching on the candy's name alone, and hand-written matching rules stored as a dbt seed, a small CSV file that lives in the repository, so the rules are reviewed like code. Name matching found 53 of the 83 candies and pulled in **80 products that are not candy at all**, such as an Almond Joy coffee creamer and a Hershey's ice cream bar. The hand-written rules found 67 candies with no non-candy matches, because they handle spellings like "KitKat" and "Mike and Ike" and exclude variants like Snickers Almond.
+I compared two approaches: matching on the candy's name alone, and hand-written matching rules stored as a dbt seed, a small CSV file that lives in the repository, so the rules are reviewed like code. Name matching found **53 of the 83** candies and pulled in **80 products that are not candy at all**, such as an Almond Joy coffee creamer and a Hershey's ice cream bar. The hand-written rules found **67 candies** with **no non-candy matches**, because they handle spellings like "KitKat" and "Mike and Ike" and exclude variants like Snickers Almond.
 
-In **Figure 1.8**, the two approaches are compared on how many candies they match and how many non-candy products they pull in.
+**Figure 1.8** compares how many candies each approach matches and how many non-candy products it pulls in.
 
 <Chart
   kind="hbar"
@@ -300,27 +300,27 @@ In **Figure 1.8**, the two approaches are compared on how many candies they matc
 
 ## How a matching bug put Butterfinger in the peanut-free bowl
 
-**Butterfinger is made with peanuts, yet the first version of the peanut-free bowl included it:** the 2017 data had only three Butterfinger products. One was the bar itself, with no ingredient list. The other two were a caramel apple and a box of marshmallow squares "made with" Butterfinger, and their ingredient lists never mention peanuts.
+Butterfinger is made with peanuts, yet the first version of the peanut-free bowl included it. The 2017 data had only three Butterfinger products. One was the bar itself, with no ingredient list. The other two were a caramel apple and a box of marshmallow squares "made with" Butterfinger, and their ingredient lists never mention peanuts.
 
-The fix has two parts. **Products "made with" a candy no longer count as evidence for that candy**, and neither do caramel apples or other derived treats. And **the ranking itself flags candies made with peanuts or almonds**, so the pipeline now keeps every flagged candy out of peanut-free and nut-free bowls, no matter what the labels say. A dbt test enforces it on every run.
+The fix has two parts. Products "made with" a candy no longer count as evidence for that candy, and neither do caramel apples or other derived treats. And the ranking itself flags candies made with peanuts or almonds, so the pipeline now keeps every flagged candy out of peanut-free and nut-free bowls, no matter what the labels say. A dbt test enforces it on every run.
 
 The change feed later confirmed that this rule was correct: the current Butterfinger labels list peanuts, milk and soy.
 
 ### Three more matching bugs
 
-**Mixed packs make one candy look like it contains another candy's allergens:** a "Reese's & Kit Kat Halloween Candy Assortment" made Kit Kat look like it contains peanuts. Assortments and variety packs are now excluded.
+Mixed packs made one candy look like it contained another candy's allergens. A "Reese's & Kit Kat Halloween Candy Assortment" made Kit Kat look like it contains peanuts, so the pipeline now excludes assortments and variety packs.
 
-**A couple of bad records can override dozens of good ones:** the pipeline prefers US labels because US and European recipes differ. With the threshold at two products, Snickers' only two current US records (a popcorn listing named "Snickers" and a wrapper scan of customer-service text) decided the result over 25 complete labels from other countries and made Snickers look peanut-free. US labels now decide only when there are at least three.
+A couple of bad records could override dozens of good ones. The pipeline prefers US labels because US and European recipes differ. With the threshold at two products, Snickers' only two current US records (a popcorn listing named "Snickers" and a wrapper scan of customer-service text) decided the result over **25 complete labels** from other countries and made Snickers look peanut-free. US labels now decide only when there are at least three.
 
-**A company name can match the wrong candy:** the rule for Tootsie Roll Juniors looked for "Tootsie Roll" and "Junior" anywhere in a product's name or brand. Junior Mints are made by Tootsie Roll Industries, so all five Junior Mints products counted as Tootsie Roll Juniors, and since Junior Mints list no milk, Tootsie Roll Juniors looked milk-free even though they are made with condensed milk. The rule now excludes Junior Mints, and a test pins it.
+A company name matched the wrong candy. The rule for Tootsie Roll Juniors looked for "Tootsie Roll" and "Junior" anywhere in a product's name or brand. Junior Mints are made by Tootsie Roll Industries, so all five Junior Mints products counted as Tootsie Roll Juniors, and since Junior Mints list no milk, Tootsie Roll Juniors looked milk-free even though they are made with condensed milk. The rule now excludes Junior Mints, and a test pins it.
 
-> Every one of these bugs made a candy look safer than it is. In allergy data, that is the dangerous kind of error.
+> Every one of these bugs made a candy look safer than it is, which is the dangerous direction for allergy data.
 
 ## Is the 2017 answer still true?
 
-Both Kaggle files are from 2017, so the obvious question is whether the labels on shelves today still agree. The daily change feed answers it. Its first two weeks held 98,694 product edits, 348 of them for ranked candies, and 21 candies had at least two current products with ingredient lists.
+Both Kaggle files are from 2017, so the obvious question is whether the labels on shelves today still agree. The daily change feed answers it. Its first two weeks held **98,694** product edits, **348** of them for ranked candies, and **21 candies** had at least two current products with ingredient lists.
 
-In **Figure 1.9**, the 83 candies are grouped by how their allergen status in the 2017 data compares with their current labels.
+**Figure 1.9** groups the 83 candies by how their allergen status in the 2017 data compares with their current labels.
 
 <Chart
   kind="hbar"
@@ -333,18 +333,16 @@ In **Figure 1.9**, the 83 candies are grouped by how their allergen status in th
 
 <p class="text-sm text-nvim-gray -mt-4 text-center"><strong>Figure 1.9:</strong> How each candy's allergen status in the 2017 data compares with its current labels from the daily change feed.</p>
 
-**Most changes add allergen warnings rather than remove them:** Snickers and Milky Way moved from `varies` to `contains` for egg, which matches their egg-white nougat. Hershey's milk chocolate now carries a tree-nut "may contain" warning that the 2017 records did not show. Butterfinger, unknown in 2017, now has labels that list peanuts, milk and soy.
+Most changes add allergen warnings. Snickers and Milky Way moved from `varies` to `contains` for egg, which matches their egg-white nougat. Hershey's milk chocolate now carries a tree-nut "may contain" warning that the 2017 records did not show. Butterfinger, unknown in 2017, now has labels that list peanuts, milk and soy.
 
 The bowls stay on the pinned 2017 data, so the results above are reproducible. The comparison grows every morning as the job archives another day of the feed, and a dbt test warns if a day is ever missed.
 
 ## What this means for anyone handing out candy
 
-Here is what the results mean the next time you buy candy for trick-or-treaters:
-
-- **Keep the bowl you were going to buy and swap one candy for Starburst:** that way, every kid with a peanut, milk or tree-nut allergy has something to eat. It barely changes how popular the bowl is.
-- **If you know a peanut-allergic kid is coming, build the bowl around Starburst, Rolo, Skittles and Sour Patch Kids:** that bowl keeps a 78% popularity score, so it gives up about a fifth of the popularity, not most of it.
-- **Swap favorites one for one:** Hershey's Special Dark for Twix, Mounds for Kit Kat, Charleston Chew for Snickers, and Junior Mints for Reese's Pieces.
-- **Check the "may contain" line, not just the ingredients:** these warnings vary from one candy maker to the next, and they are why Kit Kat and M&M's drop out of a peanut-free bowl even though neither lists peanuts.
+- Keep the bowl you were going to buy and swap one candy for Starburst. Every kid with a peanut, milk or tree-nut allergy then has something to eat, and the bowl barely loses any popularity.
+- If you know a peanut-allergic kid is coming, build the bowl around Starburst, Rolo, Skittles and Sour Patch Kids. That bowl keeps a **78% popularity score**, so you give up only **about a fifth** of the popularity.
+- Swap favorites one for one: Hershey's Special Dark for Twix, Mounds for Kit Kat, Charleston Chew for Snickers, and Junior Mints for Reese's Pieces.
+- Check the "may contain" line as well as the ingredients. These warnings vary from one candy maker to the next, and they are why Kit Kat and M&M's drop out of a peanut-free bowl even though neither lists peanuts.
 
 ## References
 <a name="references"></a>
