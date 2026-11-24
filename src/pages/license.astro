@@ -11,14 +11,14 @@ const OFL = (txt: string) => a(`/fonts/${txt}`, 'SIL OFL 1.1');
 const licenses = [
   {
     part: 'Source code',
-    license: `${a('https://github.com/kidskoding/portfolio/blob/master/LICENSE', 'MIT')}. Use it however you like; keep the copyright notice.`,
+    license: `${a('https://github.com/kidskoding/portfolio/blob/master/LICENSE', 'MIT')}: use it however you like, keep the copyright notice`,
   },
   {
     part: 'Blog posts and project write-ups, with their diagrams and charts',
-    license: `${a('https://creativecommons.org/licenses/by/4.0/', 'CC BY 4.0')}. Share or adapt them; credit me and link back.`,
+    license: `${a('https://creativecommons.org/licenses/by/4.0/', 'CC BY 4.0')}: share or adapt them, credit me and link back`,
   },
-  { part: 'Photos of me', license: 'All rights reserved. Ask before reusing them.' },
-  { part: 'Third-party libraries, fonts, icons and images', license: 'Their own licenses, credited below.' },
+  { part: 'Photos of me', license: 'All rights reserved, ask before reusing them' },
+  { part: 'Third-party libraries, fonts, icons and images', license: 'Their own licenses, credited below' },
 ];
 
 const credits = [
@@ -51,12 +51,12 @@ const credits = [
       ],
       [
         gh('JetBrains/JetBrainsMono', 'JetBrains Mono 2.304'),
-        'All text, subset to Latin and symbols. © The JetBrains Mono Project Authors',
-        OFL('JetBrainsMono-OFL.txt'),
+        'All text, subset to Latin and symbols',
+        `${OFL('JetBrainsMono-OFL.txt')}, © The JetBrains Mono Project Authors`,
       ],
       [
         a('https://www.nerdfonts.com/', 'JetBrains Mono Nerd Font Propo'),
-        `The four file icons. Nerd Fonts takes them from Seti-UI, Devicons and Octicons (MIT) and Material Design Icons (Apache 2.0), per ${ghLicense('ryanoasis/nerd-fonts', 'its license', 'blob/master/LICENSE')}`,
+        'The four file icons, which Nerd Fonts takes from Seti-UI, Devicons, Octicons (MIT) and Material Design Icons (Apache 2.0)',
         OFL('jetbrains-nerd-OFL.txt'),
       ],
       [gh('nvim-tree/nvim-web-devicons', 'nvim-web-devicons'), 'Which icon and color each file type gets', ''],
@@ -114,7 +114,7 @@ const credits = [
     <article class="credits-doc mt-10 rounded-xl border border-border-subtle bg-bg-card p-6 sm:p-8" data-animate>
       <section>
         <h2 class="text-lg font-semibold text-nvim-green">License</h2>
-        <p class="text-text-secondary mt-3 leading-relaxed">© 2026 Anirudh Konidala.</p>
+        <p class="text-text-secondary mt-3 leading-relaxed">© 2026 Anirudh Konidala</p>
         <table class="mt-4">
           <tbody>
             {licenses.map((row) => (
