@@ -21,7 +21,7 @@ If nothing is given, ask what the post is about: an experience, a project, somet
 
 ## Before You Hand Back Any Draft (required)
 
-Every time you write or rewrite post prose (a full draft, a rewrite, a restructure, a new section), finish with these three steps in order, even when the user says "just write it" or "fix it fast":
+Every time you write or change post prose, finish with these three steps in order, even when the user says "just write it" or "fix it fast". That includes a full draft, a rewrite, a restructure or a new section, and also small edits to a finished or published post: a new lead-in sentence, a caption, a moved or merged paragraph. A one-sentence edit still gets the humanizer pass.
 
 1. **Formatting Pass** from `style-guide.md`.
 2. **Invoke the `humanizer` skill with the Skill tool** on the post file. Writing with its rules in mind does not count, and neither does running it on an earlier version.

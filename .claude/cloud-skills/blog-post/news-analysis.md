@@ -91,4 +91,4 @@ Write the full post strictly following the approved spec. For every section in t
 - Do NOT stay surface level — "this is a big deal" is worthless; "this shifts X to Y, which changes Z" is the goal
 - Do NOT use hype language or generic AI buzzwords
 
-Then write the file per "Output Target" in `SKILL.md`, ending with the `## References` section as a bulleted list (`-`, never numbered), in first-citation order.
+Then write the file per "Output Target" in `SKILL.md`, ending with the `## References` section as a numbered list (`1.`, `2.`, …) in first-citation order, so each `<sup>[N]` footnote matches item N.
