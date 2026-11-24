@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import ProjectCard from '../components/ProjectCard.astro';
+import ProjectsGallery from '../components/islands/ProjectsGallery';
 import Layout from '../layouts/Layout.astro';
 import { byProjectOrderThenDate } from '../data/project-sort';
 
@@ -24,55 +25,15 @@ const groups = tabs.map((tab) => ({
       <p class="mt-3 text-base text-text-muted">things i've built. click on a tile!</p>
     </div>
 
-    <div
-      class="mt-10 flex gap-2 overflow-x-auto border-b border-border-subtle"
-      role="tablist"
-      aria-label="Project categories"
-      data-animate
-    >
-      {groups.map((group, index) => (
-        <button
-          class="tab-btn -mb-px whitespace-nowrap border-b-2 px-4 py-2.5 text-sm font-medium transition-colors duration-200"
-          type="button"
-          role="tab"
-          data-tab={group.key}
-          aria-controls={`tab-${group.key}`}
-          aria-selected={index === 0 ? 'true' : 'false'}
-          title={`Switch to tab ${index + 1}`}
-        >
-          {group.label}
-        </button>
-      ))}
-    </div>
-
-    <label
-      class="mt-4 flex min-w-0 items-center gap-2 border border-border-subtle bg-bg-secondary px-3 py-2 font-mono"
-      data-animate
-    >
-      <span class="font-bold text-nvim-red" aria-hidden="true">
-        &gt;
-      </span>
-      <input
-        class="min-w-0 flex-1 border-0 bg-transparent text-sm text-text-primary outline-none placeholder:text-nvim-gray"
-        id="project-filter"
-        type="search"
-        placeholder="filter tiles..."
-        autocomplete="off"
-        spellcheck="false"
-        aria-label="Filter projects"
-      />
-    </label>
-
-    {groups.map((group, index) => (
-      <div id={`tab-${group.key}`} class:list={['tab-panel mt-6', { hidden: index !== 0 }]} role="tabpanel">
-        <div class="grid gap-4 sm:grid-cols-2">
+    <ProjectsGallery client:load groups={groups.map(({ key, label }) => ({ key, label }))}>
+      {groups.map((group) => (
+        <Fragment slot={`panel-${group.key}`}>
           {group.items.map((project) => (
             <ProjectCard project={project} />
           ))}
-        </div>
-        <p class="no-matches mt-4 hidden text-sm text-text-muted">no matches</p>
-      </div>
-    ))}
+        </Fragment>
+      ))}
+    </ProjectsGallery>
 
     <p class="mt-10 text-sm" data-animate>
       <a
@@ -87,7 +48,7 @@ const groups = tabs.map((tab) => ({
   </main>
 </Layout>
 
-<style>
+<style is:global>
   .tab-btn[aria-selected='true'] {
     color: var(--color-nvim-green);
     border-color: var(--color-nvim-yellow);
@@ -97,208 +58,3 @@ const groups = tabs.map((tab) => ({
     border-color: transparent;
   }
 </style>
-
-<script>
-  let galleryController: AbortController | undefined;
-
-  function initGallery() {
-    galleryController?.abort();
-    galleryController = undefined;
-
-    const main = document.getElementById('main-content');
-    const filter = document.getElementById('project-filter') as HTMLInputElement | null;
-    if (!main || !filter) return;
-
-    const controller = new AbortController();
-    galleryController = controller;
-    const listener = { signal: controller.signal };
-    let cursor = 0;
-    let pendingG = false;
-    let pendingGTimer: number | undefined;
-
-    const activePanel = () => main.querySelector<HTMLElement>('.tab-panel:not(.hidden)');
-    const visibleTiles = () =>
-      [...(activePanel()?.querySelectorAll<HTMLElement>('[data-tile]') ?? [])].filter((tile) => !tile.hidden);
-
-    const paint = () => {
-      const tiles = visibleTiles();
-      main.querySelectorAll('.tile-cursor').forEach((tile) => tile.classList.remove('tile-cursor'));
-      if (!tiles.length) return;
-      cursor = Math.max(0, Math.min(cursor, tiles.length - 1));
-      tiles[cursor].classList.add('tile-cursor');
-    };
-
-    const applyFilter = () => {
-      const query = filter.value.trim().toLowerCase();
-      const panel = activePanel();
-      if (!panel) return;
-      let shown = 0;
-      panel.querySelectorAll<HTMLElement>('[data-tile]').forEach((tile) => {
-        const matches = !query || (tile.dataset.search ?? '').includes(query);
-        tile.hidden = !matches;
-        if (matches) shown += 1;
-      });
-      panel.querySelector<HTMLElement>('.no-matches')?.classList.toggle('hidden', shown > 0 || !query);
-      cursor = 0;
-      paint();
-    };
-
-    const activateTab = (tab: string) => {
-      main.querySelectorAll<HTMLButtonElement>('.tab-btn').forEach((button) => {
-        const active = button.dataset.tab === tab;
-        button.setAttribute('aria-selected', String(active));
-        button.tabIndex = active ? 0 : -1;
-      });
-      main
-        .querySelectorAll<HTMLElement>('.tab-panel')
-        .forEach((panel) => panel.classList.toggle('hidden', panel.id !== `tab-${tab}`));
-      filter.value = '';
-      applyFilter();
-    };
-
-    // Mouse users leave focus on a tab or the help button; vim motions should
-    // reclaim it so Enter opens the cursor tile instead of re-firing that button.
-    function releaseButtonFocus() {
-      const active = document.activeElement as HTMLElement | null;
-      if (active && active !== document.body && active.closest('.tab-btn, #gallery-help')) active.blur();
-    }
-
-    function move(delta: number) {
-      releaseButtonFocus();
-      const tiles = visibleTiles();
-      if (!tiles.length) return;
-      cursor = Math.max(0, Math.min(tiles.length - 1, cursor + delta));
-      paint();
-      visibleTiles()[cursor]?.scrollIntoView({ block: 'nearest' });
-    }
-
-    function columns() {
-      const tiles = visibleTiles();
-      if (tiles.length < 2) return 1;
-      const firstTop = tiles[0].offsetTop;
-      const nextRow = tiles.findIndex((tile, index) => index > 0 && tile.offsetTop > firstTop);
-      return nextRow < 0 ? tiles.length : nextRow;
-    }
-
-    main
-      .querySelectorAll<HTMLButtonElement>('.tab-btn')
-      .forEach((button) =>
-        button.addEventListener('click', () => activateTab(button.dataset.tab ?? 'projects'), listener),
-      );
-    main.addEventListener(
-      'mouseover',
-      (event) => {
-        const tile = (event.target as HTMLElement).closest<HTMLElement>('[data-tile]');
-        const index = tile ? visibleTiles().indexOf(tile) : -1;
-        if (index >= 0 && index !== cursor) {
-          cursor = index;
-          paint();
-        }
-      },
-      listener,
-    );
-    main.addEventListener(
-      'focusin',
-      (event) => {
-        const tile = (event.target as HTMLElement).closest<HTMLElement>('[data-tile]');
-        const index = tile ? visibleTiles().indexOf(tile) : -1;
-        if (index >= 0) {
-          cursor = index;
-          paint();
-        }
-      },
-      listener,
-    );
-    filter.addEventListener('input', applyFilter, listener);
-    filter.addEventListener(
-      'keydown',
-      (event) => {
-        if (event.key === 'Escape') {
-          filter.value = '';
-          applyFilter();
-          filter.blur();
-        } else if (event.key === 'Enter') {
-          visibleTiles()[cursor]?.click();
-        }
-      },
-      listener,
-    );
-
-    document.addEventListener(
-      'keydown',
-      (event) => {
-        const target = event.target as HTMLElement;
-        const typing = target.matches('input, textarea') || target.isContentEditable;
-        const nativeEnter = event.key === 'Enter' && Boolean(target.closest('a, button'));
-        const telescopeOpen = document.getElementById('telescope')?.classList.contains('open');
-        if (typing || nativeEnter || telescopeOpen || event.metaKey || event.ctrlKey || event.altKey) return;
-
-        switch (event.key) {
-          case 'h':
-          case 'ArrowLeft':
-            event.preventDefault();
-            move(-1);
-            break;
-          case 'l':
-          case 'ArrowRight':
-            event.preventDefault();
-            move(1);
-            break;
-          case 'j':
-          case 'ArrowDown':
-            event.preventDefault();
-            move(columns());
-            break;
-          case 'k':
-          case 'ArrowUp':
-            event.preventDefault();
-            move(-columns());
-            break;
-          case 'Enter':
-            event.preventDefault();
-            visibleTiles()[cursor]?.click();
-            break;
-          case 'G':
-            event.preventDefault();
-            releaseButtonFocus();
-            cursor = visibleTiles().length - 1;
-            paint();
-            break;
-          case 'g':
-            if (pendingG) {
-              releaseButtonFocus();
-              cursor = 0;
-              paint();
-              pendingG = false;
-              window.clearTimeout(pendingGTimer);
-            } else {
-              pendingG = true;
-              pendingGTimer = window.setTimeout(() => {
-                pendingG = false;
-              }, 600);
-            }
-            break;
-          case '1':
-          case '2':
-          case '3':
-            main.querySelectorAll<HTMLButtonElement>('.tab-btn')[Number(event.key) - 1]?.click();
-            break;
-          case '/':
-            event.preventDefault();
-            filter.focus();
-            break;
-          case 'Escape':
-            filter.value = '';
-            applyFilter();
-            break;
-        }
-      },
-      listener,
-    );
-
-    activateTab('projects');
-  }
-
-  initGallery();
-  document.addEventListener('astro:page-load', initGallery);
-</script>
