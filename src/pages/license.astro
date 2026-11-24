@@ -1,0 +1,225 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const a = (href: string, text: string) =>
+  `<a href="${href}" class="text-nvim-blue underline hover:text-nvim-aqua transition-colors">${text}</a>`;
+const gh = (repo: string, text = repo) => a(`https://github.com/${repo}`, text);
+const ghLicense = (repo: string, license: string, file = 'blob/main/LICENSE') =>
+  a(`https://github.com/${repo}/${file}`, license);
+const OFL = (txt: string) => a(`/fonts/${txt}`, 'SIL OFL 1.1');
+
+const licenses = [
+  {
+    part: 'Source code',
+    license: `${a('https://github.com/kidskoding/portfolio/blob/master/LICENSE', 'MIT')}. Use it however you like; keep the copyright notice.`,
+  },
+  {
+    part: 'Blog posts and project write-ups, with their diagrams and charts',
+    license: `${a('https://creativecommons.org/licenses/by/4.0/', 'CC BY 4.0')}. Share or adapt them; credit me and link back.`,
+  },
+  { part: 'Photos of me', license: 'All rights reserved. Ask before reusing them.' },
+  { part: 'Third-party libraries, fonts, icons and images', license: 'Their own licenses, credited below.' },
+];
+
+const credits = [
+  {
+    group: 'Libraries',
+    rows: [
+      [
+        gh('withastro/astro', 'Astro'),
+        'Builds the site and runs page transitions',
+        ghLicense('withastro/astro', 'MIT'),
+      ],
+      [
+        a('https://gsap.com/', 'GSAP'),
+        'Page-entry animations',
+        `${a('https://gsap.com/standard-license', 'GSAP Standard License')} (free, not open source)`,
+      ],
+      [
+        gh('chartjs/Chart.js', 'Chart.js'),
+        'Charts in blog posts',
+        ghLicense('chartjs/Chart.js', 'MIT', 'blob/master/LICENSE.md'),
+      ],
+      [gh('tailwindlabs/tailwindcss', 'Tailwind CSS'), 'Stylesheet', ghLicense('tailwindlabs/tailwindcss', 'MIT')],
+      [
+        gh('shikijs/shiki', 'Shiki'),
+        'Code highlighting, with diff deletions recolored and italics removed',
+        ghLicense('shikijs/shiki', 'MIT'),
+      ],
+      [
+        gh('lukilabs/beautiful-mermaid', 'beautiful-mermaid'),
+        'Diagram SVGs, patched to size labels for a monospace font',
+        'MIT',
+      ],
+    ],
+  },
+  {
+    group: 'Colors, fonts and icons',
+    rows: [
+      [
+        gh('catppuccin/catppuccin', 'Catppuccin'),
+        `Macchiato palette and code theme, through ${gh('catppuccin/tailwindcss', '@catppuccin/tailwindcss')}`,
+        ghLicense('catppuccin/catppuccin', 'MIT'),
+      ],
+      [
+        gh('JetBrains/JetBrainsMono', 'JetBrains Mono 2.304'),
+        'All text, subset to Latin and symbols. © The JetBrains Mono Project Authors',
+        OFL('JetBrainsMono-OFL.txt'),
+      ],
+      [
+        a('https://www.nerdfonts.com/', 'JetBrains Mono Nerd Font Propo'),
+        `The four file icons. Nerd Fonts takes them from Seti-UI, Devicons and Octicons (MIT) and Material Design Icons (Apache 2.0), per ${ghLicense('ryanoasis/nerd-fonts', 'its license', 'blob/master/LICENSE')}`,
+        OFL('jetbrains-nerd-OFL.txt'),
+      ],
+      [
+        gh('nvim-tree/nvim-web-devicons', 'nvim-web-devicons'),
+        'Which icon and color each file type gets',
+        ghLicense('nvim-tree/nvim-web-devicons', 'MIT', 'blob/master/LICENSE'),
+      ],
+      [
+        gh('phosphor-icons/core', 'Phosphor Icons'),
+        'Icons on the skills page',
+        ghLicense('phosphor-icons/core', 'MIT'),
+      ],
+      [
+        gh('simple-icons/simple-icons', 'Simple Icons'),
+        'Brand logos on the skills and certificates pages',
+        ghLicense('simple-icons/simple-icons', 'CC0 1.0', 'blob/develop/LICENSE.md'),
+      ],
+    ],
+  },
+  {
+    group: 'Images',
+    rows: [
+      [
+        a('https://www.pexels.com/photo/candies-and-chocolate-bars-on-black-surface-14147300/', 'Candy photo'),
+        'Cover of the Halloween candy post, from Pexels',
+        a('https://www.pexels.com/license/', 'Pexels License'),
+      ],
+    ],
+  },
+  {
+    group: 'Design',
+    rows: [
+      [
+        gh('neovim/neovim', 'Neovim'),
+        'The whole look; the home page reproduces the text of <code>:intro</code>',
+        `${ghLicense('neovim/neovim', 'Apache 2.0', 'blob/master/LICENSE.txt')}, parts under the Vim license`,
+      ],
+      [
+        `${gh('akinsho/bufferline.nvim', 'bufferline.nvim')}, ${gh('folke/snacks.nvim', 'snacks.nvim')}, ${gh('nvim-lualine/lualine.nvim', 'lualine.nvim')}, ${gh('nvim-telescope/telescope.nvim', 'telescope.nvim')}`,
+        "Reference for the tabs, file tree, statusline and finder, redrawn in this site's own HTML and CSS",
+        'No code used',
+      ],
+    ],
+  },
+];
+---
+
+<Layout
+  title="License"
+  description="The license for this site's code and writing, and credits for everything it borrows."
+>
+  <main class="max-w-4xl w-full mx-auto px-6 py-8" id="main-content">
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-nvim-green mb-3" data-animate>
+      License
+    </p>
+    <h1 class="text-4xl md:text-5xl font-bold tracking-tight gradient-text" data-animate>
+      License and credits
+    </h1>
+    <p class="text-text-muted mt-3 text-base" data-animate>
+      what you can reuse, and what this site borrows
+    </p>
+
+    <article class="credits-doc mt-10 rounded-xl border border-border-subtle bg-bg-card p-6 sm:p-8" data-animate>
+      <section>
+        <h2 class="text-lg font-semibold text-nvim-green">License</h2>
+        <p class="text-text-secondary mt-3 leading-relaxed">© 2026 Anirudh Konidala.</p>
+        <table class="mt-4">
+          <tbody>
+            {licenses.map((row) => (
+              <tr>
+                <th scope="row">{row.part}</th>
+                <td set:html={row.license} />
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-nvim-green">Credits</h2>
+        {credits.map((group) => (
+          <>
+            <h3 class="mt-6 font-semibold text-nvim-yellow">{group.group}</h3>
+            <table class="mt-2">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Used for</th>
+                  <th scope="col">License</th>
+                </tr>
+              </thead>
+              <tbody>
+                {group.rows.map(([name, use, license]) => (
+                  <tr>
+                    <td set:html={name} />
+                    <td set:html={use} />
+                    <td set:html={license} />
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        ))}
+      </section>
+
+      <section>
+        <h2 class="text-lg font-semibold text-nvim-green">Trademarks</h2>
+        <p class="text-text-secondary mt-3 leading-relaxed">
+          Company, school and certificate issuer logos, brand icons and project names belong to their owners. I use them
+          to show where I worked, studied or earned a certificate and which tools I use; none of those owners endorses
+          this site.
+        </p>
+      </section>
+    </article>
+  </main>
+</Layout>
+
+<style>
+  .credits-doc :global(section + section) {
+    margin-top: 2.5rem;
+  }
+  .credits-doc table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    line-height: 1.6;
+  }
+  .credits-doc th,
+  .credits-doc td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.5rem 1rem 0.5rem 0;
+    border-bottom: 1px solid var(--color-nvim-bg2);
+    color: var(--color-text-secondary);
+  }
+  .credits-doc thead th {
+    color: var(--color-nvim-fg3);
+    font-weight: 500;
+  }
+  .credits-doc tbody th {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    width: 40%;
+  }
+  .credits-doc tbody td:first-child {
+    color: var(--color-text-primary);
+  }
+  .credits-doc :global(code) {
+    color: var(--color-nvim-green);
+    background: var(--color-nvim-bg-hard);
+    padding: 0.1em 0.35em;
+    border-radius: 0.25rem;
+  }
+</style>

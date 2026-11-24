@@ -57,4 +57,4 @@ New posts and projects show up as buffers, in the Explorer and in Telescope on t
 
 ## License
 
-[MIT](LICENSE)
+Code: [MIT](LICENSE). Blog posts and project write-ups in `src/content/`: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Photos of me: all rights reserved. Credits for third-party code, fonts and icons are on the site's `/license` page.

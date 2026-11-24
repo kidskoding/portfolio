@@ -65,12 +65,15 @@ src/
 │   ├── contact.astro
 │   ├── package-json.astro # Renders the real package.json (imported at build time) as a JSON buffer (/package-json)
 │   ├── rss.xml.ts         # RSS feed of non-draft blog posts; full post HTML rendered with the container API, root-relative src/href made absolute
+│   ├── license.astro      # License and credits: code MIT (LICENSE), writing CC BY 4.0 (LICENSE-CONTENT), photos all rights reserved, plus every third-party library, font, icon set and photo that ships; add a line when you add one
 │   ├── checkhealth.astro  # Colophon (font, theme, inspiration, stack) styled as nvim's :checkhealth report; opens as the health:// scratch buffer, not in the explorer; versions read from package.json
 │   └── blog/
 └── styles/
     └── global.css
 
 patches/              # bun patchedDependencies; beautiful-mermaid measures labels as monospace (0.6em/char, JetBrains Mono's advance width) so label text fits its boxes, and takes edgeNodeSpacing/alignment options. Edit with `bun patch beautiful-mermaid` then `bun patch --commit`, and drop the `.bun-tag-*` hunk it adds
+LICENSE               # MIT, for the code (kept verbatim so GitHub detects it)
+LICENSE-CONTENT       # CC BY 4.0 legal code, for blog posts and project write-ups (verbatim, same reason)
 flake.nix             # Nix dev shell + `nix run` apps wrapping bun scripts
 .github/workflows/ci.yml # GitHub Actions: format, alejandra, astro check, build. Vercel Git integration deploys (master to production, PRs to previews)
 .github/dependabot.yml # weekly grouped PR bumping GitHub Actions versions (actions only, not npm)
