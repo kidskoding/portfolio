@@ -511,51 +511,28 @@ function simulatorRows(candies: Candy[], safeCount: number, regular: Candy[]) {
   return { rows, stats };
 }
 
-export function mountChart(fig: HTMLElement) {
-  if (fig.dataset.mounted) return;
-  fig.dataset.mounted = 'true';
-  const spec = JSON.parse(fig.querySelector('script[type="application/json"]')!.textContent!) as Json;
-  const canvas = fig.querySelector('canvas')!;
-  const { kind, data } = spec;
-  // shortcut: width is read once at mount; rotating a phone keeps the first layout until reload
-  const options = { ...spec.options, narrow: fig.clientWidth < 560 };
-
-  if (kind === 'hbar') new Chart(canvas, hbar(data, options));
-  if (kind === 'scatter') new Chart(canvas, scatter(data, options));
-
-  if (kind === 'dumbbell') {
-    const views = (data.views as Json[]) ?? [{ key: 'all', rows: data.rows }];
-    const chart = new Chart(canvas, dumbbell(views[0].rows, options));
-    fig.querySelector('.chart-views')?.addEventListener('click', (e) => {
-      const btn = (e.target as Element).closest<HTMLButtonElement>('button[data-view]');
-      if (!btn) return;
-      fig.querySelectorAll('.chart-views button').forEach((b) => b.setAttribute('aria-selected', String(b === btn)));
-      const next = dumbbell(views.find((v) => v.key === btn.dataset.view)!.rows, options);
-      chart.data = next.data;
-      chart.options = next.options!;
-      chart.update('none');
-    });
-  }
-
-  if (kind === 'simulator') {
-    const candies = data.candies as Candy[];
-    const regular = [...candies].sort((a, b) => b.win - a.win).slice(0, 10);
-    const input = fig.querySelector<HTMLInputElement>('input[data-safe-count]')!;
-    const stats = fig.querySelector('.chart-stats')!;
-    const first = simulatorRows(candies, Number(input.value), regular);
-    const chart = new Chart(canvas, hbar({ rows: first.rows }, options));
-    stats.textContent = first.stats;
-    input.addEventListener('input', () => {
-      input.nextElementSibling!.textContent = `${input.value} of 10`;
-      const next = simulatorRows(candies, Number(input.value), regular);
-      const cfg = hbar({ rows: next.rows }, options);
-      chart.data = cfg.data;
-      chart.options = cfg.options!;
-      chart.update('none');
-      stats.textContent = next.stats;
-    });
-  }
+// Chart.tsx owns the figure's DOM and state; these build the Chart.js config for each state it can be in.
+// narrow: width is read once at mount; rotating a phone keeps the first layout until reload (shortcut)
+export function chartConfig(kind: string, data: Json, options: Json): ChartConfiguration {
+  if (kind === 'hbar') return hbar(data, options);
+  if (kind === 'scatter') return scatter(data, options);
+  if (kind === 'dumbbell') return dumbbellView(data, undefined, options);
+  return simulatorView(data, 1, options).config;
 }
+
+export function dumbbellView(data: Json, viewKey: string | undefined, options: Json): ChartConfiguration {
+  const views = (data.views as Json[]) ?? [{ key: 'all', rows: data.rows }];
+  return dumbbell((views.find((v) => v.key === viewKey) ?? views[0]).rows, options);
+}
+
+export function simulatorView(data: Json, safeCount: number, options: Json) {
+  const candies = data.candies as Candy[];
+  const regular = [...candies].sort((a, b) => b.win - a.win).slice(0, 10);
+  const { rows, stats } = simulatorRows(candies, safeCount, regular);
+  return { config: hbar({ rows }, options), stats };
+}
+
+export { Chart };
 
 Chart.register(legendGap);
 setDefaults();
