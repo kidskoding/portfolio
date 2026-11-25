@@ -47,6 +47,26 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    id: '9',
+    company: 'Databricks',
+    companyLogo: databricksLogoIcon.src,
+    startDate: 'May 2026',
+    endDate: 'Present',
+    duration: calculateDuration('May 2026', 'Present'),
+    roles: [
+      {
+        title: 'student fellowship',
+        startDate: 'May 2026',
+        endDate: 'Present',
+        duration: calculateDuration('May 2026', 'Present'),
+        description: [
+          'building practical and scalable Databricks solutions with mentor guidance, while deepening technical expertise and organizing campus hackathons and events in collaboration with Databricks!!',
+        ],
+        skills: ['Azure Databricks', 'Databricks', 'Business Intelligence (BI)', 'Data Engineering'],
+      },
+    ],
+  },
+  {
     id: '14',
     company: 'Ericsson',
     companyLogo: ericssonLogoIcon.src,
@@ -106,26 +126,6 @@ export const experiences: Experience[] = [
           'Vite Plus',
           'Vite',
         ],
-      },
-    ],
-  },
-  {
-    id: '9',
-    company: 'Databricks',
-    companyLogo: databricksLogoIcon.src,
-    startDate: 'May 2026',
-    endDate: 'Present',
-    duration: calculateDuration('May 2026', 'Present'),
-    roles: [
-      {
-        title: 'student fellowship',
-        startDate: 'May 2026',
-        endDate: 'Present',
-        duration: calculateDuration('May 2026', 'Present'),
-        description: [
-          'creating a launchpad into driving and fostering databricks, data, and ai adoption via tech talks, workshops, and hackathons!!',
-        ],
-        skills: ['Azure Databricks', 'Databricks', 'Business Intelligence (BI)', 'Data Engineering'],
       },
     ],
   },
@@ -213,7 +213,7 @@ export const experiences: Experience[] = [
           'driving voice productivity for operating systems',
           'aligning with an engineering team on product requirements and product design regarding various MCP integrations for VoiceOS (i.e Doordash, TikTok, GitHub, Microsoft Suite, Salesforce etc.)',
         ],
-        skills: [],
+        skills: ['Model Context Protocol (MCP)'],
       },
     ],
   },
@@ -231,7 +231,7 @@ export const experiences: Experience[] = [
         endDate: 'Present',
         duration: calculateDuration('May 2026', 'Present'),
         description: ['lore: an open source version control system designed for game developers'],
-        skills: ['Rust', 'GitHub', 'Git', 'GitHub Actions', 'Game Development'],
+        skills: ['Rust', 'GitHub', 'Git', 'CI/CD', 'Version Control'],
       },
     ],
   },
