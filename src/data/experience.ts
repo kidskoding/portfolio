@@ -1,6 +1,6 @@
-import astralLogoIcon from '../assets/astral.jpg';
 import brunswickLogoIcon from '../assets/brunswick.jpg';
 import databricksLogoIcon from '../assets/databricks-logo.jpeg';
+import epicGamesLogoIcon from '../assets/epic-games-logo.png';
 import ericssonLogoIcon from '../assets/ericsson.jpg';
 import sapienceLogoIcon from '../assets/sapience-logo.jpeg';
 import agenticAiUiucLogoIcon from '../assets/agentic-ai-uiuc.jpg';
@@ -219,21 +219,19 @@ export const experiences: Experience[] = [
   },
   {
     id: '12',
-    company: 'Astral',
-    companyLogo: astralLogoIcon.src,
-    startDate: 'Sep 2026',
+    company: 'Epic Games',
+    companyLogo: epicGamesLogoIcon.src,
+    startDate: 'May 2026',
     endDate: 'Present',
-    duration: calculateDuration('Sep 2026', 'Present'),
+    duration: calculateDuration('May 2026', 'Present'),
     roles: [
       {
         title: 'oss developer',
-        startDate: 'Sep 2026',
+        startDate: 'May 2026',
         endDate: 'Present',
-        duration: calculateDuration('Sep 2026', 'Present'),
-        description: [
-          'improving the experience behind uv, ruff, and ty: the perfect triad for fast and efficient modern python development',
-        ],
-        skills: ['Rust', 'GitHub', 'Git', 'Python'],
+        duration: calculateDuration('May 2026', 'Present'),
+        description: ['lore: an open source version control system designed for game developers'],
+        skills: ['Rust', 'GitHub', 'Git', 'GitHub Actions', 'Game Development'],
       },
     ],
   },
